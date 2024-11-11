@@ -7,10 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0080E8572CE19EBD0095B958 /* PresentationStruct.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0080E8542CE19EBD0095B958 /* PresentationStruct.swift */; };
 		5B7C6EBA2CDB6C5C0024704A /* Domain.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B7C6EB92CDB6C5C0024704A /* Domain.framework */; };
 		5B7C6EBB2CDB6C5C0024704A /* Domain.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 5B7C6EB92CDB6C5C0024704A /* Domain.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A8525DC32CE200230089DA5E /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A8525DC22CE200230089DA5E /* Colors.xcassets */; };
+		A8525DC82CE201D50089DA5E /* AirplainFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8525DC72CE201D50089DA5E /* AirplainFont.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -28,10 +28,10 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		0080E8542CE19EBD0095B958 /* PresentationStruct.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentationStruct.swift; sourceTree = "<group>"; };
 		5B7C6E502CDB6A380024704A /* Presentation.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Presentation.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5B7C6EB92CDB6C5C0024704A /* Domain.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Domain.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A8525DC22CE200230089DA5E /* Colors.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Colors.xcassets; sourceTree = "<group>"; };
+		A8525DC72CE201D50089DA5E /* AirplainFont.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AirplainFont.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -49,7 +49,7 @@
 		0080E8552CE19EBD0095B958 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
-				0080E8542CE19EBD0095B958 /* PresentationStruct.swift */,
+				A8525DC52CE201C00089DA5E /* Common */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -94,6 +94,22 @@
 				A8525DC22CE200230089DA5E /* Colors.xcassets */,
 			);
 			path = Resources;
+			sourceTree = "<group>";
+		};
+		A8525DC52CE201C00089DA5E /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				A8525DC62CE201CB0089DA5E /* DesignSystem */,
+			);
+			path = Common;
+			sourceTree = "<group>";
+		};
+		A8525DC62CE201CB0089DA5E /* DesignSystem */ = {
+			isa = PBXGroup;
+			children = (
+				A8525DC72CE201D50089DA5E /* AirplainFont.swift */,
+			);
+			path = DesignSystem;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -202,7 +218,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0080E8572CE19EBD0095B958 /* PresentationStruct.swift in Sources */,
+				A8525DC82CE201D50089DA5E /* AirplainFont.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
