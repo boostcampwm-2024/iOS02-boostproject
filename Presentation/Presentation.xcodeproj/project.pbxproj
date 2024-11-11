@@ -11,6 +11,7 @@
 		5B7C6EBB2CDB6C5C0024704A /* Domain.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 5B7C6EB92CDB6C5C0024704A /* Domain.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A8525DC32CE200230089DA5E /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A8525DC22CE200230089DA5E /* Colors.xcassets */; };
 		A8525DC82CE201D50089DA5E /* AirplainFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8525DC72CE201D50089DA5E /* AirplainFont.swift */; };
+		A8525DCB2CE203D50089DA5E /* UIView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8525DCA2CE203D50089DA5E /* UIView+.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -32,6 +33,7 @@
 		5B7C6EB92CDB6C5C0024704A /* Domain.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Domain.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A8525DC22CE200230089DA5E /* Colors.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Colors.xcassets; sourceTree = "<group>"; };
 		A8525DC72CE201D50089DA5E /* AirplainFont.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AirplainFont.swift; sourceTree = "<group>"; };
+		A8525DCA2CE203D50089DA5E /* UIView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -99,6 +101,7 @@
 		A8525DC52CE201C00089DA5E /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				A8525DC92CE202D30089DA5E /* Extension */,
 				A8525DC62CE201CB0089DA5E /* DesignSystem */,
 			);
 			path = Common;
@@ -110,6 +113,14 @@
 				A8525DC72CE201D50089DA5E /* AirplainFont.swift */,
 			);
 			path = DesignSystem;
+			sourceTree = "<group>";
+		};
+		A8525DC92CE202D30089DA5E /* Extension */ = {
+			isa = PBXGroup;
+			children = (
+				A8525DCA2CE203D50089DA5E /* UIView+.swift */,
+			);
+			path = Extension;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -218,6 +229,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A8525DCB2CE203D50089DA5E /* UIView+.swift in Sources */,
 				A8525DC82CE201D50089DA5E /* AirplainFont.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
