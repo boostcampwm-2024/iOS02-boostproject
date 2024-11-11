@@ -1,10 +1,12 @@
 name: CD
 
 on:
-  #release에 push가 일어나면 실행
+  # release 브랜치에서 .plist 파일이 수정되면 trigger
   push:
     branches:
-        - 'release*'
+      - 'release*'
+    paths:
+      - '**.plist'
     
 jobs:
   Deployment:
