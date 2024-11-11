@@ -3,10 +3,12 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 77;
+	objectVersion = 63;
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0080E8652CE19EC40095B958 /* NearbyNetworkInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0080E85F2CE19EC40095B958 /* NearbyNetworkInterface.swift */; };
+		0080E8662CE19EC40095B958 /* NetworkConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0080E8612CE19EC40095B958 /* NetworkConnection.swift */; };
 		5B7C6EB52CDB6C4B0024704A /* Domain.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B7C6EB42CDB6C4B0024704A /* Domain.framework */; };
 		5B7C6EB62CDB6C4B0024704A /* Domain.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 5B7C6EB42CDB6C4B0024704A /* Domain.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
@@ -26,17 +28,11 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		0080E85F2CE19EC40095B958 /* NearbyNetworkInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearbyNetworkInterface.swift; sourceTree = "<group>"; };
+		0080E8612CE19EC40095B958 /* NetworkConnection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkConnection.swift; sourceTree = "<group>"; };
 		5B7C6E3B2CDB6A240024704A /* DataSource.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = DataSource.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5B7C6EB42CDB6C4B0024704A /* Domain.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Domain.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
-
-/* Begin PBXFileSystemSynchronizedRootGroup section */
-		5B7C6E3D2CDB6A240024704A /* DataSource */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = DataSource;
-			sourceTree = "<group>";
-		};
-/* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		5B7C6E382CDB6A240024704A /* Frameworks */ = {
@@ -50,10 +46,43 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0080E8602CE19EC40095B958 /* Interface */ = {
+			isa = PBXGroup;
+			children = (
+				0080E85F2CE19EC40095B958 /* NearbyNetworkInterface.swift */,
+			);
+			path = Interface;
+			sourceTree = "<group>";
+		};
+		0080E8622CE19EC40095B958 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				0080E8612CE19EC40095B958 /* NetworkConnection.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		0080E8632CE19EC40095B958 /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				0080E8602CE19EC40095B958 /* Interface */,
+				0080E8622CE19EC40095B958 /* Model */,
+			);
+			path = Sources;
+			sourceTree = "<group>";
+		};
+		0080E8642CE19EC40095B958 /* DataSource */ = {
+			isa = PBXGroup;
+			children = (
+				0080E8632CE19EC40095B958 /* Sources */,
+			);
+			path = DataSource;
+			sourceTree = "<group>";
+		};
 		5B7C6E312CDB6A240024704A = {
 			isa = PBXGroup;
 			children = (
-				5B7C6E3D2CDB6A240024704A /* DataSource */,
+				0080E8642CE19EC40095B958 /* DataSource */,
 				5B7C6EB32CDB6C4B0024704A /* Frameworks */,
 				5B7C6E3C2CDB6A240024704A /* Products */,
 			);
@@ -103,9 +132,6 @@
 			);
 			dependencies = (
 			);
-			fileSystemSynchronizedGroups = (
-				5B7C6E3D2CDB6A240024704A /* DataSource */,
-			);
 			name = DataSource;
 			packageProductDependencies = (
 			);
@@ -129,6 +155,7 @@
 				};
 			};
 			buildConfigurationList = 5B7C6E352CDB6A240024704A /* Build configuration list for PBXProject "DataSource" */;
+			compatibilityVersion = "Xcode 15.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -137,7 +164,6 @@
 			);
 			mainGroup = 5B7C6E312CDB6A240024704A;
 			minimizedProjectReferenceProxies = 1;
-			preferredProjectObjectVersion = 77;
 			productRefGroup = 5B7C6E3C2CDB6A240024704A /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -183,6 +209,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0080E8652CE19EC40095B958 /* NearbyNetworkInterface.swift in Sources */,
+				0080E8662CE19EC40095B958 /* NetworkConnection.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

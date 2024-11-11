@@ -3,33 +3,17 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 77;
+	objectVersion = 63;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		0080E85E2CE19EC40095B958 /* AirplaINFoundation.h in Headers */ = {isa = PBXBuildFile; fileRef = 0080E85C2CE19EC40095B958 /* AirplaINFoundation.h */; settings = {ATTRIBUTES = (Public, ); }; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
+		0080E85C2CE19EC40095B958 /* AirplaINFoundation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AirplaINFoundation.h; sourceTree = "<group>"; };
 		5B7C6E8F2CDB6AA30024704A /* AirplaINFoundation.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AirplaINFoundation.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
-
-/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		5B7C6E942CDB6AA30024704A /* Exceptions for "AirplaINFoundation" folder in "AirplaINFoundation" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			publicHeaders = (
-				AirplaINFoundation.h,
-			);
-			target = 5B7C6E8E2CDB6AA30024704A /* AirplaINFoundation */;
-		};
-/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
-
-/* Begin PBXFileSystemSynchronizedRootGroup section */
-		5B7C6E912CDB6AA30024704A /* AirplaINFoundation */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-				5B7C6E942CDB6AA30024704A /* Exceptions for "AirplaINFoundation" folder in "AirplaINFoundation" target */,
-			);
-			path = AirplaINFoundation;
-			sourceTree = "<group>";
-		};
-/* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		5B7C6E8C2CDB6AA30024704A /* Frameworks */ = {
@@ -42,10 +26,18 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0080E85D2CE19EC40095B958 /* AirplaINFoundation */ = {
+			isa = PBXGroup;
+			children = (
+				0080E85C2CE19EC40095B958 /* AirplaINFoundation.h */,
+			);
+			path = AirplaINFoundation;
+			sourceTree = "<group>";
+		};
 		5B7C6E852CDB6AA30024704A = {
 			isa = PBXGroup;
 			children = (
-				5B7C6E912CDB6AA30024704A /* AirplaINFoundation */,
+				0080E85D2CE19EC40095B958 /* AirplaINFoundation */,
 				5B7C6E902CDB6AA30024704A /* Products */,
 			);
 			sourceTree = "<group>";
@@ -65,6 +57,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0080E85E2CE19EC40095B958 /* AirplaINFoundation.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -84,9 +77,6 @@
 			buildRules = (
 			);
 			dependencies = (
-			);
-			fileSystemSynchronizedGroups = (
-				5B7C6E912CDB6AA30024704A /* AirplaINFoundation */,
 			);
 			name = AirplaINFoundation;
 			packageProductDependencies = (
@@ -110,6 +100,7 @@
 				};
 			};
 			buildConfigurationList = 5B7C6E892CDB6AA30024704A /* Build configuration list for PBXProject "AirplaINFoundation" */;
+			compatibilityVersion = "Xcode 15.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -118,7 +109,6 @@
 			);
 			mainGroup = 5B7C6E852CDB6AA30024704A;
 			minimizedProjectReferenceProxies = 1;
-			preferredProjectObjectVersion = 77;
 			productRefGroup = 5B7C6E902CDB6AA30024704A /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
