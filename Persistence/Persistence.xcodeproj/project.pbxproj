@@ -3,10 +3,11 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 77;
+	objectVersion = 63;
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0080E86E2CE19EC40095B958 /* PersistenceStruct.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0080E86B2CE19EC40095B958 /* PersistenceStruct.swift */; };
 		5B7C6EC42CDB6C860024704A /* DataSource.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B7C6EC32CDB6C860024704A /* DataSource.framework */; };
 		5B7C6EC52CDB6C860024704A /* DataSource.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 5B7C6EC32CDB6C860024704A /* DataSource.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
@@ -26,17 +27,10 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		0080E86B2CE19EC40095B958 /* PersistenceStruct.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceStruct.swift; sourceTree = "<group>"; };
 		5B7C6E7A2CDB6A7C0024704A /* Persistence.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Persistence.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5B7C6EC32CDB6C860024704A /* DataSource.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = DataSource.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
-
-/* Begin PBXFileSystemSynchronizedRootGroup section */
-		5B7C6E7C2CDB6A7C0024704A /* Persistence */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = Persistence;
-			sourceTree = "<group>";
-		};
-/* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		5B7C6E772CDB6A7C0024704A /* Frameworks */ = {
@@ -50,10 +44,26 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0080E86C2CE19EC40095B958 /* Souces */ = {
+			isa = PBXGroup;
+			children = (
+				0080E86B2CE19EC40095B958 /* PersistenceStruct.swift */,
+			);
+			path = Souces;
+			sourceTree = "<group>";
+		};
+		0080E86D2CE19EC40095B958 /* Persistence */ = {
+			isa = PBXGroup;
+			children = (
+				0080E86C2CE19EC40095B958 /* Souces */,
+			);
+			path = Persistence;
+			sourceTree = "<group>";
+		};
 		5B7C6E702CDB6A7C0024704A = {
 			isa = PBXGroup;
 			children = (
-				5B7C6E7C2CDB6A7C0024704A /* Persistence */,
+				0080E86D2CE19EC40095B958 /* Persistence */,
 				5B7C6EC22CDB6C860024704A /* Frameworks */,
 				5B7C6E7B2CDB6A7C0024704A /* Products */,
 			);
@@ -103,9 +113,6 @@
 			);
 			dependencies = (
 			);
-			fileSystemSynchronizedGroups = (
-				5B7C6E7C2CDB6A7C0024704A /* Persistence */,
-			);
 			name = Persistence;
 			packageProductDependencies = (
 			);
@@ -129,6 +136,7 @@
 				};
 			};
 			buildConfigurationList = 5B7C6E742CDB6A7C0024704A /* Build configuration list for PBXProject "Persistence" */;
+			compatibilityVersion = "Xcode 15.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -137,7 +145,6 @@
 			);
 			mainGroup = 5B7C6E702CDB6A7C0024704A;
 			minimizedProjectReferenceProxies = 1;
-			preferredProjectObjectVersion = 77;
 			productRefGroup = 5B7C6E7B2CDB6A7C0024704A /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -183,6 +190,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0080E86E2CE19EC40095B958 /* PersistenceStruct.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
