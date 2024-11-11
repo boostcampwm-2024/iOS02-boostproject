@@ -3,7 +3,8 @@ name: CD
 on:
   #release에 push가 일어나면 실행
   push:
-    branches: release
+    branches:
+        - 'release*'
     
 jobs:
   Deployment:
