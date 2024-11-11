@@ -1,0 +1,224 @@
+name: CD
+
+on:
+  #release에 push가 일어나면 실행
+  push:
+    branches: release
+    
+jobs:
+  Deployment:
+    runs-on: macos-latest
+    # 환경 변수
+    env:
+      XC_WORKSPACE: ${{ 'AirplaIN.xcworkspace' }}
+      XC_SCHEME: ${{ 'AirplaIN' }}
+      XC_ARCHIVE: ${{ 'AirplaIN.xcarchive' }}
+      
+      # 인증서 관련
+      CERTIFICATION_BASE64: ${{ secrets.CERTIFICATION }}
+      CERTIFICATION_PASSWORD: ${{ secrets.CERTIFICATION_PASSWORD }}
+      
+      # 프로비저닝 프로필 관련
+      ENCRYPTED_PROVISION_FILE_PATH: ${{ '.github/secrets/AirplaIN.mobileprovision.gpg' }}
+      DECRYPTED_PROVISION_FILE_PATH: ${{ '.github/secrets/AirplaIN.mobileprovision' }}
+      PROVISIONING_ENCRYPTION_KEY: ${{ secrets.PROVISION_ENCRYPTION_PASSWORD }}
+      
+      # 임시 키체인
+      KEYCHAIN: ${{ 'AirplaIN.keychain' }}
+
+      # 드롭박스 관련
+      DROPBOX_REFRESH_TOKEN: ${{ secrets.DROPBOX_REFRESH_TOKEN }}
+      DROPBOX_CLIENT_ID: ${{ secrets.DROPBOX_CLIENT_ID }}
+      DROPBOX_CLIENT_SECRET: ${{ secrets.DROPBOX_CLIENT_SECRET }}
+      
+    steps:
+      # 드롭박스 Access Token 얻기
+      - name: Fetch Dropbox Access Token
+        run: |
+          # 리프레시 토큰을 이용해 Dropbox 액세스 토큰을 발급받기
+          RESPONSE=$(curl -s -X POST https://api.dropbox.com/oauth2/token \
+            -d grant_type=refresh_token \
+            -d refresh_token=$DROPBOX_REFRESH_TOKEN \
+            -u "$DROPBOX_CLIENT_ID:$DROPBOX_CLIENT_SECRET")
+
+          # 액세스 토큰 추출
+          DROPBOX_ACCESS_TOKEN=$(echo "$RESPONSE" | jq -r '.access_token')
+          echo "DROPBOX_ACCESS_TOKEN=$DROPBOX_ACCESS_TOKEN" >> $GITHUB_ENV
+
+      # 저장소의 최신 코드를 가져옴
+      - name: Checkout project
+        uses: actions/checkout@v4
+
+      # github workflow에서 사용할 키체인 설정
+      - name: Configure Keychain
+        run: |
+          security create-keychain -p "" "$KEYCHAIN"
+          security list-keychains -s "$KEYCHAIN"
+          security default-keychain -s "$KEYCHAIN"
+          security unlock-keychain -p "" "$KEYCHAIN"
+          security set-keychain-settings
+
+      # 인증서 설정
+      - name: Install Certification from Base64
+        run: |
+          # 임시 인증서 파일 경로
+          CERTIFICATE_PATH=$RUNNER_TEMP/AirplaIN.p12
+          # 인증서를 복호화
+          echo -n "$CERTIFICATION_BASE64" | base64 --decode -o $CERTIFICATE_PATH
+          # 키체인에 인증서 등록
+          security import "$CERTIFICATE_PATH" -k "$KEYCHAIN" -P "$CERTIFICATION_PASSWORD" -A
+          security set-key-partition-list -S apple-tool:,apple: -s -k "" "$KEYCHAIN"
+
+      # 프로비저닝 프로필 설정
+      - name: Configure Provisioning
+        run: |
+          # 암호화된 프로비저닝 파일 복호화
+          gpg -d \
+            -o "$DECRYPTED_PROVISION_FILE_PATH" \
+            --pinentry-mode=loopback \
+            --passphrase "$PROVISIONING_ENCRYPTION_KEY" "$ENCRYPTED_PROVISION_FILE_PATH"
+          # 프로비저닝 디렉토리 생성
+          mkdir -p "$HOME/Library/MobileDevice/Provisioning Profiles"
+          # 암호화한 프로비저닝 프로필을 생성한 디렉토리로 이동
+          PROVISION=".github/secrets/AirplaIN.mobileprovision"
+          UUID=$(/usr/libexec/PlistBuddy -c 'Print :UUID' /dev/stdin <<< $(security cms -D -i "$PROVISION"))
+          cp "$PROVISION" "$HOME/Library/MobileDevice/Provisioning Profiles/$UUID.mobileprovision"
+
+      # 앱 버전 추출
+      - name: Extract App Version
+        run: |
+          PLIST_PATH="./AirplaIN/AirplaIN/Info.plist"
+          APP_VERSION=$(/usr/libexec/PlistBuddy -c "Print CFBundleShortVersionString" "$PLIST_PATH")
+          echo "APP_VERSION=$APP_VERSION" >> $GITHUB_ENV
+      
+      # 아카이브
+      - name: Archive app
+        run: |
+          xcodebuild clean archive \
+            -workspace "$XC_WORKSPACE" \
+            -scheme "$XC_SCHEME" \
+            -configuration Release \
+            -archivePath "$XC_ARCHIVE"
+
+      # ipa 추출
+      - name: Export app
+        run: |
+          xcodebuild \
+            -exportArchive \
+            -archivePath $XC_ARCHIVE \
+            -exportOptionsPlist ExportOptions.plist \
+            -exportPath . \
+            -allowProvisioningUpdates
+
+      # 드롭박스에 업로드
+      - name: Upload ipa file to Dropbox
+        run: |
+          IPA_FILE_PATH="AirplaIN.ipa"
+          DESTINATION_PATH="/${{ env.APP_VERSION }}/AirplaIN.ipa"
+          curl -X POST https://content.dropboxapi.com/2/files/upload \
+            --header "Authorization: Bearer $DROPBOX_ACCESS_TOKEN" \
+            --header "Dropbox-API-Arg: {\"path\": \"$DESTINATION_PATH\", \"mode\": \"overwrite\", \"mute\": false}" \
+            --header "Content-Type: application/octet-stream" \
+            --data-binary @$IPA_FILE_PATH
+      
+      # ipa 파일 다운로드 링크 생성. 이미 있다면 생성되지 않음
+      - name: Generate download link
+        run: |
+          DESTINATION_PATH="/${{ env.APP_VERSION }}/AirplaIN.ipa"
+          curl -X POST https://api.dropboxapi.com/2/sharing/create_shared_link_with_settings \
+            --header "Authorization: Bearer $DROPBOX_ACCESS_TOKEN" \
+            --header "Content-Type: application/json" \
+            --data "{\"path\": \"$DESTINATION_PATH\",\"settings\":{\"access\":\"viewer\",\"allow_download\":true,\"audience\":\"public\",\"requested_visibility\":\"public\"}}"
+
+      # 생성한 ipa 파일 다운로드 링크 얻기
+      - name: Get download link
+        run: |
+          DESTINATION_PATH="/${{ env.APP_VERSION }}/AirplaIN.ipa"
+          JSON=$(curl -X POST https://api.dropboxapi.com/2/sharing/list_shared_links \
+            --header "Authorization: Bearer $DROPBOX_ACCESS_TOKEN" \
+            --header "Content-Type: application/json" \
+            --data "{\"path\": \"$DESTINATION_PATH\"}")
+          Shared_LINK=$(echo "$JSON" | jq -r '.links[0].url')
+          IPA_DOWNLOAD_LINK=$(echo "$Shared_LINK" | sed 's|https://www.dropbox.com|https://dl.dropboxusercontent.com|' | sed 's/.....$//')
+          echo "IPA_DOWNLOAD_LINK=$IPA_DOWNLOAD_LINK" >> $GITHUB_ENV
+
+      # manifest.plist 파일 생성
+      - name: Create manifest.plist
+        run: |
+          cat <<EOF > manifest.plist
+          <?xml version="1.0" encoding="UTF-8"?>
+          <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+          <plist version="1.0">
+          <dict>
+            <key>items</key>
+            <array>
+              <dict>
+                <key>assets</key>
+                <array>
+                  <dict>
+                    <key>kind</key>
+                    <string>software-package</string>
+                    <key>url</key>
+                    <string>${{ env.IPA_DOWNLOAD_LINK }}</string>
+                  </dict>
+                </array>
+                <key>metadata</key>
+                <dict>
+                  <key>bundle-identifier</key>
+                  <string>kr.codesquad.boostcamp9.AirplaIN</string>
+                  <key>bundle-version</key>
+                  <string>${{ env.APP_VERSION }}</string>
+                  <key>kind</key>
+                  <string>software</string>
+                  <key>title</key>
+                  <string>AirplaIN</string>
+                </dict>
+              </dict>
+            </array>
+          </dict>
+          </plist>
+          EOF
+
+      # manifest 파일 업로드
+      - name: Upload manifest.plist to Dropbox
+        run: |
+          MANIFEST_PATH="manifest.plist"
+          DESTINATION_PATH="/${{ env.APP_VERSION }}/manifest.plist"
+          curl -X POST https://content.dropboxapi.com/2/files/upload \
+            --header "Authorization: Bearer $DROPBOX_ACCESS_TOKEN" \
+            --header "Dropbox-API-Arg: {\"path\": \"$DESTINATION_PATH\", \"mode\": \"overwrite\", \"mute\": false}" \
+            --header "Content-Type: application/octet-stream" \
+            --data-binary @$MANIFEST_PATH
+    
+      # manifest 파일 다운로드 링크 생성. 이미 있다면 생성되지 않음
+      - name: Generate download link
+        run: |
+          DESTINATION_PATH="/${{ env.APP_VERSION }}/manifest.plist"
+          curl -X POST https://api.dropboxapi.com/2/sharing/create_shared_link_with_settings \
+            --header "Authorization: Bearer $DROPBOX_ACCESS_TOKEN" \
+            --header "Content-Type: application/json" \
+            --data "{\"path\": \"$DESTINATION_PATH\",\"settings\":{\"access\":\"viewer\",\"allow_download\":true,\"audience\":\"public\",\"requested_visibility\":\"public\"}}"
+
+      # 생성한 manifest 파일 다운로드 링크 얻기
+      - name: Get download link
+        run: |
+          DESTINATION_PATH="/${{ env.APP_VERSION }}/manifest.plist"
+          JSON=$(curl -X POST https://api.dropboxapi.com/2/sharing/list_shared_links \
+            --header "Authorization: Bearer $DROPBOX_ACCESS_TOKEN" \
+            --header "Content-Type: application/json" \
+            --data "{\"path\": \"$DESTINATION_PATH\"}")
+          Shared_LINK=$(echo "$JSON" | jq -r '.links[0].url')
+          MANIFEST_DOWNLOAD_LINK=$(echo "$Shared_LINK" | sed 's/0$/1/')
+          echo "MANIFEST_DOWNLOAD_LINK=$MANIFEST_DOWNLOAD_LINK" >> $GITHUB_ENV
+
+      # 배포 링크 생성
+      - name: Generate Install Link
+        run: |
+          # manifest 다운링크에서 특정 문자를 URL 인코딩
+          ENCODED_MANIFEST_LINK=$(echo "$MANIFEST_DOWNLOAD_LINK" | \
+            sed -e 's/=/\%3D/g' \
+                -e 's/&/\%26/g' \
+                -e 's/?/\%3F/g')
+
+          echo "ENCODED_MANIFEST_LINK=$ENCODED_MANIFEST_LINK" >> $GITHUB_ENV
+          echo "Install link: itms-services://?action=download-manifest&url=$ENCODED_MANIFEST_LINK"

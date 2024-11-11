@@ -186,8 +186,8 @@ extension NearbyNetworkService: MCNearbyServiceBrowserDelegate {
 }
 
 // MARK: - MCSessionState
-extension MCSessionState: @retroactive CustomStringConvertible {
-    public var description: String {
+extension MCSessionState {
+    var description: String {
         switch self {
         case .notConnected:
             return "연결 끊김"
