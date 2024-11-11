@@ -21,4 +21,4 @@ jobs:
             -scheme AirplaIN \
             -configuration Debug \
             -sdk iphonesimulator \
-            build
+            clean build
