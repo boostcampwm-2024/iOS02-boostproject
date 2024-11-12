@@ -9,6 +9,9 @@
 /* Begin PBXBuildFile section */
 		5B7C6EBA2CDB6C5C0024704A /* Domain.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B7C6EB92CDB6C5C0024704A /* Domain.framework */; };
 		5B7C6EBB2CDB6C5C0024704A /* Domain.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 5B7C6EB92CDB6C5C0024704A /* Domain.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		6F199EF12CE31A05005DC40F /* WhiteboardToolBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F199EF02CE31A05005DC40F /* WhiteboardToolBar.swift */; };
+		6F199EF32CE3203A005DC40F /* WhiteboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F199EF22CE3203A005DC40F /* WhiteboardViewController.swift */; };
+		6F199EF72CE3317E005DC40F /* WhiteboardTool.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F199EF62CE3317E005DC40F /* WhiteboardTool.swift */; };
 		A8525DC32CE200230089DA5E /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A8525DC22CE200230089DA5E /* Colors.xcassets */; };
 		A8525DC82CE201D50089DA5E /* AirplainFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8525DC72CE201D50089DA5E /* AirplainFont.swift */; };
 		A8525DCB2CE203D50089DA5E /* UIView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8525DCA2CE203D50089DA5E /* UIView+.swift */; };
@@ -31,6 +34,9 @@
 /* Begin PBXFileReference section */
 		5B7C6E502CDB6A380024704A /* Presentation.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Presentation.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5B7C6EB92CDB6C5C0024704A /* Domain.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Domain.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		6F199EF02CE31A05005DC40F /* WhiteboardToolBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhiteboardToolBar.swift; sourceTree = "<group>"; };
+		6F199EF22CE3203A005DC40F /* WhiteboardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhiteboardViewController.swift; sourceTree = "<group>"; };
+		6F199EF62CE3317E005DC40F /* WhiteboardTool.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhiteboardTool.swift; sourceTree = "<group>"; };
 		A8525DC22CE200230089DA5E /* Colors.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Colors.xcassets; sourceTree = "<group>"; };
 		A8525DC72CE201D50089DA5E /* AirplainFont.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AirplainFont.swift; sourceTree = "<group>"; };
 		A8525DCA2CE203D50089DA5E /* UIView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+.swift"; sourceTree = "<group>"; };
@@ -51,6 +57,7 @@
 		0080E8552CE19EBD0095B958 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				6F199EEE2CE318F2005DC40F /* Whiteboard */,
 				A8525DC52CE201C00089DA5E /* Common */,
 			);
 			path = Sources;
@@ -88,6 +95,24 @@
 				5B7C6EB92CDB6C5C0024704A /* Domain.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		6F199EEE2CE318F2005DC40F /* Whiteboard */ = {
+			isa = PBXGroup;
+			children = (
+				6F199EEF2CE3196E005DC40F /* View */,
+			);
+			path = Whiteboard;
+			sourceTree = "<group>";
+		};
+		6F199EEF2CE3196E005DC40F /* View */ = {
+			isa = PBXGroup;
+			children = (
+				6F199EF02CE31A05005DC40F /* WhiteboardToolBar.swift */,
+				6F199EF62CE3317E005DC40F /* WhiteboardTool.swift */,
+				6F199EF22CE3203A005DC40F /* WhiteboardViewController.swift */,
+			);
+			path = View;
 			sourceTree = "<group>";
 		};
 		A8525DC12CE200110089DA5E /* Resources */ = {
@@ -230,6 +255,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				A8525DCB2CE203D50089DA5E /* UIView+.swift in Sources */,
+				6F199EF32CE3203A005DC40F /* WhiteboardViewController.swift in Sources */,
+				6F199EF12CE31A05005DC40F /* WhiteboardToolBar.swift in Sources */,
+				6F199EF72CE3317E005DC40F /* WhiteboardTool.swift in Sources */,
 				A8525DC82CE201D50089DA5E /* AirplainFont.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
