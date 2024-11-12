@@ -7,9 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0080E85B2CE19EBD0095B958 /* DomainStruct.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0080E8582CE19EBD0095B958 /* DomainStruct.swift */; };
 		5B7C6EB02CDB6C040024704A /* AirplaINFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B7C6EAF2CDB6C040024704A /* AirplaINFoundation.framework */; };
 		5B7C6EB12CDB6C040024704A /* AirplaINFoundation.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 5B7C6EAF2CDB6C040024704A /* AirplaINFoundation.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		A85260162CE32F590089DA5E /* ProfileIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = A85260152CE32F590089DA5E /* ProfileIcon.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -27,9 +27,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		0080E8582CE19EBD0095B958 /* DomainStruct.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DomainStruct.swift; sourceTree = "<group>"; };
 		5B7C6E262CDB6A010024704A /* Domain.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Domain.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5B7C6EAF2CDB6C040024704A /* AirplaINFoundation.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = AirplaINFoundation.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A85260152CE32F590089DA5E /* ProfileIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileIcon.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -47,7 +47,7 @@
 		0080E8592CE19EBD0095B958 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
-				0080E8582CE19EBD0095B958 /* DomainStruct.swift */,
+				A8525F212CE32EEE0089DA5E /* Entity */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -83,6 +83,14 @@
 				5B7C6EAF2CDB6C040024704A /* AirplaINFoundation.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		A8525F212CE32EEE0089DA5E /* Entity */ = {
+			isa = PBXGroup;
+			children = (
+				A85260152CE32F590089DA5E /* ProfileIcon.swift */,
+			);
+			path = Entity;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -192,7 +200,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0080E85B2CE19EBD0095B958 /* DomainStruct.swift in Sources */,
+				A85260162CE32F590089DA5E /* ProfileIcon.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
