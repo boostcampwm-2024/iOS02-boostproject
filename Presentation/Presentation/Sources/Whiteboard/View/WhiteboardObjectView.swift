@@ -12,7 +12,7 @@ class WhiteboardObjectView: UIView {
         let frame = CGRect(origin: whiteboardObject.position, size: whiteboardObject.size)
         super.init(frame: frame)
     }
-    
+
     required init?(coder: NSCoder) {
         super.init(coder: coder)
     }

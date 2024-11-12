@@ -10,10 +10,10 @@ public class WhiteboardObject {
     public let id: UUID
     public var position: CGPoint
     public var size: CGSize
-    
+
     public init(
         id: UUID,
-        position: CGPoint, 
+        position: CGPoint,
         size: CGSize
     ) {
         self.id = id
