@@ -12,6 +12,7 @@
 		A85260162CE32F590089DA5E /* ProfileIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = A85260152CE32F590089DA5E /* ProfileIcon.swift */; };
 		A85260182CE331310089DA5E /* Profile.swift in Sources */ = {isa = PBXBuildFile; fileRef = A85260172CE331310089DA5E /* Profile.swift */; };
 		A852601B2CE331BE0089DA5E /* ProfileRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = A852601A2CE331BE0089DA5E /* ProfileRepository.swift */; };
+		A85260232CE343B20089DA5E /* ProfileUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = A85260222CE343B20089DA5E /* ProfileUseCase.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -34,6 +35,7 @@
 		A85260152CE32F590089DA5E /* ProfileIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileIcon.swift; sourceTree = "<group>"; };
 		A85260172CE331310089DA5E /* Profile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Profile.swift; sourceTree = "<group>"; };
 		A852601A2CE331BE0089DA5E /* ProfileRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileRepository.swift; sourceTree = "<group>"; };
+		A85260222CE343B20089DA5E /* ProfileUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileUseCase.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -51,6 +53,7 @@
 		0080E8592CE19EBD0095B958 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				A85260212CE3439C0089DA5E /* UseCase */,
 				A85260192CE3319F0089DA5E /* Interface */,
 				A8525F212CE32EEE0089DA5E /* Entity */,
 			);
@@ -105,6 +108,14 @@
 				A852601A2CE331BE0089DA5E /* ProfileRepository.swift */,
 			);
 			path = Interface;
+			sourceTree = "<group>";
+		};
+		A85260212CE3439C0089DA5E /* UseCase */ = {
+			isa = PBXGroup;
+			children = (
+				A85260222CE343B20089DA5E /* ProfileUseCase.swift */,
+			);
+			path = UseCase;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -215,6 +226,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A852601B2CE331BE0089DA5E /* ProfileRepository.swift in Sources */,
+				A85260232CE343B20089DA5E /* ProfileUseCase.swift in Sources */,
 				A85260162CE32F590089DA5E /* ProfileIcon.swift in Sources */,
 				A85260182CE331310089DA5E /* Profile.swift in Sources */,
 			);
