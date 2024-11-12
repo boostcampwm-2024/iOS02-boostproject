@@ -8,12 +8,14 @@
 import UIKit
 
 extension UIView {
+    @discardableResult
     func addToSuperview(_ superview: UIView) -> Self {
         superview.addSubview(self)
         self.translatesAutoresizingMaskIntoConstraints = false
         return self
     }
 
+    @discardableResult
     func top(
         equalTo anchor: NSLayoutYAxisAnchor,
         constant: CGFloat = 0,
@@ -27,6 +29,7 @@ extension UIView {
         return self
     }
 
+    @discardableResult
     func top(
         equalTo anchor: NSLayoutYAxisAnchor,
         inset: CGFloat = 0,
@@ -38,6 +41,7 @@ extension UIView {
             priority: priority)
     }
 
+    @discardableResult
     func bottom(
         equalTo anchor: NSLayoutYAxisAnchor,
         constant: CGFloat = 0,
@@ -51,6 +55,7 @@ extension UIView {
         return self
     }
 
+    @discardableResult
     func bottom(
         equalTo anchor: NSLayoutYAxisAnchor,
         inset: CGFloat = 0,
@@ -62,6 +67,7 @@ extension UIView {
             priority: priority)
     }
 
+    @discardableResult
     func leading(
         equalTo anchor: NSLayoutXAxisAnchor,
         constant: CGFloat = 0,
@@ -75,6 +81,7 @@ extension UIView {
         return self
     }
 
+    @discardableResult
     func leading(
         equalTo anchor: NSLayoutXAxisAnchor,
         inset: CGFloat = 0,
@@ -86,6 +93,7 @@ extension UIView {
             priority: priority)
     }
 
+    @discardableResult
     func trailing(
         equalTo anchor: NSLayoutXAxisAnchor,
         constant: CGFloat = 0,
@@ -99,6 +107,7 @@ extension UIView {
         return self
     }
 
+    @discardableResult
     func trailing(
         equalTo anchor: NSLayoutXAxisAnchor,
         inset: CGFloat = 0,
@@ -110,6 +119,7 @@ extension UIView {
             priority: priority)
     }
 
+    @discardableResult
     func width(equalTo constant: CGFloat, priority: UILayoutPriority = .required) -> Self {
         let constraint = self
             .widthAnchor
@@ -119,6 +129,7 @@ extension UIView {
         return self
     }
 
+    @discardableResult
     func height(equalTo constant: CGFloat, priority: UILayoutPriority = .required) -> Self {
         let constraint = self
             .heightAnchor
@@ -128,6 +139,7 @@ extension UIView {
         return self
     }
 
+    @discardableResult
     func size(
         width: CGFloat,
         height: CGFloat,
@@ -138,6 +150,7 @@ extension UIView {
             .height(equalTo: height, priority: priority)
     }
 
+    @discardableResult
     func centerX(
         equalTo anchor: NSLayoutXAxisAnchor,
         constant: CGFloat = 0,
@@ -151,6 +164,7 @@ extension UIView {
         return self
     }
 
+    @discardableResult
     func centerY(
         equalTo anchor: NSLayoutYAxisAnchor,
         constant: CGFloat = 0,
@@ -164,12 +178,14 @@ extension UIView {
         return self
     }
 
+    @discardableResult
     func center(in view: UIView, priority: UILayoutPriority = .required) -> Self {
         return self
             .centerX(equalTo: view.centerXAnchor, priority: priority)
             .centerY(equalTo: view.centerYAnchor, priority: priority)
     }
 
+    @discardableResult
     func edges(
         equalTo view: UIView,
         inset: CGFloat = 0,
@@ -194,6 +210,7 @@ extension UIView {
                 priority: priority)
     }
 
+    @discardableResult
     func horizontalEdges(
         equalTo view: UIView,
         inset: CGFloat = 0,
@@ -210,6 +227,7 @@ extension UIView {
                 priority: priority)
     }
 
+    @discardableResult
     func verticalEdges(
         equalTo view: UIView,
         inset: CGFloat = 0,
