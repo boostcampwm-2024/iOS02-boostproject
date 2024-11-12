@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		0080E8C62CE2F0510095B958 /* WhiteboardObjectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0080E8C52CE2F04F0095B958 /* WhiteboardObjectView.swift */; };
+		0080E8CA2CE2FF750095B958 /* WhiteboardObjectViewFactoryable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0080E8C92CE2FF6E0095B958 /* WhiteboardObjectViewFactoryable.swift */; };
 		5B7C6EBA2CDB6C5C0024704A /* Domain.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B7C6EB92CDB6C5C0024704A /* Domain.framework */; };
 		5B7C6EBB2CDB6C5C0024704A /* Domain.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 5B7C6EB92CDB6C5C0024704A /* Domain.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A8525DC32CE200230089DA5E /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A8525DC22CE200230089DA5E /* Colors.xcassets */; };
@@ -31,6 +32,7 @@
 
 /* Begin PBXFileReference section */
 		0080E8C52CE2F04F0095B958 /* WhiteboardObjectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhiteboardObjectView.swift; sourceTree = "<group>"; };
+		0080E8C92CE2FF6E0095B958 /* WhiteboardObjectViewFactoryable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhiteboardObjectViewFactoryable.swift; sourceTree = "<group>"; };
 		5B7C6E502CDB6A380024704A /* Presentation.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Presentation.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5B7C6EB92CDB6C5C0024704A /* Domain.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Domain.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A8525DC22CE200230089DA5E /* Colors.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Colors.xcassets; sourceTree = "<group>"; };
@@ -71,6 +73,7 @@
 		0080E8C32CE2F0310095B958 /* Whiteboard */ = {
 			isa = PBXGroup;
 			children = (
+				0080E8C82CE2FF3D0095B958 /* Factory */,
 				0080E8C42CE2F0430095B958 /* View */,
 			);
 			path = Whiteboard;
@@ -82,6 +85,14 @@
 				0080E8C52CE2F04F0095B958 /* WhiteboardObjectView.swift */,
 			);
 			path = View;
+			sourceTree = "<group>";
+		};
+		0080E8C82CE2FF3D0095B958 /* Factory */ = {
+			isa = PBXGroup;
+			children = (
+				0080E8C92CE2FF6E0095B958 /* WhiteboardObjectViewFactoryable.swift */,
+			);
+			path = Factory;
 			sourceTree = "<group>";
 		};
 		5B7C6E462CDB6A380024704A = {
@@ -251,6 +262,7 @@
 				0080E8C62CE2F0510095B958 /* WhiteboardObjectView.swift in Sources */,
 				A8525DCB2CE203D50089DA5E /* UIView+.swift in Sources */,
 				A8525DC82CE201D50089DA5E /* AirplainFont.swift in Sources */,
+				0080E8CA2CE2FF750095B958 /* WhiteboardObjectViewFactoryable.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
