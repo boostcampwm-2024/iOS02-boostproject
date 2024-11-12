@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		00683D692CE37F2F000D28E4 /* DrawingObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00683D682CE37F2F000D28E4 /* DrawingObject.swift */; };
+		00683D6F2CE3A6A3000D28E4 /* DrawObjectUseCaseInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00683D6E2CE3A6A3000D28E4 /* DrawObjectUseCaseInterface.swift */; };
+		00683D722CE3A74A000D28E4 /* DrawObjectUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00683D712CE3A74A000D28E4 /* DrawObjectUseCase.swift */; };
 		0080E85B2CE19EBD0095B958 /* DomainStruct.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0080E8582CE19EBD0095B958 /* DomainStruct.swift */; };
 		0080E8BB2CE2ECD80095B958 /* WhiteboardObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0080E8BA2CE2ECC60095B958 /* WhiteboardObject.swift */; };
 		0080E8CE2CE4463B0095B958 /* WhiteboardObjectRepositoryInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0080E8CD2CE4462E0095B958 /* WhiteboardObjectRepositoryInterface.swift */; };
@@ -31,6 +33,8 @@
 
 /* Begin PBXFileReference section */
 		00683D682CE37F2F000D28E4 /* DrawingObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawingObject.swift; sourceTree = "<group>"; };
+		00683D6E2CE3A6A3000D28E4 /* DrawObjectUseCaseInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawObjectUseCaseInterface.swift; sourceTree = "<group>"; };
+		00683D712CE3A74A000D28E4 /* DrawObjectUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawObjectUseCase.swift; sourceTree = "<group>"; };
 		0080E8582CE19EBD0095B958 /* DomainStruct.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DomainStruct.swift; sourceTree = "<group>"; };
 		0080E8BA2CE2ECC60095B958 /* WhiteboardObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhiteboardObject.swift; sourceTree = "<group>"; };
 		0080E8CD2CE4462E0095B958 /* WhiteboardObjectRepositoryInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhiteboardObjectRepositoryInterface.swift; sourceTree = "<group>"; };
@@ -50,12 +54,37 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		00683D6C2CE3A666000D28E4 /* Interface */ = {
+			isa = PBXGroup;
+			children = (
+				00683D6D2CE3A66F000D28E4 /* UseCase */,
+			);
+			path = Interface;
+			sourceTree = "<group>";
+		};
+		00683D6D2CE3A66F000D28E4 /* UseCase */ = {
+			isa = PBXGroup;
+			children = (
+				00683D6E2CE3A6A3000D28E4 /* DrawObjectUseCaseInterface.swift */,
+			);
+			path = UseCase;
+			sourceTree = "<group>";
+		};
+		00683D702CE3A72F000D28E4 /* UseCase */ = {
+			isa = PBXGroup;
+			children = (
+				00683D712CE3A74A000D28E4 /* DrawObjectUseCase.swift */,
+			);
+			path = UseCase;
+			sourceTree = "<group>";
+		};
 		0080E8592CE19EBD0095B958 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
 				0080E8CB2CE4461F0095B958 /* Interface */,
 				0080E8B92CE2ECB50095B958 /* Entity */,
 				0080E8582CE19EBD0095B958 /* DomainStruct.swift */,
+				00683D702CE3A72F000D28E4 /* UseCase */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -226,8 +255,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				0080E8CE2CE4463B0095B958 /* WhiteboardObjectRepositoryInterface.swift in Sources */,
+				00683D6F2CE3A6A3000D28E4 /* DrawObjectUseCaseInterface.swift in Sources */,
 				0080E85B2CE19EBD0095B958 /* DomainStruct.swift in Sources */,
 				0080E8BB2CE2ECD80095B958 /* WhiteboardObject.swift in Sources */,
+				00683D722CE3A74A000D28E4 /* DrawObjectUseCase.swift in Sources */,
 				00683D692CE37F2F000D28E4 /* DrawingObject.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
