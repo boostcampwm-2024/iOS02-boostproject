@@ -6,7 +6,7 @@
 //
 
 public struct Profile: Codable {
-    public let nickname: String
+    public var nickname: String
     public let profileIcon: ProfileIcon
 
     public init(nickname: String, profileIcon: ProfileIcon) {
