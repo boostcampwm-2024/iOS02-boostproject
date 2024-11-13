@@ -1,5 +1,5 @@
 //
-//  DomainTests.swift
+//  DrawObjectUseCaseTests.swift
 //  DomainTests
 //
 //  Created by 이동현 on 11/13/24.
