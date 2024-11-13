@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		00683D692CE37F2F000D28E4 /* DrawingObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00683D682CE37F2F000D28E4 /* DrawingObject.swift */; };
-		00683D6F2CE3A6A3000D28E4 /* DrawObjectUseCaseInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00683D6E2CE3A6A3000D28E4 /* DrawObjectUseCaseInterface.swift */; };
 		00683D722CE3A74A000D28E4 /* DrawObjectUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00683D712CE3A74A000D28E4 /* DrawObjectUseCase.swift */; };
 		0080E85B2CE19EBD0095B958 /* DomainStruct.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0080E8582CE19EBD0095B958 /* DomainStruct.swift */; };
 		0080E8BB2CE2ECD80095B958 /* WhiteboardObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0080E8BA2CE2ECC60095B958 /* WhiteboardObject.swift */; };
@@ -259,7 +258,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				0080E8CE2CE4463B0095B958 /* WhiteboardObjectRepositoryInterface.swift in Sources */,
-				00683D6F2CE3A6A3000D28E4 /* DrawObjectUseCaseInterface.swift in Sources */,
 				0080E85B2CE19EBD0095B958 /* DomainStruct.swift in Sources */,
 				0080E8BB2CE2ECD80095B958 /* WhiteboardObject.swift in Sources */,
 				00683D722CE3A74A000D28E4 /* DrawObjectUseCase.swift in Sources */,
