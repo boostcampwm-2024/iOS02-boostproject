@@ -12,6 +12,8 @@
 		A8525DC32CE200230089DA5E /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A8525DC22CE200230089DA5E /* Colors.xcassets */; };
 		A8525DC82CE201D50089DA5E /* AirplainFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8525DC72CE201D50089DA5E /* AirplainFont.swift */; };
 		A8525DCB2CE203D50089DA5E /* UIView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8525DCA2CE203D50089DA5E /* UIView+.swift */; };
+		A85260252CE3447E0089DA5E /* UIColor+.swift in Sources */ = {isa = PBXBuildFile; fileRef = A85260242CE3447E0089DA5E /* UIColor+.swift */; };
+		A85260292CE344C60089DA5E /* ProfileIconView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A85260282CE344C60089DA5E /* ProfileIconView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -34,6 +36,8 @@
 		A8525DC22CE200230089DA5E /* Colors.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Colors.xcassets; sourceTree = "<group>"; };
 		A8525DC72CE201D50089DA5E /* AirplainFont.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AirplainFont.swift; sourceTree = "<group>"; };
 		A8525DCA2CE203D50089DA5E /* UIView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+.swift"; sourceTree = "<group>"; };
+		A85260242CE3447E0089DA5E /* UIColor+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+.swift"; sourceTree = "<group>"; };
+		A85260282CE344C60089DA5E /* ProfileIconView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileIconView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -51,6 +55,7 @@
 		0080E8552CE19EBD0095B958 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				A85260262CE344AF0089DA5E /* Profile */,
 				A8525DC52CE201C00089DA5E /* Common */,
 			);
 			path = Sources;
@@ -119,8 +124,25 @@
 			isa = PBXGroup;
 			children = (
 				A8525DCA2CE203D50089DA5E /* UIView+.swift */,
+				A85260242CE3447E0089DA5E /* UIColor+.swift */,
 			);
 			path = Extension;
+			sourceTree = "<group>";
+		};
+		A85260262CE344AF0089DA5E /* Profile */ = {
+			isa = PBXGroup;
+			children = (
+				A85260272CE344B50089DA5E /* View */,
+			);
+			path = Profile;
+			sourceTree = "<group>";
+		};
+		A85260272CE344B50089DA5E /* View */ = {
+			isa = PBXGroup;
+			children = (
+				A85260282CE344C60089DA5E /* ProfileIconView.swift */,
+			);
+			path = View;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -230,7 +252,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				A8525DCB2CE203D50089DA5E /* UIView+.swift in Sources */,
+				A85260292CE344C60089DA5E /* ProfileIconView.swift in Sources */,
 				A8525DC82CE201D50089DA5E /* AirplainFont.swift in Sources */,
+				A85260252CE3447E0089DA5E /* UIColor+.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
