@@ -14,7 +14,7 @@
 		0080E8CE2CE4463B0095B958 /* WhiteboardObjectRepositoryInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0080E8CD2CE4462E0095B958 /* WhiteboardObjectRepositoryInterface.swift */; };
 		0080E91A2CE4B0880095B958 /* DrawObjectUseCaseInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0080E9182CE4B0880095B958 /* DrawObjectUseCaseInterface.swift */; };
 		0080E9502CE4D8700095B958 /* Domain.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B7C6E262CDB6A010024704A /* Domain.framework */; platformFilter = ios; };
-		0080E9582CE4D8760095B958 /* DomainTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0080E9562CE4D8760095B958 /* DomainTests.swift */; };
+		0080E9582CE4D8760095B958 /* DrawObjectUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0080E9562CE4D8760095B958 /* DrawObjectUseCaseTests.swift */; };
 		5B7C6EB02CDB6C040024704A /* AirplaINFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B7C6EAF2CDB6C040024704A /* AirplaINFoundation.framework */; };
 		5B7C6EB12CDB6C040024704A /* AirplaINFoundation.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 5B7C6EAF2CDB6C040024704A /* AirplaINFoundation.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
@@ -52,7 +52,7 @@
 		0080E8CD2CE4462E0095B958 /* WhiteboardObjectRepositoryInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhiteboardObjectRepositoryInterface.swift; sourceTree = "<group>"; };
 		0080E9182CE4B0880095B958 /* DrawObjectUseCaseInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawObjectUseCaseInterface.swift; sourceTree = "<group>"; };
 		0080E94C2CE4D8700095B958 /* DomainTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DomainTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		0080E9562CE4D8760095B958 /* DomainTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DomainTests.swift; sourceTree = "<group>"; };
+		0080E9562CE4D8760095B958 /* DrawObjectUseCaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawObjectUseCaseTests.swift; sourceTree = "<group>"; };
 		5B7C6E262CDB6A010024704A /* Domain.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Domain.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5B7C6EAF2CDB6C040024704A /* AirplaINFoundation.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = AirplaINFoundation.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -149,7 +149,7 @@
 		0080E9572CE4D8760095B958 /* DomainTests */ = {
 			isa = PBXGroup;
 			children = (
-				0080E9562CE4D8760095B958 /* DomainTests.swift */,
+				0080E9562CE4D8760095B958 /* DrawObjectUseCaseTests.swift */,
 			);
 			path = DomainTests;
 			sourceTree = "<group>";
@@ -321,7 +321,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0080E9582CE4D8760095B958 /* DomainTests.swift in Sources */,
+				0080E9582CE4D8760095B958 /* DrawObjectUseCaseTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
