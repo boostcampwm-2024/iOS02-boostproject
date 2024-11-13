@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		0080E85B2CE19EBD0095B958 /* DomainStruct.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0080E8582CE19EBD0095B958 /* DomainStruct.swift */; };
 		0080E8BB2CE2ECD80095B958 /* WhiteboardObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0080E8BA2CE2ECC60095B958 /* WhiteboardObject.swift */; };
+		0080E8CE2CE4463B0095B958 /* WhiteboardObjectRepositoryInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0080E8CD2CE4462E0095B958 /* WhiteboardObjectRepositoryInterface.swift */; };
 		5B7C6EB02CDB6C040024704A /* AirplaINFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B7C6EAF2CDB6C040024704A /* AirplaINFoundation.framework */; };
 		5B7C6EB12CDB6C040024704A /* AirplaINFoundation.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 5B7C6EAF2CDB6C040024704A /* AirplaINFoundation.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
@@ -30,6 +31,7 @@
 /* Begin PBXFileReference section */
 		0080E8582CE19EBD0095B958 /* DomainStruct.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DomainStruct.swift; sourceTree = "<group>"; };
 		0080E8BA2CE2ECC60095B958 /* WhiteboardObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhiteboardObject.swift; sourceTree = "<group>"; };
+		0080E8CD2CE4462E0095B958 /* WhiteboardObjectRepositoryInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhiteboardObjectRepositoryInterface.swift; sourceTree = "<group>"; };
 		5B7C6E262CDB6A010024704A /* Domain.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Domain.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5B7C6EAF2CDB6C040024704A /* AirplaINFoundation.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = AirplaINFoundation.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -49,6 +51,7 @@
 		0080E8592CE19EBD0095B958 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				0080E8CB2CE4461F0095B958 /* Interface */,
 				0080E8B92CE2ECB50095B958 /* Entity */,
 				0080E8582CE19EBD0095B958 /* DomainStruct.swift */,
 			);
@@ -69,6 +72,22 @@
 				0080E8BA2CE2ECC60095B958 /* WhiteboardObject.swift */,
 			);
 			path = Entity;
+			sourceTree = "<group>";
+		};
+		0080E8CB2CE4461F0095B958 /* Interface */ = {
+			isa = PBXGroup;
+			children = (
+				0080E8CC2CE446270095B958 /* Repository */,
+			);
+			path = Interface;
+			sourceTree = "<group>";
+		};
+		0080E8CC2CE446270095B958 /* Repository */ = {
+			isa = PBXGroup;
+			children = (
+				0080E8CD2CE4462E0095B958 /* WhiteboardObjectRepositoryInterface.swift */,
+			);
+			path = Repository;
 			sourceTree = "<group>";
 		};
 		5B7C6E1C2CDB6A010024704A = {
@@ -203,6 +222,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0080E8CE2CE4463B0095B958 /* WhiteboardObjectRepositoryInterface.swift in Sources */,
 				0080E85B2CE19EBD0095B958 /* DomainStruct.swift in Sources */,
 				0080E8BB2CE2ECD80095B958 /* WhiteboardObject.swift in Sources */,
 			);
