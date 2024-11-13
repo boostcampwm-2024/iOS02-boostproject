@@ -9,10 +9,10 @@ import Foundation
 
 final class DrawObjectUseCase: DrawObjectUseCaseInterface {
     private var drawingObject: DrawingObject?
-    //TODO: - Repository 프로퍼티 추가
+    private let repository: WhiteboardObjectRepositoryInterface
     
-    init() {
-        //TODO: - Repository 주입
+    init(repository: WhiteboardObjectRepositoryInterface) {
+        self.repository = repository
     }
     
     func startDrawing(at point: CGPoint) {
@@ -31,7 +31,7 @@ final class DrawObjectUseCase: DrawObjectUseCaseInterface {
         defer { drawingObject = nil }
         guard let drawingObject else { return nil }
         
-        //TODO: - Repository 정의 후 적절한 처리
+        repository.send(whiteboardObject: drawingObject)
         return drawingObject
     }
 }

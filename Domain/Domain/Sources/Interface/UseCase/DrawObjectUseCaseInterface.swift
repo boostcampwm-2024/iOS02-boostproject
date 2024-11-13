@@ -7,7 +7,7 @@
 
 import Foundation
 
-protocol DrawObjectUseCaseInterface {
+public protocol DrawObjectUseCaseInterface {
     /// 그리기를 시작하는 메서드
     /// - Parameter point: 시작 지점 CGPoint
     func startDrawing(at point: CGPoint)
