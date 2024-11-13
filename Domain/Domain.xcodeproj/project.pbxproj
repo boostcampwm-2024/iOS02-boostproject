@@ -13,6 +13,7 @@
 		0080E85B2CE19EBD0095B958 /* DomainStruct.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0080E8582CE19EBD0095B958 /* DomainStruct.swift */; };
 		0080E8BB2CE2ECD80095B958 /* WhiteboardObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0080E8BA2CE2ECC60095B958 /* WhiteboardObject.swift */; };
 		0080E8CE2CE4463B0095B958 /* WhiteboardObjectRepositoryInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0080E8CD2CE4462E0095B958 /* WhiteboardObjectRepositoryInterface.swift */; };
+		0080E91A2CE4B0880095B958 /* DrawObjectUseCaseInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0080E9182CE4B0880095B958 /* DrawObjectUseCaseInterface.swift */; };
 		5B7C6EB02CDB6C040024704A /* AirplaINFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B7C6EAF2CDB6C040024704A /* AirplaINFoundation.framework */; };
 		5B7C6EB12CDB6C040024704A /* AirplaINFoundation.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 5B7C6EAF2CDB6C040024704A /* AirplaINFoundation.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
@@ -38,6 +39,7 @@
 		0080E8582CE19EBD0095B958 /* DomainStruct.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DomainStruct.swift; sourceTree = "<group>"; };
 		0080E8BA2CE2ECC60095B958 /* WhiteboardObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhiteboardObject.swift; sourceTree = "<group>"; };
 		0080E8CD2CE4462E0095B958 /* WhiteboardObjectRepositoryInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhiteboardObjectRepositoryInterface.swift; sourceTree = "<group>"; };
+		0080E9182CE4B0880095B958 /* DrawObjectUseCaseInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawObjectUseCaseInterface.swift; sourceTree = "<group>"; };
 		5B7C6E262CDB6A010024704A /* Domain.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Domain.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5B7C6EAF2CDB6C040024704A /* AirplaINFoundation.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = AirplaINFoundation.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -54,22 +56,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		00683D6C2CE3A666000D28E4 /* Interface */ = {
-			isa = PBXGroup;
-			children = (
-				00683D6D2CE3A66F000D28E4 /* UseCase */,
-			);
-			path = Interface;
-			sourceTree = "<group>";
-		};
-		00683D6D2CE3A66F000D28E4 /* UseCase */ = {
-			isa = PBXGroup;
-			children = (
-				00683D6E2CE3A6A3000D28E4 /* DrawObjectUseCaseInterface.swift */,
-			);
-			path = UseCase;
-			sourceTree = "<group>";
-		};
 		00683D702CE3A72F000D28E4 /* UseCase */ = {
 			isa = PBXGroup;
 			children = (
@@ -109,6 +95,7 @@
 		0080E8CB2CE4461F0095B958 /* Interface */ = {
 			isa = PBXGroup;
 			children = (
+				0080E9192CE4B0880095B958 /* UseCase */,
 				0080E8CC2CE446270095B958 /* Repository */,
 			);
 			path = Interface;
@@ -122,12 +109,29 @@
 			path = Repository;
 			sourceTree = "<group>";
 		};
+		0080E9172CE4B0430095B958 /* Recovered References */ = {
+			isa = PBXGroup;
+			children = (
+				00683D6E2CE3A6A3000D28E4 /* DrawObjectUseCaseInterface.swift */,
+			);
+			name = "Recovered References";
+			sourceTree = "<group>";
+		};
+		0080E9192CE4B0880095B958 /* UseCase */ = {
+			isa = PBXGroup;
+			children = (
+				0080E9182CE4B0880095B958 /* DrawObjectUseCaseInterface.swift */,
+			);
+			path = UseCase;
+			sourceTree = "<group>";
+		};
 		5B7C6E1C2CDB6A010024704A = {
 			isa = PBXGroup;
 			children = (
 				0080E85A2CE19EBD0095B958 /* Domain */,
 				5B7C6EAE2CDB6C040024704A /* Frameworks */,
 				5B7C6E272CDB6A010024704A /* Products */,
+				0080E9172CE4B0430095B958 /* Recovered References */,
 			);
 			sourceTree = "<group>";
 		};
@@ -259,6 +263,7 @@
 				0080E85B2CE19EBD0095B958 /* DomainStruct.swift in Sources */,
 				0080E8BB2CE2ECD80095B958 /* WhiteboardObject.swift in Sources */,
 				00683D722CE3A74A000D28E4 /* DrawObjectUseCase.swift in Sources */,
+				0080E91A2CE4B0880095B958 /* DrawObjectUseCaseInterface.swift in Sources */,
 				00683D692CE37F2F000D28E4 /* DrawingObject.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
