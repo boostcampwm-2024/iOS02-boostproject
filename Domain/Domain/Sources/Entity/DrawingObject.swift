@@ -22,22 +22,6 @@ public class DrawingObject: WhiteboardObject {
             size: size)
     }
     
-    public convenience override init(
-        id: UUID,
-        position: CGPoint,
-        size: CGSize
-    ) {
-        self.init(
-            id: id,
-            position: position,
-            size: size,
-            points: [])
-    }
-    
-    public func addPoint(point: CGPoint) {
-        points.append(point)
-    }
-    
     //TODO: - 화이트보드 오브젝트 수정 구현 시 고도화
     public func move(by translation: CGPoint) {
         points = points.map {
