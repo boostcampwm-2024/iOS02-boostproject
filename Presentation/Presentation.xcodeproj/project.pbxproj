@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		0080E8C62CE2F0510095B958 /* WhiteboardObjectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0080E8C52CE2F04F0095B958 /* WhiteboardObjectView.swift */; };
 		0080E8CA2CE2FF750095B958 /* WhiteboardObjectViewFactoryable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0080E8C92CE2FF6E0095B958 /* WhiteboardObjectViewFactoryable.swift */; };
+		0080E8D12CE4A00F0095B958 /* WhiteboardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0080E8D02CE4A0060095B958 /* WhiteboardViewModel.swift */; };
+		0080E8D32CE4A0840095B958 /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0080E8D22CE4A0820095B958 /* ViewModel.swift */; };
 		5B7C6EBA2CDB6C5C0024704A /* Domain.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B7C6EB92CDB6C5C0024704A /* Domain.framework */; };
 		5B7C6EBB2CDB6C5C0024704A /* Domain.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 5B7C6EB92CDB6C5C0024704A /* Domain.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A8525DC32CE200230089DA5E /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A8525DC22CE200230089DA5E /* Colors.xcassets */; };
@@ -33,6 +35,8 @@
 /* Begin PBXFileReference section */
 		0080E8C52CE2F04F0095B958 /* WhiteboardObjectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhiteboardObjectView.swift; sourceTree = "<group>"; };
 		0080E8C92CE2FF6E0095B958 /* WhiteboardObjectViewFactoryable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhiteboardObjectViewFactoryable.swift; sourceTree = "<group>"; };
+		0080E8D02CE4A0060095B958 /* WhiteboardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhiteboardViewModel.swift; sourceTree = "<group>"; };
+		0080E8D22CE4A0820095B958 /* ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModel.swift; sourceTree = "<group>"; };
 		5B7C6E502CDB6A380024704A /* Presentation.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Presentation.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5B7C6EB92CDB6C5C0024704A /* Domain.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Domain.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A8525DC22CE200230089DA5E /* Colors.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Colors.xcassets; sourceTree = "<group>"; };
@@ -75,6 +79,7 @@
 			children = (
 				0080E8C82CE2FF3D0095B958 /* Factory */,
 				0080E8C42CE2F0430095B958 /* View */,
+				0080E8CF2CE49FE90095B958 /* ViewModel */,
 			);
 			path = Whiteboard;
 			sourceTree = "<group>";
@@ -93,6 +98,14 @@
 				0080E8C92CE2FF6E0095B958 /* WhiteboardObjectViewFactoryable.swift */,
 			);
 			path = Factory;
+			sourceTree = "<group>";
+		};
+		0080E8CF2CE49FE90095B958 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				0080E8D02CE4A0060095B958 /* WhiteboardViewModel.swift */,
+			);
+			path = ViewModel;
 			sourceTree = "<group>";
 		};
 		5B7C6E462CDB6A380024704A = {
@@ -131,6 +144,7 @@
 		A8525DC52CE201C00089DA5E /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				0080E8D22CE4A0820095B958 /* ViewModel.swift */,
 				A8525DC92CE202D30089DA5E /* Extension */,
 				A8525DC62CE201CB0089DA5E /* DesignSystem */,
 			);
@@ -262,6 +276,8 @@
 				0080E8C62CE2F0510095B958 /* WhiteboardObjectView.swift in Sources */,
 				A8525DCB2CE203D50089DA5E /* UIView+.swift in Sources */,
 				A8525DC82CE201D50089DA5E /* AirplainFont.swift in Sources */,
+				0080E8D12CE4A00F0095B958 /* WhiteboardViewModel.swift in Sources */,
+				0080E8D32CE4A0840095B958 /* ViewModel.swift in Sources */,
 				0080E8CA2CE2FF750095B958 /* WhiteboardObjectViewFactoryable.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
