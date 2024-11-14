@@ -13,20 +13,16 @@ protocol WhiteboardToolBarDelegate: AnyObject {
 }
 
 final class WhiteboardToolBar: UIStackView {
-    // MARK: - UI Properties
     private let drawing = UIButton()
     private let text = UIButton()
     private let photo = UIButton()
     private let game = UIButton()
     private let chat = UIButton()
-
-    // MARK: - Properties
     private var tools: [WhiteboardTool: UIButton] = [:]
     private var selectedTool = CurrentValueSubject<WhiteboardTool?, Never>(nil)
     private var cancellables: Set<AnyCancellable> = []
     weak var delegate: WhiteboardToolBarDelegate?
 
-    // MARK: - Init
     override init(frame: CGRect) {
         super.init(frame: frame)
         initialize()
@@ -43,12 +39,10 @@ final class WhiteboardToolBar: UIStackView {
         bind()
     }
 
-    // MARK: - Internal methods
     func done() {
         tools.forEach { $1.setImage($0.defaultIcon, for: .normal) }
     }
 
-    // MARK: - Private methods
     private func configureAttribute() {
         distribution = .fillEqually
         spacing = 30

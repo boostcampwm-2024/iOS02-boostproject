@@ -8,17 +8,14 @@
 import UIKit
 
 public class WhiteboardViewController: UIViewController {
-    // MARK: - UI Properties
     private let toolbar = WhiteboardToolBar(frame: .zero)
 
-    // MARK: - Viewcontroller Life Cycle
     public override func viewDidLoad() {
         super.viewDidLoad()
         configureLayout()
         configureAttribute()
     }
 
-    // MARK: - Methods
     private func configureLayout() {
         toolbar
             .addToSuperview(view)
