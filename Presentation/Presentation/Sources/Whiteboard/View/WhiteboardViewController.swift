@@ -8,28 +8,25 @@
 import UIKit
 
 public class WhiteboardViewController: UIViewController {
-    // MARK: - UI Properties
     private let toolbar = WhiteboardToolBar(frame: .zero)
 
-    // MARK: - Viewcontroller Life Cycle
     public override func viewDidLoad() {
         super.viewDidLoad()
-        configureLayout()
         configureAttribute()
+        configureLayout()
     }
 
-    // MARK: - Methods
+    private func configureAttribute() {
+        view.backgroundColor = .systemBackground
+        toolbar.delegate = self
+    }
+
     private func configureLayout() {
         toolbar
             .addToSuperview(view)
             .horizontalEdges(equalTo: view, inset: 22)
             .bottom(equalTo: view.safeAreaLayoutGuide.bottomAnchor, inset: 0)
             .height(equalTo: 40)
-    }
-
-    private func configureAttribute() {
-        view.backgroundColor = .systemBackground
-        toolbar.delegate = self
     }
 }
 

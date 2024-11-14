@@ -8,7 +8,7 @@ import Foundation
 
 public class DrawingObject: WhiteboardObject {
     public private(set) var points: [CGPoint]
-    
+
     public init(
         id: UUID,
         position: CGPoint,
@@ -21,8 +21,8 @@ public class DrawingObject: WhiteboardObject {
             position: position,
             size: size)
     }
-    
-    //TODO: - 화이트보드 오브젝트 수정 구현 시 고도화
+
+    // TODO: - 화이트보드 오브젝트 수정 구현 시 고도화
     public func move(by translation: CGPoint) {
         points = points.map {
             let newOriginX = $0.x + translation.x

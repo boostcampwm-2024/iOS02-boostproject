@@ -14,6 +14,12 @@
 		0080E91A2CE4B0880095B958 /* DrawObjectUseCaseInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0080E9182CE4B0880095B958 /* DrawObjectUseCaseInterface.swift */; };
 		0080E9502CE4D8700095B958 /* Domain.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B7C6E262CDB6A010024704A /* Domain.framework */; platformFilter = ios; };
 		0080E9582CE4D8760095B958 /* DrawObjectUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0080E9562CE4D8760095B958 /* DrawObjectUseCaseTests.swift */; };
+		5B6542482CE44631000168AD /* WhiteboardUseCaseInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B6542472CE44631000168AD /* WhiteboardUseCaseInterface.swift */; };
+		5B7C6EB02CDB6C040024704A /* AirplaINFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B7C6EAF2CDB6C040024704A /* AirplaINFoundation.framework */; };
+		5B7C6EB12CDB6C040024704A /* AirplaINFoundation.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 5B7C6EAF2CDB6C040024704A /* AirplaINFoundation.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		5BDFD9342CE1F7DB00DA4F5B /* Whiteboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BDFD9332CE1F7DB00DA4F5B /* Whiteboard.swift */; };
+		5BDFD9372CE2E6BC00DA4F5B /* WhiteboardRepositoryInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BDFD9362CE2E6BC00DA4F5B /* WhiteboardRepositoryInterface.swift */; };
+		5BDFD93A2CE2EE3100DA4F5B /* WhiteboardUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BDFD9392CE2EE3100DA4F5B /* WhiteboardUseCase.swift */; };
 		6F21477B2CE4CEAE00B55E2C /* TextObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F21477A2CE4CEAE00B55E2C /* TextObject.swift */; };
 		6FBC909B2CE5A6AE000FEB5A /* WhiteObjectSendUseCaseInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FBC909A2CE5A52B000FEB5A /* WhiteObjectSendUseCaseInterface.swift */; };
 		A85260232CE343B20089DA5E /* ProfileUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = A85260222CE343B20089DA5E /* ProfileUseCase.swift */; };
@@ -22,12 +28,6 @@
 		A8E97BDB2CE5A6D500B28063 /* ProfileRepositoryInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8E97BDA2CE5A6D500B28063 /* ProfileRepositoryInterface.swift */; };
 		A8E97C052CE5E3AB00B28063 /* ProfileUseCaseInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8E97C042CE5E3AB00B28063 /* ProfileUseCaseInterface.swift */; };
 		A8E97C072CE5E45500B28063 /* WhiteboardObjectSendUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8E97C062CE5E45500B28063 /* WhiteboardObjectSendUseCase.swift */; };
-		5B6542482CE44631000168AD /* WhiteboardUseCaseInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B6542472CE44631000168AD /* WhiteboardUseCaseInterface.swift */; };
-		5B7C6EB02CDB6C040024704A /* AirplaINFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B7C6EAF2CDB6C040024704A /* AirplaINFoundation.framework */; };
-		5B7C6EB12CDB6C040024704A /* AirplaINFoundation.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 5B7C6EAF2CDB6C040024704A /* AirplaINFoundation.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		5BDFD9342CE1F7DB00DA4F5B /* Whiteboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BDFD9332CE1F7DB00DA4F5B /* Whiteboard.swift */; };
-		5BDFD9372CE2E6BC00DA4F5B /* WhiteboardRepositoryInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BDFD9362CE2E6BC00DA4F5B /* WhiteboardRepositoryInterface.swift */; };
-		5BDFD93A2CE2EE3100DA4F5B /* WhiteboardUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BDFD9392CE2EE3100DA4F5B /* WhiteboardUseCase.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -62,8 +62,12 @@
 		0080E9182CE4B0880095B958 /* DrawObjectUseCaseInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawObjectUseCaseInterface.swift; sourceTree = "<group>"; };
 		0080E94C2CE4D8700095B958 /* DomainTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DomainTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		0080E9562CE4D8760095B958 /* DrawObjectUseCaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawObjectUseCaseTests.swift; sourceTree = "<group>"; };
+		5B6542472CE44631000168AD /* WhiteboardUseCaseInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhiteboardUseCaseInterface.swift; sourceTree = "<group>"; };
 		5B7C6E262CDB6A010024704A /* Domain.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Domain.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5B7C6EAF2CDB6C040024704A /* AirplaINFoundation.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = AirplaINFoundation.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		5BDFD9332CE1F7DB00DA4F5B /* Whiteboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Whiteboard.swift; sourceTree = "<group>"; };
+		5BDFD9362CE2E6BC00DA4F5B /* WhiteboardRepositoryInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhiteboardRepositoryInterface.swift; sourceTree = "<group>"; };
+		5BDFD9392CE2EE3100DA4F5B /* WhiteboardUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhiteboardUseCase.swift; sourceTree = "<group>"; };
 		6F21477A2CE4CEAE00B55E2C /* TextObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextObject.swift; sourceTree = "<group>"; };
 		6FBC909A2CE5A52B000FEB5A /* WhiteObjectSendUseCaseInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhiteObjectSendUseCaseInterface.swift; sourceTree = "<group>"; };
 		A85260222CE343B20089DA5E /* ProfileUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileUseCase.swift; sourceTree = "<group>"; };
@@ -72,10 +76,6 @@
 		A8E97BDA2CE5A6D500B28063 /* ProfileRepositoryInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileRepositoryInterface.swift; sourceTree = "<group>"; };
 		A8E97C042CE5E3AB00B28063 /* ProfileUseCaseInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileUseCaseInterface.swift; sourceTree = "<group>"; };
 		A8E97C062CE5E45500B28063 /* WhiteboardObjectSendUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhiteboardObjectSendUseCase.swift; sourceTree = "<group>"; };
-		5B6542472CE44631000168AD /* WhiteboardUseCaseInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhiteboardUseCaseInterface.swift; sourceTree = "<group>"; };
-		5BDFD9332CE1F7DB00DA4F5B /* Whiteboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Whiteboard.swift; sourceTree = "<group>"; };
-		5BDFD9362CE2E6BC00DA4F5B /* WhiteboardRepositoryInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhiteboardRepositoryInterface.swift; sourceTree = "<group>"; };
-		5BDFD9392CE2EE3100DA4F5B /* WhiteboardUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhiteboardUseCase.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -423,7 +423,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
+				DEFINES_MODULE = NO;
 				DEVELOPMENT_TEAM = B3PWYBKFUK;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
@@ -464,7 +464,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
+				DEFINES_MODULE = NO;
 				DEVELOPMENT_TEAM = B3PWYBKFUK;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;

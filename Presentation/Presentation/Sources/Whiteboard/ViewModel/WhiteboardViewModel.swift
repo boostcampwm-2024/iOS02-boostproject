@@ -10,7 +10,7 @@ import Foundation
 
 final class WhiteboardViewModel: ViewModel {
     enum Input {
-        //TODO: - tool을 바꾸는(선택하는) case 추가
+        // TODO: - tool을 바꾸는(선택하는) case 추가
         case startDrawing(startAt: CGPoint)
         case addDrawingPoint(point: CGPoint)
         case finishDrawing
@@ -26,7 +26,7 @@ final class WhiteboardViewModel: ViewModel {
 
     init(drawObjectUseCase: DrawObjectUseCaseInterface) {
         self.drawObjectUseCase = drawObjectUseCase
-        
+
         output = Output(whiteboardObjectsPublisher: whiteboardObjects.eraseToAnyPublisher())
     }
 
