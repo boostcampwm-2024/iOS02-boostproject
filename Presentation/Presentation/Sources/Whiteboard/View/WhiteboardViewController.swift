@@ -12,8 +12,13 @@ public class WhiteboardViewController: UIViewController {
 
     public override func viewDidLoad() {
         super.viewDidLoad()
-        configureLayout()
         configureAttribute()
+        configureLayout()
+    }
+
+    private func configureAttribute() {
+        view.backgroundColor = .systemBackground
+        toolbar.delegate = self
     }
 
     private func configureLayout() {
@@ -22,11 +27,6 @@ public class WhiteboardViewController: UIViewController {
             .horizontalEdges(equalTo: view, inset: 22)
             .bottom(equalTo: view.safeAreaLayoutGuide.bottomAnchor, inset: 0)
             .height(equalTo: 40)
-    }
-
-    private func configureAttribute() {
-        view.backgroundColor = .systemBackground
-        toolbar.delegate = self
     }
 }
 
