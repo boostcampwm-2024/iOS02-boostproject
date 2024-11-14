@@ -10,5 +10,3 @@ public protocol WhiteObjectSendUseCaseInterface {
     /// - Parameter WhiteboardObject: 전송할 화이트보드 오브젝트
     func send(whiteboardObject: WhiteboardObject)
 }
-
-

@@ -96,7 +96,7 @@ public final class WhiteboardListViewController: UIViewController {
     private func bind() {
         viewModel.output.whiteboardPublisher
             .receive(on: DispatchQueue.main)
-            .sink { [weak self] whiteboard in
+            .sink { [weak self] _ in
                 // TODO: 화이트보드 추가
                 let whiteboardViewController = WhiteboardViewController()
                 whiteboardViewController.modalPresentationStyle = .fullScreen

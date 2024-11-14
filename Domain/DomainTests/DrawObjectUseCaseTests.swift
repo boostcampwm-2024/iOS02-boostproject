@@ -34,7 +34,7 @@ final class DrawObjectUseCaseTests: XCTestCase {
         let startPoint = CGPoint(x: 100, y: 100)
         let point1 = CGPoint(x: 115, y: 115)
         let point2 = CGPoint(x: 15, y: 30)
-        
+
         useCase.startDrawing(at: startPoint)
         useCase.addPoint(point: point1)
         useCase.addPoint(point: point2)
@@ -48,13 +48,13 @@ final class DrawObjectUseCaseTests: XCTestCase {
          useCase.addPoint(point: CGPoint(x: 11, y: 11))
          useCase.addPoint(point: CGPoint(x: 12, y: 12))
          useCase.addPoint(point: CGPoint(x: 13, y: 13))
-         
+
          let drawingObject = useCase.finishDrawing()
-         
+
          XCTAssertNotNil(drawingObject)
          XCTAssertEqual(drawingObject?.position, CGPoint(x: 10, y: 10))
          XCTAssertEqual(drawingObject?.size, CGSize(width: 3, height: 3))
-         
+
          let expectedAdjustedPoints = [
              CGPoint(x: 0, y: 0),
              CGPoint(x: 1, y: 1),
@@ -62,7 +62,7 @@ final class DrawObjectUseCaseTests: XCTestCase {
              CGPoint(x: 3, y: 3)]
          XCTAssertEqual(drawingObject?.points, expectedAdjustedPoints)
      }
-    
+
     // 그림 그린 후 useCase 내부 상태 초기화가 되는지 확인
     func testResetAfterFinishDrawing() {
         useCase.startDrawing(at: CGPoint(x: 10, y: 10))
