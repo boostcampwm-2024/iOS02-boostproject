@@ -11,9 +11,9 @@
 		0080E8662CE19EC40095B958 /* NetworkConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0080E8612CE19EC40095B958 /* NetworkConnection.swift */; };
 		5B7C6EB52CDB6C4B0024704A /* Domain.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B7C6EB42CDB6C4B0024704A /* Domain.framework */; };
 		5B7C6EB62CDB6C4B0024704A /* Domain.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 5B7C6EB42CDB6C4B0024704A /* Domain.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		5BDFD93D2CE2F56B00DA4F5B /* WhiteboardRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BDFD93C2CE2F56B00DA4F5B /* WhiteboardRepository.swift */; };
 		A8525F1E2CE326DB0089DA5E /* PersistenceInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8525F1D2CE326DB0089DA5E /* PersistenceInterface.swift */; };
 		A852601E2CE339E70089DA5E /* ProfileRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = A852601D2CE339E70089DA5E /* ProfileRepository.swift */; };
-		5BDFD93D2CE2F56B00DA4F5B /* WhiteboardRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BDFD93C2CE2F56B00DA4F5B /* WhiteboardRepository.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -35,9 +35,9 @@
 		0080E8612CE19EC40095B958 /* NetworkConnection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkConnection.swift; sourceTree = "<group>"; };
 		5B7C6E3B2CDB6A240024704A /* DataSource.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = DataSource.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5B7C6EB42CDB6C4B0024704A /* Domain.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Domain.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		5BDFD93C2CE2F56B00DA4F5B /* WhiteboardRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhiteboardRepository.swift; sourceTree = "<group>"; };
 		A8525F1D2CE326DB0089DA5E /* PersistenceInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceInterface.swift; sourceTree = "<group>"; };
 		A852601D2CE339E70089DA5E /* ProfileRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileRepository.swift; sourceTree = "<group>"; };
-		5BDFD93C2CE2F56B00DA4F5B /* WhiteboardRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhiteboardRepository.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -244,7 +244,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
+				DEFINES_MODULE = NO;
 				DEVELOPMENT_TEAM = B3PWYBKFUK;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
@@ -285,7 +285,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
+				DEFINES_MODULE = NO;
 				DEVELOPMENT_TEAM = B3PWYBKFUK;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
