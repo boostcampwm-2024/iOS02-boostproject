@@ -15,9 +15,7 @@ opt_in_rules:
  - empty_string # == ""보다 isEmpty 선호
  - sorted_imports # import 시 알파벳 순 정렬
  - force_unwrapping #강제 언래핑 적용
-opening_brace:
- severity: error
- ignore_multiline_function_signatures: false
+
 # 타입 네이밍 커스텀 정의
 type_name:
  min_length:
