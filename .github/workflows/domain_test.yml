@@ -1,9 +1,9 @@
-name: Build Test
+name: Domain Test
 
 on:
   pull_request:
-    branches:
-      - develop
+    paths:
+      - 'Domain/**'
 
 jobs:
   Build:
@@ -14,12 +14,11 @@ jobs:
       - name: Checkout project
         uses: actions/checkout@v4
 
-      # 빌드 가능 여부 확인
-      - name: Build AirplaIN
+      # 도메인 테스트 코드 실행
+      - name: Run Domain module tests
         run: |
           xcodebuild \
-            -workspace AirplaIN.xcworkspace \
-            -scheme AirplaIN \
-            -configuration Debug \
+            -project AirplaIN.xcodeproj \
+            -scheme Domain \
             -sdk iphonesimulator \
-            clean build
+            test | xcpretty
