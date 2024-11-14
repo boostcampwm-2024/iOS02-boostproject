@@ -11,7 +11,7 @@ import Foundation
 
 final class ProfileViewModel {
     enum Input {
-        case updateProfileNickname(nickname: String)
+        case updateProfile(profile: Profile)
         case saveProfile
     }
 
@@ -30,14 +30,13 @@ final class ProfileViewModel {
 
     func action(input: Input) {
         switch input {
-        case .updateProfileNickname(let nickname): updateProfileNickname(nickname: nickname)
+        case .updateProfile(let profile): updateProfile(profile: profile)
         case .saveProfile: saveProfile()
         }
     }
 
-    private func updateProfileNickname(nickname: String) {
-        let updatedProfile = Profile(nickname: nickname, profileIcon: output.profile.value.profileIcon)
-        output.profile.send(updatedProfile)
+    private func updateProfile(profile: Profile) {
+        output.profile.send(profile)
     }
 
     private func saveProfile() {

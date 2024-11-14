@@ -41,4 +41,9 @@ final class ProfileIconView: UIView {
         iconLabel
             .center(in: self)
     }
+
+    func updateProfileIcon(profileIcon: ProfileIcon) {
+        backgroundColor = UIColor(hex: profileIcon.colorHex)
+        iconLabel.text = "\(profileIcon.emoji)"
+    }
 }

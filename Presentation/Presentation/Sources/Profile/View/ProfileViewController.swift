@@ -6,9 +6,10 @@
 //
 
 import Combine
+import Domain
 import UIKit
 
-final class ProfileViewController: UIViewController {
+public final class ProfileViewController: UIViewController {
     private enum ProfileLayoutConstant {
         static let profileIconWidthDivide: CGFloat = 3
         static let profileIconSettingButtonSize: CGFloat = 30
@@ -88,12 +89,12 @@ final class ProfileViewController: UIViewController {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    override func viewDidLoad() {
+
+    public override func viewDidLoad() {
         super.viewDidLoad()
         configureAttribute()
         configureLayout()
@@ -120,6 +121,12 @@ final class ProfileViewController: UIViewController {
             target: self,
             action: #selector(saveProfile))
         navigationItem.rightBarButtonItem = completeButton
+
+        profileIconSettingButton.addAction(
+            UIAction { [weak self] _ in
+                guard let self else { return }
+                self.showSelectProfileIconView()
+            }, for: .touchUpInside)
 
         nicknameTextField.delegate = self
     }
@@ -174,11 +181,11 @@ final class ProfileViewController: UIViewController {
 
     private func bind() {
         viewModel.output.profile
-            .map { $0.nickname }
             .receive(on: DispatchQueue.main)
-            .sink { [weak self] nickname in
+            .sink { [weak self] profile in
                 guard let self else { return }
-                self.updateProfileState(nickname: nickname)
+                self.updateProfileState(nickname: profile.nickname)
+                self.profileIcon.updateProfileIcon(profileIcon: profile.profileIcon)
             }
             .store(in: &cancellables)
     }
@@ -194,6 +201,16 @@ final class ProfileViewController: UIViewController {
         }
     }
 
+    private func showSelectProfileIconView() {
+        let selectProfileIconViewController = SelectProfileIconViewController(viewModel: viewModel)
+        selectProfileIconViewController.modalPresentationStyle = .formSheet
+        if let sheet = selectProfileIconViewController.sheetPresentationController {
+            sheet.detents = [.large()]
+            sheet.prefersGrabberVisible = true
+        }
+        present(selectProfileIconViewController, animated: true)
+    }
+
     @objc private func dismissView() {
         dismiss(animated: true)
     }
@@ -205,7 +222,7 @@ final class ProfileViewController: UIViewController {
 
 // MARK: - UITextFieldDelegate
 extension ProfileViewController: UITextFieldDelegate {
-    func textField(
+    public func textField(
         _ textField: UITextField,
         shouldChangeCharactersIn range: NSRange,
         replacementString string: String
@@ -217,14 +234,18 @@ extension ProfileViewController: UITextFieldDelegate {
         let updatedText = (currentText as NSString).replacingCharacters(in: range, with: string)
 
         if updatedText.count <= nicknameMaxCount {
-            viewModel.action(input: .updateProfileNickname(nickname: updatedText))
+            let updatedProfile = Profile(nickname: updatedText, profileIcon: viewModel.output.profile.value.profileIcon)
+            viewModel.action(input: .updateProfile(profile: updatedProfile))
             return true
         }
         return false
     }
 
-    func textFieldShouldClear(_ textField: UITextField) -> Bool {
-        viewModel.action(input: .updateProfileNickname(nickname: ""))
+    public func textFieldShouldClear(_ textField: UITextField) -> Bool {
+        let updatedProfile = Profile(
+            nickname: "",
+            profileIcon: viewModel.output.profile.value.profileIcon)
+        viewModel.action(input: .updateProfile(profile: updatedProfile))
         return true
     }
 }
