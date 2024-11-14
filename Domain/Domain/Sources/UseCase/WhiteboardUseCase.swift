@@ -6,17 +6,17 @@
 //
 
 public final class WhiteboardUseCase: WhiteboardUseCaseInterface {
-    public var repository: WhiteboardRepositoryInterface
+    private let repository: WhiteboardRepositoryInterface
 
     public init(repository: WhiteboardRepositoryInterface) {
         self.repository = repository
     }
 
     public func createWhiteboard(nickname: String) -> Whiteboard {
-        return repository.createWhiteboard(nickname: nickname)
+        return Whiteboard(name: nickname)
     }
 
-    public func startPublishing() {
+    public func startPublishingWhiteboard() {
         repository.startPublishing()
     }
 }

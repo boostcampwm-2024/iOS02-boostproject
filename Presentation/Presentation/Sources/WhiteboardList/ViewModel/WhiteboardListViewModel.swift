@@ -18,15 +18,17 @@ public final class WhiteboardListViewModel: ViewModel {
     }
 
     struct Output {
-        let whiteboardSubject: PassthroughSubject<Whiteboard, Never>
+        let whiteboardPublisher: AnyPublisher<Whiteboard, Never>
     }
 
     var output: Output
+    let whiteboardSubject: PassthroughSubject<Whiteboard, Never>
 
     public init(whiteboardUseCase: WhiteboardUseCaseInterface, nickname: String) {
         self.whiteboardUseCase = whiteboardUseCase
         self.nickname = nickname
-        self.output = Output(whiteboardSubject: PassthroughSubject<Whiteboard, Never>())
+        whiteboardSubject = PassthroughSubject<Whiteboard, Never>()
+        self.output = Output(whiteboardPublisher: whiteboardSubject.eraseToAnyPublisher())
     }
 
     func action(input: Input) {
@@ -38,7 +40,7 @@ public final class WhiteboardListViewModel: ViewModel {
 
     private func createWhiteboard() {
         let whiteboard = whiteboardUseCase.createWhiteboard(nickname: nickname)
-        whiteboardUseCase.startPublishing()
-        output.whiteboardSubject.send(whiteboard)
+        whiteboardUseCase.startPublishingWhiteboard()
+        whiteboardSubject.send(whiteboard)
     }
 }

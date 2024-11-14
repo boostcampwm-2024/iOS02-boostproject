@@ -7,16 +7,14 @@
 import Foundation
 
 public struct Whiteboard {
-    let name: String
+    public let name: String
 
     // TODO: - 수정
-    let objects: [WhiteboardObject]
+    public var objects: [WhiteboardObject]
 
     public init(
         name: String,
-        peers: [UUID] = [],
-        objects: [WhiteboardObject] = [],
-        chats: [String] = []
+        objects: [WhiteboardObject] = []
     ) {
         self.name = name
         self.objects = objects

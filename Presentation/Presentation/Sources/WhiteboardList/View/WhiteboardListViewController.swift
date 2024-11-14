@@ -10,6 +10,13 @@ import Domain
 import UIKit
 
 public final class WhiteboardListViewController: UIViewController {
+    private enum WhiteboardListLayoutConstant {
+        static let buttonSize: CGFloat = 26
+        static let upperComponentTopMargin: CGFloat = 70
+        static let mainTitleLabelWidth: CGFloat = 199
+        static let mainTitleLabelHeight: CGFloat = 43
+    }
+
     private let mainTitleLabel: UILabel = {
         let label = UILabel()
         label.text = "AirplaIN"
@@ -20,7 +27,6 @@ public final class WhiteboardListViewController: UIViewController {
 
     private let createWhiteboardButton: UIButton = {
         let button = UIButton()
-        button.setTitle("", for: .normal)
         button.setImage(UIImage(systemName: "square.and.pencil"), for: .normal)
         button.tintColor = .airplainBlue
         return button
@@ -28,7 +34,6 @@ public final class WhiteboardListViewController: UIViewController {
 
     private let configureProfileButton: UIButton = {
         let button = UIButton()
-        button.setTitle("", for: .normal)
         button.setImage(UIImage(systemName: "person.circle"), for: .normal)
         button.tintColor = .airplainBlue
         return button
@@ -65,25 +70,31 @@ public final class WhiteboardListViewController: UIViewController {
     private func configureLayout() {
         mainTitleLabel
             .addToSuperview(view)
-            .size(width: 199, height: 43)
-            .top(equalTo: view.topAnchor, inset: 61)
+            .size(width: WhiteboardListLayoutConstant.mainTitleLabelWidth,
+                  height: WhiteboardListLayoutConstant.mainTitleLabelHeight)
+            .top(equalTo: view.topAnchor,
+                 inset: WhiteboardListLayoutConstant.upperComponentTopMargin)
             .leading(equalTo: view.leadingAnchor, inset: 22)
 
         configureProfileButton
             .addToSuperview(view)
-            .size(width: 26, height: 26)
-            .top(equalTo: view.topAnchor, inset: 70)
+            .size(width: WhiteboardListLayoutConstant.buttonSize,
+                  height: WhiteboardListLayoutConstant.buttonSize)
+            .top(equalTo: view.topAnchor,
+                 inset: WhiteboardListLayoutConstant.upperComponentTopMargin)
             .trailing(equalTo: view.trailingAnchor, inset: 22)
 
         createWhiteboardButton
             .addToSuperview(view)
-            .size(width: 26, height: 26)
-            .top(equalTo: view.topAnchor, inset: 70)
+            .size(width: WhiteboardListLayoutConstant.buttonSize,
+                  height: WhiteboardListLayoutConstant.buttonSize)
+            .top(equalTo: view.topAnchor,
+                 inset: WhiteboardListLayoutConstant.upperComponentTopMargin)
             .trailing(equalTo: configureProfileButton.leadingAnchor, inset: 29)
     }
 
     private func bind() {
-        viewModel.output.whiteboardSubject
+        viewModel.output.whiteboardPublisher
             .receive(on: DispatchQueue.main)
             .sink { [weak self] whiteboard in
                 // TODO: 화이트보드 추가

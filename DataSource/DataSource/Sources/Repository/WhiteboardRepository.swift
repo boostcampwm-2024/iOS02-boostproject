@@ -9,19 +9,15 @@ import Domain
 import Foundation
 
 public final class WhiteboardRepository: WhiteboardRepositoryInterface {
-    private var nearbyNetworkInterface: NearbyNetworkInterface
+    private var nearbyNetwork: NearbyNetworkInterface
 
     public init(nearbyNetworkInterface: NearbyNetworkInterface) {
-        self.nearbyNetworkInterface = nearbyNetworkInterface
-        self.nearbyNetworkInterface.delegate = self
-    }
-
-    public func createWhiteboard(nickname: String) -> Whiteboard {
-        return Whiteboard(name: nickname)
+        self.nearbyNetwork = nearbyNetworkInterface
+        self.nearbyNetwork.delegate = self
     }
 
     public func startPublishing() {
-        nearbyNetworkInterface.startPublishing()
+        nearbyNetwork.startPublishing()
     }
 }
 
