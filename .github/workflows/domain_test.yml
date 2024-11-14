@@ -6,7 +6,7 @@ on:
       - 'Domain/**'
 
 jobs:
-  Build:
+  Domain_Test:
     runs-on: macos-latest
 
     steps:
@@ -18,7 +18,7 @@ jobs:
       - name: Run Domain module tests
         run: |
           xcodebuild \
-            -project AirplaIN.xcodeproj \
+            -workspace AirplaIN.xcworkspace \
             -scheme Domain \
             -sdk iphonesimulator \
-            test | xcpretty
+            clean test | xcpretty
