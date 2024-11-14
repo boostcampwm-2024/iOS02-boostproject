@@ -14,10 +14,10 @@ opt_in_rules:
  - empty_count # count보다 isEmpty 선호
  - empty_string # == ""보다 isEmpty 선호
  - sorted_imports # import 시 알파벳 순 정렬
- - unused_import # 사용되지 않는 모듈 import 알림
  - force_unwrapping #강제 언래핑 적용
 opening_brace:
  severity: error
+ ignore_multiline_function_signatures: false
 # 타입 네이밍 커스텀 정의
 type_name:
  min_length:
@@ -33,3 +33,6 @@ line_length:
 #파일 라인 수 제한
 file_length:
  error: 1000
+
+analyzer_rules:
+  - unused_import
