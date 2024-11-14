@@ -17,8 +17,10 @@ jobs:
       # 도메인 테스트 코드 실행
       - name: Run Domain module tests
         run: |
+          xcrun simctl list devices
+
           xcodebuild \
             -workspace AirplaIN.xcworkspace \
-            -scheme Domain \
+            -scheme DomainTests \
             -destination 'platform=iOS Simulator,name=iPhone 15 Pro,OS=17.0' \
             clean test | xcpretty --test --color
