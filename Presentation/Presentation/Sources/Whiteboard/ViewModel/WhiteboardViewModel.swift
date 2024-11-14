@@ -17,16 +17,17 @@ final class WhiteboardViewModel: ViewModel {
     }
 
     struct Output {
-        let whiteboardObjects: CurrentValueSubject<[WhiteboardObject], Never>
+        let whiteboardObjectsPublisher: AnyPublisher<[WhiteboardObject], Never>
     }
 
+    let output: Output
     private let drawObjectUseCase: DrawObjectUseCaseInterface
-    private let output: Output
+    private var whiteboardObjects = CurrentValueSubject<[WhiteboardObject], Never>([])
 
     init(drawObjectUseCase: DrawObjectUseCaseInterface) {
         self.drawObjectUseCase = drawObjectUseCase
         
-        output = Output(whiteboardObjects: CurrentValueSubject<[WhiteboardObject], Never>([]))
+        output = Output(whiteboardObjectsPublisher: whiteboardObjects.eraseToAnyPublisher())
     }
 
     func action(input: Input) {
@@ -50,8 +51,8 @@ final class WhiteboardViewModel: ViewModel {
 
     private func finishDrawing() {
         guard let drawingObject = drawObjectUseCase.finishDrawing() else { return }
-        var newObjects = output.whiteboardObjects.value
+        var newObjects = whiteboardObjects.value
         newObjects.append(drawingObject)
-        output.whiteboardObjects.send(newObjects)
+        whiteboardObjects.send(newObjects)
     }
 }
