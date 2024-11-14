@@ -17,6 +17,9 @@
 		0080E9582CE4D8760095B958 /* DrawObjectUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0080E9562CE4D8760095B958 /* DrawObjectUseCaseTests.swift */; };
 		5B7C6EB02CDB6C040024704A /* AirplaINFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B7C6EAF2CDB6C040024704A /* AirplaINFoundation.framework */; };
 		5B7C6EB12CDB6C040024704A /* AirplaINFoundation.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 5B7C6EAF2CDB6C040024704A /* AirplaINFoundation.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		6F21477B2CE4CEAE00B55E2C /* TextObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F21477A2CE4CEAE00B55E2C /* TextObject.swift */; };
+		6FBC909B2CE5A6AE000FEB5A /* WhiteObjectSendUseCaseInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FBC909A2CE5A52B000FEB5A /* WhiteObjectSendUseCaseInterface.swift */; };
+		6FBC909D2CE5A9A0000FEB5A /* WhiteboardObjectSendUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FBC909C2CE5A9A0000FEB5A /* WhiteboardObjectSendUseCase.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -55,6 +58,9 @@
 		0080E9562CE4D8760095B958 /* DrawObjectUseCaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawObjectUseCaseTests.swift; sourceTree = "<group>"; };
 		5B7C6E262CDB6A010024704A /* Domain.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Domain.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5B7C6EAF2CDB6C040024704A /* AirplaINFoundation.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = AirplaINFoundation.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		6F21477A2CE4CEAE00B55E2C /* TextObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextObject.swift; sourceTree = "<group>"; };
+		6FBC909A2CE5A52B000FEB5A /* WhiteObjectSendUseCaseInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhiteObjectSendUseCaseInterface.swift; sourceTree = "<group>"; };
+		6FBC909C2CE5A9A0000FEB5A /* WhiteboardObjectSendUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhiteboardObjectSendUseCase.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -88,6 +94,7 @@
 		0080E8592CE19EBD0095B958 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				6FBC90992CE5A37C000FEB5A /* UseCase */,
 				0080E8CB2CE4461F0095B958 /* Interface */,
 				0080E8B92CE2ECB50095B958 /* Entity */,
 				0080E8582CE19EBD0095B958 /* DomainStruct.swift */,
@@ -107,6 +114,7 @@
 		0080E8B92CE2ECB50095B958 /* Entity */ = {
 			isa = PBXGroup;
 			children = (
+				6F21477A2CE4CEAE00B55E2C /* TextObject.swift */,
 				0080E8BA2CE2ECC60095B958 /* WhiteboardObject.swift */,
 				00683D682CE37F2F000D28E4 /* DrawingObject.swift */,
 			);
@@ -142,6 +150,7 @@
 			isa = PBXGroup;
 			children = (
 				0080E9182CE4B0880095B958 /* DrawObjectUseCaseInterface.swift */,
+                6FBC909A2CE5A52B000FEB5A /* WhiteObjectSendUseCaseInterface.swift */,
 			);
 			path = UseCase;
 			sourceTree = "<group>";
@@ -180,6 +189,14 @@
 				5B7C6EAF2CDB6C040024704A /* AirplaINFoundation.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		6FBC90992CE5A37C000FEB5A /* UseCase */ = {
+			isa = PBXGroup;
+			children = (
+				6FBC909C2CE5A9A0000FEB5A /* WhiteboardObjectSendUseCase.swift */,
+			);
+			path = UseCase;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -330,8 +347,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				0080E8CE2CE4463B0095B958 /* WhiteboardObjectRepositoryInterface.swift in Sources */,
+				6FBC909D2CE5A9A0000FEB5A /* WhiteboardObjectSendUseCase.swift in Sources */,
 				0080E85B2CE19EBD0095B958 /* DomainStruct.swift in Sources */,
 				0080E8BB2CE2ECD80095B958 /* WhiteboardObject.swift in Sources */,
+				6FBC909B2CE5A6AE000FEB5A /* WhiteObjectSendUseCaseInterface.swift in Sources */,
+				6F21477B2CE4CEAE00B55E2C /* TextObject.swift in Sources */,
 				00683D722CE3A74A000D28E4 /* DrawObjectUseCase.swift in Sources */,
 				0080E91A2CE4B0880095B958 /* DrawObjectUseCaseInterface.swift in Sources */,
 				00683D692CE37F2F000D28E4 /* DrawingObject.swift in Sources */,
