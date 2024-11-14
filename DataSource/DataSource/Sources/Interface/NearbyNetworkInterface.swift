@@ -35,7 +35,7 @@ public protocol NearbyNetworkDelegate: AnyObject {
     ///   - data: 수신된 데이터
     ///   - connection: 데이터를 송신한 기기
     func nearbyNetwork(_ sender: NearbyNetworkInterface, didReceive data: Data, from connection: NetworkConnection)
-    
+
     /// 주변 기기에게 연결 요청을 받았을 때 실행됩니다.
     /// - Parameters:
     ///   - connectionHandler: 연결 요청 처리 Handler
@@ -45,7 +45,7 @@ public protocol NearbyNetworkDelegate: AnyObject {
     /// - Parameters:
     ///   - connections: 검색된 기기들
     func nearbyNetwork(_ sender: NearbyNetworkInterface, didFind connections: [NetworkConnection])
-    
+
     /// 주변 기기와의 연결에 실패했을 때 실행됩니다.
     func nearbyNetworkCannotConnect(_ sender: NearbyNetworkInterface)
 }

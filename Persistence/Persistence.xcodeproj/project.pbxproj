@@ -7,9 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0080E86E2CE19EC40095B958 /* PersistenceStruct.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0080E86B2CE19EC40095B958 /* PersistenceStruct.swift */; };
 		5B7C6EC42CDB6C860024704A /* DataSource.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B7C6EC32CDB6C860024704A /* DataSource.framework */; };
 		5B7C6EC52CDB6C860024704A /* DataSource.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 5B7C6EC32CDB6C860024704A /* DataSource.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		A8525F202CE32ABB0089DA5E /* PersistenceService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8525F1F2CE32ABB0089DA5E /* PersistenceService.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -27,9 +27,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		0080E86B2CE19EC40095B958 /* PersistenceStruct.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceStruct.swift; sourceTree = "<group>"; };
 		5B7C6E7A2CDB6A7C0024704A /* Persistence.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Persistence.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5B7C6EC32CDB6C860024704A /* DataSource.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = DataSource.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A8525F1F2CE32ABB0089DA5E /* PersistenceService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -47,7 +47,7 @@
 		0080E86C2CE19EC40095B958 /* Souces */ = {
 			isa = PBXGroup;
 			children = (
-				0080E86B2CE19EC40095B958 /* PersistenceStruct.swift */,
+				A8525F1F2CE32ABB0089DA5E /* PersistenceService.swift */,
 			);
 			path = Souces;
 			sourceTree = "<group>";
@@ -190,7 +190,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0080E86E2CE19EC40095B958 /* PersistenceStruct.swift in Sources */,
+				A8525F202CE32ABB0089DA5E /* PersistenceService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
