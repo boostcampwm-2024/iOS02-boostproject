@@ -16,16 +16,18 @@ final class ProfileViewModel {
     }
 
     struct Output {
-        let profile: CurrentValueSubject<Profile, Never>
+        let profilePublisher: AnyPublisher<Profile, Never>
     }
 
     private let profileUseCase: ProfileUseCase
     private(set) var output: Output
+    let profileSubject: CurrentValueSubject<Profile, Never>
 
     init(profileUseCase: ProfileUseCase) {
         self.profileUseCase = profileUseCase
         let profile = profileUseCase.loadProfile()
-        self.output = Output(profile: CurrentValueSubject<Profile, Never>(profile))
+        profileSubject = CurrentValueSubject<Profile, Never>(profile)
+        self.output = Output(profilePublisher: profileSubject.eraseToAnyPublisher())
     }
 
     func action(input: Input) {
@@ -36,10 +38,10 @@ final class ProfileViewModel {
     }
 
     private func updateProfile(profile: Profile) {
-        output.profile.send(profile)
+        profileSubject.send(profile)
     }
 
     private func saveProfile() {
-        profileUseCase.saveProfile(profile: output.profile.value)
+        profileUseCase.saveProfile(profile: profileSubject.value)
     }
 }

@@ -11,6 +11,8 @@ import Foundation
 public final class PersistenceService: PersistenceInterface {
     private let userDefaults = UserDefaults.standard
 
+    public init() {}
+
     public func save<T: Codable>(data: T, forKey key: String) {
         let encoder = JSONEncoder()
         if let encoded = try? encoder.encode(data) {

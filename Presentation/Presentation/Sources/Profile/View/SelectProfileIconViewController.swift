@@ -86,7 +86,7 @@ extension SelectProfileIconViewController: UICollectionViewDataSource {
 extension SelectProfileIconViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let selectedProfileIcon = ProfileIcon.profileIcons[indexPath.item]
-        let updatedProfile = Profile(nickname: viewModel.output.profile.value.nickname, profileIcon: selectedProfileIcon)
+        let updatedProfile = Profile(nickname: viewModel.profileSubject.value.nickname, profileIcon: selectedProfileIcon)
         viewModel.action(input: .updateProfile(profile: updatedProfile))
         dismiss(animated: true)
     }

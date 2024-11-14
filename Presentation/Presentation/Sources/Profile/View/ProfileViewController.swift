@@ -9,7 +9,7 @@ import Combine
 import Domain
 import UIKit
 
-public final class ProfileViewController: UIViewController {
+final class ProfileViewController: UIViewController {
     private enum ProfileLayoutConstant {
         static let profileIconWidthDivide: CGFloat = 3
         static let profileIconSettingButtonSize: CGFloat = 30
@@ -26,7 +26,7 @@ public final class ProfileViewController: UIViewController {
     private var completeButton = UIBarButtonItem()
     private lazy var profileIcon: ProfileIconView = {
         let profileIcon = ProfileIconView(
-            profileIcon: viewModel.output.profile.value.profileIcon,
+            profileIcon: viewModel.profileSubject.value.profileIcon,
             profileIconSize: view.bounds.width / ProfileLayoutConstant.profileIconWidthDivide)
         return profileIcon
     }()
@@ -56,7 +56,7 @@ public final class ProfileViewController: UIViewController {
         textField.textColor = .airplainBlack
         textField.clearButtonMode = .whileEditing
         textField.font = AirplainFont.Body2
-        textField.text = viewModel.output.profile.value.nickname
+        textField.text = viewModel.profileSubject.value.nickname
         return textField
     }()
 
@@ -75,7 +75,7 @@ public final class ProfileViewController: UIViewController {
 
     private lazy var nicknameCountLabel: UILabel = {
         let label = UILabel()
-        label.text = "\(viewModel.output.profile.value.nickname.count)/\(nicknameMaxCount)"
+        label.text = "\(viewModel.profileSubject.value.nickname.count)/\(nicknameMaxCount)"
         label.textColor = .gray500
         label.font = AirplainFont.Body4
         return label
@@ -180,7 +180,7 @@ public final class ProfileViewController: UIViewController {
     }
 
     private func bind() {
-        viewModel.output.profile
+        viewModel.output.profilePublisher
             .receive(on: DispatchQueue.main)
             .sink { [weak self] profile in
                 guard let self else { return }
@@ -234,7 +234,7 @@ extension ProfileViewController: UITextFieldDelegate {
         let updatedText = (currentText as NSString).replacingCharacters(in: range, with: string)
 
         if updatedText.count <= nicknameMaxCount {
-            let updatedProfile = Profile(nickname: updatedText, profileIcon: viewModel.output.profile.value.profileIcon)
+            let updatedProfile = Profile(nickname: updatedText, profileIcon: viewModel.profileSubject.value.profileIcon)
             viewModel.action(input: .updateProfile(profile: updatedProfile))
             return true
         }
@@ -244,7 +244,7 @@ extension ProfileViewController: UITextFieldDelegate {
     public func textFieldShouldClear(_ textField: UITextField) -> Bool {
         let updatedProfile = Profile(
             nickname: "",
-            profileIcon: viewModel.output.profile.value.profileIcon)
+            profileIcon: viewModel.profileSubject.value.profileIcon)
         viewModel.action(input: .updateProfile(profile: updatedProfile))
         return true
     }
