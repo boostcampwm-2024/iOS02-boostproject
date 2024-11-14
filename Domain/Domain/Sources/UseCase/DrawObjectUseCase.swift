@@ -8,13 +8,10 @@
 import Foundation
 
 public final class DrawObjectUseCase: DrawObjectUseCaseInterface {
-    private let repository: WhiteboardObjectRepositoryInterface
     public private(set) var points: [CGPoint]
     public private(set) var origin: CGPoint?
-    private(set) var minPoint: CGPoint?
 
     public init(repository: WhiteboardObjectRepositoryInterface) {
-        self.repository = repository
         points = []
     }
 
@@ -53,16 +50,10 @@ public final class DrawObjectUseCase: DrawObjectUseCaseInterface {
             size: size,
             points: adjustedPoints)
 
-        send(drawingObject: drawingObject)
         return drawingObject
     }
 
-    public func send(drawingObject: DrawingObject) {
-        repository.send(whiteboardObject: drawingObject)
-    }
-
     private func reset() {
-        minPoint = nil
         origin = nil
         points.removeAll()
     }

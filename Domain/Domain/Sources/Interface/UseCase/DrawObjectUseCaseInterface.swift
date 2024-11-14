@@ -25,8 +25,4 @@ public protocol DrawObjectUseCaseInterface {
     /// 그림 그리기를 종료하는 메서드
     /// - Returns: 완성된 그림 객체 (옵셔널)
     func finishDrawing() -> DrawingObject?
-
-    /// 그림을 전송하는 메서드
-    /// - Parameter drawingObject: 전송할 그림 오브젝트
-    func send(drawingObject: DrawingObject)
 }
