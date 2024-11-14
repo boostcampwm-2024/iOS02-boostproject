@@ -8,6 +8,8 @@
 import Foundation
 
 public protocol NearbyNetworkInterface {
+    var delegate: NearbyNetworkDelegate? { get set }
+
     /// 주변 기기를 검색합니다.
     func startSearching()
 
