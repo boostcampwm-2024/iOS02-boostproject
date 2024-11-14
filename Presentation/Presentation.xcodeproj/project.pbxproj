@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		00683D762CE4B828000D28E4 /* DrawingRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00683D752CE4B828000D28E4 /* DrawingRenderer.swift */; };
 		0080E8C62CE2F0510095B958 /* WhiteboardObjectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0080E8C52CE2F04F0095B958 /* WhiteboardObjectView.swift */; };
 		0080E8CA2CE2FF750095B958 /* WhiteboardObjectViewFactoryable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0080E8C92CE2FF6E0095B958 /* WhiteboardObjectViewFactoryable.swift */; };
 		0080E8D12CE4A00F0095B958 /* WhiteboardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0080E8D02CE4A0060095B958 /* WhiteboardViewModel.swift */; };
@@ -37,6 +38,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		00683D752CE4B828000D28E4 /* DrawingRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawingRenderer.swift; sourceTree = "<group>"; };
 		0080E8C52CE2F04F0095B958 /* WhiteboardObjectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhiteboardObjectView.swift; sourceTree = "<group>"; };
 		0080E8C92CE2FF6E0095B958 /* WhiteboardObjectViewFactoryable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhiteboardObjectViewFactoryable.swift; sourceTree = "<group>"; };
 		0080E8D02CE4A0060095B958 /* WhiteboardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhiteboardViewModel.swift; sourceTree = "<group>"; };
@@ -64,6 +66,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		00683D742CE4B813000D28E4 /* Util */ = {
+			isa = PBXGroup;
+			children = (
+				00683D752CE4B828000D28E4 /* DrawingRenderer.swift */,
+			);
+			path = Util;
+			sourceTree = "<group>";
+		};
 		0080E8552CE19EBD0095B958 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
@@ -89,6 +99,7 @@
 				0080E8C82CE2FF3D0095B958 /* Factory */,
 				0080E8C42CE2F0430095B958 /* View */,
 				0080E8CF2CE49FE90095B958 /* ViewModel */,
+				00683D742CE4B813000D28E4 /* Util */,
 			);
 			path = Whiteboard;
 			sourceTree = "<group>";
@@ -311,6 +322,7 @@
 				0080E8D12CE4A00F0095B958 /* WhiteboardViewModel.swift in Sources */,
 				0080E8D32CE4A0840095B958 /* ViewModel.swift in Sources */,
 				0080E8CA2CE2FF750095B958 /* WhiteboardObjectViewFactoryable.swift in Sources */,
+				00683D762CE4B828000D28E4 /* DrawingRenderer.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
