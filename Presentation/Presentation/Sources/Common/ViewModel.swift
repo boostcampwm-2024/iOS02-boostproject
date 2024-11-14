@@ -8,6 +8,6 @@
 protocol ViewModel {
     associatedtype Input
     associatedtype Output
-    
+
     func action(input: Input)
 }

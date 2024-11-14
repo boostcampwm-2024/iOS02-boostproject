@@ -8,8 +8,8 @@
 final class WhiteboardViewModel: ViewModel {
     enum Input {}
     struct Output {}
-    
+
     func action(input: Input) {
-        
+
     }
 }

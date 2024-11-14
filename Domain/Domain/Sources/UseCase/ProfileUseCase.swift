@@ -8,17 +8,17 @@
 import Foundation
 
 public final class ProfileUseCase: ProfileUseCaseInterface {
-    var profileRepository: ProfileRepositoryInterface
+    private let repository: ProfileRepositoryInterface
 
-    public init(profileRepository: ProfileRepositoryInterface) {
-        self.profileRepository = profileRepository
+    public init(repository: ProfileRepositoryInterface) {
+        self.repository = repository
     }
 
     public func loadProfile() -> Profile {
-        return profileRepository.loadProfile()
+        return repository.loadProfile()
     }
 
     public func saveProfile(profile: Profile) {
-        profileRepository.saveProfile(profile: profile)
+        repository.saveProfile(profile: profile)
     }
 }

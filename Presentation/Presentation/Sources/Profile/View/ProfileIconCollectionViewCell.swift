@@ -13,8 +13,9 @@ final class ProfileIconCollectionViewCell: UICollectionViewCell {
     private var profileIconView: ProfileIconView?
 
     func configure(profileIcon: ProfileIcon, profileIconSize: CGFloat) {
-        profileIconView = ProfileIconView(profileIcon: profileIcon, profileIconSize: profileIconSize)
+        profileIconView = ProfileIconView()
         guard let profileIconView else { return }
+        profileIconView.configure(profileIcon: profileIcon, profileIconSize: profileIconSize)
         profileIconView.addToSuperview(contentView)
         profileIconView
             .center(in: contentView)

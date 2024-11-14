@@ -9,18 +9,9 @@ import Domain
 import UIKit
 
 final class ProfileIconView: UIView {
-    private lazy var iconLabel: UILabel = {
-        let label = UILabel()
-        label.text = profileIcon.emoji
-        label.font = .systemFont(ofSize: profileIconSize * 0.6)
-        return label
-    }()
-    let profileIcon: ProfileIcon
-    let profileIconSize: CGFloat
+    private let iconLabel = UILabel()
 
-    init(profileIcon: ProfileIcon, profileIconSize: CGFloat) {
-        self.profileIcon = profileIcon
-        self.profileIconSize = profileIconSize
+    init() {
         super.init(frame: .zero)
         configureAttribute()
         configureLayout()
@@ -31,8 +22,6 @@ final class ProfileIconView: UIView {
     }
 
     private func configureAttribute() {
-        backgroundColor = UIColor(hex: profileIcon.colorHex)
-        layer.cornerRadius = profileIconSize / 2
         clipsToBounds = true
     }
 
@@ -42,8 +31,11 @@ final class ProfileIconView: UIView {
             .center(in: self)
     }
 
-    func updateProfileIcon(profileIcon: ProfileIcon) {
+    func configure(profileIcon: ProfileIcon, profileIconSize: CGFloat) {
+        iconLabel.text = profileIcon.emoji
+        iconLabel.font = .systemFont(ofSize: profileIconSize * 0.6)
+
         backgroundColor = UIColor(hex: profileIcon.colorHex)
-        iconLabel.text = "\(profileIcon.emoji)"
+        layer.cornerRadius = profileIconSize / 2
     }
 }

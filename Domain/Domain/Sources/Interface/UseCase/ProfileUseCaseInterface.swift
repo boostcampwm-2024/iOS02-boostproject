@@ -8,9 +8,6 @@
 import Foundation
 
 protocol ProfileUseCaseInterface {
-    /// Repository 프로퍼티
-    var profileRepository: ProfileRepositoryInterface { get }
-
     /// 프로필 정보를 가져옵니다.
     /// - Returns: 가져온 프로필 정보
     func loadProfile() -> Profile

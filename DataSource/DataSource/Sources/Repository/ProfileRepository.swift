@@ -19,7 +19,9 @@ public final class ProfileRepository: ProfileRepositoryInterface {
         if let profile: Profile = persistenceService.load(forKey: profileKey) {
             return profile
         } else {
-            let randomProfile = Profile(nickname: Profile.randomNickname(), profileIcon: ProfileIcon.profileIcons.randomElement() ?? ProfileIcon.profileIcons[0])
+            let randomProfile = Profile(
+                nickname: Profile.randomNickname(),
+                profileIcon: ProfileIcon.profileIcons.randomElement() ?? ProfileIcon.profileIcons[0])
             saveProfile(profile: randomProfile)
             return randomProfile
         }

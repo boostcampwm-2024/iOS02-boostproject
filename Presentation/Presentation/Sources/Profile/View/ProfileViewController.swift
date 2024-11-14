@@ -24,12 +24,7 @@ final class ProfileViewController: UIViewController {
 
     private var closeButton = UIBarButtonItem()
     private var completeButton = UIBarButtonItem()
-    private lazy var profileIcon: ProfileIconView = {
-        let profileIcon = ProfileIconView(
-            profileIcon: viewModel.profileSubject.value.profileIcon,
-            profileIconSize: view.bounds.width / ProfileLayoutConstant.profileIconWidthDivide)
-        return profileIcon
-    }()
+    private let profileIcon = ProfileIconView()
 
     private let profileIconSettingButton: UIButton = {
         let button = UIButton()
@@ -50,13 +45,12 @@ final class ProfileViewController: UIViewController {
         return label
     }()
 
-    private lazy var nicknameTextField: UITextField = {
+    private let nicknameTextField: UITextField = {
         let textField = UITextField()
         textField.placeholder = "닉네임을 입력해주세요."
         textField.textColor = .airplainBlack
         textField.clearButtonMode = .whileEditing
         textField.font = AirplainFont.Body2
-        textField.text = viewModel.profileSubject.value.nickname
         return textField
     }()
 
@@ -67,15 +61,14 @@ final class ProfileViewController: UIViewController {
         return view
     }()
 
-    private var nicknameCountStackView: UIStackView = {
+    private let nicknameCountStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .horizontal
         return stackView
     }()
 
-    private lazy var nicknameCountLabel: UILabel = {
+    private let nicknameCountLabel: UILabel = {
         let label = UILabel()
-        label.text = "\(viewModel.profileSubject.value.nickname.count)/\(nicknameMaxCount)"
         label.textColor = .gray500
         label.font = AirplainFont.Body4
         return label
@@ -134,17 +127,12 @@ final class ProfileViewController: UIViewController {
     private func configureLayout() {
         let safeArea = view.safeAreaLayoutGuide
 
-        profileIcon.addToSuperview(view)
-        profileIconSettingButton.addToSuperview(view)
-        nicknameLabel.addToSuperview(view)
-        nicknameTextField.addToSuperview(view)
-        divider.addToSuperview(view)
-        nicknameCountStackView.addToSuperview(view)
         [UIView(), nicknameCountLabel].forEach {
             nicknameCountStackView.addArrangedSubview($0)
         }
 
         profileIcon
+            .addToSuperview(view)
             .centerX(equalTo: view.centerXAnchor)
             .size(
                 width: view.bounds.width / ProfileLayoutConstant.profileIconWidthDivide,
@@ -152,28 +140,35 @@ final class ProfileViewController: UIViewController {
             .top(equalTo: safeArea.topAnchor, constant: ProfileLayoutConstant.profileIconTopMargin)
 
         profileIconSettingButton
+            .addToSuperview(view)
             .trailing(equalTo: profileIcon.trailingAnchor, constant: 0)
-            .bottom(equalTo: profileIcon.bottomAnchor, inset: ProfileLayoutConstant.profileIconSettingButtonBottomMargin)
+            .bottom(
+                equalTo: profileIcon.bottomAnchor,
+                inset: ProfileLayoutConstant.profileIconSettingButtonBottomMargin)
             .size(
                 width: ProfileLayoutConstant.profileIconSettingButtonSize,
                 height: ProfileLayoutConstant.profileIconSettingButtonSize)
 
         nicknameLabel
+            .addToSuperview(view)
             .centerX(equalTo: view.centerXAnchor)
             .top(equalTo: profileIcon.bottomAnchor, constant: ProfileLayoutConstant.nicknameLabelTopMargin)
             .horizontalEdges(equalTo: view, inset: horizontalMargin)
 
         nicknameTextField
+            .addToSuperview(view)
             .centerX(equalTo: view.centerXAnchor)
             .top(equalTo: nicknameLabel.bottomAnchor, constant: ProfileLayoutConstant.nicknameTextFieldTopMargin)
             .horizontalEdges(equalTo: view, inset: horizontalMargin)
 
         divider
+            .addToSuperview(view)
             .centerX(equalTo: view.centerXAnchor)
             .top(equalTo: nicknameTextField.bottomAnchor, constant: ProfileLayoutConstant.dividerTopMargin)
             .horizontalEdges(equalTo: view, inset: horizontalMargin)
 
         nicknameCountStackView
+            .addToSuperview(view)
             .centerX(equalTo: view.centerXAnchor)
             .top(equalTo: divider.bottomAnchor, constant: ProfileLayoutConstant.nicknameCountStackViewTopMargin)
             .horizontalEdges(equalTo: view, inset: horizontalMargin)
@@ -185,13 +180,16 @@ final class ProfileViewController: UIViewController {
             .sink { [weak self] profile in
                 guard let self else { return }
                 self.updateProfileState(nickname: profile.nickname)
-                self.profileIcon.updateProfileIcon(profileIcon: profile.profileIcon)
+                self.profileIcon.configure(
+                    profileIcon: profile.profileIcon,
+                    profileIconSize: view.bounds.width / ProfileLayoutConstant.profileIconWidthDivide)
             }
             .store(in: &cancellables)
     }
 
     private func updateProfileState(nickname: String) {
         nicknameCountLabel.text = "\(nickname.count)/\(nicknameMaxCount)"
+        nicknameTextField.text = nickname
         if !nickname.isEmpty {
             completeButton.isEnabled = true
             completeButton.tintColor = .airplainBlue
@@ -234,18 +232,14 @@ extension ProfileViewController: UITextFieldDelegate {
         let updatedText = (currentText as NSString).replacingCharacters(in: range, with: string)
 
         if updatedText.count <= nicknameMaxCount {
-            let updatedProfile = Profile(nickname: updatedText, profileIcon: viewModel.profileSubject.value.profileIcon)
-            viewModel.action(input: .updateProfile(profile: updatedProfile))
+            viewModel.action(input: .updateProfileNickname(nickname: updatedText))
             return true
         }
         return false
     }
 
     public func textFieldShouldClear(_ textField: UITextField) -> Bool {
-        let updatedProfile = Profile(
-            nickname: "",
-            profileIcon: viewModel.profileSubject.value.profileIcon)
-        viewModel.action(input: .updateProfile(profile: updatedProfile))
+        viewModel.action(input: .updateProfileNickname(nickname: ""))
         return true
     }
 }

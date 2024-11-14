@@ -9,9 +9,10 @@ import Combine
 import Domain
 import Foundation
 
-final class ProfileViewModel {
+final class ProfileViewModel: ViewModel {
     enum Input {
-        case updateProfile(profile: Profile)
+        case updateProfileNickname(nickname: String)
+        case updateProfileIcon(profileIcon: ProfileIcon)
         case saveProfile
     }
 
@@ -20,8 +21,8 @@ final class ProfileViewModel {
     }
 
     private let profileUseCase: ProfileUseCase
-    private(set) var output: Output
-    let profileSubject: CurrentValueSubject<Profile, Never>
+    private let profileSubject: CurrentValueSubject<Profile, Never>
+    let output: Output
 
     init(profileUseCase: ProfileUseCase) {
         self.profileUseCase = profileUseCase
@@ -32,12 +33,19 @@ final class ProfileViewModel {
 
     func action(input: Input) {
         switch input {
-        case .updateProfile(let profile): updateProfile(profile: profile)
+        case .updateProfileNickname(let nickname): updateProfileNickname(nickname: nickname)
+        case .updateProfileIcon(let profileIcon): updateProfileIcon(profileIcon: profileIcon)
         case .saveProfile: saveProfile()
         }
     }
 
-    private func updateProfile(profile: Profile) {
+    private func updateProfileNickname(nickname: String) {
+        let profile = Profile(nickname: nickname, profileIcon: profileSubject.value.profileIcon)
+        profileSubject.send(profile)
+    }
+
+    private func updateProfileIcon(profileIcon: ProfileIcon) {
+        let profile = Profile(nickname: profileSubject.value.nickname, profileIcon: profileIcon)
         profileSubject.send(profile)
     }
 

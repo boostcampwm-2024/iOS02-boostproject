@@ -16,23 +16,9 @@ final class SelectProfileIconViewController: UIViewController {
         static let profileIconVerticalMargin: CGFloat = 50
     }
 
-    private lazy var profileIconSpacing: CGFloat = {
-        view.bounds.width / SelectProfileIconLayoutConstant.divider
-    }()
-
-    private lazy var profileIconSize: CGFloat = {
-        (view.bounds.width - 2 * (horizontalMargin) - 2 * (profileIconSpacing)) / SelectProfileIconLayoutConstant.profileIconCountInRow
-    }()
-
-    private lazy var collectionView: UICollectionView = {
+    private let collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
-        layout.itemSize = CGSize(width: profileIconSize, height: profileIconSize)
-        layout.minimumInteritemSpacing = SelectProfileIconLayoutConstant.divider
-        layout.minimumLineSpacing = SelectProfileIconLayoutConstant.profileIconLineSpacing
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        collectionView.delegate = self
-        collectionView.dataSource = self
-        collectionView.register(ProfileIconCollectionViewCell.self, forCellWithReuseIdentifier: ProfileIconCollectionViewCell.reuseIdentifier)
         return collectionView
     }()
 
@@ -55,14 +41,34 @@ final class SelectProfileIconViewController: UIViewController {
 
     private func configureAttribute() {
         view.backgroundColor = .systemBackground
+        collectionView.delegate = self
+        collectionView.dataSource = self
+        collectionView.register(
+            ProfileIconCollectionViewCell.self,
+            forCellWithReuseIdentifier: ProfileIconCollectionViewCell.reuseIdentifier)
+
+        let profileIconSize = profileIconSize()
+        let layout = UICollectionViewFlowLayout()
+        layout.itemSize = CGSize(width: profileIconSize, height: profileIconSize)
+        layout.minimumInteritemSpacing = SelectProfileIconLayoutConstant.divider
+        layout.minimumLineSpacing = SelectProfileIconLayoutConstant.profileIconLineSpacing
+        collectionView.setCollectionViewLayout(layout, animated: true)
     }
 
     private func configureLayout() {
-        collectionView.addToSuperview(view)
-
         collectionView
+            .addToSuperview(view)
             .horizontalEdges(equalTo: view, inset: horizontalMargin)
             .verticalEdges(equalTo: view, inset: SelectProfileIconLayoutConstant.profileIconVerticalMargin)
+    }
+
+    private func profileIconSize() -> CGFloat {
+        let totalHorizontalMargin: CGFloat = 2 * (horizontalMargin)
+        let profileIconSpacing: CGFloat = view.bounds.width / SelectProfileIconLayoutConstant.divider
+        let totalSpacingMargin: CGFloat = 2 * profileIconSpacing
+        let profileIconCountInRow = SelectProfileIconLayoutConstant.profileIconCountInRow
+        let profileIconSize = (view.bounds.width - totalHorizontalMargin - totalSpacingMargin) / profileIconCountInRow
+        return profileIconSize
     }
 }
 
@@ -72,11 +78,17 @@ extension SelectProfileIconViewController: UICollectionViewDataSource {
         return ProfileIcon.profileIcons.count
     }
 
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ProfileIconCollectionViewCell.reuseIdentifier, for: indexPath) as? ProfileIconCollectionViewCell else {
-            return UICollectionViewCell()
-        }
+    func collectionView(
+        _ collectionView: UICollectionView,
+        cellForItemAt indexPath: IndexPath
+    ) -> UICollectionViewCell {
+        guard let cell = collectionView
+            .dequeueReusableCell(
+                withReuseIdentifier: ProfileIconCollectionViewCell.reuseIdentifier,
+                for: indexPath) as? ProfileIconCollectionViewCell
+        else { return UICollectionViewCell() }
         let profileIcon = ProfileIcon.profileIcons[indexPath.item]
+        let profileIconSize = profileIconSize()
         cell.configure(profileIcon: profileIcon, profileIconSize: profileIconSize)
         return cell
     }
@@ -86,8 +98,7 @@ extension SelectProfileIconViewController: UICollectionViewDataSource {
 extension SelectProfileIconViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let selectedProfileIcon = ProfileIcon.profileIcons[indexPath.item]
-        let updatedProfile = Profile(nickname: viewModel.profileSubject.value.nickname, profileIcon: selectedProfileIcon)
-        viewModel.action(input: .updateProfile(profile: updatedProfile))
+        viewModel.action(input: .updateProfileIcon(profileIcon: selectedProfileIcon))
         dismiss(animated: true)
     }
 }
