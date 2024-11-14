@@ -4,7 +4,6 @@
 //
 //  Created by 이동현 on 11/13/24.
 //
-import Foundation
 
 public protocol WhiteboardObjectRepositoryInterface {
     /// 다른 사람이 보낸 화이트보드 오브젝트를 AsyncStream을 통해 전달하는 메서드
