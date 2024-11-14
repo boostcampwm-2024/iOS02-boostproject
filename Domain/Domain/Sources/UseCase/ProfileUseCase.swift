@@ -7,10 +7,10 @@
 
 import Foundation
 
-public final class ProfileUseCase {
-    private let profileRepository: ProfileRepository
+public final class ProfileUseCase: ProfileUseCaseInterface {
+    var profileRepository: ProfileRepositoryInterface
 
-    public init(profileRepository: ProfileRepository) {
+    public init(profileRepository: ProfileRepositoryInterface) {
         self.profileRepository = profileRepository
     }
 

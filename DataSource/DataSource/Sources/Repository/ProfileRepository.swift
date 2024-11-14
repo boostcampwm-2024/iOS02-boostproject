@@ -1,5 +1,5 @@
 //
-//  DefaultProfileRepository.swift
+//  ProfileRepository.swift
 //  DataSource
 //
 //  Created by 최정인 on 11/12/24.
@@ -7,7 +7,7 @@
 
 import Domain
 
-public final class DefaultProfileRepository: ProfileRepository {
+public final class ProfileRepository: ProfileRepositoryInterface {
     private let persistenceService: PersistenceInterface
     private let profileKey = "AirplainProfile"
 
@@ -24,7 +24,7 @@ public final class DefaultProfileRepository: ProfileRepository {
             return randomProfile
         }
     }
-    
+
     public func saveProfile(profile: Profile) {
         persistenceService.save(data: profile, forKey: profileKey)
     }

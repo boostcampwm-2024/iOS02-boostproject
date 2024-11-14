@@ -11,8 +11,9 @@
 		5B7C6EB12CDB6C040024704A /* AirplaINFoundation.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 5B7C6EAF2CDB6C040024704A /* AirplaINFoundation.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A85260162CE32F590089DA5E /* ProfileIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = A85260152CE32F590089DA5E /* ProfileIcon.swift */; };
 		A85260182CE331310089DA5E /* Profile.swift in Sources */ = {isa = PBXBuildFile; fileRef = A85260172CE331310089DA5E /* Profile.swift */; };
-		A852601B2CE331BE0089DA5E /* ProfileRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = A852601A2CE331BE0089DA5E /* ProfileRepository.swift */; };
+		A852601B2CE331BE0089DA5E /* ProfileRepositoryInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = A852601A2CE331BE0089DA5E /* ProfileRepositoryInterface.swift */; };
 		A85260232CE343B20089DA5E /* ProfileUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = A85260222CE343B20089DA5E /* ProfileUseCase.swift */; };
+		A8E97AE22CE5A09D00B28063 /* ProfileUseCaseInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8E97AE12CE5A09D00B28063 /* ProfileUseCaseInterface.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -34,8 +35,9 @@
 		5B7C6EAF2CDB6C040024704A /* AirplaINFoundation.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = AirplaINFoundation.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A85260152CE32F590089DA5E /* ProfileIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileIcon.swift; sourceTree = "<group>"; };
 		A85260172CE331310089DA5E /* Profile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Profile.swift; sourceTree = "<group>"; };
-		A852601A2CE331BE0089DA5E /* ProfileRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileRepository.swift; sourceTree = "<group>"; };
+		A852601A2CE331BE0089DA5E /* ProfileRepositoryInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileRepositoryInterface.swift; sourceTree = "<group>"; };
 		A85260222CE343B20089DA5E /* ProfileUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileUseCase.swift; sourceTree = "<group>"; };
+		A8E97AE12CE5A09D00B28063 /* ProfileUseCaseInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileUseCaseInterface.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -105,7 +107,8 @@
 		A85260192CE3319F0089DA5E /* Interface */ = {
 			isa = PBXGroup;
 			children = (
-				A852601A2CE331BE0089DA5E /* ProfileRepository.swift */,
+				A8E97AE02CE5A06600B28063 /* UseCase */,
+				A8E97ADF2CE5A05C00B28063 /* Repository */,
 			);
 			path = Interface;
 			sourceTree = "<group>";
@@ -114,6 +117,22 @@
 			isa = PBXGroup;
 			children = (
 				A85260222CE343B20089DA5E /* ProfileUseCase.swift */,
+			);
+			path = UseCase;
+			sourceTree = "<group>";
+		};
+		A8E97ADF2CE5A05C00B28063 /* Repository */ = {
+			isa = PBXGroup;
+			children = (
+				A852601A2CE331BE0089DA5E /* ProfileRepositoryInterface.swift */,
+			);
+			path = Repository;
+			sourceTree = "<group>";
+		};
+		A8E97AE02CE5A06600B28063 /* UseCase */ = {
+			isa = PBXGroup;
+			children = (
+				A8E97AE12CE5A09D00B28063 /* ProfileUseCaseInterface.swift */,
 			);
 			path = UseCase;
 			sourceTree = "<group>";
@@ -225,9 +244,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A852601B2CE331BE0089DA5E /* ProfileRepository.swift in Sources */,
+				A852601B2CE331BE0089DA5E /* ProfileRepositoryInterface.swift in Sources */,
 				A85260232CE343B20089DA5E /* ProfileUseCase.swift in Sources */,
 				A85260162CE32F590089DA5E /* ProfileIcon.swift in Sources */,
+				A8E97AE22CE5A09D00B28063 /* ProfileUseCaseInterface.swift in Sources */,
 				A85260182CE331310089DA5E /* Profile.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

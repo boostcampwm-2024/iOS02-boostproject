@@ -1,11 +1,16 @@
 //
-//  ProfileRepository.swift
+//  ProfileUseCaseInterface.swift
 //  Domain
 //
-//  Created by 최정인 on 11/12/24.
+//  Created by 최정인 on 11/14/24.
 //
 
-public protocol ProfileRepository {
+import Foundation
+
+protocol ProfileUseCaseInterface {
+    /// Repository 프로퍼티
+    var profileRepository: ProfileRepositoryInterface { get }
+
     /// 프로필 정보를 가져옵니다.
     /// - Returns: 가져온 프로필 정보
     func loadProfile() -> Profile

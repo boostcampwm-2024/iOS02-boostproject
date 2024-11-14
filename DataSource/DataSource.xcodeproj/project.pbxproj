@@ -12,7 +12,7 @@
 		5B7C6EB52CDB6C4B0024704A /* Domain.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B7C6EB42CDB6C4B0024704A /* Domain.framework */; };
 		5B7C6EB62CDB6C4B0024704A /* Domain.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 5B7C6EB42CDB6C4B0024704A /* Domain.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A8525F1E2CE326DB0089DA5E /* PersistenceInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8525F1D2CE326DB0089DA5E /* PersistenceInterface.swift */; };
-		A852601E2CE339E70089DA5E /* DefaultProfileRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = A852601D2CE339E70089DA5E /* DefaultProfileRepository.swift */; };
+		A852601E2CE339E70089DA5E /* ProfileRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = A852601D2CE339E70089DA5E /* ProfileRepository.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -35,7 +35,7 @@
 		5B7C6E3B2CDB6A240024704A /* DataSource.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = DataSource.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5B7C6EB42CDB6C4B0024704A /* Domain.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Domain.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A8525F1D2CE326DB0089DA5E /* PersistenceInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceInterface.swift; sourceTree = "<group>"; };
-		A852601D2CE339E70089DA5E /* DefaultProfileRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultProfileRepository.swift; sourceTree = "<group>"; };
+		A852601D2CE339E70089DA5E /* ProfileRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileRepository.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -113,7 +113,7 @@
 		A852601C2CE339D60089DA5E /* Repository */ = {
 			isa = PBXGroup;
 			children = (
-				A852601D2CE339E70089DA5E /* DefaultProfileRepository.swift */,
+				A852601D2CE339E70089DA5E /* ProfileRepository.swift */,
 			);
 			path = Repository;
 			sourceTree = "<group>";
@@ -226,7 +226,7 @@
 				A8525F1E2CE326DB0089DA5E /* PersistenceInterface.swift in Sources */,
 				0080E8652CE19EC40095B958 /* NearbyNetworkInterface.swift in Sources */,
 				0080E8662CE19EC40095B958 /* NetworkConnection.swift in Sources */,
-				A852601E2CE339E70089DA5E /* DefaultProfileRepository.swift in Sources */,
+				A852601E2CE339E70089DA5E /* ProfileRepository.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
