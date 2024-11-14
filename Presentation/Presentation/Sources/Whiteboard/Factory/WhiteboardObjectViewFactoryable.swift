@@ -25,7 +25,6 @@ struct WhiteboardObjectViewFactory: WhiteboardObjectViewFactoryable {
             whiteboardObject: WhiteboardObject(
                 id: UUID(),
                 position: .zero,
-                size: .zero)
-        )
+                size: .zero))
     }
 }
