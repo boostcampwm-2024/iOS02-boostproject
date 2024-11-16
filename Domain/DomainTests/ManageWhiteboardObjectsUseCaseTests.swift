@@ -22,35 +22,6 @@ final class ManageWhiteboardObjectsUseCaseTests: XCTestCase {
         useCase = nil
     }
 
-    // 화이트보드 위에 존재하는 오브젝트들 가져오기 성공 테스트
-    func testFetchObjects() {
-        // 준비
-        let object1 = WhiteboardObject(
-            id: UUID(),
-            position: .zero,
-            size: CGSize(width: 100, height: 100))
-        let object2 = WhiteboardObject(
-            id: UUID(),
-            position: .zero,
-            size: CGSize(width: 50, height: 50))
-        let object3 = WhiteboardObject(
-            id: UUID(),
-            position: .zero,
-            size: CGSize(width: 150, height: 150))
-
-        // 실행
-        _ = useCase.addObject(whiteboardObject: object1)
-        _ = useCase.addObject(whiteboardObject: object2)
-        _ = useCase.addObject(whiteboardObject: object3)
-        let objects = useCase.fetchObjects()
-
-        // 검증
-        XCTAssertEqual(objects.count, 3)
-        XCTAssertTrue(objects.contains(object1))
-        XCTAssertTrue(objects.contains(object2))
-        XCTAssertTrue(objects.contains(object3))
-    }
-
     // 화이트보드 오브젝트 추가가 성공하는지 테스트
     func testAddWhiteboardObject() {
         // 준비
@@ -89,7 +60,6 @@ final class ManageWhiteboardObjectsUseCaseTests: XCTestCase {
         // 검증
         XCTAssertTrue(isSuccess)
         XCTAssertFalse(isFailure)
-        XCTAssertTrue(useCase.fetchObjects().count == 1)
     }
 
     // 화이트보드 오브젝트 업데이트 성공하는지 테스트
@@ -170,7 +140,6 @@ final class ManageWhiteboardObjectsUseCaseTests: XCTestCase {
         // 검증
         XCTAssertTrue(result)
         XCTAssertEqual(targetObject, receivedObject)
-        XCTAssertTrue(useCase.fetchObjects().count == 2)
     }
 
     // 존재하지 않는 화이트보드 오브젝트 삭제 실패하는지 테스트
@@ -189,6 +158,5 @@ final class ManageWhiteboardObjectsUseCaseTests: XCTestCase {
         // 검증
         XCTAssertFalse(result)
         XCTAssertNil(receivedObject)
-        XCTAssertEqual(useCase.fetchObjects().count, 0)
     }
 }
