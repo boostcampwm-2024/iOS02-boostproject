@@ -8,9 +8,9 @@
 import Combine
 
 public final class ManageWhiteboardObjectUseCase: ManageWhiteboardObjectUseCaseInterface {
-    public var addedWhiteboardObject: AnyPublisher<WhiteboardObject, Never>
-    public var updatedWhiteboardObject: AnyPublisher<WhiteboardObject, Never>
-    public var removedWhiteboardObject: AnyPublisher<WhiteboardObject, Never>
+    public var addedObjectPublisher: AnyPublisher<WhiteboardObject, Never>
+    public var updatedObjectPublisher: AnyPublisher<WhiteboardObject, Never>
+    public var removedObjectPublisher: AnyPublisher<WhiteboardObject, Never>
     private var whiteboardObjects: [WhiteboardObject]
 
     private let addedWhiteboardSubject: PassthroughSubject<WhiteboardObject, Never>
@@ -24,9 +24,9 @@ public final class ManageWhiteboardObjectUseCase: ManageWhiteboardObjectUseCaseI
 
         whiteboardObjects = []
 
-        addedWhiteboardObject = addedWhiteboardSubject.eraseToAnyPublisher()
-        updatedWhiteboardObject = updatedWhiteboardSubject.eraseToAnyPublisher()
-        removedWhiteboardObject = removedWhiteboardSubject.eraseToAnyPublisher()
+        addedObjectPublisher = addedWhiteboardSubject.eraseToAnyPublisher()
+        updatedObjectPublisher = updatedWhiteboardSubject.eraseToAnyPublisher()
+        removedObjectPublisher = removedWhiteboardSubject.eraseToAnyPublisher()
     }
 
     public func fetchObjects() -> [WhiteboardObject] {

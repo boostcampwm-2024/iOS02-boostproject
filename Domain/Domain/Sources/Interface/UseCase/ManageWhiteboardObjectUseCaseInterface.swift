@@ -9,13 +9,13 @@ import Combine
 
 public protocol ManageWhiteboardObjectUseCaseInterface {
     /// 화이트보드 객체가 추가될 때 이벤트를 방출합니다.
-    var addedWhiteboardObject: AnyPublisher<WhiteboardObject, Never> { get }
+    var addedObjectPublisher: AnyPublisher<WhiteboardObject, Never> { get }
 
     /// 화이트보드 객체가 수정될 때 이벤트를 방출합니다.
-    var updatedWhiteboardObject: AnyPublisher<WhiteboardObject, Never> { get }
+    var updatedObjectPublisher: AnyPublisher<WhiteboardObject, Never> { get }
 
     /// 화이트보드 객체가 제거될 때 이벤트를 방출합니다.
-    var removedWhiteboardObject: AnyPublisher<WhiteboardObject, Never> { get }
+    var removedObjectPublisher: AnyPublisher<WhiteboardObject, Never> { get }
 
     /// 현재 존재하는 모든 화이트보드 객체들을 가져옵니다.
     /// - Returns: 화이트보드 위에 존재하는 화이트보드 객체들

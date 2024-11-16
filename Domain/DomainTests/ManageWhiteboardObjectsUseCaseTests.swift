@@ -60,7 +60,7 @@ final class ManageWhiteboardObjectsUseCaseTests: XCTestCase {
             size: CGSize(width: 100, height: 100))
         var receivedObject: WhiteboardObject?
 
-        useCase.addedWhiteboardObject
+        useCase.addedObjectPublisher
             .sink { object in
                 receivedObject = object
             }
@@ -106,7 +106,7 @@ final class ManageWhiteboardObjectsUseCaseTests: XCTestCase {
             size: CGSize(width: 200, height: 200))
         var receivedObject: WhiteboardObject?
 
-        useCase.updatedWhiteboardObject
+        useCase.updatedObjectPublisher
             .sink { receivedObject = $0 }
             .store(in: &cancellables)
 
@@ -136,7 +136,7 @@ final class ManageWhiteboardObjectsUseCaseTests: XCTestCase {
             size: CGSize(width: 100, height: 100))
         var receivedObject: WhiteboardObject?
 
-        useCase.removedWhiteboardObject
+        useCase.removedObjectPublisher
             .sink { receivedObject = $0 }
             .store(in: &cancellables)
 
@@ -158,7 +158,7 @@ final class ManageWhiteboardObjectsUseCaseTests: XCTestCase {
         let object = WhiteboardObject(id: UUID(), position: .zero, size: CGSize(width: 100, height: 100))
         var receivedObject: WhiteboardObject?
 
-        useCase.removedWhiteboardObject
+        useCase.removedObjectPublisher
             .sink { receivedObject = $0 }
             .store(in: &cancellables)
 

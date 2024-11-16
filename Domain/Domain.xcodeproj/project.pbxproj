@@ -72,7 +72,7 @@
 		00D2DD832CE8864B0089F0BA /* ManageWhiteboardObjectUseCaseInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageWhiteboardObjectUseCaseInterface.swift; sourceTree = "<group>"; };
 		00D2DD852CE887540089F0BA /* ManageWhiteboardObjectUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageWhiteboardObjectUseCase.swift; sourceTree = "<group>"; };
 		00D2DD872CE88BD80089F0BA /* ManageWhiteboardToolUseCaseInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageWhiteboardToolUseCaseInterface.swift; sourceTree = "<group>"; };
-		00D2DD8E2CE88C640089F0BA /* WhiteboardTool.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = WhiteboardTool.swift; path = Domain/Sources/Interface/UseCase/WhiteboardTool.swift; sourceTree = SOURCE_ROOT; };
+		00D2DD8E2CE88C640089F0BA /* WhiteboardTool.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = WhiteboardTool.swift; path = Domain/Sources/Model/WhiteboardTool.swift; sourceTree = SOURCE_ROOT; };
 		00D2DD902CE88D260089F0BA /* ManageWhiteboardToolUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageWhiteboardToolUseCase.swift; sourceTree = "<group>"; };
 		00D2DD922CE88EC70089F0BA /* ManageWhiteboardToolUseCaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageWhiteboardToolUseCaseTests.swift; sourceTree = "<group>"; };
 		00D2DD942CE88EDA0089F0BA /* ManageWhiteboardObjectsUseCaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageWhiteboardObjectsUseCaseTests.swift; sourceTree = "<group>"; };
@@ -128,7 +128,7 @@
 		0080E8592CE19EBD0095B958 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
-				00D2DD8A2CE88C380089F0BA /* Model */,
+				00D2DD962CE8A4DB0089F0BA /* Model */,
 				0080E8CB2CE4461F0095B958 /* Interface */,
 				0080E8B92CE2ECB50095B958 /* Entity */,
 				00683D702CE3A72F000D28E4 /* UseCase */,
@@ -199,13 +199,12 @@
 			path = DomainTests;
 			sourceTree = "<group>";
 		};
-		00D2DD8A2CE88C380089F0BA /* Model */ = {
+		00D2DD962CE8A4DB0089F0BA /* Model */ = {
 			isa = PBXGroup;
 			children = (
 				00D2DD8E2CE88C640089F0BA /* WhiteboardTool.swift */,
 			);
-			name = Model;
-			path = ../../../Presentation/Presentation/Sources/Whiteboard/Model;
+			path = Model;
 			sourceTree = "<group>";
 		};
 		5B7C6E1C2CDB6A010024704A = {
