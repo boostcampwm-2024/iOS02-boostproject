@@ -11,7 +11,7 @@ public final class DrawObjectUseCase: DrawObjectUseCaseInterface {
     public private(set) var points: [CGPoint]
     public private(set) var origin: CGPoint?
 
-    public init(repository: WhiteboardObjectRepositoryInterface) {
+    public init() {
         points = []
     }
 

@@ -37,6 +37,16 @@
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
       allowLocationSimulation = "YES">
+      <BuildableProductRunnable
+         runnableDebuggingMode = "0">
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "5B25A3E32CDB68E500CB7B34"
+            BuildableName = "AirplaIN.app"
+            BlueprintName = "AirplaIN"
+            ReferencedContainer = "container:../AirplaIN/AirplaIN.xcodeproj">
+         </BuildableReference>
+      </BuildableProductRunnable>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"
@@ -44,6 +54,15 @@
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES">
+      <MacroExpansion>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "5B25A3E32CDB68E500CB7B34"
+            BuildableName = "AirplaIN.app"
+            BlueprintName = "AirplaIN"
+            ReferencedContainer = "container:../AirplaIN/AirplaIN.xcodeproj">
+         </BuildableReference>
+      </MacroExpansion>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">

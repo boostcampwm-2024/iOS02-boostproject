@@ -5,6 +5,7 @@
 //  Created by 박승찬 on 11/12/24.
 //
 
+import Domain
 import UIKit
 
 public class WhiteboardViewController: UIViewController {
