@@ -9,15 +9,12 @@ import XCTest
 
 final class DrawObjectUseCaseTests: XCTestCase {
     var useCase: DrawObjectUseCaseInterface!
-    var mockRepository: WhiteboardObjectRepositoryInterface!
 
     override func setUpWithError() throws {
-        mockRepository = MockWhiteboardObjectRepository()
-        useCase = DrawObjectUseCase(repository: mockRepository)
+        useCase = DrawObjectUseCase()
     }
 
     override func tearDownWithError() throws {
-        mockRepository = nil
         useCase = nil
     }
 
