@@ -17,7 +17,8 @@ struct DrawingRenderer: DrawingRendererInterface {
 
         let renderer = UIGraphicsImageRenderer(size: drawingObject.size)
         let image = renderer.image { context in
-            context.cgContext.setLineWidth(5)
+            context.cgContext.setLineCap(.round)
+            context.cgContext.setLineWidth(drawingObject.lineWidth)
             context.cgContext.setStrokeColor(UIColor.black.cgColor)
             context.cgContext.move(to: startPoint)
 

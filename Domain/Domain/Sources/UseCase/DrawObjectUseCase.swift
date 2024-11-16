@@ -9,10 +9,15 @@ import Foundation
 
 public final class DrawObjectUseCase: DrawObjectUseCaseInterface {
     public private(set) var points: [CGPoint]
-//    public private(set) var origin: CGPoint?
+    public private(set) var lineWidth: CGFloat
 
     public init() {
         points = []
+        lineWidth = 5
+    }
+
+    public func setLineWidth(width: CGFloat) {
+        lineWidth = width
     }
 
     public func startDrawing(at point: CGPoint) {
@@ -36,18 +41,19 @@ public final class DrawObjectUseCase: DrawObjectUseCaseInterface {
             let minY = yPoints.min(),
             let maxY = yPoints.max()
         else { return nil }
-
-        let origin = CGPoint(x: minX, y: minY)
-        let size = CGSize(width: maxX - minX, height: maxY - minY)
+        let padding = lineWidth / 2
+        let origin = CGPoint(x: minX - padding, y: minY - padding)
+        let size = CGSize(width: maxX - minX + padding * 2, height: maxY - minY + padding * 2)
         let adjustedPoints = points.map {
-            CGPoint(x: $0.x - minX, y: $0.y - minY)
+            CGPoint(x: $0.x - minX + padding, y: $0.y - minY + padding)
         }
 
         let drawingObject = DrawingObject(
             id: UUID(),
             position: origin,
             size: size,
-            points: adjustedPoints)
+            points: adjustedPoints,
+            lineWidth: lineWidth)
 
         return drawingObject
     }
