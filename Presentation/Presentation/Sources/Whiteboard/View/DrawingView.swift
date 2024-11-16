@@ -36,6 +36,7 @@ final class DrawingView: UIView {
     }
 
     private func configureAttributes() {
+        backgroundColor = .clear
         drawingLayer.strokeColor = UIColor.black.cgColor
         drawingLayer.lineWidth = 5
         drawingLayer.lineCap = .round

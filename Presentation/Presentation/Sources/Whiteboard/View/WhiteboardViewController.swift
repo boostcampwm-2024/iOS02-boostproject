@@ -16,10 +16,12 @@ public class WhiteboardViewController: UIViewController {
     private let canvasView = UIView()
     private let toolbar = WhiteboardToolBar(frame: .zero)
     private let viewModel: WhiteboardViewModel
+    private let objectViewFactory: WhiteboardObjectViewFactoryable
     private var cancellables: Set<AnyCancellable>
 
-    init(viewModel: WhiteboardViewModel) {
+    init(viewModel: WhiteboardViewModel, objectViewFactory: WhiteboardObjectViewFactoryable) {
         self.viewModel = viewModel
+        self.objectViewFactory = objectViewFactory
         cancellables = []
         super.init(nibName: nil, bundle: nil)
     }
@@ -33,7 +35,6 @@ public class WhiteboardViewController: UIViewController {
         configureAttribute()
         configureLayout()
         bind()
-        drawingView.backgroundColor = .gray
     }
 
     private func configureAttribute() {
@@ -74,15 +75,15 @@ public class WhiteboardViewController: UIViewController {
             .receive(on: DispatchQueue.main)
             .sink { [weak self] tool in
                 self?.toolbar.select(tool: tool)
-                self?.drawingView.isHidden = tool != .drawing
-                self?.scrollView.panGestureRecognizer.minimumNumberOfTouches = tool == .drawing ? 2 : 1
+                self?.configureDrawingView(isDrawing: tool == .drawing)
             }
             .store(in: &cancellables)
 
         viewModel.output.addedWhiteboardObjectPublisher
             .receive(on: DispatchQueue.main)
-            .sink { _ in
-
+            .sink { [weak self] object in
+                guard let objectView = self?.objectViewFactory.create(with: object) else { return }
+                self?.addObjectView(objectView: objectView)
             }
             .store(in: &cancellables)
 
@@ -100,6 +101,16 @@ public class WhiteboardViewController: UIViewController {
             }
             .store(in: &cancellables)
     }
+
+    private func configureDrawingView(isDrawing: Bool) {
+        drawingView.isHidden = !isDrawing
+        scrollView.panGestureRecognizer.minimumNumberOfTouches = isDrawing ? 2 : 1
+        if isDrawing { drawingView.reset() }
+    }
+
+    private func addObjectView(objectView: WhiteboardObjectView) {
+        canvasView.addSubview(objectView)
+    }
 }
 
 // MARK: - WhiteboardToolBarDelegate
@@ -109,12 +120,13 @@ extension WhiteboardViewController: WhiteboardToolBarDelegate {
     }
 }
 
+// MARK: - DrawingViewDelegate
 extension WhiteboardViewController: DrawingViewDelegate {
-    func drawingView(_ sender: DrawingView, at point: CGPoint) {
+    func drawingViewDidStartDrawing(_ sender: DrawingView, at point: CGPoint) {
         viewModel.action(input: .startDrawing(startAt: point))
     }
 
-    func drawingViewDidStartDrawing(_ sender: DrawingView, at point: CGPoint) {
+    func drawingView(_ sender: DrawingView, at point: CGPoint) {
         viewModel.action(input: .addDrawingPoint(point: point))
     }
 
