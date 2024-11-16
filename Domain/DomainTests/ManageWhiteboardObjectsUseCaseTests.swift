@@ -119,6 +119,27 @@ final class ManageWhiteboardObjectsUseCaseTests: XCTestCase {
         XCTAssertEqual(updatedObject, receivedObject)
     }
 
+    // 존재하지 않는 화이트보드 오브젝트 업데이트 실패하는지 테스트
+    func testUpdateNonExistentObject() {
+        // 준비
+        let targetObject = WhiteboardObject(
+            id: UUID(),
+            position: CGPoint(x: 50, y: 50),
+            size: CGSize(width: 200, height: 200))
+        var receivedObject: WhiteboardObject?
+
+        useCase.updatedObjectPublisher
+            .sink { receivedObject = $0 }
+            .store(in: &cancellables)
+
+        // 실행
+        let result = useCase.updateObject(whiteboardObject: targetObject)
+
+        // 검증
+        XCTAssertFalse(result)
+        XCTAssertNil(receivedObject)
+    }
+
     // 화이트보드 오브젝트 삭제 성공하는지 테스트
     func testRemoveObject() {
         // 준비
