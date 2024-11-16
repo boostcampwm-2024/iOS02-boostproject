@@ -8,8 +8,6 @@
 import Foundation
 
 public protocol DrawObjectUseCaseInterface {
-    /// 그림을 그리기 시작한 점
-    var origin: CGPoint? { get }
 
     /// 선을 나타내는 점들의 배열
     var points: [CGPoint] { get }

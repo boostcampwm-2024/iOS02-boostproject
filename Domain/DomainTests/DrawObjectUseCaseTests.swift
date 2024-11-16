@@ -18,14 +18,6 @@ final class DrawObjectUseCaseTests: XCTestCase {
         useCase = nil
     }
 
-    // startDrawing시, 시작 좌표를 올바르게 설정하는지 확인
-    func testStartDrawingSetsOrigin() {
-        let startPoint = CGPoint(x: 100, y: 100)
-        useCase.startDrawing(at: startPoint)
-
-        XCTAssertEqual(startPoint, useCase.origin)
-    }
-
     // 그림을 그릴 때, points 배열에 점들을 올바르게 추가하는지 확인
     func testAddPointToArray() {
         let startPoint = CGPoint(x: 100, y: 100)
@@ -67,7 +59,6 @@ final class DrawObjectUseCaseTests: XCTestCase {
         useCase.addPoint(point: CGPoint(x: 120, y: 120))
         _ = useCase.finishDrawing()
 
-        XCTAssertNil(useCase.origin)
         XCTAssertEqual(useCase.points.count, 0)
     }
 }

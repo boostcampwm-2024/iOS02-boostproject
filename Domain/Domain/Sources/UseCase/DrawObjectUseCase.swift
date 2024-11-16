@@ -9,14 +9,13 @@ import Foundation
 
 public final class DrawObjectUseCase: DrawObjectUseCaseInterface {
     public private(set) var points: [CGPoint]
-    public private(set) var origin: CGPoint?
+//    public private(set) var origin: CGPoint?
 
     public init() {
         points = []
     }
 
     public func startDrawing(at point: CGPoint) {
-        origin = point
         points = [point]
     }
 
@@ -32,13 +31,13 @@ public final class DrawObjectUseCase: DrawObjectUseCaseInterface {
         }
 
         guard
-            let origin,
             let minX = xPoints.min(),
             let maxX = xPoints.max(),
             let minY = yPoints.min(),
             let maxY = yPoints.max()
         else { return nil }
 
+        let origin = CGPoint(x: minX, y: minY)
         let size = CGSize(width: maxX - minX, height: maxY - minY)
         let adjustedPoints = points.map {
             CGPoint(x: $0.x - minX, y: $0.y - minY)
@@ -54,7 +53,6 @@ public final class DrawObjectUseCase: DrawObjectUseCaseInterface {
     }
 
     private func reset() {
-        origin = nil
         points.removeAll()
     }
 }
