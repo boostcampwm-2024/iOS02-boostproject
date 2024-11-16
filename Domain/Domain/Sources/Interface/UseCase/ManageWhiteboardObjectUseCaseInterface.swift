@@ -17,10 +17,6 @@ public protocol ManageWhiteboardObjectUseCaseInterface {
     /// 화이트보드 객체가 제거될 때 이벤트를 방출합니다.
     var removedObjectPublisher: AnyPublisher<WhiteboardObject, Never> { get }
 
-    /// 현재 존재하는 모든 화이트보드 객체들을 가져옵니다.
-    /// - Returns: 화이트보드 위에 존재하는 화이트보드 객체들
-    func fetchObjects() -> [WhiteboardObject]
-
     /// 화이트보드 객체를 추가하는 메서드
     /// - Parameter whiteboardObject: 추가할 화이트보드 객체
     /// - Returns: 추가 성공 여부

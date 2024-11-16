@@ -29,10 +29,6 @@ public final class ManageWhiteboardObjectUseCase: ManageWhiteboardObjectUseCaseI
         removedObjectPublisher = removedWhiteboardSubject.eraseToAnyPublisher()
     }
 
-    public func fetchObjects() -> [WhiteboardObject] {
-        return whiteboardObjects
-    }
-
     public func addObject(whiteboardObject: WhiteboardObject) -> Bool {
         guard !whiteboardObjects.contains(whiteboardObject) else { return  false }
         whiteboardObjects.append(whiteboardObject)
