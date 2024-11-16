@@ -13,6 +13,7 @@
 		0080E8D12CE4A00F0095B958 /* WhiteboardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0080E8D02CE4A0060095B958 /* WhiteboardViewModel.swift */; };
 		0080E8D32CE4A0840095B958 /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0080E8D22CE4A0820095B958 /* ViewModel.swift */; };
 		00CCC2672CE60BCD005FA747 /* AirplainFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8525DC72CE201D50089DA5E /* AirplainFont.swift */; };
+		00D2DD982CE8CD300089F0BA /* DrawingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00D2DD972CE8CD300089F0BA /* DrawingView.swift */; };
 		5B2BC78E2CE4F66F00893B9E /* WhiteboardListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B2BC78A2CE4F66F00893B9E /* WhiteboardListViewController.swift */; };
 		5B2BC78F2CE4F66F00893B9E /* WhiteboardListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B2BC78C2CE4F66F00893B9E /* WhiteboardListViewModel.swift */; };
 		5B7C6EBA2CDB6C5C0024704A /* Domain.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B7C6EB92CDB6C5C0024704A /* Domain.framework */; };
@@ -51,6 +52,7 @@
 		0080E8C92CE2FF6E0095B958 /* WhiteboardObjectViewFactoryable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhiteboardObjectViewFactoryable.swift; sourceTree = "<group>"; };
 		0080E8D02CE4A0060095B958 /* WhiteboardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhiteboardViewModel.swift; sourceTree = "<group>"; };
 		0080E8D22CE4A0820095B958 /* ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModel.swift; sourceTree = "<group>"; };
+		00D2DD972CE8CD300089F0BA /* DrawingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawingView.swift; sourceTree = "<group>"; };
 		5B2BC78A2CE4F66F00893B9E /* WhiteboardListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhiteboardListViewController.swift; sourceTree = "<group>"; };
 		5B2BC78C2CE4F66F00893B9E /* WhiteboardListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhiteboardListViewModel.swift; sourceTree = "<group>"; };
 		5B7C6E502CDB6A380024704A /* Presentation.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Presentation.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -135,6 +137,7 @@
 			isa = PBXGroup;
 			children = (
 				6F199EF22CE3203A005DC40F /* WhiteboardViewController.swift */,
+				00D2DD972CE8CD300089F0BA /* DrawingView.swift */,
 				004645F22CE60A1B00C76EDB /* ObjectView */,
 			);
 			path = View;
@@ -383,6 +386,7 @@
 				A8E97ABF2CE4E94D00B28063 /* SelectProfileIconViewController.swift in Sources */,
 				A8E979C52CE493E900B28063 /* ProfileViewController.swift in Sources */,
 				A85260252CE3447E0089DA5E /* UIColor+.swift in Sources */,
+				00D2DD982CE8CD300089F0BA /* DrawingView.swift in Sources */,
 				A8E979CA2CE49A1800B28063 /* ProfileViewModel.swift in Sources */,
 				0080E8C62CE2F0510095B958 /* WhiteboardObjectView.swift in Sources */,
 				A8525DCB2CE203D50089DA5E /* UIView+.swift in Sources */,
