@@ -14,51 +14,50 @@ protocol DrawingViewDelegate: AnyObject {
 }
 
 final class DrawingView: UIView {
-    private let currentDrawingImageView = UIImageView()
-    private var imageRenderer: UIGraphicsImageRenderer?
+    private var drawingLayer = CAShapeLayer()
+    private var drawingPath = UIBezierPath()
     private var previousPoint: CGPoint?
     weak var delegate: DrawingViewDelegate?
 
     init() {
         super.init(frame: .zero)
         configureAttributes()
-        configureLayout()
     }
 
     required init?(coder: NSCoder) {
         super.init(coder: coder)
         configureAttributes()
-        configureLayout()
     }
 
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        imageRenderer = UIGraphicsImageRenderer(bounds: bounds)
+    func reset() {
+        drawingLayer.path = nil
+        drawingPath.removeAllPoints()
+        previousPoint = nil
     }
 
     private func configureAttributes() {
+        drawingLayer.strokeColor = UIColor.black.cgColor
+        drawingLayer.lineWidth = 5
+        drawingLayer.lineCap = .round
+        layer.addSublayer(drawingLayer)
+
         let drawingGesture = UIPanGestureRecognizer(target: self, action: #selector(handleDrawingGesture(sender:)))
         drawingGesture.minimumNumberOfTouches = 1
         drawingGesture.maximumNumberOfTouches = 1
         self.addGestureRecognizer(drawingGesture)
     }
 
-    private func configureLayout() {
-        currentDrawingImageView
-            .addToSuperview(self)
-            .edges(equalTo: self)
-    }
-
     @objc private func handleDrawingGesture(sender: UIPanGestureRecognizer) {
         let point = sender.location(in: self)
-        
+
         switch sender.state {
         case .began:
+            previousPoint = point
             delegate?.drawingViewDidStartDrawing(self, at: point)
-            renderDrawing(at: point)
+            drawLine(to: point)
         case .changed:
             delegate?.drawingView(self, at: point)
-            renderDrawing(at: point)
+            drawLine(to: point)
         case .ended:
             delegate?.drawingViewDidEndDrawing(self)
             previousPoint = nil
@@ -67,23 +66,12 @@ final class DrawingView: UIView {
         }
     }
 
-    private func renderDrawing(at point: CGPoint) {
+    private func drawLine(to point: CGPoint) {
+        guard let previousPoint else { return }
 
-        let drawingImage: UIImage? = imageRenderer?.image { context in
-
-            currentDrawingImageView
-                .image?
-                .draw(in: currentDrawingImageView.bounds)
-            context.cgContext.setLineWidth(5)
-            context.cgContext.setStrokeColor(UIColor.black.cgColor)
-
-            if let previousPoint {
-                context.cgContext.move(to: previousPoint)
-                context.cgContext.addLine(to: point)
-                context.cgContext.strokePath()
-            }
-        }
-        currentDrawingImageView.image = drawingImage
-        previousPoint = point
+        drawingPath.move(to: previousPoint)
+        drawingPath.addLine(to: point)
+        drawingLayer.path = drawingPath.cgPath
+        self.previousPoint = point
     }
 }
