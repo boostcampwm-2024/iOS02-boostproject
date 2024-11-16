@@ -33,21 +33,24 @@ public final class ManageWhiteboardObjectUseCase: ManageWhiteboardObjectUseCaseI
         return whiteboardObjects
     }
 
-    public func addObject(whiteboardObject: WhiteboardObject) {
-        guard !whiteboardObjects.contains(whiteboardObject) else { return }
+    public func addObject(whiteboardObject: WhiteboardObject) -> Bool {
+        guard !whiteboardObjects.contains(whiteboardObject) else { return  false }
         whiteboardObjects.append(whiteboardObject)
         addedWhiteboardSubject.send(whiteboardObject)
+        return true
     }
 
-    public func updateObject(whiteboardObject: WhiteboardObject) {
-        guard let index = whiteboardObjects.firstIndex(where: { $0 == whiteboardObject }) else { return }
+    public func updateObject(whiteboardObject: WhiteboardObject) -> Bool {
+        guard let index = whiteboardObjects.firstIndex(where: { $0 == whiteboardObject }) else { return false }
         whiteboardObjects[index] = whiteboardObject
         updatedWhiteboardSubject.send(whiteboardObject)
+        return true
     }
 
-    public func removeObject(whiteboardObject: WhiteboardObject) {
-        guard whiteboardObjects.contains(whiteboardObject) else { return }
+    public func removeObject(whiteboardObject: WhiteboardObject) -> Bool {
+        guard whiteboardObjects.contains(whiteboardObject) else { return false }
         whiteboardObjects.removeAll { $0 == whiteboardObject }
         removedWhiteboardSubject.send(whiteboardObject)
+        return true
     }
 }

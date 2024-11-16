@@ -7,24 +7,24 @@
 
 import Combine
 
-final class ManageWhiteboardToolUseCase: ManageWhiteboardToolUseCaseInterface {
-    var currentToolPublisher: AnyPublisher<WhiteboardTool?, Never>
+public final class ManageWhiteboardToolUseCase: ManageWhiteboardToolUseCaseInterface {
+    public var currentToolPublisher: AnyPublisher<WhiteboardTool?, Never>
     private let currentToolSubject: CurrentValueSubject<WhiteboardTool?, Never>
 
-    init() {
+    public init() {
         currentToolSubject = CurrentValueSubject<WhiteboardTool?, Never>(nil)
         currentToolPublisher = currentToolSubject.eraseToAnyPublisher()
     }
 
-    func currentTool() -> WhiteboardTool? {
+    public func currentTool() -> WhiteboardTool? {
         return currentToolSubject.value
     }
 
-    func selectTool(tool: WhiteboardTool) {
+    public func selectTool(tool: WhiteboardTool) {
         currentToolSubject.send(tool)
     }
 
-    func finishUsingTool() {
+    public func finishUsingTool() {
         currentToolSubject.send(nil)
     }
 }

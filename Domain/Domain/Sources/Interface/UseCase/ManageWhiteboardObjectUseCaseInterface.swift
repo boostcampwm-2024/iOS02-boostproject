@@ -23,13 +23,15 @@ public protocol ManageWhiteboardObjectUseCaseInterface {
 
     /// 화이트보드 객체를 추가하는 메서드
     /// - Parameter whiteboardObject: 추가할 화이트보드 객체
-    func addObject(whiteboardObject: WhiteboardObject)
+    /// - Returns: 추가 성공 여부
+    func addObject(whiteboardObject: WhiteboardObject) -> Bool
 
     /// 화이트보드 객체를 수정하는 메서드
     /// - Parameter whiteboardObject: 수정할 화이트보드 객체
-    func updateObject(whiteboardObject: WhiteboardObject)
+    /// - Returns: 추가 성공 여부
+    func updateObject(whiteboardObject: WhiteboardObject) -> Bool
 
     /// 화이트보드를 제거하는 메서드
-    /// - Parameter whiteboardObject: 제거할 화이트보드 객체
-    func removeObject(whiteboardObject: WhiteboardObject)
+    /// - Returns: 추가 성공 여부
+    func removeObject(whiteboardObject: WhiteboardObject) -> Bool
 }
