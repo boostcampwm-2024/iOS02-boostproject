@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		003D5A2B2CEB1FF0005F3D09 /* PhotoObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 003D5A2A2CEB1FEA005F3D09 /* PhotoObject.swift */; };
 		00683D692CE37F2F000D28E4 /* DrawingObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00683D682CE37F2F000D28E4 /* DrawingObject.swift */; };
 		00683D722CE3A74A000D28E4 /* DrawObjectUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00683D712CE3A74A000D28E4 /* DrawObjectUseCase.swift */; };
 		0080E8BB2CE2ECD80095B958 /* WhiteboardObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0080E8BA2CE2ECC60095B958 /* WhiteboardObject.swift */; };
@@ -62,6 +63,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		003D5A2A2CEB1FEA005F3D09 /* PhotoObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoObject.swift; sourceTree = "<group>"; };
 		00683D682CE37F2F000D28E4 /* DrawingObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawingObject.swift; sourceTree = "<group>"; };
 		00683D712CE3A74A000D28E4 /* DrawObjectUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawObjectUseCase.swift; sourceTree = "<group>"; };
 		0080E8BA2CE2ECC60095B958 /* WhiteboardObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhiteboardObject.swift; sourceTree = "<group>"; };
@@ -153,6 +155,7 @@
 				5BDFD9332CE1F7DB00DA4F5B /* Whiteboard.swift */,
 				0080E8BA2CE2ECC60095B958 /* WhiteboardObject.swift */,
 				00683D682CE37F2F000D28E4 /* DrawingObject.swift */,
+				003D5A2A2CEB1FEA005F3D09 /* PhotoObject.swift */,
 			);
 			path = Entity;
 			sourceTree = "<group>";
@@ -395,6 +398,7 @@
 				5B6542482CE44631000168AD /* WhiteboardUseCaseInterface.swift in Sources */,
 				00D2DD842CE8864B0089F0BA /* ManageWhiteboardObjectUseCaseInterface.swift in Sources */,
 				00D2DD882CE88BD80089F0BA /* ManageWhiteboardToolUseCaseInterface.swift in Sources */,
+				003D5A2B2CEB1FF0005F3D09 /* PhotoObject.swift in Sources */,
 				0080E8CE2CE4463B0095B958 /* WhiteboardObjectRepositoryInterface.swift in Sources */,
 				0080E8BB2CE2ECD80095B958 /* WhiteboardObject.swift in Sources */,
 				6FBC909B2CE5A6AE000FEB5A /* WhiteObjectSendUseCaseInterface.swift in Sources */,
