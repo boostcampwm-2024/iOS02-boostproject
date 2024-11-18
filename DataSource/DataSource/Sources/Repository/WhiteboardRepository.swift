@@ -10,7 +10,7 @@ import Foundation
 
 public final class WhiteboardRepository: WhiteboardRepositoryInterface {
     private var nearbyNetwork: NearbyNetworkInterface
-    public weak var delegate: WhiteboardDelegate?
+    public weak var delegate: WhiteboardRepositoryDelegate?
 
     public init(nearbyNetworkInterface: NearbyNetworkInterface) {
         self.nearbyNetwork = nearbyNetworkInterface

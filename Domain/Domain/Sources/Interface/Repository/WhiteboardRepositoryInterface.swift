@@ -6,7 +6,7 @@
 //
 
 public protocol WhiteboardRepositoryInterface {
-    var delegate: WhiteboardDelegate? { get set }
+    var delegate: WhiteboardRepositoryDelegate? { get set }
 
     /// 화이트보드를 주변에 알립니다.
     func startPublishing()
@@ -15,7 +15,7 @@ public protocol WhiteboardRepositoryInterface {
     func startSearching()
 }
 
-public protocol WhiteboardDelegate: AnyObject {
+public protocol WhiteboardRepositoryDelegate: AnyObject {
     /// 주변 화이트보드를 찾았을 때 실행됩니다.
     /// - Parameters:
     ///   - whiteboards: 탐색된 화이트보드 배열

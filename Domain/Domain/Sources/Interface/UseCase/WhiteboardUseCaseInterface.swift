@@ -16,7 +16,7 @@ public protocol WhiteboardUseCaseInterface {
 
     /// 화이트보드를 주변에 알립니다. 
     func startPublishingWhiteboard()
-    
+
     /// 주변 화이트보드를 탐색합니다. 
     func startSearchingWhiteboard()
 }
