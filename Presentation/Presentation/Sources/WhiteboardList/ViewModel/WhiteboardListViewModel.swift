@@ -12,29 +12,38 @@ import Foundation
 public final class WhiteboardListViewModel: ViewModel {
     private let whiteboardUseCase: WhiteboardUseCaseInterface
     private var nickname: String
+    private var cancellables = Set<AnyCancellable>()
 
     enum Input {
         case createWhiteboard
+        case searchWhiteboard
     }
 
     struct Output {
         let whiteboardPublisher: AnyPublisher<Whiteboard, Never>
+        let whiteboardListPublisher: AnyPublisher<[Whiteboard], Never>
     }
 
-    var output: Output
-    let whiteboardSubject: PassthroughSubject<Whiteboard, Never>
+    let output: Output
+    private let whiteboardSubject: PassthroughSubject<Whiteboard, Never>
+    private let whiteboardListSubject: CurrentValueSubject<[Whiteboard], Never>
 
     public init(whiteboardUseCase: WhiteboardUseCaseInterface, nickname: String) {
         self.whiteboardUseCase = whiteboardUseCase
         self.nickname = nickname
         whiteboardSubject = PassthroughSubject<Whiteboard, Never>()
-        self.output = Output(whiteboardPublisher: whiteboardSubject.eraseToAnyPublisher())
+        whiteboardListSubject = CurrentValueSubject<[Whiteboard], Never>([])
+        self.output = Output(
+            whiteboardPublisher: whiteboardSubject.eraseToAnyPublisher(),
+            whiteboardListPublisher: whiteboardListSubject.eraseToAnyPublisher())
     }
 
     func action(input: Input) {
         switch input {
         case .createWhiteboard:
             createWhiteboard()
+        case .searchWhiteboard:
+            searchWhiteboard()
         }
     }
 
@@ -42,5 +51,19 @@ public final class WhiteboardListViewModel: ViewModel {
         let whiteboard = whiteboardUseCase.createWhiteboard(nickname: nickname)
         whiteboardUseCase.startPublishingWhiteboard()
         whiteboardSubject.send(whiteboard)
+    }
+
+    private func searchWhiteboard() {
+        whiteboardUseCase.startSearchingWhiteboard()
+        bindWhiteboards()
+    }
+
+    private func bindWhiteboards() {
+        whiteboardUseCase.whiteboardListPublisher
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] whiteboards in
+                self?.whiteboardListSubject.send(whiteboards)
+            }
+            .store(in: &cancellables)
     }
 }
