@@ -14,6 +14,7 @@ final class WhiteboardViewModel: ViewModel {
         case startDrawing(startAt: CGPoint)
         case addDrawingPoint(point: CGPoint)
         case finishUsingTool
+        case publishWithInfo
     }
 
     struct Output {
@@ -25,14 +26,16 @@ final class WhiteboardViewModel: ViewModel {
 
     let output: Output
     private let drawObjectUseCase: DrawObjectUseCaseInterface
+    private let whiteboardUseCase: WhiteboardUseCaseInterface
     private var whiteboardObjects: [WhiteboardObject]
     private let currentTool: CurrentValueSubject<WhiteboardTool?, Never>
     let addedWhiteboardObjectSubject: PassthroughSubject<WhiteboardObject, Never>
     let updatedWhiteboardObjectSubject: PassthroughSubject<WhiteboardObject, Never>
     let removedWhiteboardObjectSubject: PassthroughSubject<WhiteboardObject, Never>
 
-    init(drawObjectUseCase: DrawObjectUseCaseInterface) {
+    init(drawObjectUseCase: DrawObjectUseCaseInterface, whiteboardUseCase: WhiteboardUseCaseInterface) {
         self.drawObjectUseCase = drawObjectUseCase
+        self.whiteboardUseCase = whiteboardUseCase
         whiteboardObjects = []
         currentTool = CurrentValueSubject<WhiteboardTool?, Never>(nil)
         addedWhiteboardObjectSubject = PassthroughSubject<WhiteboardObject, Never>()
@@ -56,6 +59,8 @@ final class WhiteboardViewModel: ViewModel {
             addDrawingPoint(at: point)
         case .finishUsingTool:
             finishUsingTool()
+        case .publishWithInfo:
+            startPublishing()
         }
     }
 
@@ -99,5 +104,9 @@ final class WhiteboardViewModel: ViewModel {
         guard let drawingObject = drawObjectUseCase.finishDrawing() else { return }
         addedWhiteboardObjectSubject.send(drawingObject)
         addWhiteboardObject(object: drawingObject)
+    }
+
+    private func startPublishing() {
+        whiteboardUseCase.startPublishingWhiteboard()
     }
 }
