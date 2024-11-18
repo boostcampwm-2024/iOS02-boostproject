@@ -14,7 +14,7 @@ public protocol DrawObjectUseCaseInterface {
 
     /// 선의 굵기를 설정합니다.
     /// - Parameter width: 선의 너비
-    func setLineWidth(width: CGFloat)
+    func configureLineWidth(to width: CGFloat)
 
     /// 그리기를 시작합니다.
     /// - Parameter point: 시작 지점 CGPoint

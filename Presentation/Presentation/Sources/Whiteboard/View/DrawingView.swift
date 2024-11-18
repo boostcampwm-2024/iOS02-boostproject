@@ -14,8 +14,8 @@ protocol DrawingViewDelegate: AnyObject {
 }
 
 final class DrawingView: UIView {
-    private var drawingLayer = CAShapeLayer()
-    private var drawingPath = UIBezierPath()
+    private let drawingLayer = CAShapeLayer()
+    private let drawingPath = UIBezierPath()
     private var previousPoint: CGPoint?
     weak var delegate: DrawingViewDelegate?
 

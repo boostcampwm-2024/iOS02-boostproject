@@ -10,6 +10,11 @@ import Domain
 import UIKit
 
 public class WhiteboardViewController: UIViewController {
+    private enum WhiteboardLayoutConstant {
+        static let canvaseSize: CGFloat = 1500
+        static let toolbarHeight: CGFloat = 40
+    }
+
     // TODO: - indicator 표시 여부 논의 필요
     private let scrollView = UIScrollView()
     private let drawingView = DrawingView()
@@ -57,7 +62,9 @@ public class WhiteboardViewController: UIViewController {
             .bottom(equalTo: scrollView.contentLayoutGuide.bottomAnchor, inset: .zero)
             .leading(equalTo: scrollView.contentLayoutGuide.leadingAnchor, inset: .zero)
             .trailing(equalTo: scrollView.contentLayoutGuide.trailingAnchor, inset: .zero)
-            .size(width: 1500, height: 1500)
+            .size(
+                width: WhiteboardLayoutConstant.canvaseSize,
+                height: WhiteboardLayoutConstant.canvaseSize)
 
         drawingView
             .addToSuperview(scrollView)
@@ -65,9 +72,9 @@ public class WhiteboardViewController: UIViewController {
 
         toolbar
             .addToSuperview(view)
-            .horizontalEdges(equalTo: view, inset: 22)
-            .bottom(equalTo: view.safeAreaLayoutGuide.bottomAnchor, inset: 0)
-            .height(equalTo: 40)
+            .horizontalEdges(equalTo: view, inset: horizontalMargin)
+            .bottom(equalTo: view.safeAreaLayoutGuide.bottomAnchor, inset: .zero)
+            .height(equalTo: WhiteboardLayoutConstant.toolbarHeight)
     }
 
     private func bind() {

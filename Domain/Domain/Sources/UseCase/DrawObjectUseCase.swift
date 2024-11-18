@@ -16,7 +16,7 @@ public final class DrawObjectUseCase: DrawObjectUseCaseInterface {
         lineWidth = 5
     }
 
-    public func setLineWidth(width: CGFloat) {
+    public func configureLineWidth(to width: CGFloat) {
         lineWidth = width
     }
 

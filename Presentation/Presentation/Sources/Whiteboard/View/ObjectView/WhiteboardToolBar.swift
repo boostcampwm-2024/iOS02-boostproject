@@ -13,6 +13,10 @@ protocol WhiteboardToolBarDelegate: AnyObject {
 }
 
 final class WhiteboardToolBar: UIStackView {
+    private enum WhiteboardToolBarLayoutConstant {
+        static let toolbarSpacing: CGFloat = 30
+    }
+
     private let drawing = UIButton()
     private let text = UIButton()
     private let photo = UIButton()
@@ -45,7 +49,7 @@ final class WhiteboardToolBar: UIStackView {
 
     private func configureAttribute() {
         distribution = .fillEqually
-        spacing = 30
+        spacing = WhiteboardToolBarLayoutConstant.toolbarSpacing
     }
 
     private func configureButtons() {

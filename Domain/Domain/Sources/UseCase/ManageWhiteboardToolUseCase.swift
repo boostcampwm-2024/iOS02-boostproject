@@ -21,12 +21,8 @@ public final class ManageWhiteboardToolUseCase: ManageWhiteboardToolUseCaseInter
     }
 
     public func selectTool(tool: WhiteboardTool) {
-        let previousTool = currentToolSubject.value
-        if previousTool == tool {
-            currentToolSubject.send(nil)
-        } else {
-            currentToolSubject.send(tool)
-        }
+        let selectTool = currentToolSubject.value == tool ? nil: tool
+        currentToolSubject.send(selectTool)
     }
 
     public func finishUsingTool() {
