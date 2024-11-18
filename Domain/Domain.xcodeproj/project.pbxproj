@@ -13,6 +13,7 @@
 		004B217D2CEB2B2300A5BEB8 /* DomainError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 004B217C2CEB2B2300A5BEB8 /* DomainError.swift */; };
 		00683D692CE37F2F000D28E4 /* DrawingObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00683D682CE37F2F000D28E4 /* DrawingObject.swift */; };
 		00683D722CE3A74A000D28E4 /* DrawObjectUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00683D712CE3A74A000D28E4 /* DrawObjectUseCase.swift */; };
+		007BCEDC2CEB852C009E6935 /* AddPhotoUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 007BCEDB2CEB852C009E6935 /* AddPhotoUseCaseTests.swift */; };
 		0080E8BB2CE2ECD80095B958 /* WhiteboardObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0080E8BA2CE2ECC60095B958 /* WhiteboardObject.swift */; };
 		0080E8CE2CE4463B0095B958 /* WhiteboardObjectRepositoryInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0080E8CD2CE4462E0095B958 /* WhiteboardObjectRepositoryInterface.swift */; };
 		0080E91A2CE4B0880095B958 /* DrawObjectUseCaseInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0080E9182CE4B0880095B958 /* DrawObjectUseCaseInterface.swift */; };
@@ -72,6 +73,7 @@
 		004B217C2CEB2B2300A5BEB8 /* DomainError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DomainError.swift; sourceTree = "<group>"; };
 		00683D682CE37F2F000D28E4 /* DrawingObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawingObject.swift; sourceTree = "<group>"; };
 		00683D712CE3A74A000D28E4 /* DrawObjectUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawObjectUseCase.swift; sourceTree = "<group>"; };
+		007BCEDB2CEB852C009E6935 /* AddPhotoUseCaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPhotoUseCaseTests.swift; sourceTree = "<group>"; };
 		0080E8BA2CE2ECC60095B958 /* WhiteboardObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhiteboardObject.swift; sourceTree = "<group>"; };
 		0080E8CD2CE4462E0095B958 /* WhiteboardObjectRepositoryInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhiteboardObjectRepositoryInterface.swift; sourceTree = "<group>"; };
 		0080E9182CE4B0880095B958 /* DrawObjectUseCaseInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawObjectUseCaseInterface.swift; sourceTree = "<group>"; };
@@ -215,6 +217,7 @@
 				0080E9562CE4D8760095B958 /* DrawObjectUseCaseTests.swift */,
 				00D2DD922CE88EC70089F0BA /* ManageWhiteboardToolUseCaseTests.swift */,
 				00D2DD942CE88EDA0089F0BA /* ManageWhiteboardObjectsUseCaseTests.swift */,
+				007BCEDB2CEB852C009E6935 /* AddPhotoUseCaseTests.swift */,
 			);
 			path = DomainTests;
 			sourceTree = "<group>";
@@ -393,6 +396,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				007BCEDC2CEB852C009E6935 /* AddPhotoUseCaseTests.swift in Sources */,
 				00D2DD952CE88EDA0089F0BA /* ManageWhiteboardObjectsUseCaseTests.swift in Sources */,
 				0080E9582CE4D8760095B958 /* DrawObjectUseCaseTests.swift in Sources */,
 				00D2DD932CE88EC70089F0BA /* ManageWhiteboardToolUseCaseTests.swift in Sources */,
