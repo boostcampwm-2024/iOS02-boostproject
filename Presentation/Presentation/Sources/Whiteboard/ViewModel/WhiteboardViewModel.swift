@@ -10,9 +10,10 @@ import Foundation
 
 final class WhiteboardViewModel: ViewModel {
     enum Input {
-        case startUsingTool(tool: WhiteboardTool)
+        case selectTool(tool: WhiteboardTool)
         case startDrawing(startAt: CGPoint)
         case addDrawingPoint(point: CGPoint)
+        case finishDrawing
         case finishUsingTool
     }
 
@@ -25,50 +26,59 @@ final class WhiteboardViewModel: ViewModel {
 
     let output: Output
     private let drawObjectUseCase: DrawObjectUseCaseInterface
-    private var whiteboardObjects: [WhiteboardObject]
-    private let currentTool: CurrentValueSubject<WhiteboardTool?, Never>
-    let addedWhiteboardObjectSubject: PassthroughSubject<WhiteboardObject, Never>
-    let updatedWhiteboardObjectSubject: PassthroughSubject<WhiteboardObject, Never>
-    let removedWhiteboardObjectSubject: PassthroughSubject<WhiteboardObject, Never>
+    private let manageWhiteboardToolUseCase: ManageWhiteboardToolUseCaseInterface
+    private let manageWhiteboardObjectUseCase: ManageWhiteboardObjectUseCaseInterface
 
-    init(drawObjectUseCase: DrawObjectUseCaseInterface) {
+    init(
+        drawObjectUseCase: DrawObjectUseCaseInterface,
+        managemanageWhiteboardToolUseCase: ManageWhiteboardToolUseCaseInterface,
+        manageWhiteboardObjectUseCase: ManageWhiteboardObjectUseCaseInterface
+    ) {
         self.drawObjectUseCase = drawObjectUseCase
-        whiteboardObjects = []
-        currentTool = CurrentValueSubject<WhiteboardTool?, Never>(nil)
-        addedWhiteboardObjectSubject = PassthroughSubject<WhiteboardObject, Never>()
-        updatedWhiteboardObjectSubject = PassthroughSubject<WhiteboardObject, Never>()
-        removedWhiteboardObjectSubject = PassthroughSubject<WhiteboardObject, Never>()
+        self.manageWhiteboardToolUseCase = managemanageWhiteboardToolUseCase
+        self.manageWhiteboardObjectUseCase = manageWhiteboardObjectUseCase
 
         output = Output(
-            whiteboardToolPublisher: currentTool.eraseToAnyPublisher(),
-            addedWhiteboardObjectPublisher: addedWhiteboardObjectSubject.eraseToAnyPublisher(),
-            updatedWhiteboardObjectPublisher: updatedWhiteboardObjectSubject.eraseToAnyPublisher(),
-            removedWhiteboardObjectPublisher: removedWhiteboardObjectSubject.eraseToAnyPublisher())
+            whiteboardToolPublisher: manageWhiteboardToolUseCase
+                .currentToolPublisher
+                .eraseToAnyPublisher(),
+            addedWhiteboardObjectPublisher: manageWhiteboardObjectUseCase
+                .addedObjectPublisher
+                .eraseToAnyPublisher(),
+            updatedWhiteboardObjectPublisher: manageWhiteboardObjectUseCase
+                .updatedObjectPublisher
+                .eraseToAnyPublisher(),
+            removedWhiteboardObjectPublisher: manageWhiteboardObjectUseCase
+                .removedObjectPublisher
+                .eraseToAnyPublisher())
     }
 
     func action(input: Input) {
         switch input {
-        case .startUsingTool(let tool):
-            startUsingTool(with: tool)
+        case .selectTool(let tool):
+            selectTool(with: tool)
         case .startDrawing(let point):
             startDrawing(at: point)
         case .addDrawingPoint(point: let point):
             addDrawingPoint(at: point)
+        case .finishDrawing:
+            finishDrawing()
         case .finishUsingTool:
             finishUsingTool()
         }
     }
 
-    private func startUsingTool(with tool: WhiteboardTool) {
-        currentTool.send(tool)
+    private func selectTool(with tool: WhiteboardTool) {
+        manageWhiteboardToolUseCase.selectTool(tool: tool)
     }
 
     private func finishUsingTool() {
-        guard let currentTool = currentTool.value else { return }
+        let currentTool = manageWhiteboardToolUseCase.currentTool()
+        guard let currentTool else { return }
 
         switch currentTool {
         case .drawing:
-            finishDrawing()
+            break
         case .text:
             break
         case .photo:
@@ -79,12 +89,11 @@ final class WhiteboardViewModel: ViewModel {
             break
         }
 
-        self.currentTool.send(nil)
+        manageWhiteboardToolUseCase.finishUsingTool()
     }
 
     private func addWhiteboardObject(object: WhiteboardObject) {
-        guard !whiteboardObjects.contains(object) else { return }
-        whiteboardObjects.append(object)
+        manageWhiteboardObjectUseCase.addObject(whiteboardObject: object)
     }
 
     private func startDrawing(at point: CGPoint) {
@@ -97,7 +106,6 @@ final class WhiteboardViewModel: ViewModel {
 
     private func finishDrawing() {
         guard let drawingObject = drawObjectUseCase.finishDrawing() else { return }
-        addedWhiteboardObjectSubject.send(drawingObject)
         addWhiteboardObject(object: drawingObject)
     }
 }

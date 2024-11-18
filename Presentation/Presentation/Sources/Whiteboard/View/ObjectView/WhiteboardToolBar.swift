@@ -5,7 +5,6 @@
 //  Created by 박승찬 on 11/12/24.
 //
 
-import Combine
 import Domain
 import UIKit
 
@@ -14,14 +13,16 @@ protocol WhiteboardToolBarDelegate: AnyObject {
 }
 
 final class WhiteboardToolBar: UIStackView {
+    private enum WhiteboardToolBarLayoutConstant {
+        static let toolbarSpacing: CGFloat = 30
+    }
+
     private let drawing = UIButton()
     private let text = UIButton()
     private let photo = UIButton()
     private let game = UIButton()
     private let chat = UIButton()
     private var tools: [WhiteboardTool: UIButton] = [:]
-    private var selectedTool = CurrentValueSubject<WhiteboardTool?, Never>(nil)
-    private var cancellables: Set<AnyCancellable> = []
     weak var delegate: WhiteboardToolBarDelegate?
 
     override init(frame: CGRect) {
@@ -37,16 +38,18 @@ final class WhiteboardToolBar: UIStackView {
     private func initialize() {
         configureAttribute()
         configureButtons()
-        bind()
     }
 
-    func done() {
+    func select(tool: WhiteboardTool?) {
         tools.forEach { $1.setImage($0.defaultIcon, for: .normal) }
+        if let tool {
+            tools[tool]?.setImage(tool.selectedIcon, for: .normal)
+        }
     }
 
     private func configureAttribute() {
         distribution = .fillEqually
-        spacing = 30
+        spacing = WhiteboardToolBarLayoutConstant.toolbarSpacing
     }
 
     private func configureButtons() {
@@ -54,30 +57,15 @@ final class WhiteboardToolBar: UIStackView {
         zip(WhiteboardTool.allCases, buttons).forEach { whiteboardTool, button in
             tools[whiteboardTool] = button
             addArrangedSubview(button)
+            button.setImage(whiteboardTool.defaultIcon, for: .normal)
             button.tintColor = .airplainBlue
             button.addAction(
                 UIAction { [weak self] _ in
                     guard let self else { return }
-                    guard whiteboardTool != selectedTool.value else {
-                        done()
-                        return
-                    }
                     self.delegate?.whiteboardToolBar(self, selectedTool: whiteboardTool)
-                    self.selectedTool.send(whiteboardTool)
                 },
                 for: .touchUpInside )
         }
-    }
-
-    private func bind() {
-        selectedTool
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] tool in
-                self?.done()
-                guard let tool else { return }
-                self?.tools[tool]?.setImage(tool.selectedIcon, for: .normal)
-            }
-            .store(in: &cancellables)
     }
 }
 
