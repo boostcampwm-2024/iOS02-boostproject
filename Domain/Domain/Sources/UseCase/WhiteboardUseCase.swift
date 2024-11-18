@@ -34,7 +34,7 @@ public final class WhiteboardUseCase: WhiteboardUseCaseInterface {
 }
 
 extension WhiteboardUseCase: WhiteboardRepositoryDelegate {
-    public func whiteboard(_ sender: any WhiteboardRepositoryInterface, didFind whiteboards: [Whiteboard]) {
+    public func whiteboardRepository(_ sender: WhiteboardRepositoryInterface, didFind whiteboards: [Whiteboard]) {
         whiteboardListSubject.send(whiteboards)
     }
 }

@@ -44,7 +44,7 @@ extension WhiteboardRepository: NearbyNetworkDelegate {
 
     public func nearbyNetwork(_ sender: any NearbyNetworkInterface, didFind connections: [NetworkConnection]) {
         let foundWhiteboards = connections.map { Whiteboard(name: $0.name) }
-        delegate?.whiteboard(self, didFind: foundWhiteboards)
+        delegate?.whiteboardRepository(self, didFind: foundWhiteboards)
     }
 
     public func nearbyNetworkCannotConnect(_ sender: any NearbyNetworkInterface) {
