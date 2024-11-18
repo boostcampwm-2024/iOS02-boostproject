@@ -13,13 +13,13 @@ final class DrawObjectUseCaseTests: XCTestCase {
 
     override func setUpWithError() throws {
         useCase = DrawObjectUseCase()
-        useCase.setLineWidth(width: lineWidth)
+        useCase.configureLineWidth(to: lineWidth)
     }
 
     override func tearDownWithError() throws {
         useCase = nil
     }
-    
+
     // 그림을 그릴 때, points 배열에 점들을 올바르게 추가하는지 확인
     func testAddPointToArray() {
         // 준비
