@@ -11,7 +11,6 @@
 		003D5A2D2CEB21AA005F3D09 /* AddPhotoUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 003D5A2C2CEB217E005F3D09 /* AddPhotoUseCase.swift */; };
 		003D5A2F2CEB21B6005F3D09 /* AddPhotoUseCaseInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 003D5A2E2CEB21B2005F3D09 /* AddPhotoUseCaseInterface.swift */; };
 		004B217D2CEB2B2300A5BEB8 /* DomainError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 004B217C2CEB2B2300A5BEB8 /* DomainError.swift */; };
-		004B217F2CEB2F6300A5BEB8 /* AirplaINImageData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 004B217E2CEB2F6300A5BEB8 /* AirplaINImageData.swift */; };
 		00683D692CE37F2F000D28E4 /* DrawingObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00683D682CE37F2F000D28E4 /* DrawingObject.swift */; };
 		00683D722CE3A74A000D28E4 /* DrawObjectUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00683D712CE3A74A000D28E4 /* DrawObjectUseCase.swift */; };
 		0080E8BB2CE2ECD80095B958 /* WhiteboardObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0080E8BA2CE2ECC60095B958 /* WhiteboardObject.swift */; };
@@ -71,7 +70,6 @@
 		003D5A2C2CEB217E005F3D09 /* AddPhotoUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPhotoUseCase.swift; sourceTree = "<group>"; };
 		003D5A2E2CEB21B2005F3D09 /* AddPhotoUseCaseInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPhotoUseCaseInterface.swift; sourceTree = "<group>"; };
 		004B217C2CEB2B2300A5BEB8 /* DomainError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DomainError.swift; sourceTree = "<group>"; };
-		004B217E2CEB2F6300A5BEB8 /* AirplaINImageData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AirplaINImageData.swift; sourceTree = "<group>"; };
 		00683D682CE37F2F000D28E4 /* DrawingObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawingObject.swift; sourceTree = "<group>"; };
 		00683D712CE3A74A000D28E4 /* DrawObjectUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawObjectUseCase.swift; sourceTree = "<group>"; };
 		0080E8BA2CE2ECC60095B958 /* WhiteboardObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhiteboardObject.swift; sourceTree = "<group>"; };
@@ -174,7 +172,6 @@
 				0080E8BA2CE2ECC60095B958 /* WhiteboardObject.swift */,
 				00683D682CE37F2F000D28E4 /* DrawingObject.swift */,
 				003D5A2A2CEB1FEA005F3D09 /* PhotoObject.swift */,
-				004B217E2CEB2F6300A5BEB8 /* AirplaINImageData.swift */,
 			);
 			path = Entity;
 			sourceTree = "<group>";
@@ -425,7 +422,6 @@
 				0080E8BB2CE2ECD80095B958 /* WhiteboardObject.swift in Sources */,
 				6FBC909B2CE5A6AE000FEB5A /* WhiteObjectSendUseCaseInterface.swift in Sources */,
 				6F21477B2CE4CEAE00B55E2C /* TextObject.swift in Sources */,
-				004B217F2CEB2F6300A5BEB8 /* AirplaINImageData.swift in Sources */,
 				00683D722CE3A74A000D28E4 /* DrawObjectUseCase.swift in Sources */,
 				00D2DD8F2CE88C640089F0BA /* WhiteboardTool.swift in Sources */,
 				0080E91A2CE4B0880095B958 /* DrawObjectUseCaseInterface.swift in Sources */,

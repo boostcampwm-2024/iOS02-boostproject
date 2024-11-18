@@ -16,7 +16,8 @@ public protocol AddPhotoUseCaseInterface {
     ///   - size: 사진 객체
     /// - Returns:
     func addPhoto(
-        airplainImageData: AirplaINImageData,
-        position: CGPoint
+        imageData: Data,
+        position: CGPoint,
+        size: CGSize
     ) throws -> PhotoObject
 }

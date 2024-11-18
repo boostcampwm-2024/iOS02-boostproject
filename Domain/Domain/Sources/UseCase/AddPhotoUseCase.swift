@@ -8,11 +8,11 @@
 import Foundation
 
 public final class AddPhotoUseCase: AddPhotoUseCaseInterface {
-    private let fileManager: FileManager
     private let photoDirectory: URL
+    private let fileManager: FileManager
 
-    public init(fileManager: FileManager) throws {
-        self.fileManager = fileManager
+    public init() throws {
+        fileManager = FileManager.default
         guard
             let documentDirectory = fileManager
                 .urls(for: .documentDirectory, in: .userDomainMask)
@@ -30,16 +30,16 @@ public final class AddPhotoUseCase: AddPhotoUseCaseInterface {
     }
 
     public func addPhoto(
-        airplainImageData: AirplaINImageData,
-        position: CGPoint
+        imageData: Data,
+        position: CGPoint,
+        size: CGSize
     ) throws -> PhotoObject {
         let uuid = UUID()
         let photoname = "\(uuid.uuidString).jpg"
         let photoURL = photoDirectory.appending(path: photoname)
-        let imageSize = CGSize(width: airplainImageData.width, height: airplainImageData.height)
 
         do {
-            try airplainImageData.imageData.write(to: photoURL)
+            try imageData.write(to: photoURL)
         } catch {
             throw DomainError.cannotWriteFile
         }
@@ -47,7 +47,7 @@ public final class AddPhotoUseCase: AddPhotoUseCaseInterface {
         let photoObject = PhotoObject(
             id: uuid,
             position: position,
-            size: imageSize,
+            size: size,
             photoURL: photoURL)
 
         return photoObject
