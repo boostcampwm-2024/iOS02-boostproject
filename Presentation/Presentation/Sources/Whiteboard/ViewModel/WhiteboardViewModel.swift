@@ -8,13 +8,14 @@ import Combine
 import Domain
 import Foundation
 
-final class WhiteboardViewModel: ViewModel {
+public final class WhiteboardViewModel: ViewModel {
     enum Input {
         case selectTool(tool: WhiteboardTool)
         case startDrawing(startAt: CGPoint)
         case addDrawingPoint(point: CGPoint)
         case finishDrawing
         case finishUsingTool
+        case addTextObject(scrollViewOffset: CGPoint, viewSize: CGSize)
     }
 
     struct Output {
@@ -26,15 +27,18 @@ final class WhiteboardViewModel: ViewModel {
 
     let output: Output
     private let drawObjectUseCase: DrawObjectUseCaseInterface
+    private let textObjectUseCase: TextObjectUseCaseInterface
     private let manageWhiteboardToolUseCase: ManageWhiteboardToolUseCaseInterface
     private let manageWhiteboardObjectUseCase: ManageWhiteboardObjectUseCaseInterface
 
-    init(
+    public init(
         drawObjectUseCase: DrawObjectUseCaseInterface,
+        textObjectUseCase: TextObjectUseCaseInterface,
         managemanageWhiteboardToolUseCase: ManageWhiteboardToolUseCaseInterface,
         manageWhiteboardObjectUseCase: ManageWhiteboardObjectUseCaseInterface
     ) {
         self.drawObjectUseCase = drawObjectUseCase
+        self.textObjectUseCase = textObjectUseCase
         self.manageWhiteboardToolUseCase = managemanageWhiteboardToolUseCase
         self.manageWhiteboardObjectUseCase = manageWhiteboardObjectUseCase
 
@@ -65,6 +69,8 @@ final class WhiteboardViewModel: ViewModel {
             finishDrawing()
         case .finishUsingTool:
             finishUsingTool()
+        case .addTextObject(scrollViewOffset: let scrollViewOffset, viewSize: let viewSize):
+            addText(scrollViewOffset: scrollViewOffset, viewSize: viewSize)
         }
     }
 
@@ -107,5 +113,10 @@ final class WhiteboardViewModel: ViewModel {
     private func finishDrawing() {
         guard let drawingObject = drawObjectUseCase.finishDrawing() else { return }
         addWhiteboardObject(object: drawingObject)
+    }
+
+    private func addText(scrollViewOffset: CGPoint, viewSize: CGSize) {
+        let textObject = textObjectUseCase.addText(scrollViewOffset: scrollViewOffset, viewSize: viewSize)
+        addWhiteboardObject(object: textObject)
     }
 }
