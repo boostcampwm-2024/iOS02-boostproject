@@ -7,11 +7,11 @@
 
 public final class WhiteboardUseCase: WhiteboardUseCaseInterface {
     private let repository: WhiteboardRepositoryInterface
-    private var participantsInfo: [String] = []
+    private var participantsInfo: [Profile] = []
 
     public init(repository: WhiteboardRepositoryInterface, profile: Profile) {
         self.repository = repository
-        participantsInfo.append(profile.profileIcon.emoji)
+        participantsInfo.append(profile)
     }
 
     public func createWhiteboard(nickname: String) -> Whiteboard {
