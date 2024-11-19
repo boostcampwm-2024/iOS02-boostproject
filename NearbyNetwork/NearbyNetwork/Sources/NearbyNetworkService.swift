@@ -14,7 +14,7 @@ public final class NearbyNetworkService: NSObject {
     public weak var delegate: NearbyNetworkDelegate?
     private let peerID: MCPeerID
     private let session: MCSession
-    private let serviceAdvertiser: MCNearbyServiceAdvertiser
+    private var serviceAdvertiser: MCNearbyServiceAdvertiser
     private let serviceBrowser: MCNearbyServiceBrowser
     private var connectedPeers: [MCPeerID: NetworkConnection] = [:]
     private var foundPeers: [MCPeerID: NetworkConnection] = [:] {
@@ -54,6 +54,18 @@ extension NearbyNetworkService: NearbyNetworkInterface {
 
     public func startPublishing() {
         serviceAdvertiser.startAdvertisingPeer()
+    }
+
+    public func startPublishing(with info: [String: String]) {
+        Task {
+            serviceAdvertiser.stopAdvertisingPeer()
+            try? await Task.sleep(nanoseconds: 500_000_000)
+            serviceAdvertiser =  MCNearbyServiceAdvertiser(
+                peer: peerID,
+                discoveryInfo: info,
+                serviceType: serviceAdvertiser.serviceType)
+            serviceAdvertiser.startAdvertisingPeer()
+        }
     }
 
     public func stopPublishing() {
@@ -100,7 +112,11 @@ extension NearbyNetworkService: MCSessionDelegate {
         case .notConnected:
             connectedPeers[peerID] = nil
         case .connected:
-            connectedPeers[peerID] = NetworkConnection(id: UUID(), name: peerID.displayName)
+            let connectedPeerInfo = foundPeers[peerID]?.info
+            connectedPeers[peerID] = NetworkConnection(
+                id: UUID(),
+                name: peerID.displayName,
+                info: connectedPeerInfo)
         default:
             break
         }
@@ -176,7 +192,10 @@ extension NearbyNetworkService: MCNearbyServiceBrowserDelegate {
         foundPeer peerID: MCPeerID,
         withDiscoveryInfo info: [String: String]?
     ) {
-        let connection = NetworkConnection(id: UUID(), name: peerID.displayName)
+        let connection = NetworkConnection(
+            id: UUID(),
+            name: peerID.displayName,
+            info: info)
         foundPeers[peerID] = connection
     }
 

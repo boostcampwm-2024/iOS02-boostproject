@@ -7,6 +7,7 @@
 
 import Combine
 import Domain
+import PhotosUI
 import UIKit
 
 public class WhiteboardViewController: UIViewController {
@@ -23,6 +24,11 @@ public class WhiteboardViewController: UIViewController {
     private let viewModel: WhiteboardViewModel
     private let objectViewFactory: WhiteboardObjectViewFactoryable
     private var cancellables: Set<AnyCancellable>
+    private var visibleCenterPoint: CGPoint {
+        let centerX = scrollView.contentOffset.x + (scrollView.bounds.width / 2)
+        let centerY = scrollView.contentOffset.y + (scrollView.bounds.height / 2)
+        return CGPoint(x: centerX, y: centerY)
+    }
 
     init(viewModel: WhiteboardViewModel, objectViewFactory: WhiteboardObjectViewFactoryable) {
         self.viewModel = viewModel
@@ -83,6 +89,13 @@ public class WhiteboardViewController: UIViewController {
             .sink { [weak self] tool in
                 self?.toolbar.select(tool: tool)
                 self?.configureDrawingView(isDrawing: tool == .drawing)
+                guard let tool else { return }
+                switch tool {
+                case .photo:
+                    self?.presentImagePicker()
+                default:
+                    break
+                }
             }
             .store(in: &cancellables)
 
@@ -120,6 +133,7 @@ public class WhiteboardViewController: UIViewController {
         canvasView.addSubview(objectView)
     }
 
+
     private func addText() {
         viewModel.action(input: .addTextObject(scrollViewOffset: scrollView.contentOffset, viewSize: view.frame.size))
     }
@@ -127,6 +141,17 @@ public class WhiteboardViewController: UIViewController {
     // TODO: 이후에 Done 버튼이 생길경우 사용할 메소드
     private func endEditObject() {
         view.endEditing(true)
+    }
+  
+    private func presentImagePicker() {
+        var configuration = PHPickerConfiguration()
+        configuration.filter = .images
+
+        let phpPicker = PHPickerViewController(configuration: configuration)
+        phpPicker.delegate = self
+
+        present(phpPicker, animated: true)
+        viewModel.action(input: .finishUsingTool)
     }
 }
 
@@ -150,5 +175,30 @@ extension WhiteboardViewController: DrawingViewDelegate {
 
     func drawingViewDidEndDrawing(_ sender: DrawingView) {
         viewModel.action(input: .finishDrawing)
+    }
+}
+
+// MARK: - PHPickerViewControllerDelegate
+extension WhiteboardViewController: PHPickerViewControllerDelegate {
+    public func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
+        picker.dismiss(animated: true, completion: nil)
+        guard
+            let itemProvider = results.first?.itemProvider,
+            itemProvider.canLoadObject(ofClass: UIImage.self)
+        else { return }
+
+        itemProvider.loadObject(ofClass: UIImage.self) { image, _ in
+            guard
+                let selectedImage = image as? UIImage,
+                let imageData = selectedImage.jpegData(compressionQuality: 1)
+            else { return }
+
+            DispatchQueue.main.async {
+                self.viewModel.action(input: .addPhoto(
+                    imageData: imageData,
+                    position: self.visibleCenterPoint,
+                    size: selectedImage.size))
+            }
+        }
     }
 }

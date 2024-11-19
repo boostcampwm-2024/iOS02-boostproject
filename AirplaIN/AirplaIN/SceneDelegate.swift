@@ -8,6 +8,7 @@
 import DataSource
 import Domain
 import NearbyNetwork
+import Persistence
 import Presentation
 import UIKit
 
@@ -23,8 +24,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
         // TODO: - 임시 의존성 주입
         let nearbyNetworkService = NearbyNetworkService(profileName: "name", serviceName: "whiteboard")
+        let profileRepository = ProfileRepository(persistenceService: PersistenceService())
+        let profileUseCase = ProfileUseCase(repository: profileRepository)
+        let profile = profileRepository.loadProfile()
         let repository = WhiteboardRepository(nearbyNetworkInterface: nearbyNetworkService)
-        let whiteboardUseCase = WhiteboardUseCase(repository: repository)
+        let whiteboardUseCase = WhiteboardUseCase(repository: repository, profile: profile)
         let viewModel = WhiteboardListViewModel(whiteboardUseCase: whiteboardUseCase, nickname: "name")
         let viewController = WhiteboardListViewController(viewModel: viewModel)
 

@@ -18,6 +18,8 @@ struct WhiteboardObjectViewFactory: WhiteboardObjectViewFactoryable {
             return TextObjectView(textObject: textObject)
         case let drawingObject as DrawingObject:
             return DrawingObjectView(drawingObject: drawingObject)
+        case let photoObject as PhotoObject:
+            return PhotoObjectView(photoObject: photoObject)
         default:
             break
         }
