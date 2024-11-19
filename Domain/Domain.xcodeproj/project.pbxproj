@@ -176,9 +176,9 @@
 			children = (
 				A8E97BD62CE5A6B800B28063 /* Profile.swift */,
 				A8E97BD72CE5A6B800B28063 /* ProfileIcon.swift */,
-				6F21477A2CE4CEAE00B55E2C /* TextObject.swift */,
 				5BDFD9332CE1F7DB00DA4F5B /* Whiteboard.swift */,
 				0080E8BA2CE2ECC60095B958 /* WhiteboardObject.swift */,
+				6F21477A2CE4CEAE00B55E2C /* TextObject.swift */,
 				00683D682CE37F2F000D28E4 /* DrawingObject.swift */,
 				003D5A2A2CEB1FEA005F3D09 /* PhotoObject.swift */,
 			);

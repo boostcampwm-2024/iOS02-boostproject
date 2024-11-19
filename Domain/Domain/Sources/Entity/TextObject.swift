@@ -14,12 +14,14 @@ public class TextObject: WhiteboardObject {
         id: UUID,
         position: CGPoint,
         size: CGSize,
-        text: String
+        text: String,
+        selectedBy: Profile? = nil
     ) {
         self.text = text
         super.init(
             id: id,
             position: position,
-            size: size)
+            size: size,
+            selectedBy: selectedBy)
     }
 }

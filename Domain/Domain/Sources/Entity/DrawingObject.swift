@@ -15,14 +15,16 @@ public final class DrawingObject: WhiteboardObject {
         position: CGPoint,
         size: CGSize,
         points: [CGPoint],
-        lineWidth: CGFloat
+        lineWidth: CGFloat,
+        selectedBy: Profile? = nil
     ) {
         self.points = points
         self.lineWidth = lineWidth
         super.init(
             id: id,
             position: position,
-            size: size)
+            size: size,
+            selectedBy: selectedBy)
     }
 
     // TODO: - 화이트보드 오브젝트 수정 구현 시 고도화
