@@ -75,7 +75,7 @@ final class SelectProfileIconViewController: UIViewController {
 // MARK: - UICollectionViewDataSource
 extension SelectProfileIconViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return ProfileIcon.profileIcons.count
+        return ProfileIcon.allCases.count
     }
 
     func collectionView(
@@ -87,7 +87,7 @@ extension SelectProfileIconViewController: UICollectionViewDataSource {
                 withReuseIdentifier: ProfileIconCollectionViewCell.reuseIdentifier,
                 for: indexPath) as? ProfileIconCollectionViewCell
         else { return UICollectionViewCell() }
-        let profileIcon = ProfileIcon.profileIcons[indexPath.item]
+        let profileIcon = ProfileIcon.allCases[indexPath.item]
         let profileIconSize = profileIconSize()
         cell.configure(profileIcon: profileIcon, profileIconSize: profileIconSize)
         return cell
@@ -97,7 +97,7 @@ extension SelectProfileIconViewController: UICollectionViewDataSource {
 // MARK: - UICollectionViewDelegate
 extension SelectProfileIconViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let selectedProfileIcon = ProfileIcon.profileIcons[indexPath.item]
+        let selectedProfileIcon = ProfileIcon.allCases[indexPath.item]
         viewModel.action(input: .updateProfileIcon(profileIcon: selectedProfileIcon))
         dismiss(animated: true)
     }
