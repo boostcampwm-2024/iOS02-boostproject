@@ -9,10 +9,9 @@ import Domain
 import UIKit
 
 final class TextObjectView: WhiteboardObjectView {
-    private lazy var textField: UITextField = {
+    private let textField: UITextField = {
         let textField = UITextField()
         textField.placeholder = "Hello AirplaIN"
-        textField.delegate = self
         return textField
     }()
 
@@ -21,7 +20,7 @@ final class TextObjectView: WhiteboardObjectView {
     init(textObject: TextObject) {
         self.textObject = textObject
         super.init(whiteboardObject: textObject)
-
+        configureAttribute()
         configureLayout()
     }
 
@@ -36,6 +35,10 @@ final class TextObjectView: WhiteboardObjectView {
 
     override func becomeFirstResponder() -> Bool {
         textField.becomeFirstResponder()
+    }
+
+    private func configureAttribute() {
+        textField.delegate = self
     }
 
     private func configureLayout() {
