@@ -29,17 +29,20 @@ final class WhiteboardViewModel: ViewModel {
     }
 
     let output: Output
+    private let whiteboardUseCase: WhiteboardUseCaseInterface
     private let addPhotoUseCase: AddPhotoUseCase
     private let drawObjectUseCase: DrawObjectUseCaseInterface
     private let manageWhiteboardToolUseCase: ManageWhiteboardToolUseCaseInterface
     private let manageWhiteboardObjectUseCase: ManageWhiteboardObjectUseCaseInterface
 
     init(
+        whiteboardUseCase: WhiteboardUseCaseInterface,
         addPhotoUseCase: AddPhotoUseCase,
         drawObjectUseCase: DrawObjectUseCaseInterface,
         managemanageWhiteboardToolUseCase: ManageWhiteboardToolUseCaseInterface,
         manageWhiteboardObjectUseCase: ManageWhiteboardObjectUseCaseInterface
     ) {
+        self.whiteboardUseCase = whiteboardUseCase
         self.addPhotoUseCase = addPhotoUseCase
         self.drawObjectUseCase = drawObjectUseCase
         self.manageWhiteboardToolUseCase = managemanageWhiteboardToolUseCase
@@ -135,5 +138,9 @@ final class WhiteboardViewModel: ViewModel {
     private func finishDrawing() {
         guard let drawingObject = drawObjectUseCase.finishDrawing() else { return }
         addWhiteboardObject(object: drawingObject)
+    }
+
+    private func startPublishing() {
+        whiteboardUseCase.startPublishingWhiteboard()
     }
 }

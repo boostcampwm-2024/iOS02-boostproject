@@ -19,6 +19,10 @@ public protocol NearbyNetworkInterface {
     /// 주변에 내 기기를 알립니다.
     func startPublishing()
 
+    /// 주변에 내 기기를 정보와 함께 알립니다.
+    /// - Parameter data: 담을 정보
+    func startPublishing(with info: [String: String])
+
     /// 주변에 내 기기 알리는 것을 중지합니다.
     func stopPublishing()
 
