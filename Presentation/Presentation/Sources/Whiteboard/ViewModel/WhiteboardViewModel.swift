@@ -14,7 +14,6 @@ final class WhiteboardViewModel: ViewModel {
         case startDrawing(startAt: CGPoint)
         case addDrawingPoint(point: CGPoint)
         case finishUsingTool
-        case publishWithInfo
     }
 
     struct Output {
@@ -59,8 +58,6 @@ final class WhiteboardViewModel: ViewModel {
             addDrawingPoint(at: point)
         case .finishUsingTool:
             finishUsingTool()
-        case .publishWithInfo:
-            startPublishing()
         }
     }
 

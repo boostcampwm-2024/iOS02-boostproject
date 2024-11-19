@@ -16,8 +16,9 @@ public final class WhiteboardRepository: WhiteboardRepositoryInterface {
         self.nearbyNetwork.delegate = self
     }
 
-    public func startPublishing(with info: [String: String]) {
-        nearbyNetwork.startPublishing(with: info)
+    public func startPublishing(with info: [String]) {
+        let participantsInfo: [String: String] = ["participants": info.joined(separator: ",")]
+        nearbyNetwork.startPublishing(with: participantsInfo)
     }
 }
 
