@@ -11,12 +11,12 @@ import Foundation
 public final class WhiteboardUseCase: WhiteboardUseCaseInterface {
     private var repository: WhiteboardRepositoryInterface
     private var participantsInfo: [Profile] = []
-    private let whiteboardListSubject: PassthroughSubject<[Whiteboard], Never>
-    public let whiteboardListPublisher: AnyPublisher<[Whiteboard], Never>
+    private let whiteboardListSubject: PassthroughSubject<[WhiteboardCellModel], Never>
+    public let whiteboardListPublisher: AnyPublisher<[WhiteboardCellModel], Never>
 
     public init(repository: WhiteboardRepositoryInterface, profile: Profile) {
         self.repository = repository
-        whiteboardListSubject = PassthroughSubject<[Whiteboard], Never>()
+        whiteboardListSubject = PassthroughSubject<[WhiteboardCellModel], Never>()
         whiteboardListPublisher = whiteboardListSubject.eraseToAnyPublisher()
         participantsInfo.append(profile)
         self.repository.delegate = self
@@ -36,7 +36,10 @@ public final class WhiteboardUseCase: WhiteboardUseCaseInterface {
 }
 
 extension WhiteboardUseCase: WhiteboardRepositoryDelegate {
-    public func whiteboardRepository(_ sender: WhiteboardRepositoryInterface, didFind whiteboards: [Whiteboard]) {
+    public func whiteboardRepository(
+        _ sender: WhiteboardRepositoryInterface,
+        didFind whiteboards: [WhiteboardCellModel]
+    ) {
         whiteboardListSubject.send(whiteboards)
     }
 }

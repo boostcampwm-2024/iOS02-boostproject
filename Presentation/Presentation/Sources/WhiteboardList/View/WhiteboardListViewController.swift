@@ -17,6 +17,9 @@ public final class WhiteboardListViewController: UIViewController {
         static let mainTitleLabelHeight: CGFloat = 43
         static let groupHeight: CGFloat = 130
         static let itemVerticalMargin: CGFloat = 8
+        static let labelLineSpacing: CGFloat = 10
+        static let createButtonTrailingMargin: CGFloat = 29
+        static let collectionViewTopMargin: CGFloat = 10
     }
 
     private let mainTitleLabel: UILabel = {
@@ -41,55 +44,20 @@ public final class WhiteboardListViewController: UIViewController {
         return button
     }()
 
+    private let emptyListLabel: UILabel = {
+        let label = UILabel()
+        label.text = "주변에 생성된 화이트보드가 없습니다.\n\n먼저 만들어보는건 어떤가요?"
+        label.textColor = .gray500
+        label.font = AirplainFont.Body2
+        label.numberOfLines = 3
+        label.textAlignment = .center
+        return label
+    }()
+
     private let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
     private var dataSource: UICollectionViewDiffableDataSource<Int, WhiteboardCellModel>?
     private let viewModel: WhiteboardListViewModel
     private var cancellables = Set<AnyCancellable>()
-
-    private var whiteboardCellModels: [WhiteboardCellModel] = [
-        WhiteboardCellModel(
-            id: UUID(),
-            title: "쪼이의 보드",
-            icons: [
-                ProfileIcon
-                    .profileIcons[0],
-                ProfileIcon
-                    .profileIcons[1]
-            ]
-        ),
-        WhiteboardCellModel(
-            id: UUID(),
-            title: "다우니의 보드",
-            icons: [
-                ProfileIcon
-                    .profileIcons[0],
-                ProfileIcon
-                    .profileIcons[1],
-                ProfileIcon
-                    .profileIcons[2]
-            ]
-        ),
-        WhiteboardCellModel(
-            id: UUID(),
-            title: "딴의 보드",
-            icons: [
-                ProfileIcon
-                    .profileIcons[2]
-            ]
-        ),
-        WhiteboardCellModel(
-            id: UUID(),
-            title: "딩동의 보드",
-            icons: [
-                ProfileIcon
-                    .profileIcons[0],
-                ProfileIcon
-                    .profileIcons[1],
-                ProfileIcon
-                    .profileIcons[2]
-            ]
-        )
-    ]
 
     public init(viewModel: WhiteboardListViewModel) {
         self.viewModel = viewModel
@@ -105,6 +73,12 @@ public final class WhiteboardListViewController: UIViewController {
         configureAttribute()
         configureLayout()
         bind()
+        viewModel.action(input: .searchWhiteboard)
+    }
+
+    public override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        viewModel.action(input: .searchWhiteboard)
     }
 
     private func configureAttribute() {
@@ -117,7 +91,6 @@ public final class WhiteboardListViewController: UIViewController {
 
         configureCollectionView()
         configureDataSource()
-        applySnapshot()
     }
 
     private func configureLayout() {
@@ -143,13 +116,19 @@ public final class WhiteboardListViewController: UIViewController {
                   height: WhiteboardListLayoutConstant.buttonSize)
             .top(equalTo: view.topAnchor,
                  inset: WhiteboardListLayoutConstant.upperComponentTopMargin)
-            .trailing(equalTo: configureProfileButton.leadingAnchor, inset: 29)
+            .trailing(equalTo: configureProfileButton.leadingAnchor,
+                      inset: WhiteboardListLayoutConstant.createButtonTrailingMargin)
 
         collectionView
             .addToSuperview(view)
-            .top(equalTo: mainTitleLabel.bottomAnchor, inset: .zero)
+            .top(equalTo: mainTitleLabel.bottomAnchor,
+                 constant: WhiteboardListLayoutConstant.collectionViewTopMargin)
             .horizontalEdges(equalTo: view)
             .bottom(equalTo: view.bottomAnchor, inset: .zero)
+
+        emptyListLabel
+            .addToSuperview(view)
+            .center(in: view)
     }
 
     private func configureCollectionView() {
@@ -192,15 +171,19 @@ public final class WhiteboardListViewController: UIViewController {
     private func configureDataSource() {
         dataSource = UICollectionViewDiffableDataSource<Int, WhiteboardCellModel>(
             collectionView: collectionView,
-            cellProvider: {
-                [weak self] collectionView, indexPath, board in
+            cellProvider: { [weak self] collectionView, indexPath, board in
                 return self?.configureCell(
                     collectionView: collectionView,
                     indexPath: indexPath,
-                    board: board)})
+                    board: board)
+            })
     }
 
-    private func configureCell(collectionView: UICollectionView, indexPath: IndexPath, board: WhiteboardCellModel) -> UICollectionViewCell? {
+    private func configureCell(
+        collectionView: UICollectionView,
+        indexPath: IndexPath,
+        board: WhiteboardCellModel
+    ) -> UICollectionViewCell? {
         guard
             let cell = collectionView.dequeueReusableCell(
                 withReuseIdentifier: WhiteboardCell.reuseIdentifier,
@@ -210,10 +193,10 @@ public final class WhiteboardListViewController: UIViewController {
         return cell
     }
 
-    private func applySnapshot() {
+    private func applySnapshot(whiteboards: [WhiteboardCellModel]) {
         var snapshot = NSDiffableDataSourceSnapshot<Int, WhiteboardCellModel>()
         snapshot.appendSections([0])
-        snapshot.appendItems(whiteboardCellModels, toSection: 0)
+        snapshot.appendItems(whiteboards, toSection: 0)
         guard let dataSource = dataSource else { return }
         dataSource.apply(snapshot, animatingDifferences: true)
     }
@@ -225,13 +208,22 @@ public final class WhiteboardListViewController: UIViewController {
                 // TODO: 화이트보드 추가
             }
             .store(in: &cancellables)
+
+        viewModel.output.whiteboardListPublisher
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] whiteboards in
+                self?.emptyListLabel.isHidden = !whiteboards.isEmpty
+                print("\(whiteboards.count)")
+                self?.applySnapshot(whiteboards: whiteboards)
+            }
+            .store(in: &cancellables)
     }
 }
 
 // MARK: - UICollectionViewDelegate
 extension WhiteboardListViewController: UICollectionViewDelegate {
     public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let selectedItem = whiteboardCellModels[indexPath.row]
+        guard let selectedWhiteboard = dataSource?.itemIdentifier(for: indexPath) else { return }
         // TODO: - Whiteboard Cell 선택 시 입장 처리
     }
 }

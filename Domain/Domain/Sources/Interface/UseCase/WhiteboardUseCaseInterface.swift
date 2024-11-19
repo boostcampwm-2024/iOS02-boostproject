@@ -8,7 +8,7 @@
 import Combine
 
 public protocol WhiteboardUseCaseInterface {
-    var whiteboardListPublisher: AnyPublisher<[Whiteboard], Never> { get }
+    var whiteboardListPublisher: AnyPublisher<[WhiteboardCellModel], Never> { get }
 
     /// 화이트보드를 생성합니다.
     /// - Parameter nickname: 유저 닉네임(화이트보드의 이름으로 사용)

@@ -5,6 +5,7 @@
 //  Created by 최다경 on 11/19/24.
 //
 
+import Domain
 import UIKit
 
 class WhiteboardCell: UICollectionViewCell {
