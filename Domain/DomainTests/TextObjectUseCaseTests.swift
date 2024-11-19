@@ -31,7 +31,7 @@ final class TextObjectUseCaseTests: XCTestCase {
             y: testScrollViewOffset.y + testViewSize.height / 3)
 
         // 실행
-        let createdTextObject = useCase.addText(scrollViewOffset: testScrollViewOffset, viewSize: testViewSize)
+        let createdTextObject = useCase.addText(point: testScrollViewOffset, size: testViewSize)
 
         // 검증
         XCTAssertEqual(createdTextObject.position, expectedPosition)
@@ -48,7 +48,7 @@ final class TextObjectUseCaseTests: XCTestCase {
             y: testScrollViewOffset.y + testViewSize.height / 3)
 
         // 실행
-        let createdTextObject = useCase.addText(scrollViewOffset: testScrollViewOffset, viewSize: testViewSize)
+        let createdTextObject = useCase.addText(point: testScrollViewOffset, size: testViewSize)
 
         // 검증
         XCTAssertEqual(createdTextObject.position, expectedPosition)
@@ -65,7 +65,7 @@ final class TextObjectUseCaseTests: XCTestCase {
             y: testScrollViewOffset.y + testViewSize.height / 3)
 
         // 실행
-        let createdTextObject = useCase.addText(scrollViewOffset: testScrollViewOffset, viewSize: testViewSize)
+        let createdTextObject = useCase.addText(point: testScrollViewOffset, size: testViewSize)
 
         // 검증
         XCTAssertEqual(createdTextObject.position, expectedPosition)

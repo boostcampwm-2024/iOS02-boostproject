@@ -8,7 +8,7 @@ import Combine
 import Domain
 import Foundation
 
-public final class WhiteboardViewModel: ViewModel {
+final class WhiteboardViewModel: ViewModel {
     enum Input {
         case selectTool(tool: WhiteboardTool)
         case startDrawing(startAt: CGPoint)
@@ -116,7 +116,7 @@ public final class WhiteboardViewModel: ViewModel {
     }
 
     private func addText(scrollViewOffset: CGPoint, viewSize: CGSize) {
-        let textObject = textObjectUseCase.addText(scrollViewOffset: scrollViewOffset, viewSize: viewSize)
+        let textObject = textObjectUseCase.addText(point: scrollViewOffset, size: viewSize)
         addWhiteboardObject(object: textObject)
     }
 }

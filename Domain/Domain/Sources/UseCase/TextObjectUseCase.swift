@@ -15,9 +15,9 @@ public final class TextObjectUseCase: TextObjectUseCaseInterface {
         self.textFieldDefaultSize = textFieldDefaultSize
     }
 
-    public func addText(scrollViewOffset: CGPoint, viewSize: CGSize) -> TextObject {
-        let positionX = scrollViewOffset.x + viewSize.width / 3
-        let positionY = scrollViewOffset.y + viewSize.height / 3
+    public func addText(point: CGPoint, size: CGSize) -> TextObject {
+        let positionX = point.x + size.width / 3
+        let positionY = point.y + size.height / 3
         let position = CGPoint(x: positionX, y: positionY)
         return TextObject(
             id: UUID(),
