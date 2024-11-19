@@ -100,7 +100,11 @@ extension NearbyNetworkService: MCSessionDelegate {
         case .notConnected:
             connectedPeers[peerID] = nil
         case .connected:
-            connectedPeers[peerID] = NetworkConnection(id: UUID(), name: peerID.displayName)
+            let connectedPeerInfo = foundPeers[peerID]?.info
+            connectedPeers[peerID] = NetworkConnection(
+                id: UUID(),
+                name: peerID.displayName,
+                info: connectedPeerInfo)
         default:
             break
         }
@@ -176,7 +180,10 @@ extension NearbyNetworkService: MCNearbyServiceBrowserDelegate {
         foundPeer peerID: MCPeerID,
         withDiscoveryInfo info: [String: String]?
     ) {
-        let connection = NetworkConnection(id: UUID(), name: peerID.displayName)
+        let connection = NetworkConnection(
+            id: UUID(),
+            name: peerID.displayName,
+            info: info)
         foundPeers[peerID] = connection
     }
 
