@@ -9,13 +9,14 @@ import Domain
 import UIKit
 
 final class TextObjectView: WhiteboardObjectView {
-    let textField: UITextField = {
+    private lazy var textField: UITextField = {
         let textField = UITextField()
         textField.placeholder = "Hello AirplaIN"
+        textField.delegate = self
         return textField
     }()
 
-    let textObject: TextObject
+    private let textObject: TextObject
 
     init(textObject: TextObject) {
         self.textObject = textObject
@@ -33,9 +34,30 @@ final class TextObjectView: WhiteboardObjectView {
         super.init(coder: coder)
     }
 
+    override func becomeFirstResponder() -> Bool {
+        textField.becomeFirstResponder()
+    }
+
     private func configureLayout() {
         textField
             .addToSuperview(self)
             .edges(equalTo: self)
+    }
+}
+
+extension TextObjectView: UITextFieldDelegate {
+    func textField(
+        _ textField: UITextField,
+        shouldChangeCharactersIn range: NSRange,
+        replacementString string: String
+    ) -> Bool {
+        let maxLength = 15
+        guard let text = textField.text else { return true }
+        let newlength = text.count + string.count - range.length
+        return newlength < maxLength
+    }
+
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
     }
 }

@@ -91,6 +91,7 @@ public class WhiteboardViewController: UIViewController {
             .sink { [weak self] object in
                 guard let objectView = self?.objectViewFactory.create(with: object) else { return }
                 self?.addObjectView(objectView: objectView)
+                objectView.becomeFirstResponder()
             }
             .store(in: &cancellables)
 
@@ -121,6 +122,11 @@ public class WhiteboardViewController: UIViewController {
 
     private func addText() {
         viewModel.action(input: .addTextObject(scrollViewOffset: scrollView.contentOffset, viewSize: view.frame.size))
+    }
+
+    // TODO: 이후에 Done 버튼이 생길경우 사용할 메소드
+    private func endEditObject() {
+        view.endEditing(true)
     }
 }
 
