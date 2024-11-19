@@ -19,6 +19,7 @@ final class WhiteboardViewModel: ViewModel {
         case addDrawingPoint(point: CGPoint)
         case finishDrawing
         case finishUsingTool
+        case addTextObject(scrollViewOffset: CGPoint, viewSize: CGSize)
     }
 
     struct Output {
@@ -32,6 +33,7 @@ final class WhiteboardViewModel: ViewModel {
     private let whiteboardUseCase: WhiteboardUseCaseInterface
     private let addPhotoUseCase: AddPhotoUseCase
     private let drawObjectUseCase: DrawObjectUseCaseInterface
+    private let textObjectUseCase: TextObjectUseCaseInterface
     private let manageWhiteboardToolUseCase: ManageWhiteboardToolUseCaseInterface
     private let manageWhiteboardObjectUseCase: ManageWhiteboardObjectUseCaseInterface
 
@@ -39,12 +41,14 @@ final class WhiteboardViewModel: ViewModel {
         whiteboardUseCase: WhiteboardUseCaseInterface,
         addPhotoUseCase: AddPhotoUseCase,
         drawObjectUseCase: DrawObjectUseCaseInterface,
+        textObjectUseCase: TextObjectUseCaseInterface,
         managemanageWhiteboardToolUseCase: ManageWhiteboardToolUseCaseInterface,
         manageWhiteboardObjectUseCase: ManageWhiteboardObjectUseCaseInterface
     ) {
         self.whiteboardUseCase = whiteboardUseCase
         self.addPhotoUseCase = addPhotoUseCase
         self.drawObjectUseCase = drawObjectUseCase
+        self.textObjectUseCase = textObjectUseCase
         self.manageWhiteboardToolUseCase = managemanageWhiteboardToolUseCase
         self.manageWhiteboardObjectUseCase = manageWhiteboardObjectUseCase
 
@@ -80,6 +84,8 @@ final class WhiteboardViewModel: ViewModel {
             finishDrawing()
         case .finishUsingTool:
             finishUsingTool()
+        case .addTextObject(scrollViewOffset: let scrollViewOffset, viewSize: let viewSize):
+            addText(scrollViewOffset: scrollViewOffset, viewSize: viewSize)
         }
     }
 
@@ -140,6 +146,11 @@ final class WhiteboardViewModel: ViewModel {
         addWhiteboardObject(object: drawingObject)
     }
 
+    private func addText(scrollViewOffset: CGPoint, viewSize: CGSize) {
+        let textObject = textObjectUseCase.addText(point: scrollViewOffset, size: viewSize)
+        addWhiteboardObject(object: textObject)
+    }
+  
     private func startPublishing() {
         whiteboardUseCase.startPublishingWhiteboard()
     }

@@ -104,6 +104,7 @@ public class WhiteboardViewController: UIViewController {
             .sink { [weak self] object in
                 guard let objectView = self?.objectViewFactory.create(with: object) else { return }
                 self?.addObjectView(objectView: objectView)
+                objectView.becomeFirstResponder()
             }
             .store(in: &cancellables)
 
@@ -132,6 +133,16 @@ public class WhiteboardViewController: UIViewController {
         canvasView.addSubview(objectView)
     }
 
+
+    private func addText() {
+        viewModel.action(input: .addTextObject(scrollViewOffset: scrollView.contentOffset, viewSize: view.frame.size))
+    }
+
+    // TODO: 이후에 Done 버튼이 생길경우 사용할 메소드
+    private func endEditObject() {
+        view.endEditing(true)
+    }
+  
     private func presentImagePicker() {
         var configuration = PHPickerConfiguration()
         configuration.filter = .images
@@ -148,6 +159,7 @@ public class WhiteboardViewController: UIViewController {
 extension WhiteboardViewController: WhiteboardToolBarDelegate {
     func whiteboardToolBar(_ sender: WhiteboardToolBar, selectedTool: WhiteboardTool) {
         viewModel.action(input: .selectTool(tool: selectedTool))
+        if selectedTool == .text { addText() }
     }
 }
 
