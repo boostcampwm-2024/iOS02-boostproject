@@ -6,7 +6,7 @@
 //
 import Foundation
 
-public class DrawingObject: WhiteboardObject {
+public final class DrawingObject: WhiteboardObject {
     public private(set) var points: [CGPoint]
     public let lineWidth: CGFloat
 
