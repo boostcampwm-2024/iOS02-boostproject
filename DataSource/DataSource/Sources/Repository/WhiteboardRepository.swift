@@ -10,6 +10,7 @@ import Foundation
 
 public final class WhiteboardRepository: WhiteboardRepositoryInterface {
     private var nearbyNetwork: NearbyNetworkInterface
+    public weak var delegate: WhiteboardRepositoryDelegate?
 
     public init(nearbyNetworkInterface: NearbyNetworkInterface) {
         self.nearbyNetwork = nearbyNetworkInterface
@@ -21,6 +22,10 @@ public final class WhiteboardRepository: WhiteboardRepositoryInterface {
             .compactMap { $0.profileIcon.emoji }
             .joined(separator: ",")]
         nearbyNetwork.startPublishing(with: participantsInfo)
+    }
+
+    public func startSearching() {
+        nearbyNetwork.startSearching()
     }
 }
 
@@ -41,7 +46,8 @@ extension WhiteboardRepository: NearbyNetworkDelegate {
     }
 
     public func nearbyNetwork(_ sender: any NearbyNetworkInterface, didFind connections: [NetworkConnection]) {
-        // TODO: -
+        let foundWhiteboards = connections.map { Whiteboard(name: $0.name) }
+        delegate?.whiteboardRepository(self, didFind: foundWhiteboards)
     }
 
     public func nearbyNetworkCannotConnect(_ sender: any NearbyNetworkInterface) {
