@@ -21,18 +21,18 @@ public final class WhiteboardListViewModel: ViewModel {
 
     struct Output {
         let whiteboardPublisher: AnyPublisher<Whiteboard, Never>
-        let whiteboardListPublisher: AnyPublisher<[WhiteboardCellModel], Never>
+        let whiteboardListPublisher: AnyPublisher<[Whiteboard], Never>
     }
 
     let output: Output
     private let whiteboardSubject: PassthroughSubject<Whiteboard, Never>
-    private let whiteboardListSubject: CurrentValueSubject<[WhiteboardCellModel], Never>
+    private let whiteboardListSubject: CurrentValueSubject<[Whiteboard], Never>
 
     public init(whiteboardUseCase: WhiteboardUseCaseInterface, nickname: String) {
         self.whiteboardUseCase = whiteboardUseCase
         self.nickname = nickname
         whiteboardSubject = PassthroughSubject<Whiteboard, Never>()
-        whiteboardListSubject = CurrentValueSubject<[WhiteboardCellModel], Never>([])
+        whiteboardListSubject = CurrentValueSubject<[Whiteboard], Never>([])
         self.output = Output(
             whiteboardPublisher: whiteboardSubject.eraseToAnyPublisher(),
             whiteboardListPublisher: whiteboardListSubject.eraseToAnyPublisher())

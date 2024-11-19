@@ -55,7 +55,7 @@ public final class WhiteboardListViewController: UIViewController {
     }()
 
     private let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
-    private var dataSource: UICollectionViewDiffableDataSource<Int, WhiteboardCellModel>?
+    private var dataSource: UICollectionViewDiffableDataSource<Int, Whiteboard>?
     private let viewModel: WhiteboardListViewModel
     private var cancellables = Set<AnyCancellable>()
 
@@ -169,7 +169,7 @@ public final class WhiteboardListViewController: UIViewController {
     }
 
     private func configureDataSource() {
-        dataSource = UICollectionViewDiffableDataSource<Int, WhiteboardCellModel>(
+        dataSource = UICollectionViewDiffableDataSource<Int, Whiteboard>(
             collectionView: collectionView,
             cellProvider: { [weak self] collectionView, indexPath, board in
                 return self?.configureCell(
@@ -182,7 +182,7 @@ public final class WhiteboardListViewController: UIViewController {
     private func configureCell(
         collectionView: UICollectionView,
         indexPath: IndexPath,
-        board: WhiteboardCellModel
+        board: Whiteboard
     ) -> UICollectionViewCell? {
         guard
             let cell = collectionView.dequeueReusableCell(
@@ -193,8 +193,8 @@ public final class WhiteboardListViewController: UIViewController {
         return cell
     }
 
-    private func applySnapshot(whiteboards: [WhiteboardCellModel]) {
-        var snapshot = NSDiffableDataSourceSnapshot<Int, WhiteboardCellModel>()
+    private func applySnapshot(whiteboards: [Whiteboard]) {
+        var snapshot = NSDiffableDataSourceSnapshot<Int, Whiteboard>()
         snapshot.appendSections([0])
         snapshot.appendItems(whiteboards, toSection: 0)
         guard let dataSource = dataSource else { return }
@@ -213,7 +213,6 @@ public final class WhiteboardListViewController: UIViewController {
             .receive(on: DispatchQueue.main)
             .sink { [weak self] whiteboards in
                 self?.emptyListLabel.isHidden = !whiteboards.isEmpty
-                print("\(whiteboards.count)")
                 self?.applySnapshot(whiteboards: whiteboards)
             }
             .store(in: &cancellables)

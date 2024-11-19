@@ -47,10 +47,10 @@ extension WhiteboardRepository: NearbyNetworkDelegate {
 
     public func nearbyNetwork(_ sender: any NearbyNetworkInterface, didFind connections: [NetworkConnection]) {
         let foundWhiteboards = connections.map {
-            WhiteboardCellModel(
+            Whiteboard(
                 id: $0.id,
-                title: $0.name,
-                icons: toProfileIcon(info: $0.info?["participants"]))
+                name: $0.name,
+                participantIcons: toProfileIcon(info: $0.info?["participants"]))
         }
 
         func toProfileIcon(info: String?) -> [ProfileIcon] {

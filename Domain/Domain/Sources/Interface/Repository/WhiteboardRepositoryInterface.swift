@@ -19,5 +19,5 @@ public protocol WhiteboardRepositoryDelegate: AnyObject {
     /// 주변 화이트보드를 찾았을 때 실행됩니다.
     /// - Parameters:
     ///   - whiteboards: 탐색된 화이트보드 배열
-    func whiteboardRepository(_ sender: WhiteboardRepositoryInterface, didFind whiteboards: [WhiteboardCellModel])
+    func whiteboardRepository(_ sender: WhiteboardRepositoryInterface, didFind whiteboards: [Whiteboard])
 }

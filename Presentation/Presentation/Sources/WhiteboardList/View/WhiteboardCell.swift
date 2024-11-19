@@ -93,15 +93,15 @@ class WhiteboardCell: UICollectionViewCell {
         layer.masksToBounds = false
     }
 
-    func configure(with board: WhiteboardCellModel) {
-        titleLabel.text = board.title
-        participantCountLabel.text = "\(board.icons.count)/8"
+    func configure(with board: Whiteboard) {
+        titleLabel.text = board.name
+        participantCountLabel.text = "\(board.participantIcons.count)/8"
 
         profileIconStackView
             .arrangedSubviews
             .forEach { $0.removeFromSuperview() }
 
-        for (index, icon) in board.icons.enumerated() {
+        for (index, icon) in board.participantIcons.enumerated() {
             if index > 3 { break }
 
             let iconView = ProfileIconView()
