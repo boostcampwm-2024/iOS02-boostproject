@@ -55,8 +55,4 @@ final class PhotoObjectView: WhiteboardObjectView {
 
         imageView.image = image
     }
-
-    private func convertSize(photoSize: CGSize) -> CGSize {
-        return .init()
-    }
 }
