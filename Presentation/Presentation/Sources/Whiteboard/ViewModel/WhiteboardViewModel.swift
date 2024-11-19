@@ -11,6 +11,10 @@ import Foundation
 final class WhiteboardViewModel: ViewModel {
     enum Input {
         case selectTool(tool: WhiteboardTool)
+        case addPhoto(
+            imageData: Data,
+            position: CGPoint,
+            size: CGSize)
         case startDrawing(startAt: CGPoint)
         case addDrawingPoint(point: CGPoint)
         case finishDrawing
@@ -26,17 +30,20 @@ final class WhiteboardViewModel: ViewModel {
 
     let output: Output
     private let whiteboardUseCase: WhiteboardUseCaseInterface
+    private let addPhotoUseCase: AddPhotoUseCase
     private let drawObjectUseCase: DrawObjectUseCaseInterface
     private let manageWhiteboardToolUseCase: ManageWhiteboardToolUseCaseInterface
     private let manageWhiteboardObjectUseCase: ManageWhiteboardObjectUseCaseInterface
 
     init(
         whiteboardUseCase: WhiteboardUseCaseInterface,
+        addPhotoUseCase: AddPhotoUseCase,
         drawObjectUseCase: DrawObjectUseCaseInterface,
         managemanageWhiteboardToolUseCase: ManageWhiteboardToolUseCaseInterface,
         manageWhiteboardObjectUseCase: ManageWhiteboardObjectUseCaseInterface
     ) {
         self.whiteboardUseCase = whiteboardUseCase
+        self.addPhotoUseCase = addPhotoUseCase
         self.drawObjectUseCase = drawObjectUseCase
         self.manageWhiteboardToolUseCase = managemanageWhiteboardToolUseCase
         self.manageWhiteboardObjectUseCase = manageWhiteboardObjectUseCase
@@ -60,6 +67,11 @@ final class WhiteboardViewModel: ViewModel {
         switch input {
         case .selectTool(let tool):
             selectTool(with: tool)
+        case .addPhoto(let imageData, let point, let size):
+            addPhoto(
+                imageData: imageData,
+                point: point,
+                size: size)
         case .startDrawing(let point):
             startDrawing(at: point)
         case .addDrawingPoint(point: let point):
@@ -97,6 +109,22 @@ final class WhiteboardViewModel: ViewModel {
 
     private func addWhiteboardObject(object: WhiteboardObject) {
         manageWhiteboardObjectUseCase.addObject(whiteboardObject: object)
+    }
+
+    private func addPhoto(
+        imageData: Data,
+        point: CGPoint,
+        size: CGSize
+    ) {
+        do {
+            let photoObject = try addPhotoUseCase.addPhoto(
+                imageData: imageData,
+                position: point,
+                size: size)
+            manageWhiteboardObjectUseCase.addObject(whiteboardObject: photoObject)
+        } catch {
+        // TODO: - 사진 추가 실패 시 오류 처리
+        }
     }
 
     private func startDrawing(at point: CGPoint) {
