@@ -17,22 +17,23 @@ public final class WhiteboardListViewModel: ViewModel {
     enum Input {
         case createWhiteboard
         case searchWhiteboard
+        case joinWhiteboard(whiteboard: WhiteboardListEntity)
     }
 
     struct Output {
         let whiteboardPublisher: AnyPublisher<Whiteboard, Never>
-        let whiteboardListPublisher: AnyPublisher<[Whiteboard], Never>
+        let whiteboardListPublisher: AnyPublisher<[WhiteboardListEntity], Never>
     }
 
     let output: Output
     private let whiteboardSubject: PassthroughSubject<Whiteboard, Never>
-    private let whiteboardListSubject: CurrentValueSubject<[Whiteboard], Never>
+    private let whiteboardListSubject: CurrentValueSubject<[WhiteboardListEntity], Never>
 
     public init(whiteboardUseCase: WhiteboardUseCaseInterface, nickname: String) {
         self.whiteboardUseCase = whiteboardUseCase
         self.nickname = nickname
         whiteboardSubject = PassthroughSubject<Whiteboard, Never>()
-        whiteboardListSubject = CurrentValueSubject<[Whiteboard], Never>([])
+        whiteboardListSubject = CurrentValueSubject<[WhiteboardListEntity], Never>([])
         self.output = Output(
             whiteboardPublisher: whiteboardSubject.eraseToAnyPublisher(),
             whiteboardListPublisher: whiteboardListSubject.eraseToAnyPublisher())
@@ -44,6 +45,8 @@ public final class WhiteboardListViewModel: ViewModel {
             createWhiteboard()
         case .searchWhiteboard:
             searchWhiteboard()
+        case .joinWhiteboard(let whiteboard):
+            joinWhiteboard(whiteboard: whiteboard)
         }
     }
 
@@ -65,5 +68,14 @@ public final class WhiteboardListViewModel: ViewModel {
                 self?.whiteboardListSubject.send(whiteboards)
             }
             .store(in: &cancellables)
+    }
+
+    private func joinWhiteboard(whiteboard: WhiteboardListEntity) {
+        do {
+            try whiteboardUseCase.joinWhiteboard(whiteboard: whiteboard)
+            // TODO: 해당 화이트보드로 화면전환
+        } catch {
+            // TODO: Alert 창 띄우기
+        }
     }
 }

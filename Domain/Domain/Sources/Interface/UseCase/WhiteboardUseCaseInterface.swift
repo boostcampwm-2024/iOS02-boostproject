@@ -8,7 +8,7 @@
 import Combine
 
 public protocol WhiteboardUseCaseInterface {
-    var whiteboardListPublisher: AnyPublisher<[Whiteboard], Never> { get }
+    var whiteboardListPublisher: AnyPublisher<[WhiteboardListEntity], Never> { get }
 
     /// 화이트보드를 생성합니다.
     /// - Parameter nickname: 유저 닉네임(화이트보드의 이름으로 사용)
@@ -19,4 +19,8 @@ public protocol WhiteboardUseCaseInterface {
 
     /// 주변 화이트보드를 탐색합니다. 
     func startSearchingWhiteboard()
+
+    /// 선택한 화이트보드와 연결을 시도합니다.
+    /// - Parameter whiteboard: 연결할 화이트보드
+    func joinWhiteboard(whiteboard: WhiteboardListEntity) throws
 }

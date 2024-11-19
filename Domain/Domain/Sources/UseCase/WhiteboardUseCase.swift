@@ -11,12 +11,12 @@ import Foundation
 public final class WhiteboardUseCase: WhiteboardUseCaseInterface {
     private var repository: WhiteboardRepositoryInterface
     private var participantsInfo: [Profile] = []
-    private let whiteboardListSubject: PassthroughSubject<[Whiteboard], Never>
-    public let whiteboardListPublisher: AnyPublisher<[Whiteboard], Never>
+    private let whiteboardListSubject: PassthroughSubject<[WhiteboardListEntity], Never>
+    public let whiteboardListPublisher: AnyPublisher<[WhiteboardListEntity], Never>
 
     public init(repository: WhiteboardRepositoryInterface, profile: Profile) {
         self.repository = repository
-        whiteboardListSubject = PassthroughSubject<[Whiteboard], Never>()
+        whiteboardListSubject = PassthroughSubject<[WhiteboardListEntity], Never>()
         whiteboardListPublisher = whiteboardListSubject.eraseToAnyPublisher()
         participantsInfo.append(profile)
         self.repository.delegate = self
@@ -33,10 +33,17 @@ public final class WhiteboardUseCase: WhiteboardUseCaseInterface {
     public func startSearchingWhiteboard() {
         repository.startSearching()
     }
+
+    public func joinWhiteboard(whiteboard: WhiteboardListEntity) throws {
+        try repository.joinWhiteboard(whiteboard: whiteboard)
+    }
 }
 
 extension WhiteboardUseCase: WhiteboardRepositoryDelegate {
-    public func whiteboardRepository(_ sender: WhiteboardRepositoryInterface, didFind whiteboards: [Whiteboard]) {
+    public func whiteboardRepository(
+        _ sender: WhiteboardRepositoryInterface,
+        didFind whiteboards: [WhiteboardListEntity]
+    ) {
         whiteboardListSubject.send(whiteboards)
     }
 }

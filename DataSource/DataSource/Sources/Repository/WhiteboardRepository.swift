@@ -27,6 +27,15 @@ public final class WhiteboardRepository: WhiteboardRepositoryInterface {
     public func startSearching() {
         nearbyNetwork.startSearching()
     }
+
+    public func joinWhiteboard(whiteboard: WhiteboardListEntity) throws {
+        let participantsInfo = ["participants": whiteboard.info.joined(separator: ",")]
+        let connection = NetworkConnection(
+            id: whiteboard.id,
+            name: whiteboard.name,
+            info: participantsInfo)
+        try nearbyNetwork.joinConnection(connection: connection)
+    }
 }
 
 extension WhiteboardRepository: NearbyNetworkDelegate {
@@ -39,14 +48,22 @@ extension WhiteboardRepository: NearbyNetworkDelegate {
 
     public func nearbyNetwork(
         _ sender: any NearbyNetworkInterface,
-        didReceive connectionHandler: @escaping (
-            Bool
-        ) -> Void) {
-        // TODO: -
+        didReceive connectionHandler: @escaping (Bool) -> Void) {
+            connectionHandler(true)
     }
 
     public func nearbyNetwork(_ sender: any NearbyNetworkInterface, didFind connections: [NetworkConnection]) {
-        let foundWhiteboards = connections.map { Whiteboard(name: $0.name) }
+        let foundWhiteboards = connections.compactMap {
+            WhiteboardListEntity(
+                id: $0.id,
+                name: $0.name,
+                info: toProfileEmoji(information: $0.info?["participants"] ?? ""))
+        }
+
+        func toProfileEmoji(information: String) -> [String] {
+            return information.split(separator: ",").map { String($0) }
+        }
+
         delegate?.whiteboardRepository(self, didFind: foundWhiteboards)
     }
 
