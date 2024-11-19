@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		004B21812CEB5BC000A5BEB8 /* PhotoObjectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 004B21802CEB5BC000A5BEB8 /* PhotoObjectView.swift */; };
 		00683D762CE4B828000D28E4 /* DrawingRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00683D752CE4B828000D28E4 /* DrawingRenderer.swift */; };
 		0080E8C62CE2F0510095B958 /* WhiteboardObjectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0080E8C52CE2F04F0095B958 /* WhiteboardObjectView.swift */; };
 		0080E8CA2CE2FF750095B958 /* WhiteboardObjectViewFactoryable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0080E8C92CE2FF6E0095B958 /* WhiteboardObjectViewFactoryable.swift */; };
@@ -48,6 +49,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		004B21802CEB5BC000A5BEB8 /* PhotoObjectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoObjectView.swift; sourceTree = "<group>"; };
 		00683D752CE4B828000D28E4 /* DrawingRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawingRenderer.swift; sourceTree = "<group>"; };
 		0080E8C52CE2F04F0095B958 /* WhiteboardObjectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhiteboardObjectView.swift; sourceTree = "<group>"; };
 		0080E8C92CE2FF6E0095B958 /* WhiteboardObjectViewFactoryable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhiteboardObjectViewFactoryable.swift; sourceTree = "<group>"; };
@@ -93,6 +95,7 @@
 				6F199EF02CE31A05005DC40F /* WhiteboardToolBar.swift */,
 				6F21477C2CE4EFCF00B55E2C /* TextObjectView.swift */,
 				00D2DD992CE8DCEA0089F0BA /* DrawingObjectView.swift */,
+				004B21802CEB5BC000A5BEB8 /* PhotoObjectView.swift */,
 			);
 			path = ObjectView;
 			sourceTree = "<group>";
@@ -386,6 +389,7 @@
 				A8E97AC12CE4E9A300B28063 /* ProfileIconCollectionViewCell.swift in Sources */,
 				A8E979C72CE4945500B28063 /* LayoutConstant.swift in Sources */,
 				A85260292CE344C60089DA5E /* ProfileIconView.swift in Sources */,
+				004B21812CEB5BC000A5BEB8 /* PhotoObjectView.swift in Sources */,
 				A8E97ABF2CE4E94D00B28063 /* SelectProfileIconViewController.swift in Sources */,
 				A8E979C52CE493E900B28063 /* ProfileViewController.swift in Sources */,
 				A85260252CE3447E0089DA5E /* UIColor+.swift in Sources */,
