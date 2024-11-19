@@ -17,6 +17,7 @@ public final class WhiteboardListViewModel: ViewModel {
         case createWhiteboard
         case searchWhiteboard
         case stopSearchingWhiteboard
+        case joinWhiteboard(whiteboard: Whiteboard)
     }
 
     struct Output {
@@ -45,6 +46,8 @@ public final class WhiteboardListViewModel: ViewModel {
             searchWhiteboard()
         case .stopSearchingWhiteboard:
             stopSearchingWhiteboard()
+        case .joinWhiteboard(let whiteboard):
+            joinWhiteboard(whiteboard: whiteboard)
         }
     }
 
@@ -70,5 +73,14 @@ public final class WhiteboardListViewModel: ViewModel {
 
     private func stopSearchingWhiteboard() {
         whiteboardUseCase.stopSearchingWhiteboard()
+    }
+
+    private func joinWhiteboard(whiteboard: Whiteboard) {
+        do {
+            try whiteboardUseCase.joinWhiteboard(whiteboard: whiteboard)
+            // TODO: 해당 화이트보드로 화면전환
+        } catch {
+            // TODO: Alert 창 띄우기
+        }
     }
 }

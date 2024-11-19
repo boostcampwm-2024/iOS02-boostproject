@@ -45,6 +45,10 @@ public final class WhiteboardUseCase: WhiteboardUseCaseInterface {
     public func stopSearchingWhiteboard() {
         whiteboardRepository.stopSearching()
     }
+
+    public func joinWhiteboard(whiteboard: Whiteboard) throws {
+        try whiteboardRepository.joinWhiteboard(whiteboard: whiteboard)
+    }
 }
 
 extension WhiteboardUseCase: WhiteboardRepositoryDelegate {

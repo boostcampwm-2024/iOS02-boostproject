@@ -31,22 +31,24 @@ public final class WhiteboardRepository: WhiteboardRepositoryInterface {
     public func stopSearching() {
         nearbyNetwork.stopSearching()
     }
+
+    public func joinWhiteboard(whiteboard: Whiteboard) throws {
+        // TODO: - ..
+    }
 }
 
 extension WhiteboardRepository: NearbyNetworkConnectionDelegate {
     public func nearbyNetwork(
         _ sender: any NearbyNetworkInterface,
-        didReceive connectionHandler: @escaping (
-            Bool
-        ) -> Void) {
-        // TODO: -
+        didReceive connectionHandler: @escaping (Bool) -> Void) {
+            connectionHandler(true)
     }
 
     public func nearbyNetwork(_ sender: any NearbyNetworkInterface, didFind connections: [NetworkConnection]) {
         let foundWhiteboards = connections.map {
             Whiteboard(
                 id: $0.id,
-                name: $0.name,
+                name: $0.info?["host"] ?? "Unknown",
                 participantIcons: toProfileIcon(info: $0.info?["participants"]))
         }
 
