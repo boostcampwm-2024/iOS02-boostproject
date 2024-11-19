@@ -28,6 +28,7 @@
 		5BDFD9372CE2E6BC00DA4F5B /* WhiteboardRepositoryInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BDFD9362CE2E6BC00DA4F5B /* WhiteboardRepositoryInterface.swift */; };
 		5BDFD93A2CE2EE3100DA4F5B /* WhiteboardUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BDFD9392CE2EE3100DA4F5B /* WhiteboardUseCase.swift */; };
 		6F21477B2CE4CEAE00B55E2C /* TextObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F21477A2CE4CEAE00B55E2C /* TextObject.swift */; };
+		6F47898F2CEB8D8F0016B7AB /* TextObjectUseCaseInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F47898E2CEB8D8F0016B7AB /* TextObjectUseCaseInterface.swift */; };
 		6FBC909B2CE5A6AE000FEB5A /* WhiteObjectSendUseCaseInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FBC909A2CE5A52B000FEB5A /* WhiteObjectSendUseCaseInterface.swift */; };
 		A85260232CE343B20089DA5E /* ProfileUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = A85260222CE343B20089DA5E /* ProfileUseCase.swift */; };
 		A8E97BD82CE5A6B800B28063 /* Profile.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8E97BD62CE5A6B800B28063 /* Profile.swift */; };
@@ -83,6 +84,7 @@
 		5BDFD9362CE2E6BC00DA4F5B /* WhiteboardRepositoryInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhiteboardRepositoryInterface.swift; sourceTree = "<group>"; };
 		5BDFD9392CE2EE3100DA4F5B /* WhiteboardUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhiteboardUseCase.swift; sourceTree = "<group>"; };
 		6F21477A2CE4CEAE00B55E2C /* TextObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextObject.swift; sourceTree = "<group>"; };
+		6F47898E2CEB8D8F0016B7AB /* TextObjectUseCaseInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextObjectUseCaseInterface.swift; sourceTree = "<group>"; };
 		6FBC909A2CE5A52B000FEB5A /* WhiteObjectSendUseCaseInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhiteObjectSendUseCaseInterface.swift; sourceTree = "<group>"; };
 		A85260222CE343B20089DA5E /* ProfileUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileUseCase.swift; sourceTree = "<group>"; };
 		A8E97BD62CE5A6B800B28063 /* Profile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Profile.swift; sourceTree = "<group>"; };
@@ -179,6 +181,7 @@
 		0080E9192CE4B0880095B958 /* UseCase */ = {
 			isa = PBXGroup;
 			children = (
+				6F47898E2CEB8D8F0016B7AB /* TextObjectUseCaseInterface.swift */,
 				0080E9182CE4B0880095B958 /* DrawObjectUseCaseInterface.swift */,
 				A8E97C042CE5E3AB00B28063 /* ProfileUseCaseInterface.swift */,
 				6FBC909A2CE5A52B000FEB5A /* WhiteObjectSendUseCaseInterface.swift */,
@@ -394,6 +397,7 @@
 				5BDFD9372CE2E6BC00DA4F5B /* WhiteboardRepositoryInterface.swift in Sources */,
 				5B6542482CE44631000168AD /* WhiteboardUseCaseInterface.swift in Sources */,
 				00D2DD842CE8864B0089F0BA /* ManageWhiteboardObjectUseCaseInterface.swift in Sources */,
+				6F47898F2CEB8D8F0016B7AB /* TextObjectUseCaseInterface.swift in Sources */,
 				00D2DD882CE88BD80089F0BA /* ManageWhiteboardToolUseCaseInterface.swift in Sources */,
 				0080E8CE2CE4463B0095B958 /* WhiteboardObjectRepositoryInterface.swift in Sources */,
 				0080E8BB2CE2ECD80095B958 /* WhiteboardObject.swift in Sources */,
