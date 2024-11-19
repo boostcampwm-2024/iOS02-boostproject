@@ -6,16 +6,19 @@
 //
 import Foundation
 
-public class DrawingObject: WhiteboardObject {
+public final class DrawingObject: WhiteboardObject {
     public private(set) var points: [CGPoint]
+    public let lineWidth: CGFloat
 
     public init(
         id: UUID,
         position: CGPoint,
         size: CGSize,
-        points: [CGPoint]
+        points: [CGPoint],
+        lineWidth: CGFloat
     ) {
         self.points = points
+        self.lineWidth = lineWidth
         super.init(
             id: id,
             position: position,

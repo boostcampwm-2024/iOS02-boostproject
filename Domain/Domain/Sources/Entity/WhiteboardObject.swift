@@ -6,7 +6,7 @@
 //
 import Foundation
 
-public class WhiteboardObject {
+public class WhiteboardObject: Equatable {
     public let id: UUID
     public var position: CGPoint
     public var size: CGSize
@@ -19,5 +19,9 @@ public class WhiteboardObject {
         self.id = id
         self.position = position
         self.size = size
+    }
+
+    public static func == (lhs: WhiteboardObject, rhs: WhiteboardObject) -> Bool {
+        return lhs.id == rhs.id
     }
 }

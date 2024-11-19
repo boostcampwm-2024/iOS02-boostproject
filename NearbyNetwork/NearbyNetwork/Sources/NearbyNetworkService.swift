@@ -14,7 +14,7 @@ public final class NearbyNetworkService: NSObject {
     public weak var delegate: NearbyNetworkDelegate?
     private let peerID: MCPeerID
     private let session: MCSession
-    private let serviceAdvertiser: MCNearbyServiceAdvertiser
+    private var serviceAdvertiser: MCNearbyServiceAdvertiser
     private let serviceBrowser: MCNearbyServiceBrowser
     private var connectedPeers: [MCPeerID: NetworkConnection] = [:]
     private var foundPeers: [MCPeerID: NetworkConnection] = [:] {
@@ -54,6 +54,18 @@ extension NearbyNetworkService: NearbyNetworkInterface {
 
     public func startPublishing() {
         serviceAdvertiser.startAdvertisingPeer()
+    }
+
+    public func startPublishing(with info: [String: String]) {
+        Task {
+            serviceAdvertiser.stopAdvertisingPeer()
+            try? await Task.sleep(nanoseconds: 500_000_000)
+            serviceAdvertiser =  MCNearbyServiceAdvertiser(
+                peer: peerID,
+                discoveryInfo: info,
+                serviceType: serviceAdvertiser.serviceType)
+            serviceAdvertiser.startAdvertisingPeer()
+        }
     }
 
     public func stopPublishing() {

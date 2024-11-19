@@ -14,7 +14,7 @@ public protocol WhiteboardUseCaseInterface {
     /// - Parameter nickname: 유저 닉네임(화이트보드의 이름으로 사용)
     func createWhiteboard(nickname: String) -> Whiteboard
 
-    /// 화이트보드를 주변에 알립니다. 
+    /// 주변에 내 기기를 정보와 함께 알립니다.
     func startPublishingWhiteboard()
 
     /// 주변 화이트보드를 탐색합니다. 

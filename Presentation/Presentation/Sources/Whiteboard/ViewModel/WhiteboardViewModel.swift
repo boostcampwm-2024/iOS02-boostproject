@@ -10,35 +10,93 @@ import Foundation
 
 final class WhiteboardViewModel: ViewModel {
     enum Input {
-        // TODO: - tool을 바꾸는(선택하는) case 추가
+        case selectTool(tool: WhiteboardTool)
         case startDrawing(startAt: CGPoint)
         case addDrawingPoint(point: CGPoint)
         case finishDrawing
+        case finishUsingTool
     }
 
     struct Output {
-        let whiteboardObjectsPublisher: AnyPublisher<[WhiteboardObject], Never>
+        let whiteboardToolPublisher: AnyPublisher<WhiteboardTool?, Never>
+        let addedWhiteboardObjectPublisher: AnyPublisher<WhiteboardObject, Never>
+        let updatedWhiteboardObjectPublisher: AnyPublisher<WhiteboardObject, Never>
+        let removedWhiteboardObjectPublisher: AnyPublisher<WhiteboardObject, Never>
     }
 
     let output: Output
+    private let whiteboardUseCase: WhiteboardUseCaseInterface
     private let drawObjectUseCase: DrawObjectUseCaseInterface
-    private var whiteboardObjects = CurrentValueSubject<[WhiteboardObject], Never>([])
+    private let manageWhiteboardToolUseCase: ManageWhiteboardToolUseCaseInterface
+    private let manageWhiteboardObjectUseCase: ManageWhiteboardObjectUseCaseInterface
 
-    init(drawObjectUseCase: DrawObjectUseCaseInterface) {
+    init(
+        whiteboardUseCase: WhiteboardUseCaseInterface,
+        drawObjectUseCase: DrawObjectUseCaseInterface,
+        managemanageWhiteboardToolUseCase: ManageWhiteboardToolUseCaseInterface,
+        manageWhiteboardObjectUseCase: ManageWhiteboardObjectUseCaseInterface
+    ) {
+        self.whiteboardUseCase = whiteboardUseCase
         self.drawObjectUseCase = drawObjectUseCase
+        self.manageWhiteboardToolUseCase = managemanageWhiteboardToolUseCase
+        self.manageWhiteboardObjectUseCase = manageWhiteboardObjectUseCase
 
-        output = Output(whiteboardObjectsPublisher: whiteboardObjects.eraseToAnyPublisher())
+        output = Output(
+            whiteboardToolPublisher: manageWhiteboardToolUseCase
+                .currentToolPublisher
+                .eraseToAnyPublisher(),
+            addedWhiteboardObjectPublisher: manageWhiteboardObjectUseCase
+                .addedObjectPublisher
+                .eraseToAnyPublisher(),
+            updatedWhiteboardObjectPublisher: manageWhiteboardObjectUseCase
+                .updatedObjectPublisher
+                .eraseToAnyPublisher(),
+            removedWhiteboardObjectPublisher: manageWhiteboardObjectUseCase
+                .removedObjectPublisher
+                .eraseToAnyPublisher())
     }
 
     func action(input: Input) {
         switch input {
+        case .selectTool(let tool):
+            selectTool(with: tool)
         case .startDrawing(let point):
             startDrawing(at: point)
         case .addDrawingPoint(point: let point):
             addDrawingPoint(at: point)
         case .finishDrawing:
             finishDrawing()
+        case .finishUsingTool:
+            finishUsingTool()
         }
+    }
+
+    private func selectTool(with tool: WhiteboardTool) {
+        manageWhiteboardToolUseCase.selectTool(tool: tool)
+    }
+
+    private func finishUsingTool() {
+        let currentTool = manageWhiteboardToolUseCase.currentTool()
+        guard let currentTool else { return }
+
+        switch currentTool {
+        case .drawing:
+            break
+        case .text:
+            break
+        case .photo:
+            break
+        case .game:
+            break
+        case .chat:
+            break
+        }
+
+        manageWhiteboardToolUseCase.finishUsingTool()
+    }
+
+    private func addWhiteboardObject(object: WhiteboardObject) {
+        manageWhiteboardObjectUseCase.addObject(whiteboardObject: object)
     }
 
     private func startDrawing(at point: CGPoint) {
@@ -51,8 +109,10 @@ final class WhiteboardViewModel: ViewModel {
 
     private func finishDrawing() {
         guard let drawingObject = drawObjectUseCase.finishDrawing() else { return }
-        var newObjects = whiteboardObjects.value
-        newObjects.append(drawingObject)
-        whiteboardObjects.send(newObjects)
+        addWhiteboardObject(object: drawingObject)
+    }
+
+    private func startPublishing() {
+        whiteboardUseCase.startPublishingWhiteboard()
     }
 }

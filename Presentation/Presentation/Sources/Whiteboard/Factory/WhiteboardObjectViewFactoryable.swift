@@ -8,15 +8,16 @@ import Domain
 import Foundation
 
 protocol WhiteboardObjectViewFactoryable {
-    func create(with whiteboardObject: WhiteboardObject) -> WhiteboardObjectView
+    func create(with whiteboardObject: WhiteboardObject) -> WhiteboardObjectView?
 }
 
 struct WhiteboardObjectViewFactory: WhiteboardObjectViewFactoryable {
-    func create(with whiteboardObject: WhiteboardObject) -> WhiteboardObjectView {
+    func create(with whiteboardObject: WhiteboardObject) -> WhiteboardObjectView? {
         switch whiteboardObject {
         case let textObject as TextObject:
             return TextObjectView(textObject: textObject)
-        // TODO: 오브젝트 별 case 추가 예정
+        case let drawingObject as DrawingObject:
+            return DrawingObjectView(drawingObject: drawingObject)
         default:
             break
         }

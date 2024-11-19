@@ -8,9 +8,9 @@
 public protocol WhiteboardRepositoryInterface {
     var delegate: WhiteboardRepositoryDelegate? { get set }
 
-    /// 화이트보드를 주변에 알립니다.
-    func startPublishing()
-
+    /// 주변에 내 기기를 참여자의 아이콘 정보와 함께 화이트보드를 알립니다.
+    func startPublishing(with info: [Profile])
+  
     /// 주변 화이트보드를 탐색합니다.
     func startSearching()
 }

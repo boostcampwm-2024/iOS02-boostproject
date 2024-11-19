@@ -10,13 +10,15 @@ import Foundation
 
 public final class WhiteboardUseCase: WhiteboardUseCaseInterface {
     private var repository: WhiteboardRepositoryInterface
+    private var participantsInfo: [Profile] = []
     private let whiteboardListSubject: PassthroughSubject<[Whiteboard], Never>
     public let whiteboardListPublisher: AnyPublisher<[Whiteboard], Never>
 
-    public init(repository: WhiteboardRepositoryInterface) {
+    public init(repository: WhiteboardRepositoryInterface, profile: Profile) {
         self.repository = repository
         whiteboardListSubject = PassthroughSubject<[Whiteboard], Never>()
         whiteboardListPublisher = whiteboardListSubject.eraseToAnyPublisher()
+        participantsInfo.append(profile)
         self.repository.delegate = self
     }
 
@@ -25,7 +27,7 @@ public final class WhiteboardUseCase: WhiteboardUseCaseInterface {
     }
 
     public func startPublishingWhiteboard() {
-        repository.startPublishing()
+        repository.startPublishing(with: participantsInfo)
     }
 
     public func startSearchingWhiteboard() {
