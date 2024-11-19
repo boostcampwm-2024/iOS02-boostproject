@@ -118,12 +118,17 @@ public class WhiteboardViewController: UIViewController {
     private func addObjectView(objectView: WhiteboardObjectView) {
         canvasView.addSubview(objectView)
     }
+
+    private func addText() {
+        viewModel.action(input: .addTextObject(scrollViewOffset: scrollView.contentOffset, viewSize: view.frame.size))
+    }
 }
 
 // MARK: - WhiteboardToolBarDelegate
 extension WhiteboardViewController: WhiteboardToolBarDelegate {
     func whiteboardToolBar(_ sender: WhiteboardToolBar, selectedTool: WhiteboardTool) {
         viewModel.action(input: .selectTool(tool: selectedTool))
+        if selectedTool == .text { addText() }
     }
 }
 
