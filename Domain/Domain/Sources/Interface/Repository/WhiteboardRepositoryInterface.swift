@@ -13,6 +13,9 @@ public protocol WhiteboardRepositoryInterface {
 
     /// 주변 화이트보드를 탐색합니다.
     func startSearching()
+
+    /// 화이트보드 탐색을 중지합니다.
+    func stopSearching()
 }
 
 public protocol WhiteboardRepositoryDelegate: AnyObject {

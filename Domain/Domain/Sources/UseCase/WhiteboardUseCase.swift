@@ -38,6 +38,10 @@ public final class WhiteboardUseCase: WhiteboardUseCaseInterface {
     public func startSearchingWhiteboard() {
         repository.startSearching()
     }
+
+    public func stopSearchingWhiteboard() {
+        repository.stopSearching()
+    }
 }
 
 extension WhiteboardUseCase: WhiteboardRepositoryDelegate {

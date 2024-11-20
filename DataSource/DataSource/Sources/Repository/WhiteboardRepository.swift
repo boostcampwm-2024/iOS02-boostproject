@@ -27,6 +27,10 @@ public final class WhiteboardRepository: WhiteboardRepositoryInterface {
     public func startSearching() {
         nearbyNetwork.startSearching()
     }
+
+    public func stopSearching() {
+        nearbyNetwork.stopSearching()
+    }
 }
 
 extension WhiteboardRepository: NearbyNetworkDelegate {

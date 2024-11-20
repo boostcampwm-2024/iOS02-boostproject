@@ -73,12 +73,16 @@ public final class WhiteboardListViewController: UIViewController {
         configureAttribute()
         configureLayout()
         bind()
-        viewModel.action(input: .searchWhiteboard)
     }
 
     public override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         viewModel.action(input: .searchWhiteboard)
+    }
+
+    public override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        viewModel.action(input: .stopSearchingWhiteboard)
     }
 
     private func configureAttribute() {
