@@ -29,6 +29,18 @@ public struct FilePersistence: FilePersistenceInterface {
         return write(to: directoryURL, with: data, fileName: dataInfo.identifier.uuidString)
     }
 
+    public func load(datainfo: DataInformationDTO, path: URL) -> Data? {
+        var data: Data?
+
+        do {
+            data = try Data(contentsOf: path)
+        } catch {
+            logger.log("FilePersistence: 데이터 읽기 실패 \(path)")
+        }
+
+        return data
+    }
+
     private func createDirectory(at path: String) {
         do {
             try fileManager.createDirectory(
