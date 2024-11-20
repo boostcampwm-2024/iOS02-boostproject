@@ -20,14 +20,13 @@ extension MCSession {
             self.sendResource(
                 at: resourceURL,
                 withName: resourceName,
-                toPeer: peer
-            ) { error in
-                if let error {
-                    continuation.resume(throwing: error)
-                } else {
-                    continuation.resume()
+                toPeer: peer) { error in
+                    if let error {
+                        continuation.resume(throwing: error)
+                    } else {
+                        continuation.resume()
+                    }
                 }
-            }
         }
     }
 }

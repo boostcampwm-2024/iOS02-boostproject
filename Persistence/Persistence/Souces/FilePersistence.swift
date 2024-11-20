@@ -29,7 +29,7 @@ public struct FilePersistence: FilePersistenceInterface {
         return write(
             to: directoryURL,
             with: data,
-            fileName: dataInfo.identifier.uuidString)
+            fileName: dataInfo.id.uuidString)
     }
 
     public func load(path: URL) -> Data? {
