@@ -65,7 +65,7 @@ public struct FilePersistence: FilePersistenceInterface {
     }
 }
 
-extension AirplaINDataType {
+fileprivate extension AirplaINDataType {
     var directoryName: String {
         switch self {
         case .text, .photo, .drawing, .game:
