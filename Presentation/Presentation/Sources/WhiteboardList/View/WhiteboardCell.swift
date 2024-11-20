@@ -64,7 +64,6 @@ class WhiteboardCell: UICollectionViewCell {
     private let participantMaxCount = 8
     private let profileIconMaxCount = 3
 
-
     override init(frame: CGRect) {
         super.init(frame: frame)
         configureAttribute()
@@ -106,11 +105,11 @@ class WhiteboardCell: UICollectionViewCell {
                 equalTo: infoStackView.leadingAnchor,
                 inset: WhiteboardCellLayoutConstant.profileIconStackViewTrailingMargin)
             .height(equalTo: WhiteboardCellLayoutConstant.profileInfoStackViewHeight)
-        
+
         profileIcons.forEach { icon in
             profileIconStackView.addArrangedSubview(icon)
             icon.size(
-                width: WhiteboardCellLayoutConstant.profileIconSize, 
+                width: WhiteboardCellLayoutConstant.profileIconSize,
                 height: WhiteboardCellLayoutConstant.profileIconSize)
         }
     }
@@ -135,7 +134,9 @@ class WhiteboardCell: UICollectionViewCell {
         for (index, icon) in board.participantIcons.enumerated() {
             if index > profileIconMaxCount { break }
             profileIcons[index].isHidden = false
-            profileIcons[index].configure(profileIcon: icon, profileIconSize: WhiteboardCellLayoutConstant.profileIconSize)
+            profileIcons[index].configure(
+                profileIcon: icon,
+                profileIconSize: WhiteboardCellLayoutConstant.profileIconSize)
         }
     }
 }
