@@ -10,6 +10,20 @@ import UIKit
 
 class WhiteboardCell: UICollectionViewCell {
     static let reuseIdentifier = "WhiteboardCell"
+    private enum WhiteboardCellLayoutConstant {
+        static let infoStackViewSpacing: CGFloat = 5
+        static let profileInfoStackViewSpacing: CGFloat = -10
+        static let profileIconStackViewTrailingMargin: CGFloat = 5
+        static let profileInfoStackViewHeight: CGFloat = 20
+        static let profileIconSize: CGFloat = 20
+        static let titleLabelLeadingMargin: CGFloat = 18
+        static let participantIconSize: CGFloat = 15
+        static let infoStackViewTrailingMargin: CGFloat = 18
+        static let contentViewCornerRadius: CGFloat = 12
+        static let contentViewShadowOpacity: Float = 0.3
+        static let contentViewShadowOffset: CGSize = CGSize(width: 0, height: 2)
+        static let contentViewShadowRadius: CGFloat = 4
+    }
 
     private let titleLabel: UILabel = {
         let label = UILabel()
@@ -21,14 +35,14 @@ class WhiteboardCell: UICollectionViewCell {
     private let infoStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .horizontal
-        stackView.spacing = 5
+        stackView.spacing = WhiteboardCellLayoutConstant.infoStackViewSpacing
         return stackView
     }()
 
     private let profileIconStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .horizontal
-        stackView.spacing = -10
+        stackView.spacing = WhiteboardCellLayoutConstant.profileInfoStackViewSpacing
         return stackView
     }()
 
@@ -46,6 +60,9 @@ class WhiteboardCell: UICollectionViewCell {
         return label
     }()
 
+    private let participantMaxCount = 8
+    private let profileIconMaxCount = 3
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         configureAttribute()
@@ -61,10 +78,14 @@ class WhiteboardCell: UICollectionViewCell {
     private func configureLayout() {
         titleLabel
             .addToSuperview(contentView)
-            .leading(equalTo: contentView.leadingAnchor, inset: 18)
+            .leading(
+                equalTo: contentView.leadingAnchor,
+                inset: WhiteboardCellLayoutConstant.titleLabelLeadingMargin)
             .centerY(equalTo: contentView.centerYAnchor)
 
-        participantIcon.size(width: 15, height: 15)
+        participantIcon.size(
+            width: WhiteboardCellLayoutConstant.participantIconSize,
+            height: WhiteboardCellLayoutConstant.participantIconSize)
 
         infoStackView.addArrangedSubview(participantIcon)
         infoStackView.addArrangedSubview(participantCountLabel)
@@ -72,41 +93,49 @@ class WhiteboardCell: UICollectionViewCell {
         infoStackView
             .addToSuperview(contentView)
             .centerY(equalTo: contentView.centerYAnchor)
-            .trailing(equalTo: contentView.trailingAnchor, inset: 18)
+            .trailing(
+                equalTo: contentView.trailingAnchor,
+                inset: WhiteboardCellLayoutConstant.infoStackViewTrailingMargin)
 
         profileIconStackView
             .addToSuperview(contentView)
             .centerY(equalTo: contentView.centerYAnchor)
-            .trailing(equalTo: infoStackView.leadingAnchor, inset: 5)
-            .height(equalTo: 20)
+            .trailing(
+                equalTo: infoStackView.leadingAnchor,
+                inset: WhiteboardCellLayoutConstant.profileIconStackViewTrailingMargin)
+            .height(equalTo: WhiteboardCellLayoutConstant.profileInfoStackViewHeight)
     }
 
     private func configureAttribute() {
         contentView.backgroundColor = .gray100
-        contentView.layer.cornerRadius = 12
+        contentView.layer.cornerRadius = WhiteboardCellLayoutConstant.contentViewCornerRadius
         contentView.clipsToBounds = true
 
         layer.shadowColor = UIColor.black.cgColor
-        layer.shadowOpacity = 0.3
-        layer.shadowOffset = CGSize(width: 0, height: 2)
-        layer.shadowRadius = 4
+        layer.shadowOpacity = WhiteboardCellLayoutConstant.contentViewShadowOpacity
+        layer.shadowOffset = WhiteboardCellLayoutConstant.contentViewShadowOffset
+        layer.shadowRadius = WhiteboardCellLayoutConstant.contentViewShadowRadius
         layer.masksToBounds = false
     }
 
     func configure(with board: Whiteboard) {
-        titleLabel.text = board.name
-        participantCountLabel.text = "\(board.participantIcons.count)/8"
+        titleLabel.text = "\(board.name)의 보드"
+        participantCountLabel.text = "\(board.participantIcons.count)/\(participantMaxCount)"
 
         profileIconStackView
             .arrangedSubviews
             .forEach { $0.removeFromSuperview() }
 
         for (index, icon) in board.participantIcons.enumerated() {
-            if index > 3 { break }
+            if index > profileIconMaxCount { break }
 
             let iconView = ProfileIconView()
-            iconView.size(width: 20, height: 20)
-            iconView.configure(profileIcon: icon, profileIconSize: 20)
+            iconView.size(
+                width: WhiteboardCellLayoutConstant.profileIconSize,
+                height: WhiteboardCellLayoutConstant.profileIconSize)
+            iconView.configure(
+                profileIcon: icon,
+                profileIconSize: WhiteboardCellLayoutConstant.profileIconSize)
 
             profileIconStackView.addArrangedSubview(iconView)
         }
