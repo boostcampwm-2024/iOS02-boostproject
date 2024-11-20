@@ -45,10 +45,6 @@ class WhiteboardObjectView: UIView {
         configureLayout()
     }
 
-    private func initialize() {
-
-    }
-
     private func configureLayout() {
         profileIconView
             .addToSuperview(self)
