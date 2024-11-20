@@ -94,6 +94,7 @@ public final class WhiteboardListViewController: UIViewController {
 
         let createWhiteboardAction = UIAction { [weak self] _ in
             self?.viewModel.action(input: .createWhiteboard)
+            // TODO: 화이트보드 view로 이동
         }
         createWhiteboardButton.addAction(createWhiteboardAction, for: .touchUpInside)
 
@@ -219,12 +220,41 @@ public final class WhiteboardListViewController: UIViewController {
         guard let dataSource = dataSource else { return }
         dataSource.apply(snapshot, animatingDifferences: true)
     }
-
     private func bind() {
         viewModel.output.whiteboardPublisher
             .receive(on: DispatchQueue.main)
             .sink { _ in
                 // TODO: 화이트보드 추가
+                do {
+                    let profileRepository = ProfileRepository(persistenceService: PersistenceService())
+                    let profileUseCase = ProfileUseCase(repository: profileRepository)
+                    let profile = profileRepository.loadProfile()
+
+                    let nearbyNetworkService = NearbyNetworkService(profileName: profile.nickname, serviceName: "airplain")
+                    let repository = WhiteboardRepository(nearbyNetworkInterface: nearbyNetworkService)
+                    let whiteboardUseCase = WhiteboardUseCase(
+                        repository: repository,
+                        profile: profile)
+                    let addPhotoUseCase = try AddPhotoUseCase()
+                    let drawObjectUseCase = DrawObjectUseCase()
+                    let textObjectUseCase = TextObjectUseCase(textFieldDefaultSize: CGSize(width: 200, height: 50))
+                    let manageWhiteboardToolUseCase = ManageWhiteboardToolUseCase()
+                    let manageWhiteboardObjectUseCase = ManageWhiteboardObjectUseCase()
+
+                    let viewModel = WhiteboardViewModel(
+                        whiteboardUseCase: whiteboardUseCase,
+                        addPhotoUseCase: addPhotoUseCase,
+                        drawObjectUseCase: drawObjectUseCase,
+                        textObjectUseCase: textObjectUseCase,
+                        managemanageWhiteboardToolUseCase: manageWhiteboardToolUseCase,
+                        manageWhiteboardObjectUseCase: manageWhiteboardObjectUseCase)
+                    let whiteboardViewController = WhiteboardViewController(
+                        viewModel: viewModel,
+                        objectViewFactory: WhiteboardObjectViewFactory())
+                    self.navigationController?.pushViewController(whiteboardViewController, animated: true)
+                } catch {
+
+                }
             }
             .store(in: &cancellables)
 
