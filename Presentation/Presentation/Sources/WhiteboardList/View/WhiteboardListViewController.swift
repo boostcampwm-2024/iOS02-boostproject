@@ -134,7 +134,6 @@ public final class WhiteboardListViewController: UIViewController {
     private func configureCollectionView() {
         collectionView.delegate = self
         collectionView.collectionViewLayout = createCollectionViewLayout()
-        collectionView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         collectionView.backgroundColor = .white
         collectionView.register(WhiteboardCell.self, forCellWithReuseIdentifier: WhiteboardCell.reuseIdentifier)
     }
@@ -154,7 +153,7 @@ public final class WhiteboardListViewController: UIViewController {
 
         let groupSize = NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(1.0),
-            heightDimension: .estimated(WhiteboardListLayoutConstant.groupHeight))
+            heightDimension: .absolute(WhiteboardListLayoutConstant.groupHeight))
 
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
 

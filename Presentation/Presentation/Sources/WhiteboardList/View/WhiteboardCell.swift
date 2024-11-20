@@ -46,6 +46,8 @@ class WhiteboardCell: UICollectionViewCell {
         return label
     }()
 
+    private let profileIcons = [ProfileIconView(), ProfileIconView(), ProfileIconView()]
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         configureAttribute()
@@ -79,6 +81,11 @@ class WhiteboardCell: UICollectionViewCell {
             .centerY(equalTo: contentView.centerYAnchor)
             .trailing(equalTo: infoStackView.leadingAnchor, inset: 5)
             .height(equalTo: 20)
+
+        profileIcons.forEach { icon in
+            profileIconStackView.addArrangedSubview(icon)
+            icon.size(width: 20, height:  20)
+        }
     }
 
     private func configureAttribute() {
@@ -90,25 +97,18 @@ class WhiteboardCell: UICollectionViewCell {
         layer.shadowOpacity = 0.3
         layer.shadowOffset = CGSize(width: 0, height: 2)
         layer.shadowRadius = 4
-        layer.masksToBounds = false
     }
 
     func configure(with board: Whiteboard) {
         titleLabel.text = board.name
         participantCountLabel.text = "\(board.participantIcons.count)/8"
 
-        profileIconStackView
-            .arrangedSubviews
-            .forEach { $0.removeFromSuperview() }
+        profileIcons.forEach { $0.isHidden = true }
 
         for (index, icon) in board.participantIcons.enumerated() {
             if index > 3 { break }
-
-            let iconView = ProfileIconView()
-            iconView.size(width: 20, height: 20)
-            iconView.configure(profileIcon: icon, profileIconSize: 20)
-
-            profileIconStackView.addArrangedSubview(iconView)
+            profileIcons[index].isHidden = false
+            profileIcons[index].configure(profileIcon: icon, profileIconSize: 20)
         }
     }
 }
