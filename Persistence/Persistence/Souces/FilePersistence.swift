@@ -26,7 +26,10 @@ public struct FilePersistence: FilePersistenceInterface {
 
         createDirectory(at: directoryURL.path)
 
-        return write(to: directoryURL, with: data, fileName: dataInfo.identifier.uuidString)
+        return write(
+            to: directoryURL,
+            with: data,
+            fileName: dataInfo.identifier.uuidString)
     }
 
     public func load(path: URL) -> Data? {
@@ -52,7 +55,11 @@ public struct FilePersistence: FilePersistenceInterface {
         }
     }
 
-    private func write(to url: URL, with data: Data, fileName: String) -> URL {
+    private func write(
+        to url: URL,
+        with data: Data,
+        fileName: String
+    ) -> URL {
         let fileURL = url.appendingPathComponent("\(fileName).json")
 
         do {
