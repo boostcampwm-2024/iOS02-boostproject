@@ -33,7 +33,7 @@ final class AddPhotoUseCaseTests: XCTestCase {
         let position = CGPoint(x: 100, y: 100)
         let size = CGSize(width: 200, height: 200)
         let photoObject: PhotoObject
-        
+
         // 실행
         do {
             photoObject = try useCase.addPhoto(

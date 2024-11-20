@@ -10,20 +10,25 @@ import Foundation
 
 public final class WhiteboardUseCase: WhiteboardUseCaseInterface {
     private var repository: WhiteboardRepositoryInterface
+    private let profile: Profile
     private var participantsInfo: [Profile] = []
-    private let whiteboardListSubject: PassthroughSubject<[WhiteboardListEntity], Never>
-    public let whiteboardListPublisher: AnyPublisher<[WhiteboardListEntity], Never>
+    private let whiteboardListSubject: PassthroughSubject<[Whiteboard], Never>
+    public let whiteboardListPublisher: AnyPublisher<[Whiteboard], Never>
 
     public init(repository: WhiteboardRepositoryInterface, profile: Profile) {
         self.repository = repository
-        whiteboardListSubject = PassthroughSubject<[WhiteboardListEntity], Never>()
+        self.profile = profile
+        whiteboardListSubject = PassthroughSubject<[Whiteboard], Never>()
         whiteboardListPublisher = whiteboardListSubject.eraseToAnyPublisher()
         participantsInfo.append(profile)
         self.repository.delegate = self
     }
 
     public func createWhiteboard(nickname: String) -> Whiteboard {
-        return Whiteboard(name: nickname)
+        return Whiteboard(
+            id: UUID(),
+            name: nickname,
+            participantIcons: [profile.profileIcon])
     }
 
     public func startPublishingWhiteboard() {
@@ -34,15 +39,19 @@ public final class WhiteboardUseCase: WhiteboardUseCaseInterface {
         repository.startSearching()
     }
 
-    public func joinWhiteboard(whiteboard: WhiteboardListEntity) throws {
+    public func joinWhiteboard(whiteboard: Whiteboard) throws {
         try repository.joinWhiteboard(whiteboard: whiteboard)
+    }
+
+    public func stopSearchingWhiteboard() {
+        repository.stopSearching()
     }
 }
 
 extension WhiteboardUseCase: WhiteboardRepositoryDelegate {
     public func whiteboardRepository(
         _ sender: WhiteboardRepositoryInterface,
-        didFind whiteboards: [WhiteboardListEntity]
+        didFind whiteboards: [Whiteboard]
     ) {
         whiteboardListSubject.send(whiteboards)
     }

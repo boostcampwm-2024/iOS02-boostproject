@@ -17,23 +17,24 @@ public final class WhiteboardListViewModel: ViewModel {
     enum Input {
         case createWhiteboard
         case searchWhiteboard
-        case joinWhiteboard(whiteboard: WhiteboardListEntity)
+        case joinWhiteboard(whiteboard: Whiteboard)
+        case stopSearchingWhiteboard
     }
 
     struct Output {
         let whiteboardPublisher: AnyPublisher<Whiteboard, Never>
-        let whiteboardListPublisher: AnyPublisher<[WhiteboardListEntity], Never>
+        let whiteboardListPublisher: AnyPublisher<[Whiteboard], Never>
     }
 
     let output: Output
     private let whiteboardSubject: PassthroughSubject<Whiteboard, Never>
-    private let whiteboardListSubject: CurrentValueSubject<[WhiteboardListEntity], Never>
+    private let whiteboardListSubject: CurrentValueSubject<[Whiteboard], Never>
 
     public init(whiteboardUseCase: WhiteboardUseCaseInterface, nickname: String) {
         self.whiteboardUseCase = whiteboardUseCase
         self.nickname = nickname
         whiteboardSubject = PassthroughSubject<Whiteboard, Never>()
-        whiteboardListSubject = CurrentValueSubject<[WhiteboardListEntity], Never>([])
+        whiteboardListSubject = CurrentValueSubject<[Whiteboard], Never>([])
         self.output = Output(
             whiteboardPublisher: whiteboardSubject.eraseToAnyPublisher(),
             whiteboardListPublisher: whiteboardListSubject.eraseToAnyPublisher())
@@ -47,6 +48,8 @@ public final class WhiteboardListViewModel: ViewModel {
             searchWhiteboard()
         case .joinWhiteboard(let whiteboard):
             joinWhiteboard(whiteboard: whiteboard)
+        case .stopSearchingWhiteboard:
+            stopSearchingWhiteboard()
         }
     }
 
@@ -70,12 +73,16 @@ public final class WhiteboardListViewModel: ViewModel {
             .store(in: &cancellables)
     }
 
-    private func joinWhiteboard(whiteboard: WhiteboardListEntity) {
+    private func joinWhiteboard(whiteboard: Whiteboard) {
         do {
             try whiteboardUseCase.joinWhiteboard(whiteboard: whiteboard)
             // TODO: 해당 화이트보드로 화면전환
         } catch {
             // TODO: Alert 창 띄우기
         }
+    }
+
+    private func stopSearchingWhiteboard() {
+        whiteboardUseCase.stopSearchingWhiteboard()
     }
 }
