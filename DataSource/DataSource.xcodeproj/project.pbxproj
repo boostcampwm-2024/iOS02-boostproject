@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		00549AD02CEDBAAD00DF8F6C /* AirplaINDataType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00549ACF2CEDBA5E00DF8F6C /* AirplaINDataType.swift */; };
+		00549AD22CEDBB3E00DF8F6C /* DataInformationDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00549AD12CEDBB0E00DF8F6C /* DataInformationDTO.swift */; };
 		0080E8652CE19EC40095B958 /* NearbyNetworkInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0080E85F2CE19EC40095B958 /* NearbyNetworkInterface.swift */; };
 		0080E8662CE19EC40095B958 /* NetworkConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0080E8612CE19EC40095B958 /* NetworkConnection.swift */; };
 		5B7C6EB52CDB6C4B0024704A /* Domain.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B7C6EB42CDB6C4B0024704A /* Domain.framework */; };
@@ -31,6 +33,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		00549ACF2CEDBA5E00DF8F6C /* AirplaINDataType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AirplaINDataType.swift; sourceTree = "<group>"; };
+		00549AD12CEDBB0E00DF8F6C /* DataInformationDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataInformationDTO.swift; sourceTree = "<group>"; };
 		0080E85F2CE19EC40095B958 /* NearbyNetworkInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearbyNetworkInterface.swift; sourceTree = "<group>"; };
 		0080E8612CE19EC40095B958 /* NetworkConnection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkConnection.swift; sourceTree = "<group>"; };
 		5B7C6E3B2CDB6A240024704A /* DataSource.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = DataSource.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -65,6 +69,8 @@
 			isa = PBXGroup;
 			children = (
 				0080E8612CE19EC40095B958 /* NetworkConnection.swift */,
+				00549ACF2CEDBA5E00DF8F6C /* AirplaINDataType.swift */,
+				00549AD12CEDBB0E00DF8F6C /* DataInformationDTO.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -227,10 +233,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				A8525F1E2CE326DB0089DA5E /* PersistenceInterface.swift in Sources */,
+				00549AD02CEDBAAD00DF8F6C /* AirplaINDataType.swift in Sources */,
 				0080E8652CE19EC40095B958 /* NearbyNetworkInterface.swift in Sources */,
 				5BDFD93D2CE2F56B00DA4F5B /* WhiteboardRepository.swift in Sources */,
 				0080E8662CE19EC40095B958 /* NetworkConnection.swift in Sources */,
 				A852601E2CE339E70089DA5E /* ProfileRepository.swift in Sources */,
+				00549AD22CEDBB3E00DF8F6C /* DataInformationDTO.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
