@@ -25,7 +25,7 @@ final class PhotoObjectView: WhiteboardObjectView {
             y: photoObject.position.y - height / 2,
             width: width,
             height: height)
-        super.init(frame: imageViewFrame)
+        super.init(whiteboardObject: photoObject, frame: imageViewFrame)
 
         configureAttribute()
         configureLayout()

@@ -20,6 +20,8 @@ final class WhiteboardViewModel: ViewModel {
         case finishDrawing
         case finishUsingTool
         case addTextObject(scrollViewOffset: CGPoint, viewSize: CGSize)
+        case selectObject(objectId: UUID)
+        case deselectObject
     }
 
     struct Output {
@@ -86,6 +88,10 @@ final class WhiteboardViewModel: ViewModel {
             finishUsingTool()
         case .addTextObject(scrollViewOffset: let scrollViewOffset, viewSize: let viewSize):
             addText(scrollViewOffset: scrollViewOffset, viewSize: viewSize)
+        case .selectObject(objectId: let objectId):
+            selectObject(objectId: objectId)
+        case .deselectObject:
+            deselectObject()
         }
     }
 
@@ -150,8 +156,16 @@ final class WhiteboardViewModel: ViewModel {
         let textObject = textObjectUseCase.addText(point: scrollViewOffset, size: viewSize)
         addWhiteboardObject(object: textObject)
     }
-  
+
     private func startPublishing() {
         whiteboardUseCase.startPublishingWhiteboard()
+    }
+
+    private func selectObject(objectId: UUID) {
+        // TODO: - usecase의 select 함수 호출
+    }
+
+    private func deselectObject() {
+        // TODO: - usecase의 deselect 함수 호출
     }
 }
