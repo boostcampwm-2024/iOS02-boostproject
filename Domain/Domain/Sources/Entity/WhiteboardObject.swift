@@ -16,7 +16,7 @@ public class WhiteboardObject: Equatable {
         id: UUID,
         position: CGPoint,
         size: CGSize,
-        selectedBy: Profile?
+        selectedBy: Profile? = nil
     ) {
         self.id = id
         self.position = position
