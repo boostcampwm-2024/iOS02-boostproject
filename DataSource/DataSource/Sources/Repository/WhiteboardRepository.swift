@@ -14,7 +14,7 @@ public final class WhiteboardRepository: WhiteboardRepositoryInterface {
 
     public init(nearbyNetworkInterface: NearbyNetworkInterface) {
         self.nearbyNetwork = nearbyNetworkInterface
-        self.nearbyNetwork.delegate = self
+        self.nearbyNetwork.connectionDelegate = self
     }
 
     public func startPublishing(with info: [Profile]) {
@@ -33,14 +33,7 @@ public final class WhiteboardRepository: WhiteboardRepositoryInterface {
     }
 }
 
-extension WhiteboardRepository: NearbyNetworkDelegate {
-    public func nearbyNetwork(
-        _ sender: any NearbyNetworkInterface,
-        didReceive data: Data,
-        from connection: NetworkConnection) {
-        // TODO: -
-    }
-
+extension WhiteboardRepository: NearbyNetworkConnectionDelegate {
     public func nearbyNetwork(
         _ sender: any NearbyNetworkInterface,
         didReceive connectionHandler: @escaping (

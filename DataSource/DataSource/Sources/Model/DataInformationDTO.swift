@@ -8,6 +8,6 @@
 import Foundation
 
 public struct DataInformationDTO: Codable {
-    public let identifier: UUID
+    public let id: UUID
     public let type: AirplaINDataType
 }

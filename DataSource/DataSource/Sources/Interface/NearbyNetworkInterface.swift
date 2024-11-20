@@ -8,7 +8,7 @@
 import Foundation
 
 public protocol NearbyNetworkInterface {
-    var delegate: NearbyNetworkDelegate? { get set }
+    var connectionDelegate: NearbyNetworkConnectionDelegate? { get set }
 
     /// 주변 기기를 검색합니다.
     func startSearching()
@@ -33,15 +33,15 @@ public protocol NearbyNetworkInterface {
     /// 연결된 기기들에게 데이터를 송신합니다.
     /// - Parameter data: 송신할 데이터
     func send(data: Data)
+
+    /// 연결된 기기들에게 파일을 송신합니다.
+    /// - Parameters:
+    ///   - fileURL: 파일의 URL
+    ///   - info: 파일에 대한 정보
+    func send(fileURL: URL, info: DataInformationDTO) async
 }
 
-public protocol NearbyNetworkDelegate: AnyObject {
-    /// 데이터를 수신했을 때 실행됩니다.
-    /// - Parameters:
-    ///   - data: 수신된 데이터
-    ///   - connection: 데이터를 송신한 기기
-    func nearbyNetwork(_ sender: NearbyNetworkInterface, didReceive data: Data, from connection: NetworkConnection)
-
+public protocol NearbyNetworkConnectionDelegate: AnyObject {
     /// 주변 기기에게 연결 요청을 받았을 때 실행됩니다.
     /// - Parameters:
     ///   - connectionHandler: 연결 요청 처리 Handler
@@ -54,4 +54,20 @@ public protocol NearbyNetworkDelegate: AnyObject {
 
     /// 주변 기기와의 연결에 실패했을 때 실행됩니다.
     func nearbyNetworkCannotConnect(_ sender: NearbyNetworkInterface)
+}
+
+public protocol NearbyNetworkReceiptDelegate: AnyObject {
+    /// 데이터를 수신했을 때 실행됩니다.
+    /// - Parameters:
+    ///   - data: 수신된 데이터
+    func nearbyNetwork(_ sender: NearbyNetworkInterface, didReceive data: Data)
+
+    /// 파일을 수신했을 때 실행됩니다.
+    /// - Parameters:
+    ///   - URL: 수신한 파일의 URL
+    ///   - info: 파일에 대한 정보
+    func nearbyNetwork(
+        _ sender: NearbyNetworkInterface,
+        didReceiveURL URL: URL,
+        info: DataInformationDTO)
 }
