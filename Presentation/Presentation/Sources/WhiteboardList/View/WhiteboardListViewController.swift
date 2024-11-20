@@ -15,11 +15,12 @@ public final class WhiteboardListViewController: UIViewController {
         static let upperComponentTopMargin: CGFloat = 70
         static let mainTitleLabelWidth: CGFloat = 199
         static let mainTitleLabelHeight: CGFloat = 43
-        static let groupHeight: CGFloat = 130
+        static let itemHeight: CGFloat = 65
         static let itemVerticalMargin: CGFloat = 8
         static let labelLineSpacing: CGFloat = 10
         static let createButtonTrailingMargin: CGFloat = 29
         static let collectionViewTopMargin: CGFloat = 10
+        static let itemSpacing: CGFloat = 5
     }
 
     private let mainTitleLabel: UILabel = {
@@ -145,7 +146,7 @@ public final class WhiteboardListViewController: UIViewController {
     private func createCollectionViewLayout() -> UICollectionViewLayout {
         let itemSize = NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(1.0),
-            heightDimension: .fractionalHeight(0.5))
+            heightDimension: .absolute(WhiteboardListLayoutConstant.itemHeight))
 
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
 
@@ -157,9 +158,10 @@ public final class WhiteboardListViewController: UIViewController {
 
         let groupSize = NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(1.0),
-            heightDimension: .absolute(WhiteboardListLayoutConstant.groupHeight))
+            heightDimension: .fractionalHeight(1.0))
 
-        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
+        let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitems: [item])
+        group.interItemSpacing = .fixed(WhiteboardListLayoutConstant.itemSpacing)
 
         let section = NSCollectionLayoutSection(group: group)
         section.contentInsets = NSDirectionalEdgeInsets(
@@ -226,6 +228,6 @@ public final class WhiteboardListViewController: UIViewController {
 extension WhiteboardListViewController: UICollectionViewDelegate {
     public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard let selectedWhiteboard = dataSource?.itemIdentifier(for: indexPath) else { return }
-        // TODO: - Whiteboard Cell 선택 시 입장 처리
+        viewModel.action(input: .joinWhiteboard(whiteboard: selectedWhiteboard))
     }
 }

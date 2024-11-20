@@ -52,19 +52,16 @@ extension NearbyNetworkService: NearbyNetworkInterface {
         serviceBrowser.stopBrowsingForPeers()
     }
 
-    public func startPublishing() {
-        serviceAdvertiser.startAdvertisingPeer()
-    }
-
     public func startPublishing(with info: [String: String]) {
         Task {
             serviceAdvertiser.stopAdvertisingPeer()
             try? await Task.sleep(nanoseconds: 500_000_000)
-            serviceAdvertiser =  MCNearbyServiceAdvertiser(
+            serviceAdvertiser = MCNearbyServiceAdvertiser(
                 peer: peerID,
                 discoveryInfo: info,
                 serviceType: serviceAdvertiser.serviceType)
             serviceAdvertiser.startAdvertisingPeer()
+            serviceAdvertiser.delegate = self
         }
     }
 
@@ -117,6 +114,11 @@ extension NearbyNetworkService: MCSessionDelegate {
                 id: UUID(),
                 name: peerID.displayName,
                 info: connectedPeerInfo)
+            guard
+                let currentInfo = serviceAdvertiser.discoveryInfo,
+                let connectedPeer = connectedPeers[peerID]
+            else { return }
+            delegate?.nearbyNetwork(self, didConnect: connectedPeer, with: currentInfo)
         default:
             break
         }

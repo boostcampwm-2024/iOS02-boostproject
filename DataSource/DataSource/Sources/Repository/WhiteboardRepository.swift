@@ -80,4 +80,18 @@ extension WhiteboardRepository: NearbyNetworkDelegate {
     public func nearbyNetworkCannotConnect(_ sender: any NearbyNetworkInterface) {
         // TODO: -
     }
+
+    public func nearbyNetwork(
+        _ sender: any NearbyNetworkInterface,
+        didConnect connection: NetworkConnection,
+        with info: [String: String]
+    ) {
+        guard
+            let freshmanInfo = connection.info?["participants"],
+            let currentInfo = info["participants"]
+        else { return }
+
+        let newInfo = freshmanInfo + "," + currentInfo
+        nearbyNetwork.startPublishing(with: ["participants": newInfo])
+    }
 }

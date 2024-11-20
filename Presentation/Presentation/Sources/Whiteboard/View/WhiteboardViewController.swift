@@ -141,7 +141,7 @@ public class WhiteboardViewController: UIViewController {
     private func endEditObject() {
         view.endEditing(true)
     }
-  
+
     private func presentImagePicker() {
         var configuration = PHPickerConfiguration()
         configuration.filter = .images
