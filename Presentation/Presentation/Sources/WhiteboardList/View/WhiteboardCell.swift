@@ -84,7 +84,7 @@ class WhiteboardCell: UICollectionViewCell {
 
         profileIcons.forEach { icon in
             profileIconStackView.addArrangedSubview(icon)
-            icon.size(width: 20, height:  20)
+            icon.size(width: 20, height: 20)
         }
     }
 
