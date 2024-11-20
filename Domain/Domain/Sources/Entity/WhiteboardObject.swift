@@ -8,9 +8,9 @@ import Foundation
 
 public class WhiteboardObject: Equatable {
     public let id: UUID
-    public var position: CGPoint
-    public var size: CGSize
-    private var selectedBy: Profile?
+    public private(set) var position: CGPoint
+    public private(set) var size: CGSize
+    public private(set) var selectedBy: Profile?
 
     public init(
         id: UUID,
