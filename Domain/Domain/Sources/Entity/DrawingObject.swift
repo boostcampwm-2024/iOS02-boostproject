@@ -10,6 +10,11 @@ public final class DrawingObject: WhiteboardObject {
     public private(set) var points: [CGPoint]
     public let lineWidth: CGFloat
 
+    private enum CodingKeys: String, CodingKey {
+        case points
+        case lineWidht
+    }
+
     public init(
         id: UUID,
         position: CGPoint,
@@ -25,6 +30,22 @@ public final class DrawingObject: WhiteboardObject {
             position: position,
             size: size,
             selectedBy: selectedBy)
+    }
+
+    required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        let points = try container.decode([CGPoint].self, forKey: .points)
+        let lineWidth = try container.decode(CGFloat.self, forKey: .lineWidht)
+        self.points = points
+        self.lineWidth = lineWidth
+        try super.init(from: decoder)
+    }
+
+    public override func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(points, forKey: .points)
+        try container.encode(lineWidth, forKey: .lineWidht)
+        try super.encode(to: encoder)
     }
 
     // TODO: - 화이트보드 오브젝트 수정 구현 시 고도화
