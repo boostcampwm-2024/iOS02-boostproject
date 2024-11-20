@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct DataInformationDTO: Codable {
-    let identifier: UUID
-    let type: AirplaINDataType
+public struct DataInformationDTO: Codable {
+    public let identifier: UUID
+    public let type: AirplaINDataType
 }
