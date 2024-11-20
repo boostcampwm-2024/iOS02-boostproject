@@ -106,16 +106,16 @@ extension NearbyNetworkService: NearbyNetworkInterface {
             let infoJsonString = String(data: infoJsonData, encoding: .utf8)
         else { return }
 
-        await withTaskGroup(of: Void.self) { [weak self] taskGroup in
-            self?.session.connectedPeers.forEach { peer in
+        await withTaskGroup(of: Void.self) { taskGroup in
+            session.connectedPeers.forEach { peer in
                 taskGroup.addTask {
                     do {
-                        try await self?.session.sendResource(
+                        try await self.session.sendResource(
                             at: fileURL,
                             withName: infoJsonString,
                             toPeer: peer)
                     } catch {
-                        self?.logger.log(level: .error, "\(peer)에게 file 데이터 전송 실패")
+                        self.logger.log(level: .error, "\(peer)에게 file 데이터 전송 실패")
                     }
                 }
             }
@@ -183,7 +183,16 @@ extension NearbyNetworkService: MCSessionDelegate {
         at localURL: URL?,
         withError error: (any Error)?
     ) {
-        logger.log(level: .error, "\(peerID.displayName)로부터 데이터 수신을 완료함")
+        guard
+            let localURL,
+            let jsonData = resourceName.data(using: .utf8),
+            let dto = try? JSONDecoder().decode(DataInformationDTO.self, from: jsonData)
+        else{ return }
+
+        receiptDelegate?.nearbyNetwork(
+            self,
+            didReceiveURL: localURL,
+            info: dto)
     }
 }
 
