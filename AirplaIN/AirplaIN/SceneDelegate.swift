@@ -34,7 +34,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let viewController = WhiteboardListViewController(viewModel: viewModel)
 
         let window = UIWindow(windowScene: windowScene)
-        window.rootViewController = viewController
+        let navigationController = UINavigationController(rootViewController: viewController)
+        navigationController.isNavigationBarHidden = true
+        window.rootViewController = navigationController
         window.makeKeyAndVisible()
 
         self.window = window
