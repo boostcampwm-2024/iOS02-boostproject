@@ -12,7 +12,7 @@ public final class WhiteboardRepository: WhiteboardRepositoryInterface {
     private var nearbyNetwork: NearbyNetworkInterface
     public weak var delegate: WhiteboardRepositoryDelegate?
 
-    public init(nearbyNetworkInterface: NearbyNetworkInterface & NearbyNetworkConnectionDelegate) {
+    public init(nearbyNetworkInterface: NearbyNetworkInterface) {
         self.nearbyNetwork = nearbyNetworkInterface
         self.nearbyNetwork.connectionDelegate = self
     }

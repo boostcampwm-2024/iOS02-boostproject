@@ -11,7 +11,8 @@ import MultipeerConnectivity
 import OSLog
 
 public final class NearbyNetworkService: NSObject {
-    public weak var delegate: NearbyNetworkDelegate?
+    public weak var connectionDelegate: NearbyNetworkConnectionDelegate?
+    public weak var receiptDelegate: NearbyNetworkReceiptDelegate?
     private let peerID: MCPeerID
     private let session: MCSession
     private var serviceAdvertiser: MCNearbyServiceAdvertiser
@@ -20,7 +21,7 @@ public final class NearbyNetworkService: NSObject {
     private var foundPeers: [MCPeerID: NetworkConnection] = [:] {
         didSet {
             let foundPeers: [NetworkConnection] = foundPeers.values.map { $0 }
-            delegate?.nearbyNetwork(self, didFind: foundPeers)
+            connectionDelegate?.nearbyNetwork(self, didFind: foundPeers)
         }
     }
     private let logger = Logger()
@@ -77,9 +78,8 @@ extension NearbyNetworkService: NearbyNetworkInterface {
             .first { $0.value == connection }?
             .key
         // TODO: Error 수정
-        guard let peerID else {
-            throw NSError()
-        }
+        guard let peerID else { throw NSError() }
+
         serviceBrowser.invitePeer(
             peerID,
             to: session,
@@ -95,6 +95,30 @@ extension NearbyNetworkService: NearbyNetworkInterface {
                 with: .reliable)
         } catch {
             logger.log(level: .error, "데이터 전송 실패")
+        }
+    }
+
+    public func send(fileURL: URL, info: DataSource.DataInformationDTO) async {
+        let infoJsonData = try? JSONEncoder().encode(info)
+
+        guard
+            let infoJsonData,
+            let infoJsonString = String(data: infoJsonData, encoding: .utf8)
+        else { return }
+
+        await withTaskGroup(of: Void.self) { [weak self] taskGroup in
+            self?.session.connectedPeers.forEach { peer in
+                taskGroup.addTask {
+                    do {
+                        try await self?.session.sendResource(
+                            at: fileURL,
+                            withName: infoJsonString,
+                            toPeer: peer)
+                    } catch {
+                        self?.logger.log(level: .error, "\(peer)에게 file 데이터 전송 실패")
+                    }
+                }
+            }
         }
     }
 }
@@ -131,7 +155,7 @@ extension NearbyNetworkService: MCSessionDelegate {
             logger.log(level: .error, "\(peerID.displayName)와 연결되어 있지 않음")
             return
         }
-        delegate?.nearbyNetwork(self, didReceive: data, from: connection)
+        receiptDelegate?.nearbyNetwork(self, didReceive: data)
     }
 
     public func session(
@@ -171,7 +195,7 @@ extension NearbyNetworkService: MCNearbyServiceAdvertiserDelegate {
         withContext context: Data?,
         invitationHandler: @escaping (Bool, MCSession?) -> Void
     ) {
-        delegate?.nearbyNetwork(self, didReceive: { [weak self] isAccepted in
+        connectionDelegate?.nearbyNetwork(self, didReceive: { [weak self] isAccepted in
             invitationHandler(isAccepted, self?.session)
         })
     }
@@ -181,7 +205,7 @@ extension NearbyNetworkService: MCNearbyServiceAdvertiserDelegate {
         didNotStartAdvertisingPeer error: any Error
     ) {
         logger.log(level: .error, "Advertising 실패 \(error.localizedDescription)")
-        delegate?.nearbyNetworkCannotConnect(self)
+        connectionDelegate?.nearbyNetworkCannotConnect(self)
     }
 }
 
@@ -201,21 +225,5 @@ extension NearbyNetworkService: MCNearbyServiceBrowserDelegate {
 
     public func browser(_ browser: MCNearbyServiceBrowser, lostPeer peerID: MCPeerID) {
         foundPeers[peerID] = nil
-    }
-}
-
-// MARK: - MCSessionState
-extension MCSessionState {
-    var description: String {
-        switch self {
-        case .notConnected:
-            return "연결 끊김"
-        case .connecting:
-            return "연결 중"
-        case .connected:
-            return "연결 됨"
-        @unknown default:
-            return "알 수 없음"
-        }
     }
 }
