@@ -15,6 +15,11 @@ public final class WhiteboardListViewController: UIViewController {
         static let upperComponentTopMargin: CGFloat = 70
         static let mainTitleLabelWidth: CGFloat = 199
         static let mainTitleLabelHeight: CGFloat = 43
+        static let groupHeight: CGFloat = 130
+        static let itemVerticalMargin: CGFloat = 8
+        static let labelLineSpacing: CGFloat = 10
+        static let createButtonTrailingMargin: CGFloat = 29
+        static let collectionViewTopMargin: CGFloat = 10
     }
 
     private let mainTitleLabel: UILabel = {
@@ -39,6 +44,18 @@ public final class WhiteboardListViewController: UIViewController {
         return button
     }()
 
+    private let emptyListLabel: UILabel = {
+        let label = UILabel()
+        label.text = "주변에 생성된 화이트보드가 없습니다.\n\n먼저 만들어보는건 어떤가요?"
+        label.textColor = .gray500
+        label.font = AirplainFont.Body2
+        label.numberOfLines = 3
+        label.textAlignment = .center
+        return label
+    }()
+
+    private let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
+    private var dataSource: UICollectionViewDiffableDataSource<Int, Whiteboard>?
     private let viewModel: WhiteboardListViewModel
     private var cancellables = Set<AnyCancellable>()
 
@@ -58,6 +75,16 @@ public final class WhiteboardListViewController: UIViewController {
         bind()
     }
 
+    public override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        viewModel.action(input: .searchWhiteboard)
+    }
+
+    public override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        viewModel.action(input: .stopSearchingWhiteboard)
+    }
+
     private func configureAttribute() {
         view.backgroundColor = .systemBackground
 
@@ -65,6 +92,9 @@ public final class WhiteboardListViewController: UIViewController {
             self?.viewModel.action(input: .createWhiteboard)
         }
         createWhiteboardButton.addAction(createWhiteboardAction, for: .touchUpInside)
+
+        configureCollectionView()
+        configureDataSource()
     }
 
     private func configureLayout() {
@@ -74,7 +104,7 @@ public final class WhiteboardListViewController: UIViewController {
                   height: WhiteboardListLayoutConstant.mainTitleLabelHeight)
             .top(equalTo: view.topAnchor,
                  inset: WhiteboardListLayoutConstant.upperComponentTopMargin)
-            .leading(equalTo: view.leadingAnchor, inset: 22)
+            .leading(equalTo: view.leadingAnchor, inset: horizontalMargin)
 
         configureProfileButton
             .addToSuperview(view)
@@ -82,7 +112,7 @@ public final class WhiteboardListViewController: UIViewController {
                   height: WhiteboardListLayoutConstant.buttonSize)
             .top(equalTo: view.topAnchor,
                  inset: WhiteboardListLayoutConstant.upperComponentTopMargin)
-            .trailing(equalTo: view.trailingAnchor, inset: 22)
+            .trailing(equalTo: view.trailingAnchor, inset: horizontalMargin)
 
         createWhiteboardButton
             .addToSuperview(view)
@@ -90,7 +120,88 @@ public final class WhiteboardListViewController: UIViewController {
                   height: WhiteboardListLayoutConstant.buttonSize)
             .top(equalTo: view.topAnchor,
                  inset: WhiteboardListLayoutConstant.upperComponentTopMargin)
-            .trailing(equalTo: configureProfileButton.leadingAnchor, inset: 29)
+            .trailing(equalTo: configureProfileButton.leadingAnchor,
+                      inset: WhiteboardListLayoutConstant.createButtonTrailingMargin)
+
+        collectionView
+            .addToSuperview(view)
+            .top(equalTo: mainTitleLabel.bottomAnchor,
+                 constant: WhiteboardListLayoutConstant.collectionViewTopMargin)
+            .horizontalEdges(equalTo: view)
+            .bottom(equalTo: view.bottomAnchor, inset: .zero)
+
+        emptyListLabel
+            .addToSuperview(view)
+            .center(in: view)
+    }
+
+    private func configureCollectionView() {
+        collectionView.delegate = self
+        collectionView.collectionViewLayout = createCollectionViewLayout()
+        collectionView.backgroundColor = .white
+        collectionView.register(WhiteboardCell.self, forCellWithReuseIdentifier: WhiteboardCell.reuseIdentifier)
+    }
+
+    private func createCollectionViewLayout() -> UICollectionViewLayout {
+        let itemSize = NSCollectionLayoutSize(
+            widthDimension: .fractionalWidth(1.0),
+            heightDimension: .fractionalHeight(0.5))
+
+        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+
+        item.contentInsets = NSDirectionalEdgeInsets(
+            top: WhiteboardListLayoutConstant.itemVerticalMargin,
+            leading: .zero,
+            bottom: WhiteboardListLayoutConstant.itemVerticalMargin,
+            trailing: .zero)
+
+        let groupSize = NSCollectionLayoutSize(
+            widthDimension: .fractionalWidth(1.0),
+            heightDimension: .absolute(WhiteboardListLayoutConstant.groupHeight))
+
+        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
+
+        let section = NSCollectionLayoutSection(group: group)
+        section.contentInsets = NSDirectionalEdgeInsets(
+            top: .zero,
+            leading: horizontalMargin,
+            bottom: .zero,
+            trailing: horizontalMargin)
+
+        return UICollectionViewCompositionalLayout(section: section)
+    }
+
+    private func configureDataSource() {
+        dataSource = UICollectionViewDiffableDataSource<Int, Whiteboard>(
+            collectionView: collectionView,
+            cellProvider: { [weak self] collectionView, indexPath, board in
+                return self?.configureCell(
+                    collectionView: collectionView,
+                    indexPath: indexPath,
+                    board: board)
+            })
+    }
+
+    private func configureCell(
+        collectionView: UICollectionView,
+        indexPath: IndexPath,
+        board: Whiteboard
+    ) -> UICollectionViewCell? {
+        guard
+            let cell = collectionView.dequeueReusableCell(
+                withReuseIdentifier: WhiteboardCell.reuseIdentifier,
+                for: indexPath) as? WhiteboardCell
+        else { return nil }
+        cell.configure(with: board)
+        return cell
+    }
+
+    private func applySnapshot(whiteboards: [Whiteboard]) {
+        var snapshot = NSDiffableDataSourceSnapshot<Int, Whiteboard>()
+        snapshot.appendSections([0])
+        snapshot.appendItems(whiteboards, toSection: 0)
+        guard let dataSource = dataSource else { return }
+        dataSource.apply(snapshot, animatingDifferences: true)
     }
 
     private func bind() {
@@ -100,5 +211,21 @@ public final class WhiteboardListViewController: UIViewController {
                 // TODO: 화이트보드 추가
             }
             .store(in: &cancellables)
+
+        viewModel.output.whiteboardListPublisher
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] whiteboards in
+                self?.emptyListLabel.isHidden = !whiteboards.isEmpty
+                self?.applySnapshot(whiteboards: whiteboards)
+            }
+            .store(in: &cancellables)
+    }
+}
+
+// MARK: - UICollectionViewDelegate
+extension WhiteboardListViewController: UICollectionViewDelegate {
+    public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        guard let selectedWhiteboard = dataSource?.itemIdentifier(for: indexPath) else { return }
+        // TODO: - Whiteboard Cell 선택 시 입장 처리
     }
 }

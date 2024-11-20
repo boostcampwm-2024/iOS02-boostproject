@@ -21,7 +21,7 @@ public final class ProfileRepository: ProfileRepositoryInterface {
         } else {
             let randomProfile = Profile(
                 nickname: Profile.randomNickname(),
-                profileIcon: ProfileIcon.profileIcons.randomElement() ?? ProfileIcon.profileIcons[0])
+                profileIcon: ProfileIcon.allCases.randomElement() ?? ProfileIcon.angel)
             saveProfile(profile: randomProfile)
             return randomProfile
         }

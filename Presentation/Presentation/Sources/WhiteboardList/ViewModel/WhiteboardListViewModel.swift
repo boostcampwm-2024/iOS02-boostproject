@@ -17,6 +17,7 @@ public final class WhiteboardListViewModel: ViewModel {
     enum Input {
         case createWhiteboard
         case searchWhiteboard
+        case stopSearchingWhiteboard
     }
 
     struct Output {
@@ -44,6 +45,8 @@ public final class WhiteboardListViewModel: ViewModel {
             createWhiteboard()
         case .searchWhiteboard:
             searchWhiteboard()
+        case .stopSearchingWhiteboard:
+            stopSearchingWhiteboard()
         }
     }
 
@@ -65,5 +68,9 @@ public final class WhiteboardListViewModel: ViewModel {
                 self?.whiteboardListSubject.send(whiteboards)
             }
             .store(in: &cancellables)
+    }
+
+    private func stopSearchingWhiteboard() {
+        whiteboardUseCase.stopSearchingWhiteboard()
     }
 }

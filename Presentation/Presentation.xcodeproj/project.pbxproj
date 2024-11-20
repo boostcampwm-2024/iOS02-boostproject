@@ -20,6 +20,7 @@
 		5B2BC78F2CE4F66F00893B9E /* WhiteboardListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B2BC78C2CE4F66F00893B9E /* WhiteboardListViewModel.swift */; };
 		5B7C6EBA2CDB6C5C0024704A /* Domain.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B7C6EB92CDB6C5C0024704A /* Domain.framework */; };
 		5B7C6EBB2CDB6C5C0024704A /* Domain.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 5B7C6EB92CDB6C5C0024704A /* Domain.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		5BE0D1BC2CEC7D2300F43946 /* WhiteboardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BE0D1BB2CEC7D2300F43946 /* WhiteboardCell.swift */; };
 		6F199EF12CE31A05005DC40F /* WhiteboardToolBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F199EF02CE31A05005DC40F /* WhiteboardToolBar.swift */; };
 		6F199EF32CE3203A005DC40F /* WhiteboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F199EF22CE3203A005DC40F /* WhiteboardViewController.swift */; };
 		6F21477D2CE4EFCF00B55E2C /* TextObjectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F21477C2CE4EFCF00B55E2C /* TextObjectView.swift */; };
@@ -61,6 +62,7 @@
 		5B2BC78C2CE4F66F00893B9E /* WhiteboardListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhiteboardListViewModel.swift; sourceTree = "<group>"; };
 		5B7C6E502CDB6A380024704A /* Presentation.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Presentation.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5B7C6EB92CDB6C5C0024704A /* Domain.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Domain.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		5BE0D1BB2CEC7D2300F43946 /* WhiteboardCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhiteboardCell.swift; sourceTree = "<group>"; };
 		6F199EF02CE31A05005DC40F /* WhiteboardToolBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhiteboardToolBar.swift; sourceTree = "<group>"; };
 		6F199EF22CE3203A005DC40F /* WhiteboardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhiteboardViewController.swift; sourceTree = "<group>"; };
 		6F21477C2CE4EFCF00B55E2C /* TextObjectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextObjectView.swift; sourceTree = "<group>"; };
@@ -169,6 +171,7 @@
 			isa = PBXGroup;
 			children = (
 				5B2BC78A2CE4F66F00893B9E /* WhiteboardListViewController.swift */,
+				5BE0D1BB2CEC7D2300F43946 /* WhiteboardCell.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -386,6 +389,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				00CCC2672CE60BCD005FA747 /* AirplainFont.swift in Sources */,
+				5BE0D1BC2CEC7D2300F43946 /* WhiteboardCell.swift in Sources */,
 				A8E97AC12CE4E9A300B28063 /* ProfileIconCollectionViewCell.swift in Sources */,
 				A8E979C72CE4945500B28063 /* LayoutConstant.swift in Sources */,
 				A85260292CE344C60089DA5E /* ProfileIconView.swift in Sources */,

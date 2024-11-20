@@ -10,9 +10,12 @@ public protocol WhiteboardRepositoryInterface {
 
     /// 주변에 내 기기를 참여자의 아이콘 정보와 함께 화이트보드를 알립니다.
     func startPublishing(with info: [Profile])
-  
+
     /// 주변 화이트보드를 탐색합니다.
     func startSearching()
+
+    /// 화이트보드 탐색을 중지합니다.
+    func stopSearching()
 }
 
 public protocol WhiteboardRepositoryDelegate: AnyObject {

@@ -19,4 +19,7 @@ public protocol WhiteboardUseCaseInterface {
 
     /// 주변 화이트보드를 탐색합니다. 
     func startSearchingWhiteboard()
+
+    /// 화이트보드 탐색을 중지합니다.
+    func stopSearchingWhiteboard()
 }
