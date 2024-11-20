@@ -33,6 +33,12 @@ public protocol NearbyNetworkInterface {
     /// 연결된 기기들에게 데이터를 송신합니다.
     /// - Parameter data: 송신할 데이터
     func send(data: Data)
+
+    /// 연결된 기기들에게 파일을 송신합니다.
+    /// - Parameters:
+    ///   - fileURL: 파일의 URL
+    ///   - info: 파일에 대한 정보
+    func send(fileURL: URL, info: DataInformationDTO)
 }
 
 public protocol NearbyNetworkDelegate: AnyObject {
@@ -41,6 +47,18 @@ public protocol NearbyNetworkDelegate: AnyObject {
     ///   - data: 수신된 데이터
     ///   - connection: 데이터를 송신한 기기
     func nearbyNetwork(_ sender: NearbyNetworkInterface, didReceive data: Data, from connection: NetworkConnection)
+
+
+    /// 파일을 수신했을 때 실행됩니다.
+    /// - Parameters:
+    ///   - URL: 수신한 파일의 URL
+    ///   - Connection: 데이터를 송신한 기기
+    ///   - info: 파일에 대한 정보
+    func nearbyNetwork(
+        _ sender: NearbyNetworkInterface,
+        didReceive URL: URL,
+        from Connection: NetworkConnection,
+        info: DataInformationDTO)
 
     /// 주변 기기에게 연결 요청을 받았을 때 실행됩니다.
     /// - Parameters:
