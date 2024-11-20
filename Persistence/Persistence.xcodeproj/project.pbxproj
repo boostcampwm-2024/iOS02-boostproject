@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		5B7C6EC42CDB6C860024704A /* DataSource.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B7C6EC32CDB6C860024704A /* DataSource.framework */; };
 		5B7C6EC52CDB6C860024704A /* DataSource.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 5B7C6EC32CDB6C860024704A /* DataSource.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		6F4031402CEDDE7200948CCF /* FilePersistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F40313F2CEDDE7200948CCF /* FilePersistence.swift */; };
 		A8525F202CE32ABB0089DA5E /* PersistenceService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8525F1F2CE32ABB0089DA5E /* PersistenceService.swift */; };
 /* End PBXBuildFile section */
 
@@ -29,6 +30,7 @@
 /* Begin PBXFileReference section */
 		5B7C6E7A2CDB6A7C0024704A /* Persistence.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Persistence.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5B7C6EC32CDB6C860024704A /* DataSource.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = DataSource.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		6F40313F2CEDDE7200948CCF /* FilePersistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilePersistence.swift; sourceTree = "<group>"; };
 		A8525F1F2CE32ABB0089DA5E /* PersistenceService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -47,6 +49,7 @@
 		0080E86C2CE19EC40095B958 /* Souces */ = {
 			isa = PBXGroup;
 			children = (
+				6F40313F2CEDDE7200948CCF /* FilePersistence.swift */,
 				A8525F1F2CE32ABB0089DA5E /* PersistenceService.swift */,
 			);
 			path = Souces;
@@ -191,6 +194,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A8525F202CE32ABB0089DA5E /* PersistenceService.swift in Sources */,
+				6F4031402CEDDE7200948CCF /* FilePersistence.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
