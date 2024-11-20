@@ -24,10 +24,6 @@ struct WhiteboardObjectViewFactory: WhiteboardObjectViewFactoryable {
             break
         }
 
-        return WhiteboardObjectView(
-            whiteboardObject: WhiteboardObject(
-                id: UUID(),
-                position: .zero,
-                size: .zero))
+        return nil
     }
 }
