@@ -215,6 +215,11 @@ final class ProfileViewController: UIViewController {
 
     @objc private func saveProfile() {
         viewModel.action(input: .saveProfile)
+        dismiss(animated: true)
+    }
+
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        view.endEditing(true)
     }
 }
 
