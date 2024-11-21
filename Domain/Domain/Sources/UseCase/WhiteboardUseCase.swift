@@ -9,38 +9,41 @@ import Combine
 import Foundation
 
 public final class WhiteboardUseCase: WhiteboardUseCaseInterface {
-    private var repository: WhiteboardRepositoryInterface
+    private var whiteboardRepository: WhiteboardRepositoryInterface
+    private var profileRepository: ProfileRepositoryInterface
     private let profile: Profile
-    private var participantsInfo: [Profile] = []
     private let whiteboardListSubject: PassthroughSubject<[Whiteboard], Never>
     public let whiteboardListPublisher: AnyPublisher<[Whiteboard], Never>
 
-    public init(repository: WhiteboardRepositoryInterface, profile: Profile) {
-        self.repository = repository
-        self.profile = profile
+    public init(
+        whiteboardRepository: WhiteboardRepositoryInterface,
+        profileRepository: ProfileRepositoryInterface
+    ) {
+        self.whiteboardRepository = whiteboardRepository
+        self.profileRepository = profileRepository
+        self.profile = profileRepository.loadProfile()
         whiteboardListSubject = PassthroughSubject<[Whiteboard], Never>()
         whiteboardListPublisher = whiteboardListSubject.eraseToAnyPublisher()
-        participantsInfo.append(profile)
-        self.repository.delegate = self
+        self.whiteboardRepository.delegate = self
     }
 
-    public func createWhiteboard(nickname: String) -> Whiteboard {
+    public func createWhiteboard() -> Whiteboard {
         return Whiteboard(
             id: UUID(),
-            name: nickname,
+            name: profile.nickname,
             participantIcons: [profile.profileIcon])
     }
 
     public func startPublishingWhiteboard() {
-        repository.startPublishing(with: participantsInfo)
+        whiteboardRepository.startPublishing(with: [profile])
     }
 
     public func startSearchingWhiteboard() {
-        repository.startSearching()
+        whiteboardRepository.startSearching()
     }
 
     public func stopSearchingWhiteboard() {
-        repository.stopSearching()
+        whiteboardRepository.stopSearching()
     }
 }
 

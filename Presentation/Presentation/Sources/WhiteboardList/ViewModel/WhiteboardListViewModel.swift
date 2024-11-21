@@ -11,7 +11,6 @@ import Foundation
 
 public final class WhiteboardListViewModel: ViewModel {
     private let whiteboardUseCase: WhiteboardUseCaseInterface
-    private var nickname: String
     private var cancellables = Set<AnyCancellable>()
 
     enum Input {
@@ -29,9 +28,8 @@ public final class WhiteboardListViewModel: ViewModel {
     private let whiteboardSubject: PassthroughSubject<Whiteboard, Never>
     private let whiteboardListSubject: CurrentValueSubject<[Whiteboard], Never>
 
-    public init(whiteboardUseCase: WhiteboardUseCaseInterface, nickname: String) {
+    public init(whiteboardUseCase: WhiteboardUseCaseInterface) {
         self.whiteboardUseCase = whiteboardUseCase
-        self.nickname = nickname
         whiteboardSubject = PassthroughSubject<Whiteboard, Never>()
         whiteboardListSubject = CurrentValueSubject<[Whiteboard], Never>([])
         self.output = Output(
@@ -51,7 +49,7 @@ public final class WhiteboardListViewModel: ViewModel {
     }
 
     private func createWhiteboard() {
-        let whiteboard = whiteboardUseCase.createWhiteboard(nickname: nickname)
+        let whiteboard = whiteboardUseCase.createWhiteboard()
         whiteboardUseCase.startPublishingWhiteboard()
         whiteboardSubject.send(whiteboard)
     }
