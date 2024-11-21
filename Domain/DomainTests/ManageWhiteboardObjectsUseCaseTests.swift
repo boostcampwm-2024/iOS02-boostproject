@@ -14,7 +14,7 @@ final class ManageWhiteboardObjectsUseCaseTests: XCTestCase {
     private var cancellables: Set<AnyCancellable>!
 
     override func setUpWithError() throws {
-        useCase = ManageWhiteboardObjectUseCase()
+//        useCase = ManageWhiteboardObjectUseCase()
         cancellables = []
     }
 

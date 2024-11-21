@@ -5,6 +5,8 @@
 //  Created by 이동현 on 11/13/24.
 //
 
+import Foundation
+
 public protocol WhiteboardObjectRepositoryInterface {
     /// WhiteboardObjectRepository의 delegate
     var delegate: WhiteboardObjectRepositoryDelegate? { get set }

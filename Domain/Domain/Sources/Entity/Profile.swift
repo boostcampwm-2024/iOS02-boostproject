@@ -5,11 +5,15 @@
 //  Created by 최정인 on 11/12/24.
 //
 
+import Foundation
+
 public struct Profile: Codable {
+    public let id: UUID
     public let nickname: String
     public let profileIcon: ProfileIcon
 
     public init(nickname: String, profileIcon: ProfileIcon) {
+        id = UUID()
         self.nickname = nickname
         self.profileIcon = profileIcon
     }
@@ -48,5 +52,12 @@ extension Profile {
     ]
     public static func randomNickname() -> String {
         return "\(adjectives.randomElement() ?? "용감한") \(animals.randomElement() ?? "강아지")"
+    }
+}
+
+// MARK: - Equatable
+extension Profile: Equatable {
+    public static func == (lhs: Profile, rhs: Profile) -> Bool {
+        return lhs.id == rhs.id
     }
 }

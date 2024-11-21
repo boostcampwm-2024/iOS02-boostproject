@@ -6,6 +6,7 @@
 //
 
 import Combine
+import Foundation
 
 public protocol ManageWhiteboardObjectUseCaseInterface {
     /// 화이트보드 객체가 추가될 때 이벤트를 방출합니다.
@@ -33,4 +34,11 @@ public protocol ManageWhiteboardObjectUseCaseInterface {
     /// - Returns: 추가 성공 여부
     @discardableResult
     func removeObject(whiteboardObject: WhiteboardObject) -> Bool
+
+    /// 화이트보드 오브젝트를 선택합니다.
+    /// - Parameter whiteboardObject: 선택할 오브젝트
+    func select(whiteboardObjectID: UUID)
+
+    /// 화이트보드 오브젝트를 선택 해제 합니다.
+    func deselect()
 }

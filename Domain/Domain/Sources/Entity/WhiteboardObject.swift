@@ -27,6 +27,14 @@ public class WhiteboardObject: Equatable, Codable {
     public static func == (lhs: WhiteboardObject, rhs: WhiteboardObject) -> Bool {
         return lhs.id == rhs.id
     }
+
+    func select(by profile: Profile) {
+        selectedBy = profile
+    }
+
+    func deselect() {
+        selectedBy = nil
+    }
 }
 
 extension CGSize: Codable {
