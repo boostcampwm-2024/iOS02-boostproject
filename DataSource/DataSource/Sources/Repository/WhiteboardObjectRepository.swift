@@ -52,10 +52,34 @@ public final class WhiteboardObjectRepository: WhiteboardObjectRepositoryInterfa
 
 extension WhiteboardObjectRepository: NearbyNetworkReceiptDelegate {
     public func nearbyNetwork(_ sender: any NearbyNetworkInterface, didReceive data: Data) {
-//        <#code#>
+        // TODO: 사용하지 않을 인터페이스로 예상
     }
-    
+
     public func nearbyNetwork(_ sender: any NearbyNetworkInterface, didReceiveURL URL: URL, info: DataInformationDTO) {
-//        <#code#>
+        guard let receiveData = filePersistence.load(path: URL) else { return }
+        filePersistence.save(dataInfo: info, data: receiveData)
+        guard let whiteboardObject = try? JSONDecoder().decode(
+            info.type.decodableType,
+            from: receiveData)
+        else {
+            logger.log(level: .error, "WhiteboardObjectRepository: 전달받은 데이터 디코딩 실패")
+            return
+        }
+        delegate?.whiteboardObjectRepository(self, didReceive: whiteboardObject)
+    }
+}
+
+fileprivate extension AirplaINDataType {
+    var decodableType: WhiteboardObject.Type {
+        switch self {
+        case .text:
+            TextObject.self
+        case .photo:
+            PhotoObject.self
+        case .drawing:
+            DrawingObject.self
+        default:
+            WhiteboardObject.self
+        }
     }
 }

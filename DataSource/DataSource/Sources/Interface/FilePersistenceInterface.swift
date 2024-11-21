@@ -13,6 +13,7 @@ public protocol FilePersistenceInterface {
     ///   - dataInfo: 저장할 데이터의 정보: uuid, 데이터타입
     ///   - data: 저장할 데이터
     /// - Returns: URL로 저장된 위치 반환
+    @discardableResult
     func save(dataInfo: DataInformationDTO, data: Data?) -> URL?
 
     /// path위치에 있는 데이터를 가져옵니다.
