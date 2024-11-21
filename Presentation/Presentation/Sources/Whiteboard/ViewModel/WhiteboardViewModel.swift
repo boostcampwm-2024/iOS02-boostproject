@@ -8,7 +8,7 @@ import Combine
 import Domain
 import Foundation
 
-final class WhiteboardViewModel: ViewModel {
+public final class WhiteboardViewModel: ViewModel {
     enum Input {
         case selectTool(tool: WhiteboardTool)
         case addPhoto(
@@ -39,7 +39,7 @@ final class WhiteboardViewModel: ViewModel {
     private let manageWhiteboardToolUseCase: ManageWhiteboardToolUseCaseInterface
     private let manageWhiteboardObjectUseCase: ManageWhiteboardObjectUseCaseInterface
 
-    init(
+    public init(
         whiteboardUseCase: WhiteboardUseCaseInterface,
         addPhotoUseCase: AddPhotoUseCase,
         drawObjectUseCase: DrawObjectUseCaseInterface,
@@ -56,17 +56,14 @@ final class WhiteboardViewModel: ViewModel {
 
         output = Output(
             whiteboardToolPublisher: manageWhiteboardToolUseCase
-                .currentToolPublisher
-                .eraseToAnyPublisher(),
+                .currentToolPublisher,
             addedWhiteboardObjectPublisher: manageWhiteboardObjectUseCase
-                .addedObjectPublisher
-                .eraseToAnyPublisher(),
+                .addedObjectPublisher,
             updatedWhiteboardObjectPublisher: manageWhiteboardObjectUseCase
-                .updatedObjectPublisher
-                .eraseToAnyPublisher(),
+                .updatedObjectPublisher,
             removedWhiteboardObjectPublisher: manageWhiteboardObjectUseCase
                 .removedObjectPublisher
-                .eraseToAnyPublisher())
+        )
     }
 
     func action(input: Input) {
@@ -162,10 +159,10 @@ final class WhiteboardViewModel: ViewModel {
     }
 
     private func selectObject(objectId: UUID) {
-        // TODO: - usecase의 select 함수 호출
+        manageWhiteboardObjectUseCase.select(whiteboardObjectID: objectId)
     }
 
     private func deselectObject() {
-        // TODO: - usecase의 deselect 함수 호출
+        manageWhiteboardObjectUseCase.deselect()
     }
 }

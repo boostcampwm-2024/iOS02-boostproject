@@ -12,17 +12,17 @@ import UIKit
 
 public class WhiteboardViewController: UIViewController {
     private enum WhiteboardLayoutConstant {
-        static let canvaseSize: CGFloat = 1500
+        static let canvaseSize: CGFloat = 2000
         static let toolbarHeight: CGFloat = 40
     }
 
-    // TODO: - indicator 표시 여부 논의 필요
     private let scrollView = UIScrollView()
     private let drawingView = DrawingView()
     private let canvasView = UIView()
     private let toolbar = WhiteboardToolBar(frame: .zero)
     private let viewModel: WhiteboardViewModel
     private let objectViewFactory: WhiteboardObjectViewFactoryable
+    private var whiteboardObjectViews: [UUID: WhiteboardObjectView]
     private var cancellables: Set<AnyCancellable>
     private var visibleCenterPoint: CGPoint {
         let centerX = scrollView.contentOffset.x + (scrollView.bounds.width / 2)
@@ -30,21 +30,23 @@ public class WhiteboardViewController: UIViewController {
         return CGPoint(x: centerX, y: centerY)
     }
 
-    init(viewModel: WhiteboardViewModel, objectViewFactory: WhiteboardObjectViewFactoryable) {
+    public init(viewModel: WhiteboardViewModel, objectViewFactory: WhiteboardObjectViewFactoryable) {
         self.viewModel = viewModel
         self.objectViewFactory = objectViewFactory
         cancellables = []
+        whiteboardObjectViews = [:]
         super.init(nibName: nil, bundle: nil)
     }
 
-    required init?(coder: NSCoder) {
+    public required init?(coder: NSCoder) {
         fatalError("WhiteboardViewController 초기화 오류")
     }
 
     public override func viewDidLoad() {
         super.viewDidLoad()
-        configureAttribute()
         configureLayout()
+        configureAttribute()
+        configureScrollView()
         bind()
     }
 
@@ -104,21 +106,26 @@ public class WhiteboardViewController: UIViewController {
             .sink { [weak self] object in
                 guard let objectView = self?.objectViewFactory.create(with: object) else { return }
                 self?.addObjectView(objectView: objectView)
+                self?.whiteboardObjectViews[object.id] = objectView
                 objectView.becomeFirstResponder()
             }
             .store(in: &cancellables)
 
         viewModel.output.updatedWhiteboardObjectPublisher
             .receive(on: DispatchQueue.main)
-            .sink { _ in
-                // TODO: - 오브젝트 수정 시 동작 구현
+            .sink { [weak self] object in
+                guard let objectView = self?.whiteboardObjectViews[object.id] else { return }
+                print(object)
+                objectView.update(with: object)
             }
             .store(in: &cancellables)
 
         viewModel.output.removedWhiteboardObjectPublisher
             .receive(on: DispatchQueue.main)
-            .sink { _ in
-                // TODO: - 오브젝트 삭제 시 동작 구현
+            .sink { [weak self] object in
+                guard let objectView = self?.whiteboardObjectViews[object.id] else { return }
+                self?.whiteboardObjectViews.removeValue(forKey: object.id)
+                objectView.removeFromSuperview()
             }
             .store(in: &cancellables)
     }
@@ -129,10 +136,19 @@ public class WhiteboardViewController: UIViewController {
         if isDrawing { drawingView.reset() }
     }
 
+    private func configureScrollView() {
+        let scrollViewTapGestureRecognizer = UITapGestureRecognizer(
+            target: self,
+            action: #selector(handleScrollViewTapGesture))
+        scrollViewTapGestureRecognizer.numberOfTapsRequired = 1
+        scrollViewTapGestureRecognizer.isEnabled = true
+        scrollViewTapGestureRecognizer.cancelsTouchesInView = false
+        scrollView.addGestureRecognizer(scrollViewTapGestureRecognizer)
+    }
+
     private func addObjectView(objectView: WhiteboardObjectView) {
         canvasView.addSubview(objectView)
     }
-
 
     private func addText() {
         viewModel.action(input: .addTextObject(scrollViewOffset: scrollView.contentOffset, viewSize: view.frame.size))
@@ -142,7 +158,7 @@ public class WhiteboardViewController: UIViewController {
     private func endEditObject() {
         view.endEditing(true)
     }
-  
+
     private func presentImagePicker() {
         var configuration = PHPickerConfiguration()
         configuration.filter = .images
@@ -152,6 +168,17 @@ public class WhiteboardViewController: UIViewController {
 
         present(phpPicker, animated: true)
         viewModel.action(input: .finishUsingTool)
+    }
+
+    @objc private func handleScrollViewTapGesture(_ gesture: UITapGestureRecognizer) {
+        let location = gesture.location(in: canvasView)
+        let touchedView = canvasView.hitTest(location, with: nil)
+
+        if let touchedView = touchedView as? WhiteboardObjectView {
+            viewModel.action(input: .selectObject(objectId: touchedView.objectId))
+        } else {
+            viewModel.action(input: .deselectObject)
+        }
     }
 }
 

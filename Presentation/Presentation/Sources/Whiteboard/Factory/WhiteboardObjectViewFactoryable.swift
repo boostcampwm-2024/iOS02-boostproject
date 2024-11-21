@@ -7,12 +7,14 @@
 import Domain
 import Foundation
 
-protocol WhiteboardObjectViewFactoryable {
+public protocol WhiteboardObjectViewFactoryable {
     func create(with whiteboardObject: WhiteboardObject) -> WhiteboardObjectView?
 }
 
-struct WhiteboardObjectViewFactory: WhiteboardObjectViewFactoryable {
-    func create(with whiteboardObject: WhiteboardObject) -> WhiteboardObjectView? {
+public struct WhiteboardObjectViewFactory: WhiteboardObjectViewFactoryable {
+    public init() {}
+
+    public func create(with whiteboardObject: WhiteboardObject) -> WhiteboardObjectView? {
         switch whiteboardObject {
         case let textObject as TextObject:
             return TextObjectView(textObject: textObject)
