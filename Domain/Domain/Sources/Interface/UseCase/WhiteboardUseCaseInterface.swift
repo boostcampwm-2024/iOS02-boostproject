@@ -11,8 +11,7 @@ public protocol WhiteboardUseCaseInterface {
     var whiteboardListPublisher: AnyPublisher<[Whiteboard], Never> { get }
 
     /// 화이트보드를 생성합니다.
-    /// - Parameter nickname: 유저 닉네임(화이트보드의 이름으로 사용)
-    func createWhiteboard(nickname: String) -> Whiteboard
+    func createWhiteboard() -> Whiteboard
 
     /// 주변에 내 기기를 정보와 함께 알립니다.
     func startPublishingWhiteboard()

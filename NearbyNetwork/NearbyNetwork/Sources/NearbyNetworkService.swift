@@ -26,8 +26,9 @@ public final class NearbyNetworkService: NSObject {
     }
     private let logger = Logger()
 
-    public init(profileName: String, serviceName: String) {
-        peerID = MCPeerID(displayName: profileName)
+    public init(serviceName: String) {
+        // TODO: - displayName 
+        peerID = MCPeerID(displayName: "profileName")
         session = MCSession(peer: peerID)
         serviceAdvertiser =  MCNearbyServiceAdvertiser(
             peer: peerID,
