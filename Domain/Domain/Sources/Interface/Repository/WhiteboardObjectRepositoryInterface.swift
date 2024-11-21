@@ -11,7 +11,7 @@ public protocol WhiteboardObjectRepositoryInterface {
 
     /// 다른 사람들에게 화이트보드 오브젝트를 전송하는 메서드.
     /// - Parameter whiteboardObject: 전송할 Whiteboard Object
-    func send(whiteboardObject: WhiteboardObject)
+    func send(whiteboardObject: WhiteboardObject) async
 
     /// 텍스트 오브젝트를 삭제합니다.
     /// - Parameter textObject: 삭제할 Whiteboard Object
