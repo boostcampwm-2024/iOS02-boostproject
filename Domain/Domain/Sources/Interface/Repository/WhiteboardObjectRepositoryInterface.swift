@@ -21,6 +21,11 @@ public protocol WhiteboardObjectRepositoryInterface {
 public protocol WhiteboardObjectRepositoryDelegate: AnyObject {
     /// 화이트보드 오브젝트를 수신하면 실행됩니다.
     /// - Parameters:
-    ///   - object: 수신한 화이트보드 오브젝트
+    ///   - object: 추가되거나 수정된 화이트보드 오브젝트
     func whiteboardObjectRepository(_ sender: WhiteboardRepositoryInterface, didReceive object: WhiteboardObject)
+
+    /// 삭제된 화이트보드 오브젝트를 수신하면 실행됩니다.
+    /// - Parameters:
+    ///   - object: 삭제된 화이트보드 오브젝트
+    func whiteboardObjectRepository(_ sender: WhiteboardRepositoryInterface, didDelete object: WhiteboardObject)
 }
