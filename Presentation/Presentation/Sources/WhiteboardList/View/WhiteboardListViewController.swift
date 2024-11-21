@@ -8,6 +8,9 @@
 import Combine
 import Domain
 import UIKit
+// TODO: - Profile View 이동 주입 시점 변경시 삭제 될 모듈 (DataSource, Persistence)
+import DataSource
+import Persistence
 
 public final class WhiteboardListViewController: UIViewController {
     private enum WhiteboardListLayoutConstant {
@@ -93,6 +96,17 @@ public final class WhiteboardListViewController: UIViewController {
             self?.viewModel.action(input: .createWhiteboard)
         }
         createWhiteboardButton.addAction(createWhiteboardAction, for: .touchUpInside)
+
+        // TODO: - Profile View 이동 주입 시점
+        let showProfileViewController = UIAction { [weak self] _ in
+            let profileRepository = ProfileRepository(persistenceService: PersistenceService())
+            let viewModel = ProfileViewModel(profileUseCase: ProfileUseCase(repository: profileRepository))
+            let profileViewController = UINavigationController(
+                rootViewController: ProfileViewController(viewModel: viewModel))
+            profileViewController.modalPresentationStyle = UIModalPresentationStyle.fullScreen
+            self?.present(profileViewController, animated: true)
+        }
+        configureProfileButton.addAction(showProfileViewController, for: .touchUpInside)
 
         configureCollectionView()
         configureDataSource()
