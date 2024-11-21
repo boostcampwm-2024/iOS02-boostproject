@@ -10,4 +10,5 @@ import Foundation
 public struct DataInformationDTO: Codable {
     public let id: UUID
     public let type: AirplaINDataType
+    public let isDeleted: Bool
 }

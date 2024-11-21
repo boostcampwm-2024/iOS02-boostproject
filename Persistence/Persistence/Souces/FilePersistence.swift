@@ -16,7 +16,7 @@ public struct FilePersistence: FilePersistenceInterface {
     }
     private let logger = Logger()
 
-    public func save(dataInfo: DataInformationDTO, data: Data) -> URL? {
+    public func save(dataInfo: DataInformationDTO, data: Data?) -> URL? {
         guard let directoryURL = documentDirectoryURL?
             .appendingPathComponent(
                 dataInfo
@@ -57,13 +57,13 @@ public struct FilePersistence: FilePersistenceInterface {
 
     private func write(
         to url: URL,
-        with data: Data,
+        with data: Data?,
         fileName: String
     ) -> URL {
         let fileURL = url.appendingPathComponent("\(fileName).json")
 
         do {
-            try data.write(to: fileURL)
+            try data?.write(to: fileURL)
         } catch {
             logger.log("FilePersistence: 파일 생성 실패 \(fileURL)")
         }
