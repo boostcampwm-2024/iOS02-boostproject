@@ -11,7 +11,6 @@ import Foundation
 public final class WhiteboardUseCase: WhiteboardUseCaseInterface {
     private var whiteboardRepository: WhiteboardRepositoryInterface
     private var profileRepository: ProfileRepositoryInterface
-    private let profile: Profile
     private let whiteboardListSubject: PassthroughSubject<[Whiteboard], Never>
     public let whiteboardListPublisher: AnyPublisher<[Whiteboard], Never>
 
@@ -21,13 +20,13 @@ public final class WhiteboardUseCase: WhiteboardUseCaseInterface {
     ) {
         self.whiteboardRepository = whiteboardRepository
         self.profileRepository = profileRepository
-        self.profile = profileRepository.loadProfile()
         whiteboardListSubject = PassthroughSubject<[Whiteboard], Never>()
         whiteboardListPublisher = whiteboardListSubject.eraseToAnyPublisher()
         self.whiteboardRepository.delegate = self
     }
 
     public func createWhiteboard() -> Whiteboard {
+        let profile = profileRepository.loadProfile()
         return Whiteboard(
             id: UUID(),
             name: profile.nickname,
@@ -35,6 +34,7 @@ public final class WhiteboardUseCase: WhiteboardUseCaseInterface {
     }
 
     public func startPublishingWhiteboard() {
+        let profile = profileRepository.loadProfile()
         whiteboardRepository.startPublishing(with: [profile])
     }
 
