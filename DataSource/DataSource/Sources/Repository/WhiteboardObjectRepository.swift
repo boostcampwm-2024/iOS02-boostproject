@@ -67,7 +67,11 @@ extension WhiteboardObjectRepository: NearbyNetworkReceiptDelegate {
         // TODO: 사용하지 않을 인터페이스로 예상
     }
 
-    public func nearbyNetwork(_ sender: any NearbyNetworkInterface, didReceiveURL URL: URL, info: DataInformationDTO) {
+    public func nearbyNetwork(
+        _ sender: any NearbyNetworkInterface,
+        didReceiveURL URL: URL,
+        info: DataInformationDTO
+    ) {
         guard let receiveData = filePersistence.load(path: URL) else { return }
         filePersistence.save(dataInfo: info, data: receiveData)
         guard let whiteboardObject = try? JSONDecoder().decode(
