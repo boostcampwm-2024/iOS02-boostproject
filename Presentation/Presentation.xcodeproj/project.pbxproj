@@ -28,6 +28,8 @@
 		A8525DCB2CE203D50089DA5E /* UIView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8525DCA2CE203D50089DA5E /* UIView+.swift */; };
 		A85260252CE3447E0089DA5E /* UIColor+.swift in Sources */ = {isa = PBXBuildFile; fileRef = A85260242CE3447E0089DA5E /* UIColor+.swift */; };
 		A85260292CE344C60089DA5E /* ProfileIconView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A85260282CE344C60089DA5E /* ProfileIconView.swift */; };
+		A85AF8DF2CEF0FF50077262D /* Persistence.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A85AF8DE2CEF0FF50077262D /* Persistence.framework */; };
+		A85AF8E02CEF0FF50077262D /* Persistence.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A85AF8DE2CEF0FF50077262D /* Persistence.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A8E979C52CE493E900B28063 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8E979C42CE493E900B28063 /* ProfileViewController.swift */; };
 		A8E979C72CE4945500B28063 /* LayoutConstant.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8E979C62CE4945500B28063 /* LayoutConstant.swift */; };
 		A8E979CA2CE49A1800B28063 /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8E979C92CE49A1800B28063 /* ProfileViewModel.swift */; };
@@ -42,6 +44,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				A85AF8E02CEF0FF50077262D /* Persistence.framework in Embed Frameworks */,
 				5B7C6EBB2CDB6C5C0024704A /* Domain.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
@@ -71,6 +74,7 @@
 		A8525DCA2CE203D50089DA5E /* UIView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+.swift"; sourceTree = "<group>"; };
 		A85260242CE3447E0089DA5E /* UIColor+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+.swift"; sourceTree = "<group>"; };
 		A85260282CE344C60089DA5E /* ProfileIconView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileIconView.swift; sourceTree = "<group>"; };
+		A85AF8DE2CEF0FF50077262D /* Persistence.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Persistence.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A8E979C42CE493E900B28063 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		A8E979C62CE4945500B28063 /* LayoutConstant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayoutConstant.swift; sourceTree = "<group>"; };
 		A8E979C92CE49A1800B28063 /* ProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
@@ -83,6 +87,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A85AF8DF2CEF0FF50077262D /* Persistence.framework in Frameworks */,
 				5B7C6EBA2CDB6C5C0024704A /* Domain.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -213,6 +218,7 @@
 		5B7C6EB82CDB6C5C0024704A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				A85AF8DE2CEF0FF50077262D /* Persistence.framework */,
 				5B7C6EB92CDB6C5C0024704A /* Domain.framework */,
 			);
 			name = Frameworks;
