@@ -23,19 +23,35 @@ public final class WhiteboardObjectRepository: WhiteboardObjectRepositoryInterfa
     public func send(whiteboardObject: WhiteboardObject, isDelete: Bool) async {
         switch whiteboardObject {
         case let textObject as TextObject:
-            await send(whiteboardObject: textObject, type: .text, isDelete: isDelete)
+            await send(
+                whiteboardObject: textObject,
+                type: .text,
+                isDelete: isDelete)
         case let drawingObject as DrawingObject:
-            await send(whiteboardObject: drawingObject, type: .drawing, isDelete: isDelete)
+            await send(
+                whiteboardObject: drawingObject,
+                type: .drawing,
+                isDelete: isDelete)
         case let photoObject as PhotoObject:
-            await send(whiteboardObject: photoObject, type: .photo, isDelete: isDelete)
+            await send(
+                whiteboardObject: photoObject,
+                type: .photo,
+                isDelete: isDelete)
         default:
             break
         }
     }
 
-    private func send(whiteboardObject: WhiteboardObject, type: AirplaINDataType, isDelete: Bool) async {
+    private func send(
+        whiteboardObject: WhiteboardObject,
+        type: AirplaINDataType,
+        isDelete: Bool
+    ) async {
         let objectData = try? JSONEncoder().encode(whiteboardObject)
-        let objectInformation = DataInformationDTO(id: whiteboardObject.id, type: type, isDelete: isDelete)
+        let objectInformation = DataInformationDTO(
+            id: whiteboardObject.id,
+            type: type,
+            isDelete: isDelete)
         guard let url = filePersistence
             .save(dataInfo: objectInformation, data: objectData)
         else {
