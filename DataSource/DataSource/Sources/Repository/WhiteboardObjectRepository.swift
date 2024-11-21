@@ -20,23 +20,23 @@ public final class WhiteboardObjectRepository: WhiteboardObjectRepositoryInterfa
         self.nearbyNetwork.receiptDelegate = self
     }
 
-    public func send(whiteboardObject: WhiteboardObject, isDelete: Bool) async {
+    public func send(whiteboardObject: WhiteboardObject, isDeleted: Bool) async {
         switch whiteboardObject {
         case let textObject as TextObject:
             await send(
                 whiteboardObject: textObject,
                 type: .text,
-                isDelete: isDelete)
+                isDeleted: isDeleted)
         case let drawingObject as DrawingObject:
             await send(
                 whiteboardObject: drawingObject,
                 type: .drawing,
-                isDelete: isDelete)
+                isDeleted: isDeleted)
         case let photoObject as PhotoObject:
             await send(
                 whiteboardObject: photoObject,
                 type: .photo,
-                isDelete: isDelete)
+                isDeleted: isDeleted)
         default:
             break
         }
@@ -45,13 +45,13 @@ public final class WhiteboardObjectRepository: WhiteboardObjectRepositoryInterfa
     private func send(
         whiteboardObject: WhiteboardObject,
         type: AirplaINDataType,
-        isDelete: Bool
+        isDeleted: Bool
     ) async {
         let objectData = try? JSONEncoder().encode(whiteboardObject)
         let objectInformation = DataInformationDTO(
             id: whiteboardObject.id,
             type: type,
-            isDelete: isDelete)
+            isDeleted: isDeleted)
         guard let url = filePersistence
             .save(dataInfo: objectInformation, data: objectData)
         else {
@@ -82,7 +82,7 @@ extension WhiteboardObjectRepository: NearbyNetworkReceiptDelegate {
             return
         }
 
-        if info.isDelete {
+        if info.isDeleted {
             delegate?.whiteboardObjectRepository(self, didDelete: whiteboardObject)
         } else {
             delegate?.whiteboardObjectRepository(self, didReceive: whiteboardObject)

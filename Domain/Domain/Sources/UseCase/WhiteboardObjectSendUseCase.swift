@@ -14,7 +14,7 @@ public final class WhiteboardObjectSendUseCase: WhiteObjectSendUseCaseInterface 
 
     public func send(whiteboardObject: WhiteboardObject) {
         Task {
-            await repository.send(whiteboardObject: whiteboardObject, isDelete: true)
+            await repository.send(whiteboardObject: whiteboardObject, isDeleted: true)
         }
     }
 }
