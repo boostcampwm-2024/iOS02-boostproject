@@ -20,26 +20,22 @@ public final class WhiteboardObjectRepository: WhiteboardObjectRepositoryInterfa
         self.nearbyNetwork.receiptDelegate = self
     }
 
-    public func send(whiteboardObject: WhiteboardObject) async {
+    public func send(whiteboardObject: WhiteboardObject, isDelete: Bool) async {
         switch whiteboardObject {
         case let textObject as TextObject:
-            await send(whiteboardObject: textObject, type: .text)
+            await send(whiteboardObject: textObject, type: .text, isDelete: isDelete)
         case let drawingObject as DrawingObject:
-            await send(whiteboardObject: drawingObject, type: .drawing)
+            await send(whiteboardObject: drawingObject, type: .drawing, isDelete: isDelete)
         case let photoObject as PhotoObject:
-            await send(whiteboardObject: photoObject, type: .photo)
+            await send(whiteboardObject: photoObject, type: .photo, isDelete: isDelete)
         default:
             break
         }
     }
 
-    public func delete(whiteboardObject: WhiteboardObject) {
-//        <#code#>
-    }
-
-    private func send(whiteboardObject: WhiteboardObject, type: AirplaINDataType) async {
+    private func send(whiteboardObject: WhiteboardObject, type: AirplaINDataType, isDelete: Bool) async {
         let objectData = try? JSONEncoder().encode(whiteboardObject)
-        let objectInformation = DataInformationDTO(id: whiteboardObject.id, type: type)
+        let objectInformation = DataInformationDTO(id: whiteboardObject.id, type: type, isDelete: isDelete)
         guard let url = filePersistence
             .save(dataInfo: objectInformation, data: objectData)
         else {
@@ -65,7 +61,12 @@ extension WhiteboardObjectRepository: NearbyNetworkReceiptDelegate {
             logger.log(level: .error, "WhiteboardObjectRepository: 전달받은 데이터 디코딩 실패")
             return
         }
-        delegate?.whiteboardObjectRepository(self, didReceive: whiteboardObject)
+
+        if info.isDelete {
+            delegate?.whiteboardObjectRepository(self, didDelete: whiteboardObject)
+        } else {
+            delegate?.whiteboardObjectRepository(self, didReceive: whiteboardObject)
+        }
     }
 }
 
