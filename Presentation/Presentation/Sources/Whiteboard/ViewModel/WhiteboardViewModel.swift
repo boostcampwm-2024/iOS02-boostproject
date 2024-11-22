@@ -117,7 +117,9 @@ public final class WhiteboardViewModel: ViewModel {
     }
 
     private func addWhiteboardObject(object: WhiteboardObject) {
-        manageWhiteboardObjectUseCase.addObject(whiteboardObject: object)
+        Task {
+            await manageWhiteboardObjectUseCase.addObject(whiteboardObject: object)
+        }
     }
 
     private func addPhoto(
@@ -130,7 +132,9 @@ public final class WhiteboardViewModel: ViewModel {
                 imageData: imageData,
                 position: point,
                 size: size)
-            manageWhiteboardObjectUseCase.addObject(whiteboardObject: photoObject)
+            Task {
+                await manageWhiteboardObjectUseCase.addObject(whiteboardObject: photoObject)
+            }
         } catch {
         // TODO: - 사진 추가 실패 시 오류 처리
         }
@@ -159,10 +163,14 @@ public final class WhiteboardViewModel: ViewModel {
     }
 
     private func selectObject(objectId: UUID) {
-        manageWhiteboardObjectUseCase.select(whiteboardObjectID: objectId)
+        Task {
+            await manageWhiteboardObjectUseCase.select(whiteboardObjectID: objectId)
+        }
     }
 
     private func deselectObject() {
-        manageWhiteboardObjectUseCase.deselect()
+        Task {
+            await manageWhiteboardObjectUseCase.deselect()
+        }
     }
 }
