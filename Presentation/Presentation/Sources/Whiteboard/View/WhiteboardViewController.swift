@@ -115,7 +115,6 @@ public class WhiteboardViewController: UIViewController {
             .receive(on: DispatchQueue.main)
             .sink { [weak self] object in
                 guard let objectView = self?.whiteboardObjectViews[object.id] else { return }
-                print(object)
                 objectView.update(with: object)
             }
             .store(in: &cancellables)
