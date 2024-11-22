@@ -22,6 +22,11 @@ actor WhiteboardObjectStorage {
         whiteboardObjects.remove(object)
     }
 
+    func update(object: WhiteboardObject) {
+        remove(object: object)
+        insert(object: object)
+    }
+
     func fetchObjectByID(id: UUID) -> WhiteboardObject? {
         return whiteboardObjects.first { $0.id == id }
     }

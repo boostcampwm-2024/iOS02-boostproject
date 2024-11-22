@@ -27,7 +27,7 @@ public class WhiteboardObject: Equatable, Codable {
     }
 
     public static func == (lhs: WhiteboardObject, rhs: WhiteboardObject) -> Bool {
-        return lhs.id == rhs.id && lhs.updatedAt == rhs.updatedAt
+        return lhs.id == rhs.id
     }
 
     func select(by profile: Profile) {

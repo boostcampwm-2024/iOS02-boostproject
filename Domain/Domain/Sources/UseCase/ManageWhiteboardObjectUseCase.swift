@@ -60,8 +60,7 @@ public final class ManageWhiteboardObjectUseCase: ManageWhiteboardObjectUseCaseI
         guard isContains else { return false }
 
         await whiteboardObjectRepository.send(whiteboardObject: whiteboardObject, isDeleted: false)
-        await whiteboardObjectStorage.remove(object: whiteboardObject)
-        await whiteboardObjectStorage.insert(object: whiteboardObject)
+        await whiteboardObjectStorage.update(object: whiteboardObject)
         updatedWhiteboardSubject.send(whiteboardObject)
 
         return true
