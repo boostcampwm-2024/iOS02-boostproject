@@ -22,10 +22,11 @@ final class DrawingObjectView: WhiteboardObjectView {
         super.init(coder: coder)
     }
 
-    private func configureLayout() {
+    override func configureLayout() {
         imageView
             .addToSuperview(self)
             .edges(equalTo: self)
+        super.configureLayout()
     }
 
     private func renderImage(with object: DrawingObject) {

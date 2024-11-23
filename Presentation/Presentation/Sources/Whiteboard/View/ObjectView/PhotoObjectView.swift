@@ -38,10 +38,11 @@ final class PhotoObjectView: WhiteboardObjectView {
         imageView.contentMode = .scaleAspectFit
     }
 
-    private func configureLayout() {
+    override func configureLayout() {
         imageView
             .addToSuperview(self)
             .edges(equalTo: self)
+        super.configureLayout()
     }
 
     private func configureFrame(photoObject: PhotoObject) {

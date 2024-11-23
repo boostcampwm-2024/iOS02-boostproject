@@ -34,10 +34,11 @@ final class TextObjectView: WhiteboardObjectView {
         textField.backgroundColor = .clear
     }
 
-    private func configureLayout() {
+    override func configureLayout() {
         textField
             .addToSuperview(self)
             .edges(equalTo: self)
+        super.configureLayout()
     }
 
     override func update(with object: WhiteboardObject) {
