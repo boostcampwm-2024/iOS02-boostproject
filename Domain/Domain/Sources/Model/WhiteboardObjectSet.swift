@@ -7,7 +7,7 @@
 
 import Foundation
 
-actor WhiteboardObjectStorage {
+actor WhiteboardObjectSet {
     private var whiteboardObjects: Set<WhiteboardObject> = []
 
     func contains(object: WhiteboardObject) -> Bool {

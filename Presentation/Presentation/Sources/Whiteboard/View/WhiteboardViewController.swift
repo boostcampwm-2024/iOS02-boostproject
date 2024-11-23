@@ -10,7 +10,7 @@ import Domain
 import PhotosUI
 import UIKit
 
-public class WhiteboardViewController: UIViewController {
+public final class WhiteboardViewController: UIViewController {
     private enum WhiteboardLayoutConstant {
         static let canvaseSize: CGFloat = 2000
         static let toolbarHeight: CGFloat = 40
