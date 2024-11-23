@@ -15,21 +15,13 @@ final class TextObjectView: WhiteboardObjectView {
         return textField
     }()
 
-    private let textObject: TextObject
-
     init(textObject: TextObject) {
-        self.textObject = textObject
         super.init(whiteboardObject: textObject)
         configureAttribute()
         configureLayout()
     }
 
     required init?(coder: NSCoder) {
-        self.textObject = TextObject(
-            id: UUID(),
-            position: .zero,
-            size: .zero,
-            text: "")
         super.init(coder: coder)
     }
 
@@ -39,12 +31,19 @@ final class TextObjectView: WhiteboardObjectView {
 
     private func configureAttribute() {
         textField.delegate = self
+        textField.backgroundColor = .clear
     }
 
     private func configureLayout() {
         textField
             .addToSuperview(self)
             .edges(equalTo: self)
+    }
+
+    override func update(with object: WhiteboardObject) {
+        super.update(with: object)
+        guard let textObject = object as? TextObject else { return }
+        textField.text = textObject.text
     }
 }
 

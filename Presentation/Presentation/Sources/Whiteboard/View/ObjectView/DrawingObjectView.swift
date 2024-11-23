@@ -10,11 +10,8 @@ import UIKit
 
 final class DrawingObjectView: WhiteboardObjectView {
     let imageView = UIImageView()
-    // TODO: - 딴과 논의 필요
-    let objectId: UUID
 
     init(drawingObject: DrawingObject) {
-        self.objectId = drawingObject.id
         super.init(whiteboardObject: drawingObject)
 
         configureLayout()
@@ -22,7 +19,6 @@ final class DrawingObjectView: WhiteboardObjectView {
     }
 
     required init?(coder: NSCoder) {
-        objectId = UUID()
         super.init(coder: coder)
     }
 

@@ -26,7 +26,7 @@ extension MCSession {
                     } else {
                         continuation.resume()
                     }
-                }
+            }
         }
     }
 }

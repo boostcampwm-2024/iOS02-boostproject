@@ -10,31 +10,28 @@ import UIKit
 
 final class PhotoObjectView: WhiteboardObjectView {
     let imageView = UIImageView()
-    let objectId: UUID
 
     init(photoObject: PhotoObject) {
-        self.objectId = photoObject.id
-        var width = photoObject.size.width
-        var height = photoObject.size.height
-        let scaleFactor: CGFloat = width >= height ? 200 / width : 200 / height
-        width *= scaleFactor
-        height *= scaleFactor
-
-        let imageViewFrame = CGRect(
-            x: photoObject.position.x - width / 2,
-            y: photoObject.position.y - height / 2,
-            width: width,
-            height: height)
-        super.init(whiteboardObject: photoObject, frame: imageViewFrame)
-
+        super.init(whiteboardObject: photoObject)
+        configureFrame(photoObject: photoObject)
         configureAttribute()
         configureLayout()
         configureImage(with: photoObject)
     }
 
     required init?(coder: NSCoder) {
-        objectId = UUID()
         super.init(coder: coder)
+    }
+
+    override func update(with whiteboardObject: WhiteboardObject) {
+        guard let photoObject = whiteboardObject as? PhotoObject else { return }
+        configureFrame(photoObject: photoObject)
+
+        if let selector = photoObject.selectedBy {
+            select(selector: selector)
+        } else {
+            deselect()
+        }
     }
 
     private func configureAttribute() {
@@ -45,6 +42,21 @@ final class PhotoObjectView: WhiteboardObjectView {
         imageView
             .addToSuperview(self)
             .edges(equalTo: self)
+    }
+
+    private func configureFrame(photoObject: PhotoObject) {
+        var width = photoObject.size.width
+        var height = photoObject.size.height
+        let scaleFactor: CGFloat = width >= height ? 200 / width : 200 / height
+        width *= scaleFactor
+        height *= scaleFactor
+
+        let frame = CGRect(
+            x: photoObject.position.x - width / 2,
+            y: photoObject.position.y - height / 2,
+            width: width,
+            height: height)
+        self.frame = frame
     }
 
     private func configureImage(with object: PhotoObject) {

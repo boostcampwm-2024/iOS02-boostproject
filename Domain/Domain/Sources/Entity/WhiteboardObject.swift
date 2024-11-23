@@ -11,6 +11,7 @@ public class WhiteboardObject: Equatable, Codable {
     public private(set) var position: CGPoint
     public private(set) var size: CGSize
     public private(set) var selectedBy: Profile?
+    public private(set) var updatedAt: Date
 
     public init(
         id: UUID,
@@ -22,10 +23,27 @@ public class WhiteboardObject: Equatable, Codable {
         self.position = position
         self.size = size
         self.selectedBy = selectedBy
+        updatedAt = Date()
     }
 
     public static func == (lhs: WhiteboardObject, rhs: WhiteboardObject) -> Bool {
         return lhs.id == rhs.id
+    }
+
+    func select(by profile: Profile) {
+        selectedBy = profile
+        updatedAt = Date()
+    }
+
+    func deselect() {
+        selectedBy = nil
+        updatedAt = Date()
+    }
+}
+
+extension WhiteboardObject: Hashable {
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
     }
 }
 
