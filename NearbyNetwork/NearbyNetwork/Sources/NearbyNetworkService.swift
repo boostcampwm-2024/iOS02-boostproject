@@ -51,7 +51,7 @@ extension NearbyNetworkService: NearbyNetworkInterface {
             guard let self = self else { return }
             while continueSearching {
                 self.serviceBrowser.startBrowsingForPeers()
-                Thread.sleep(forTimeInterval: 1.0)
+                Thread.sleep(forTimeInterval: 3.0)
                 self.serviceBrowser.stopBrowsingForPeers()
             }
         }
@@ -59,10 +59,6 @@ extension NearbyNetworkService: NearbyNetworkInterface {
 
     public func stopSearching() {
         continueSearching = false
-    }
-
-    private func startRepeatedSearching() {
-
     }
 
     public func startPublishing(with info: [String: String]) {
@@ -258,7 +254,6 @@ extension NearbyNetworkService: MCNearbyServiceBrowserDelegate {
         foundPeer peerID: MCPeerID,
         withDiscoveryInfo info: [String: String]?
     ) {
-
         guard let uuid = UUID(uuidString: peerID.displayName) else { return }
 
         let connection = NetworkConnection(

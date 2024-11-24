@@ -168,7 +168,6 @@ extension WhiteboardRepository: NearbyNetworkConnectionDelegate {
             let lostIcon = lostInfo["participants"]
         else { return }
 
-
         connections[connection.id] = nil
         updatePublishingInfo()
         nearbyNetwork.startPublishing(with: self.participantsInfo)
