@@ -24,8 +24,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
         // TODO: - 임시 의존성 주입
         let nearbyNetworkService = NearbyNetworkService(serviceName: "airplain")
-        let whiteboardRepository = WhiteboardRepository(nearbyNetworkInterface: nearbyNetworkService)
         let profileRepository = ProfileRepository(persistenceService: PersistenceService())
+        let whiteboardRepository = WhiteboardRepository(nearbyNetworkInterface: nearbyNetworkService, myProfile: profileRepository.loadProfile())
         let whiteboardUseCase = WhiteboardUseCase(
             whiteboardRepository: whiteboardRepository,
             profileRepository: profileRepository)
