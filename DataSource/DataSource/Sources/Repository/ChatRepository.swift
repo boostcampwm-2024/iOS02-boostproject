@@ -66,5 +66,16 @@ extension ChatRepository: NearbyNetworkReceiptDelegate {
         _ sender: any NearbyNetworkInterface,
         didReceiveURL URL: URL,
         info: DataInformationDTO
-    ) { }
+    ) {
+        guard let receiveData = filePersistence.load(path: URL) else { return }
+        filePersistence.save(dataInfo: info, data: receiveData)
+        guard let chatMessage = try? JSONDecoder().decode(ChatMessage.self,
+            from: receiveData)
+        else {
+            logger.log(level: .error, "WhiteboardObjectRepository: 전달받은 데이터 디코딩 실패")
+            return
+        }
+
+        delegate?.chatRepository(self, didReceive: chatMessage)
+    }
 }
