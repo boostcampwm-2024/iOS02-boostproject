@@ -76,6 +76,13 @@ public final class WhiteboardRepository: WhiteboardRepositoryInterface {
 extension WhiteboardRepository: NearbyNetworkConnectionDelegate {
     public func nearbyNetwork(
         _ sender: any NearbyNetworkInterface,
+        didReceive data: Data,
+        from connection: NetworkConnection) {
+        // TODO: -
+    }
+
+    public func nearbyNetwork(
+        _ sender: any NearbyNetworkInterface,
         didReceive connectionHandler: @escaping (Bool) -> Void) {
             connectionHandler(true)
     }

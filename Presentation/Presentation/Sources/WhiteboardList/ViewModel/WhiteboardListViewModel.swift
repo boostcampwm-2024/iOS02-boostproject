@@ -68,6 +68,15 @@ public final class WhiteboardListViewModel: ViewModel {
         }
     }
 
+    private func joinWhiteboard(whiteboard: Whiteboard) {
+        do {
+            try whiteboardUseCase.joinWhiteboard(whiteboard: whiteboard)
+            // TODO: 해당 화이트보드로 화면전환
+        } catch {
+            // TODO: Alert 창 띄우기
+        }
+    }
+
     private func stopSearchingWhiteboard() {
         whiteboardUseCase.stopSearchingWhiteboard()
     }

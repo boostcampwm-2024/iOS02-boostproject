@@ -17,9 +17,6 @@ public protocol NearbyNetworkInterface {
     /// 주변 기기 검색을 중지합니다.
     func stopSearching()
 
-    /// 주변에 내 기기를 알립니다.
-    func startPublishing()
-
     /// 주변에 내 기기를 정보와 함께 알립니다.
     /// - Parameter data: 담을 정보
     func startPublishing(with info: [String: String])
@@ -60,8 +57,8 @@ public protocol NearbyNetworkConnectionDelegate: AnyObject {
 
     /// 주변 기기와의 연결에 실패했을 때 실행됩니다.
     func nearbyNetworkCannotConnect(_ sender: NearbyNetworkInterface)
-
-    ///  주변 기기와 연결에 성공하였을 때 실행됩니다.
+    
+    /// 주변 기기와 연결에 성공하였을 때 실행됩니다.
     /// - Parameters:
     ///   - connection: 연결된 기기
     ///   - info: 기존 Session 정보

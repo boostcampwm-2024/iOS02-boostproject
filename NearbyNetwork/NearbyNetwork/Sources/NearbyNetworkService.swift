@@ -65,10 +65,6 @@ extension NearbyNetworkService: NearbyNetworkInterface {
 
     }
 
-    public func startPublishing() {
-        serviceAdvertiser.startAdvertisingPeer()
-    }
-
     public func startPublishing(with info: [String: String]) {
         isHost = true
         serviceAdvertiser.stopAdvertisingPeer()

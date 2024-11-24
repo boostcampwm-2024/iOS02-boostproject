@@ -96,39 +96,6 @@ public final class WhiteboardListViewController: UIViewController {
         let createWhiteboardAction = UIAction { [weak self] _ in
             // TODO: - 임시 화면 전환 코드
             self?.viewModel.action(input: .createWhiteboard)
-            let usecase = WhiteboardUseCase(
-                whiteboardRepository: WhiteboardRepository(
-                    nearbyNetworkInterface: NearbyNetworkService(
-                        serviceName: "airplain"
-                    ), myProfile: ProfileRepository(persistenceService: PersistenceService()).loadProfile()
-                ),
-                profileRepository: ProfileRepository(
-                    persistenceService: PersistenceService()
-                )
-            )
-            do {
-                let viewmodel = WhiteboardViewModel(
-                    whiteboardUseCase: usecase,
-                    addPhotoUseCase: try AddPhotoUseCase(),
-                    drawObjectUseCase: DrawObjectUseCase(),
-                    textObjectUseCase: TextObjectUseCase(
-                        textFieldDefaultSize: CGSize(
-                            width: 200,
-                            height: 50
-                        )
-                    ),
-                    managemanageWhiteboardToolUseCase: ManageWhiteboardToolUseCase(),
-                    manageWhiteboardObjectUseCase: ManageWhiteboardObjectUseCase()
-                )
-                let nextVC = WhiteboardViewController(
-                    viewModel: viewmodel,
-                    objectViewFactory: WhiteboardObjectViewFactory()
-                )
-                self?.navigationController?.pushViewController(nextVC, animated: true)
-            } catch {
-
-            }
-
         }
         createWhiteboardButton.addAction(createWhiteboardAction, for: .touchUpInside)
 
@@ -254,7 +221,6 @@ public final class WhiteboardListViewController: UIViewController {
         guard let dataSource = dataSource else { return }
         dataSource.apply(snapshot, animatingDifferences: true)
     }
-
     private func bind() {
         viewModel.output.whiteboardPublisher
             .receive(on: DispatchQueue.main)
@@ -277,40 +243,7 @@ public final class WhiteboardListViewController: UIViewController {
 extension WhiteboardListViewController: UICollectionViewDelegate {
     public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard let selectedWhiteboard = dataSource?.itemIdentifier(for: indexPath) else { return }
-        // TODO: - 임시 화면 전환 코드
         viewModel.action(input: .joinWhiteboard(whiteboard: selectedWhiteboard))
-        let usecase = WhiteboardUseCase(
-            whiteboardRepository: WhiteboardRepository(
-                nearbyNetworkInterface: NearbyNetworkService(
-                    serviceName: "airplain"
-                ), myProfile: ProfileRepository(persistenceService: PersistenceService()).loadProfile()
-            ),
-            profileRepository: ProfileRepository(
-                persistenceService: PersistenceService()
-            )
-        )
-        do {
-            let viewmodel = WhiteboardViewModel(
-                whiteboardUseCase: usecase,
-                addPhotoUseCase: try AddPhotoUseCase(),
-                drawObjectUseCase: DrawObjectUseCase(),
-                textObjectUseCase: TextObjectUseCase(
-                    textFieldDefaultSize: CGSize(
-                        width: 200,
-                        height: 50
-                    )
-                ),
-                managemanageWhiteboardToolUseCase: ManageWhiteboardToolUseCase(),
-                manageWhiteboardObjectUseCase: ManageWhiteboardObjectUseCase()
-            )
-            let nextVC = WhiteboardViewController(
-                viewModel: viewmodel,
-                objectViewFactory: WhiteboardObjectViewFactory()
-            )
-            self.navigationController?.pushViewController(nextVC, animated: true)
-        } catch {
-
-        }
-
+        // TODO: - 화면 전환
     }
 }
