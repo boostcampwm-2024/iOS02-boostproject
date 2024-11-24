@@ -31,7 +31,7 @@ public final class AddPhotoUseCase: AddPhotoUseCaseInterface {
 
     public func addPhoto(
         imageData: Data,
-        position: CGPoint,
+        centerPosition: CGPoint,
         size: CGSize
     ) throws -> PhotoObject {
         let uuid = UUID()
@@ -44,9 +44,14 @@ public final class AddPhotoUseCase: AddPhotoUseCaseInterface {
             throw DomainError.cannotWriteFile
         }
 
+        var size = size
+        let scaleFactor = size.width >= size.height ? 200 / size.width : 200 / size.height
+        size.width *= scaleFactor
+        size.height *= scaleFactor
+
         let photoObject = PhotoObject(
             id: uuid,
-            position: position,
+            centerPosition: centerPosition,
             size: size,
             photoURL: photoURL)
 

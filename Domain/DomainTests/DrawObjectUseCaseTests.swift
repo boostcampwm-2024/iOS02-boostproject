@@ -55,7 +55,7 @@ final class DrawObjectUseCaseTests: XCTestCase {
 
          // 검증
          XCTAssertNotNil(drawingObject)
-         XCTAssertEqual(drawingObject?.position, CGPoint(x: 10 - padding, y: 10 - padding))
+         XCTAssertEqual(drawingObject?.centerPosition, CGPoint(x: 10 - padding, y: 10 - padding))
          XCTAssertEqual(drawingObject?.size, CGSize(width: 3 + padding * 2, height: 3 + padding * 2))
          XCTAssertEqual(drawingObject?.points, expectedAdjustedPoints)
      }

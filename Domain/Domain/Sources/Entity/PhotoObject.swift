@@ -14,16 +14,18 @@ public final class PhotoObject: WhiteboardObject {
 
     public init(
         id: UUID,
-        position: CGPoint,
+        centerPosition: CGPoint,
         size: CGSize,
+        scale: CGFloat = 1,
         photoURL: URL,
         selectedBy: Profile? = nil
     ) {
         self.photoURL = photoURL
         super.init(
             id: id,
-            position: position,
+            centerPosition: centerPosition,
             size: size,
+            scale: scale,
             selectedBy: selectedBy)
     }
 

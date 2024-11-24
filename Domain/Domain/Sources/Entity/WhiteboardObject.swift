@@ -8,20 +8,23 @@ import Foundation
 
 public class WhiteboardObject: Equatable, Codable {
     public let id: UUID
-    public private(set) var position: CGPoint
+    public private(set) var centerPosition: CGPoint
     public private(set) var size: CGSize
+    public private(set) var scale: CGFloat
     public private(set) var selectedBy: Profile?
     public private(set) var updatedAt: Date
 
     public init(
         id: UUID,
-        position: CGPoint,
+        centerPosition: CGPoint,
         size: CGSize,
+        scale: CGFloat = 1,
         selectedBy: Profile? = nil
     ) {
         self.id = id
-        self.position = position
+        self.centerPosition = centerPosition
         self.size = size
+        self.scale = scale
         self.selectedBy = selectedBy
         updatedAt = Date()
     }
@@ -38,6 +41,14 @@ public class WhiteboardObject: Equatable, Codable {
     func deselect() {
         selectedBy = nil
         updatedAt = Date()
+    }
+
+    func changeScale(to scale: CGFloat) {
+        self.scale = scale
+    }
+
+    func changePosition(position: CGPoint) {
+        self.centerPosition = position
     }
 }
 

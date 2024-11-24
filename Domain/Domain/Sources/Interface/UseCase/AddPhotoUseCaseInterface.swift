@@ -12,12 +12,12 @@ public protocol AddPhotoUseCaseInterface {
     /// 사진 오브젝트를 추가합니다.
     /// - Parameters:
     ///   - imageData: 추가할 사진의 데이터
-    ///   - position: 사진을 추가할 위치 (origin)
+    ///   - centerPosition: 사진의 중심
     ///   - size: 사진 객체
     /// - Returns:
     func addPhoto(
         imageData: Data,
-        position: CGPoint,
+        centerPosition: CGPoint,
         size: CGSize
     ) throws -> PhotoObject
 }

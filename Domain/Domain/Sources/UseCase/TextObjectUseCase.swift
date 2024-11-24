@@ -15,13 +15,15 @@ public final class TextObjectUseCase: TextObjectUseCaseInterface {
         self.textFieldDefaultSize = textFieldDefaultSize
     }
 
-    public func addText(point: CGPoint, size: CGSize) -> TextObject {
+    public func addText(centerPoint point: CGPoint, size: CGSize) -> TextObject {
         let positionX = point.x + size.width / 3
         let positionY = point.y + size.height / 3
-        let position = CGPoint(x: positionX, y: positionY)
+        let centerPosition = CGPoint(
+            x: positionX + size.width / 2,
+            y: positionY + size.height / 2)
         return TextObject(
             id: UUID(),
-            position: position,
+            centerPosition: centerPosition,
             size: textFieldDefaultSize,
             text: "")
     }
