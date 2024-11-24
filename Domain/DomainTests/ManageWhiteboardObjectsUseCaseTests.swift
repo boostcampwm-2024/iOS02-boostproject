@@ -33,7 +33,7 @@ final class ManageWhiteboardObjectsUseCaseTests: XCTestCase {
         // 준비
         let targetObject = WhiteboardObject(
             id: UUID(),
-            position: .zero,
+            centerPosition: .zero,
             size: CGSize(width: 100, height: 100))
         var receivedObject: WhiteboardObject?
 
@@ -54,7 +54,7 @@ final class ManageWhiteboardObjectsUseCaseTests: XCTestCase {
         // 준비
         let targetObject = WhiteboardObject(
             id: UUID(),
-            position: .zero,
+            centerPosition: .zero,
             size: CGSize(width: 100, height: 100))
 
         // 실행
@@ -72,11 +72,11 @@ final class ManageWhiteboardObjectsUseCaseTests: XCTestCase {
         let uuid = UUID()
         let object = WhiteboardObject(
             id: uuid,
-            position: .zero,
+            centerPosition: .zero,
             size: CGSize(width: 100, height: 100))
         let updatedObject = WhiteboardObject(
             id: uuid,
-            position: CGPoint(x: 50, y: 50),
+            centerPosition: CGPoint(x: 50, y: 50),
             size: CGSize(width: 200, height: 200))
         var receivedObject: WhiteboardObject?
 
@@ -98,7 +98,7 @@ final class ManageWhiteboardObjectsUseCaseTests: XCTestCase {
         // 준비
         let targetObject = WhiteboardObject(
             id: UUID(),
-            position: CGPoint(x: 50, y: 50),
+            centerPosition: CGPoint(x: 50, y: 50),
             size: CGSize(width: 200, height: 200))
         var receivedObject: WhiteboardObject?
 
@@ -119,15 +119,15 @@ final class ManageWhiteboardObjectsUseCaseTests: XCTestCase {
         // 준비
         let object1 = WhiteboardObject(
             id: UUID(),
-            position: .zero,
+            centerPosition: .zero,
             size: CGSize(width: 100, height: 100))
         let object2 = WhiteboardObject(
             id: UUID(),
-            position: .zero,
+            centerPosition: .zero,
             size: CGSize(width: 100, height: 100))
         let targetObject = WhiteboardObject(
             id: UUID(),
-            position: .zero,
+            centerPosition: .zero,
             size: CGSize(width: 100, height: 100))
         var receivedObject: WhiteboardObject?
 
@@ -151,7 +151,7 @@ final class ManageWhiteboardObjectsUseCaseTests: XCTestCase {
         // 준비
         let object = WhiteboardObject(
             id: UUID(),
-            position: .zero,
+            centerPosition: .zero,
             size: CGSize(width: 100, height: 100))
         var receivedObject: WhiteboardObject?
 
@@ -172,7 +172,7 @@ final class ManageWhiteboardObjectsUseCaseTests: XCTestCase {
         // 준비
         let targetObject = WhiteboardObject(
             id: UUID(),
-            position: .zero,
+            centerPosition: .zero,
             size: CGSize(width: 100, height: 100),
             selectedBy: nil)
 
@@ -192,7 +192,7 @@ final class ManageWhiteboardObjectsUseCaseTests: XCTestCase {
         let strangerProfile = Profile(nickname: "strangerProfile", profileIcon: .cold)
         let targetObject = WhiteboardObject(
             id: UUID(),
-            position: .zero,
+            centerPosition: .zero,
             size: CGSize(width: 100, height: 100),
             selectedBy: strangerProfile)
 
@@ -228,7 +228,7 @@ final class ManageWhiteboardObjectsUseCaseTests: XCTestCase {
         // 준비
         let targetObject = WhiteboardObject(
             id: UUID(),
-            position: .zero,
+            centerPosition: .zero,
             size: CGSize(width: 100, height: 100),
             selectedBy: nil)
 
@@ -241,6 +241,60 @@ final class ManageWhiteboardObjectsUseCaseTests: XCTestCase {
         XCTAssertTrue(isSuccess)
     }
 
+    // 오브젝트 scale 변경 성공하는지 테스트
+    func testChangeScaleSuccess() async {
+        // 준비
+        let targetObject = WhiteboardObject(
+            id: UUID(),
+            centerPosition: .zero,
+            size: CGSize(width: 100, height: 100),
+            selectedBy: myProfile)
+
+        // 실행
+        await useCase.addObject(whiteboardObject: targetObject)
+        let isSuccess = await useCase.changeSize(whiteboardObjectID: targetObject.id, to: 2)
+
+        // 검증
+        XCTAssertTrue(isSuccess)
+        XCTAssertEqual(targetObject.scale, 2)
+    }
+
+    // 다른 사람이 선택 중일 때 scale 변경 실패하는지 테스트
+    func testChangeScaleFailsWhenSelectedByOther() async {
+        // 준비
+        let strangerProfile = Profile(nickname: "Other", profileIcon: .cold)
+        let targetObject = WhiteboardObject(
+            id: UUID(),
+            centerPosition: .zero,
+            size: CGSize(width: 100, height: 100),
+            selectedBy: strangerProfile)
+
+        // 실행
+        await useCase.addObject(whiteboardObject: targetObject)
+        let isFailure = await !useCase.changeSize(whiteboardObjectID: targetObject.id, to: 2)
+
+        // 검증
+        XCTAssertTrue(isFailure)
+        XCTAssertEqual(targetObject.scale, 1)
+    }
+
+    // 선택하지 않은 상태라 scale 변경 실패하는지 테스트
+    func testChangeScaleFailsWhenNotSelected() async {
+        // 준비
+        let targetObject = WhiteboardObject(
+            id: UUID(),
+            centerPosition: .zero,
+            size: CGSize(width: 100, height: 100),
+            selectedBy: nil)
+
+        // 실행
+        await useCase.addObject(whiteboardObject: targetObject)
+        let isFailure = await !useCase.changeSize(whiteboardObjectID: targetObject.id, to: 2)
+
+        // 검증
+        XCTAssertTrue(isFailure)
+        XCTAssertEqual(targetObject.scale, 1)
+    }
     // TODO: - 객체 수신, 삭제 테스트 코드 추가
 }
 

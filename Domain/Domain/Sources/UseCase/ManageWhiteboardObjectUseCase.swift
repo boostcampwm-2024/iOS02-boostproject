@@ -109,14 +109,22 @@ public final class ManageWhiteboardObjectUseCase: ManageWhiteboardObjectUseCaseI
 
     @discardableResult
     public func changeSize(whiteboardObjectID: UUID, to scale: CGFloat) async -> Bool {
-        guard let object = await whiteboardObjectSet.fetchObjectByID(id: whiteboardObjectID) else { return false }
+        guard
+            let object = await whiteboardObjectSet.fetchObjectByID(id: whiteboardObjectID),
+            object.selectedBy == myProfile
+        else { return false }
+
         object.changeScale(to: scale)
         return await updateObject(whiteboardObject: object)
     }
 
     @discardableResult
     public func changePosition(whiteboardObjectID: UUID, to position: CGPoint) async -> Bool {
-        guard let object = await whiteboardObjectSet.fetchObjectByID(id: whiteboardObjectID) else { return false }
+        guard
+            let object = await whiteboardObjectSet.fetchObjectByID(id: whiteboardObjectID),
+            object.selectedBy == myProfile
+        else { return false }
+
         object.changePosition(position: position)
         return await updateObject(whiteboardObject: object)
     }

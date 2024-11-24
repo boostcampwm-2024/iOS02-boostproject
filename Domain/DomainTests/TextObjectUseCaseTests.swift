@@ -24,14 +24,11 @@ final class TextObjectUseCaseTests: XCTestCase {
     // 정상적인 입력
     func testIdealAddText() {
         // 준비
-        let testScrollViewOffset = CGPoint(x: 0, y: 0)
+        let testScrollViewOffset = CGPoint(x: 100, y: 100)
         let testViewSize = CGSize(width: 300, height: 300)
-        let expectedPosition = CGPoint(
-            x: testScrollViewOffset.x + testViewSize.width / 3,
-            y: testScrollViewOffset.y + testViewSize.height / 3)
-
+        let expectedPosition = CGPoint(x: 100, y: 100)
         // 실행
-        let createdTextObject = useCase.addText(point: testScrollViewOffset, size: testViewSize)
+        let createdTextObject = useCase.addText(centerPoint: testScrollViewOffset, size: testViewSize)
 
         // 검증
         XCTAssertEqual(createdTextObject.centerPosition, expectedPosition)
@@ -43,12 +40,10 @@ final class TextObjectUseCaseTests: XCTestCase {
         // 준비
         let testScrollViewOffset = CGPoint(x: 0, y: 0)
         let testViewSize = CGSize(width: 0, height: 0)
-        let expectedPosition = CGPoint(
-            x: testScrollViewOffset.x + testViewSize.width / 3,
-            y: testScrollViewOffset.y + testViewSize.height / 3)
+        let expectedPosition = CGPoint(x: 0, y: 0)
 
         // 실행
-        let createdTextObject = useCase.addText(point: testScrollViewOffset, size: testViewSize)
+        let createdTextObject = useCase.addText(centerPoint: testScrollViewOffset, size: testViewSize)
 
         // 검증
         XCTAssertEqual(createdTextObject.centerPosition, expectedPosition)
@@ -60,12 +55,10 @@ final class TextObjectUseCaseTests: XCTestCase {
         // 준비
         let testScrollViewOffset = CGPoint(x: 0, y: 0)
         let testViewSize = CGSize(width: -300, height: -300)
-        let expectedPosition = CGPoint(
-            x: testScrollViewOffset.x + testViewSize.width / 3,
-            y: testScrollViewOffset.y + testViewSize.height / 3)
+        let expectedPosition = CGPoint(x: 0, y: 0)
 
         // 실행
-        let createdTextObject = useCase.addText(point: testScrollViewOffset, size: testViewSize)
+        let createdTextObject = useCase.addText(centerPoint: testScrollViewOffset, size: testViewSize)
 
         // 검증
         XCTAssertEqual(createdTextObject.centerPosition, expectedPosition)
