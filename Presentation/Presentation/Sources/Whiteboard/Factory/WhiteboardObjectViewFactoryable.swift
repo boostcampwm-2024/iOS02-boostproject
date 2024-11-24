@@ -8,24 +8,29 @@ import Domain
 import Foundation
 
 public protocol WhiteboardObjectViewFactoryable {
+    var whiteboardObjectViewDelegate: WhiteboardObjectViewDelegate? { get set }
     func create(with whiteboardObject: WhiteboardObject) -> WhiteboardObjectView?
 }
 
 public struct WhiteboardObjectViewFactory: WhiteboardObjectViewFactoryable {
-    public init() {}
+    public weak var whiteboardObjectViewDelegate: WhiteboardObjectViewDelegate?
 
     public func create(with whiteboardObject: WhiteboardObject) -> WhiteboardObjectView? {
+        let whiteboardObjectView: WhiteboardObjectView?
+
         switch whiteboardObject {
         case let textObject as TextObject:
-            return TextObjectView(textObject: textObject)
+            whiteboardObjectView = TextObjectView(textObject: textObject)
         case let drawingObject as DrawingObject:
-            return DrawingObjectView(drawingObject: drawingObject)
+            whiteboardObjectView = DrawingObjectView(drawingObject: drawingObject)
         case let photoObject as PhotoObject:
-            return PhotoObjectView(photoObject: photoObject)
+            whiteboardObjectView = PhotoObjectView(photoObject: photoObject)
+
         default:
-            break
+            whiteboardObjectView = nil
         }
 
-        return nil
+        whiteboardObjectView?.delegate = whiteboardObjectViewDelegate
+        return whiteboardObjectView
     }
 }

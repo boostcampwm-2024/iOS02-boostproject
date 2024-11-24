@@ -21,7 +21,7 @@ public final class WhiteboardViewController: UIViewController {
     private let canvasView = UIView()
     private let toolbar = WhiteboardToolBar(frame: .zero)
     private let viewModel: WhiteboardViewModel
-    private let objectViewFactory: WhiteboardObjectViewFactoryable
+    private var objectViewFactory: WhiteboardObjectViewFactoryable
     private var whiteboardObjectViews: [UUID: WhiteboardObjectView]
     private var cancellables: Set<AnyCancellable>
     private var visibleCenterPoint: CGPoint {
@@ -36,6 +36,7 @@ public final class WhiteboardViewController: UIViewController {
         cancellables = []
         whiteboardObjectViews = [:]
         super.init(nibName: nil, bundle: nil)
+        self.objectViewFactory.whiteboardObjectViewDelegate = self
     }
 
     public required init?(coder: NSCoder) {
@@ -150,7 +151,7 @@ public final class WhiteboardViewController: UIViewController {
     }
 
     private func addText() {
-        viewModel.action(input: .addTextObject(scrollViewOffset: scrollView.contentOffset, viewSize: view.frame.size))
+        viewModel.action(input: .addTextObject(point: visibleCenterPoint, viewSize: view.frame.size))
     }
 
     // TODO: 이후에 Done 버튼이 생길경우 사용할 메소드
@@ -174,7 +175,7 @@ public final class WhiteboardViewController: UIViewController {
         let touchedView = canvasView.hitTest(location, with: nil)
 
         if let touchedView = touchedView as? WhiteboardObjectView {
-            viewModel.action(input: .selectObject(objectId: touchedView.objectId))
+            viewModel.action(input: .selectObject(objectID: touchedView.objectId))
         } else {
             viewModel.action(input: .deselectObject)
         }
@@ -226,5 +227,20 @@ extension WhiteboardViewController: PHPickerViewControllerDelegate {
                     size: selectedImage.size))
             }
         }
+    }
+}
+
+extension WhiteboardViewController: WhiteboardObjectViewDelegate {
+    public func whiteboardObjectViewDidEndPanning(
+        _ sender: WhiteboardObjectView,
+        objectID: UUID,
+        scale: CGFloat
+    ) {
+        viewModel.action(input: .changeObjectScale(objectID: objectID, scale: scale))
+        scrollView.isScrollEnabled = true
+    }
+
+    public func whiteboardObjectViewDidStartPanning(_ sender: WhiteboardObjectView) {
+        scrollView.isScrollEnabled = false
     }
 }

@@ -11,6 +11,7 @@ import UIKit
 final class TextObjectView: WhiteboardObjectView {
     private let textField: UITextField = {
         let textField = UITextField()
+        textField.textAlignment = .center
         textField.placeholder = "Hello AirplaIN"
         return textField
     }()

@@ -41,7 +41,7 @@ public final class DrawObjectUseCase: DrawObjectUseCaseInterface {
             let minY = yPoints.min(),
             let maxY = yPoints.max()
         else { return nil }
-        
+
         let padding = lineWidth / 2
         let origin = CGPoint(x: minX - padding, y: minY - padding)
 

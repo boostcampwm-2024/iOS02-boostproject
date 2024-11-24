@@ -16,14 +16,9 @@ public final class TextObjectUseCase: TextObjectUseCaseInterface {
     }
 
     public func addText(centerPoint point: CGPoint, size: CGSize) -> TextObject {
-        let positionX = point.x + size.width / 3
-        let positionY = point.y + size.height / 3
-        let centerPosition = CGPoint(
-            x: positionX + size.width / 2,
-            y: positionY + size.height / 2)
         return TextObject(
             id: UUID(),
-            centerPosition: centerPosition,
+            centerPosition: point,
             size: textFieldDefaultSize,
             text: "")
     }
