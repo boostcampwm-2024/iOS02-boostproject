@@ -132,7 +132,7 @@ class WhiteboardCell: UICollectionViewCell {
         profileIcons.forEach { $0.isHidden = true }
 
         for (index, icon) in board.participantIcons.enumerated() {
-            if index > profileIconMaxCount { break }
+            if index >= profileIconMaxCount { break }
             profileIcons[index].isHidden = false
             profileIcons[index].configure(
                 profileIcon: icon,
