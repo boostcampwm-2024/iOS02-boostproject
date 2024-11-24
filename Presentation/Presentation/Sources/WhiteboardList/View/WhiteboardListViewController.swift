@@ -11,6 +11,7 @@ import UIKit
 // TODO: - Profile View 이동 주입 시점 변경시 삭제 될 모듈 (DataSource, Persistence)
 import DataSource
 import Persistence
+import NearbyNetwork
 
 public final class WhiteboardListViewController: UIViewController {
     private enum WhiteboardListLayoutConstant {
@@ -93,8 +94,41 @@ public final class WhiteboardListViewController: UIViewController {
         view.backgroundColor = .systemBackground
 
         let createWhiteboardAction = UIAction { [weak self] _ in
+            // TODO: - 임시 화면 전환 코드
             self?.viewModel.action(input: .createWhiteboard)
-            // TODO: 화이트보드 view로 이동
+            let usecase = WhiteboardUseCase(
+                whiteboardRepository: WhiteboardRepository(
+                    nearbyNetworkInterface: NearbyNetworkService(
+                        serviceName: "airplain"
+                    ), myProfile: ProfileRepository(persistenceService: PersistenceService()).loadProfile()
+                ),
+                profileRepository: ProfileRepository(
+                    persistenceService: PersistenceService()
+                )
+            )
+            do {
+                let viewmodel = WhiteboardViewModel(
+                    whiteboardUseCase: usecase,
+                    addPhotoUseCase: try AddPhotoUseCase(),
+                    drawObjectUseCase: DrawObjectUseCase(),
+                    textObjectUseCase: TextObjectUseCase(
+                        textFieldDefaultSize: CGSize(
+                            width: 200,
+                            height: 50
+                        )
+                    ),
+                    managemanageWhiteboardToolUseCase: ManageWhiteboardToolUseCase(),
+                    manageWhiteboardObjectUseCase: ManageWhiteboardObjectUseCase()
+                )
+                let nextVC = WhiteboardViewController(
+                    viewModel: viewmodel,
+                    objectViewFactory: WhiteboardObjectViewFactory()
+                )
+                self?.navigationController?.pushViewController(nextVC, animated: true)
+            } catch {
+
+            }
+
         }
         createWhiteboardButton.addAction(createWhiteboardAction, for: .touchUpInside)
 
@@ -220,41 +254,12 @@ public final class WhiteboardListViewController: UIViewController {
         guard let dataSource = dataSource else { return }
         dataSource.apply(snapshot, animatingDifferences: true)
     }
+
     private func bind() {
         viewModel.output.whiteboardPublisher
             .receive(on: DispatchQueue.main)
             .sink { _ in
                 // TODO: 화이트보드 추가
-                do {
-                    let profileRepository = ProfileRepository(persistenceService: PersistenceService())
-                    let profileUseCase = ProfileUseCase(repository: profileRepository)
-                    let profile = profileRepository.loadProfile()
-
-                    let nearbyNetworkService = NearbyNetworkService(profileName: profile.nickname, serviceName: "airplain")
-                    let repository = WhiteboardRepository(nearbyNetworkInterface: nearbyNetworkService)
-                    let whiteboardUseCase = WhiteboardUseCase(
-                        repository: repository,
-                        profile: profile)
-                    let addPhotoUseCase = try AddPhotoUseCase()
-                    let drawObjectUseCase = DrawObjectUseCase()
-                    let textObjectUseCase = TextObjectUseCase(textFieldDefaultSize: CGSize(width: 200, height: 50))
-                    let manageWhiteboardToolUseCase = ManageWhiteboardToolUseCase()
-                    let manageWhiteboardObjectUseCase = ManageWhiteboardObjectUseCase()
-
-                    let viewModel = WhiteboardViewModel(
-                        whiteboardUseCase: whiteboardUseCase,
-                        addPhotoUseCase: addPhotoUseCase,
-                        drawObjectUseCase: drawObjectUseCase,
-                        textObjectUseCase: textObjectUseCase,
-                        managemanageWhiteboardToolUseCase: manageWhiteboardToolUseCase,
-                        manageWhiteboardObjectUseCase: manageWhiteboardObjectUseCase)
-                    let whiteboardViewController = WhiteboardViewController(
-                        viewModel: viewModel,
-                        objectViewFactory: WhiteboardObjectViewFactory())
-                    self.navigationController?.pushViewController(whiteboardViewController, animated: true)
-                } catch {
-
-                }
             }
             .store(in: &cancellables)
 
@@ -272,6 +277,40 @@ public final class WhiteboardListViewController: UIViewController {
 extension WhiteboardListViewController: UICollectionViewDelegate {
     public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard let selectedWhiteboard = dataSource?.itemIdentifier(for: indexPath) else { return }
-        // TODO: - Whiteboard Cell 선택 시 입장 처리
+        // TODO: - 임시 화면 전환 코드
+        viewModel.action(input: .joinWhiteboard(whiteboard: selectedWhiteboard))
+        let usecase = WhiteboardUseCase(
+            whiteboardRepository: WhiteboardRepository(
+                nearbyNetworkInterface: NearbyNetworkService(
+                    serviceName: "airplain"
+                ), myProfile: ProfileRepository(persistenceService: PersistenceService()).loadProfile()
+            ),
+            profileRepository: ProfileRepository(
+                persistenceService: PersistenceService()
+            )
+        )
+        do {
+            let viewmodel = WhiteboardViewModel(
+                whiteboardUseCase: usecase,
+                addPhotoUseCase: try AddPhotoUseCase(),
+                drawObjectUseCase: DrawObjectUseCase(),
+                textObjectUseCase: TextObjectUseCase(
+                    textFieldDefaultSize: CGSize(
+                        width: 200,
+                        height: 50
+                    )
+                ),
+                managemanageWhiteboardToolUseCase: ManageWhiteboardToolUseCase(),
+                manageWhiteboardObjectUseCase: ManageWhiteboardObjectUseCase()
+            )
+            let nextVC = WhiteboardViewController(
+                viewModel: viewmodel,
+                objectViewFactory: WhiteboardObjectViewFactory()
+            )
+            self.navigationController?.pushViewController(nextVC, animated: true)
+        } catch {
+
+        }
+
     }
 }

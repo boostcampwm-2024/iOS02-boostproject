@@ -16,8 +16,8 @@ public final class WhiteboardListViewModel: ViewModel {
     enum Input {
         case createWhiteboard
         case searchWhiteboard
-        case stopSearchingWhiteboard
         case joinWhiteboard(whiteboard: Whiteboard)
+        case stopSearchingWhiteboard
     }
 
     struct Output {
@@ -27,15 +27,13 @@ public final class WhiteboardListViewModel: ViewModel {
 
     let output: Output
     private let whiteboardSubject: PassthroughSubject<Whiteboard, Never>
-    private let whiteboardListSubject: CurrentValueSubject<[Whiteboard], Never>
 
     public init(whiteboardUseCase: WhiteboardUseCaseInterface) {
         self.whiteboardUseCase = whiteboardUseCase
         whiteboardSubject = PassthroughSubject<Whiteboard, Never>()
-        whiteboardListSubject = CurrentValueSubject<[Whiteboard], Never>([])
         self.output = Output(
             whiteboardPublisher: whiteboardSubject.eraseToAnyPublisher(),
-            whiteboardListPublisher: whiteboardListSubject.eraseToAnyPublisher())
+            whiteboardListPublisher: whiteboardUseCase.whiteboardListPublisher)
     }
 
     func action(input: Input) {
@@ -44,10 +42,10 @@ public final class WhiteboardListViewModel: ViewModel {
             createWhiteboard()
         case .searchWhiteboard:
             searchWhiteboard()
-        case .stopSearchingWhiteboard:
-            stopSearchingWhiteboard()
         case .joinWhiteboard(let whiteboard):
             joinWhiteboard(whiteboard: whiteboard)
+        case .stopSearchingWhiteboard:
+            stopSearchingWhiteboard()
         }
     }
 
@@ -59,20 +57,6 @@ public final class WhiteboardListViewModel: ViewModel {
 
     private func searchWhiteboard() {
         whiteboardUseCase.startSearchingWhiteboard()
-        bindWhiteboards()
-    }
-
-    private func bindWhiteboards() {
-        whiteboardUseCase.whiteboardListPublisher
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] whiteboards in
-                self?.whiteboardListSubject.send(whiteboards)
-            }
-            .store(in: &cancellables)
-    }
-
-    private func stopSearchingWhiteboard() {
-        whiteboardUseCase.stopSearchingWhiteboard()
     }
 
     private func joinWhiteboard(whiteboard: Whiteboard) {
@@ -82,5 +66,9 @@ public final class WhiteboardListViewModel: ViewModel {
         } catch {
             // TODO: Alert 창 띄우기
         }
+    }
+
+    private func stopSearchingWhiteboard() {
+        whiteboardUseCase.stopSearchingWhiteboard()
     }
 }
