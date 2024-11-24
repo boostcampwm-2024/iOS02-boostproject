@@ -11,6 +11,7 @@
 		00549AD22CEDBB3E00DF8F6C /* DataInformationDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00549AD12CEDBB0E00DF8F6C /* DataInformationDTO.swift */; };
 		0080E8652CE19EC40095B958 /* NearbyNetworkInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0080E85F2CE19EC40095B958 /* NearbyNetworkInterface.swift */; };
 		0080E8662CE19EC40095B958 /* NetworkConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0080E8612CE19EC40095B958 /* NetworkConnection.swift */; };
+		5B54DECC2CEEF70000674723 /* RequestedContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B54DECB2CEEF70000674723 /* RequestedContext.swift */; };
 		5B7C6EB52CDB6C4B0024704A /* Domain.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B7C6EB42CDB6C4B0024704A /* Domain.framework */; };
 		5B7C6EB62CDB6C4B0024704A /* Domain.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 5B7C6EB42CDB6C4B0024704A /* Domain.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		5BDFD93D2CE2F56B00DA4F5B /* WhiteboardRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BDFD93C2CE2F56B00DA4F5B /* WhiteboardRepository.swift */; };
@@ -39,6 +40,7 @@
 		00549AD12CEDBB0E00DF8F6C /* DataInformationDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataInformationDTO.swift; sourceTree = "<group>"; };
 		0080E85F2CE19EC40095B958 /* NearbyNetworkInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearbyNetworkInterface.swift; sourceTree = "<group>"; };
 		0080E8612CE19EC40095B958 /* NetworkConnection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkConnection.swift; sourceTree = "<group>"; };
+		5B54DECB2CEEF70000674723 /* RequestedContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestedContext.swift; sourceTree = "<group>"; };
 		5B7C6E3B2CDB6A240024704A /* DataSource.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = DataSource.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5B7C6EB42CDB6C4B0024704A /* Domain.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Domain.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5BDFD93C2CE2F56B00DA4F5B /* WhiteboardRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhiteboardRepository.swift; sourceTree = "<group>"; };
@@ -74,6 +76,7 @@
 			isa = PBXGroup;
 			children = (
 				0080E8612CE19EC40095B958 /* NetworkConnection.swift */,
+				5B54DECB2CEEF70000674723 /* RequestedContext.swift */,
 				00549ACF2CEDBA5E00DF8F6C /* AirplaINDataType.swift */,
 				00549AD12CEDBB0E00DF8F6C /* DataInformationDTO.swift */,
 			);
@@ -238,6 +241,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5B54DECC2CEEF70000674723 /* RequestedContext.swift in Sources */,
 				A8525F1E2CE326DB0089DA5E /* PersistenceInterface.swift in Sources */,
 				00549AD02CEDBAAD00DF8F6C /* AirplaINDataType.swift in Sources */,
 				0080E8652CE19EC40095B958 /* NearbyNetworkInterface.swift in Sources */,
