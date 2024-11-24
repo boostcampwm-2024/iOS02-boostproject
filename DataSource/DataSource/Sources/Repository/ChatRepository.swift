@@ -11,7 +11,6 @@ import OSLog
 public final class ChatRepository: ChatRepositoryInterface {
     public weak var delegate: ChatRepositoryDelegate?
     private var nearbyNetwork: NearbyNetworkInterface
-    private let profilePersistence: PersistenceInterface
     private let filePersistence: FilePersistenceInterface
     private let profileKey = "AirplainProfile"
     private let logger = Logger()
@@ -19,17 +18,15 @@ public final class ChatRepository: ChatRepositoryInterface {
     init(
         delegate: ChatRepositoryDelegate?,
         nearbyNetwork: NearbyNetworkInterface,
-        profilePersistence: PersistenceInterface,
         filePersistence: FilePersistenceInterface
     ) {
         self.delegate = delegate
         self.nearbyNetwork = nearbyNetwork
-        self.profilePersistence = profilePersistence
         self.filePersistence = filePersistence
+        self.nearbyNetwork.receiptDelegate = self
     }
 
-    public func send(message: String) async {
-        let profile = loadProfile()
+    public func send(message: String, profile: Profile) async -> ChatMessage? {
         let chatMessage = ChatMessage(message: message, sender: profile)
         let chatMessageData = try? JSONEncoder().encode(chatMessage)
         let chatMessageInformation = DataInformationDTO(
@@ -40,21 +37,11 @@ public final class ChatRepository: ChatRepositoryInterface {
             .save(dataInfo: chatMessageInformation, data: chatMessageData)
         else {
             logger.log(level: .error, "url저장 실패: 데이터를 보내지 못했습니다.")
-            return
+            return nil
         }
         await nearbyNetwork.send(fileURL: url, info: chatMessageInformation)
-    }
 
-    private func loadProfile() -> Profile {
-        if let profile: Profile = profilePersistence.load(forKey: profileKey) {
-            return profile
-        } else {
-            let randomProfile = Profile(
-                nickname: Profile.randomNickname(),
-                profileIcon: ProfileIcon.allCases.randomElement() ?? ProfileIcon.angel)
-            profilePersistence.save(data: randomProfile, forKey: profileKey)
-            return randomProfile
-        }
+        return chatMessage
     }
 }
 

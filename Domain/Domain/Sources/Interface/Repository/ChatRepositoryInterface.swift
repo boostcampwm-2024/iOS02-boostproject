@@ -11,7 +11,7 @@ public protocol ChatRepositoryInterface {
 
     /// 주변 사람에게 채팅을 보내는 메소드
     /// - Parameter message: 전달할 메시지
-    func send(message: String) async
+    func send(message: String, profile: Profile) async -> ChatMessage?
 }
 
 public protocol ChatRepositoryDelegate: AnyObject {
