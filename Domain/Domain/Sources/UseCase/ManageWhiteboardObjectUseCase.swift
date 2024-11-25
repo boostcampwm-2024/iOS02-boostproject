@@ -108,13 +108,19 @@ public final class ManageWhiteboardObjectUseCase: ManageWhiteboardObjectUseCaseI
     }
 
     @discardableResult
-    public func changeSize(whiteboardObjectID: UUID, to scale: CGFloat) async -> Bool {
+    public func changeSizeAndAngle(
+        whiteboardObjectID: UUID,
+        scale: CGFloat,
+        angle: CGFloat
+    ) async -> Bool {
         guard
             let object = await whiteboardObjectSet.fetchObjectByID(id: whiteboardObjectID),
             object.selectedBy == myProfile
         else { return false }
 
         object.changeScale(to: scale)
+        object.changeAngle(to: angle)
+
         return await updateObject(whiteboardObject: object)
     }
 

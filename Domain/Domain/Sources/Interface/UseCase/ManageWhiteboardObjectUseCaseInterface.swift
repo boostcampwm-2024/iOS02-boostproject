@@ -57,11 +57,17 @@ public protocol ManageWhiteboardObjectUseCaseInterface {
     @discardableResult
     func changePosition(whiteboardObjectID: UUID, to point: CGPoint) async -> Bool
 
-    /// 오브젝트의 크기를 변경합니다.
+    /// 화이트보드 오브젝트의 크기와 회전 각도를 변경합니다.
     /// - Parameters:
     ///   - whiteboardObjectID: 변경할 오브젝트의 ID
-    ///   - point: 변경할 object의 크기
-    /// - Returns: 크기 조정 성공 여부
+    ///   - scale: 변경할 크기 (옵셔널)
+    ///   - angle: 변경할 각도 (옵셔널)
+    /// - Returns: 변경 성공 여부
     @discardableResult
-    func changeSize(whiteboardObjectID: UUID, to scale: CGFloat) async -> Bool
+    func changeSizeAndAngle(
+        whiteboardObjectID: UUID,
+        scale: CGFloat,
+        angle: CGFloat) async -> Bool
+
+
 }
