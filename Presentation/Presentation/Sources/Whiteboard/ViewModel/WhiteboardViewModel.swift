@@ -19,9 +19,11 @@ public final class WhiteboardViewModel: ViewModel {
         case addDrawingPoint(point: CGPoint)
         case finishDrawing
         case finishUsingTool
-        case addTextObject(scrollViewOffset: CGPoint, viewSize: CGSize)
-        case selectObject(objectId: UUID)
+        case addTextObject(point: CGPoint, viewSize: CGSize)
+        case selectObject(objectID: UUID)
         case deselectObject
+        case changeObjectScale(objectID: UUID, scale: CGFloat)
+        case changeObjectPosition(objectID: UUID, point: CGPoint)
     }
 
     struct Output {
@@ -77,18 +79,22 @@ public final class WhiteboardViewModel: ViewModel {
                 size: size)
         case .startDrawing(let point):
             startDrawing(at: point)
-        case .addDrawingPoint(point: let point):
+        case .addDrawingPoint(let point):
             addDrawingPoint(at: point)
         case .finishDrawing:
             finishDrawing()
         case .finishUsingTool:
             finishUsingTool()
-        case .addTextObject(scrollViewOffset: let scrollViewOffset, viewSize: let viewSize):
-            addText(scrollViewOffset: scrollViewOffset, viewSize: viewSize)
-        case .selectObject(objectId: let objectId):
-            selectObject(objectId: objectId)
+        case .addTextObject(let point, let viewSize):
+            addText(at: point, viewSize: viewSize)
+        case .selectObject(let objectID):
+            selectObject(objectID: objectID)
         case .deselectObject:
             deselectObject()
+        case .changeObjectScale(let objectID, let scale):
+            changeObjectScale(objectID: objectID, to: scale)
+        case .changeObjectPosition(let objectID, let position):
+            changeObjectPosition(objectID: objectID, to: position)
         }
     }
 
@@ -130,7 +136,7 @@ public final class WhiteboardViewModel: ViewModel {
         do {
             let photoObject = try addPhotoUseCase.addPhoto(
                 imageData: imageData,
-                position: point,
+                centerPosition: point,
                 size: size)
             Task {
                 await manageWhiteboardObjectUseCase.addObject(whiteboardObject: photoObject)
@@ -153,8 +159,8 @@ public final class WhiteboardViewModel: ViewModel {
         addWhiteboardObject(object: drawingObject)
     }
 
-    private func addText(scrollViewOffset: CGPoint, viewSize: CGSize) {
-        let textObject = textObjectUseCase.addText(point: scrollViewOffset, size: viewSize)
+    private func addText(at point: CGPoint, viewSize: CGSize) {
+        let textObject = textObjectUseCase.addText(centerPoint: point, size: viewSize)
         addWhiteboardObject(object: textObject)
     }
 
@@ -162,15 +168,27 @@ public final class WhiteboardViewModel: ViewModel {
         whiteboardUseCase.startPublishingWhiteboard()
     }
 
-    private func selectObject(objectId: UUID) {
+    private func selectObject(objectID: UUID) {
         Task {
-            await manageWhiteboardObjectUseCase.select(whiteboardObjectID: objectId)
+            await manageWhiteboardObjectUseCase.select(whiteboardObjectID: objectID)
         }
     }
 
     private func deselectObject() {
         Task {
             await manageWhiteboardObjectUseCase.deselect()
+        }
+    }
+
+    private func changeObjectScale(objectID: UUID, to scale: CGFloat) {
+        Task {
+            await manageWhiteboardObjectUseCase.changeSize(whiteboardObjectID: objectID, to: scale)
+        }
+    }
+
+    private func changeObjectPosition(objectID: UUID, to point: CGPoint) {
+        Task {
+            await manageWhiteboardObjectUseCase.changePosition(whiteboardObjectID: objectID, to: point)
         }
     }
 }

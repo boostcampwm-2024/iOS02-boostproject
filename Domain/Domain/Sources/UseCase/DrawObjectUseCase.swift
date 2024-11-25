@@ -41,16 +41,25 @@ public final class DrawObjectUseCase: DrawObjectUseCaseInterface {
             let minY = yPoints.min(),
             let maxY = yPoints.max()
         else { return nil }
+
         let padding = lineWidth / 2
         let origin = CGPoint(x: minX - padding, y: minY - padding)
-        let size = CGSize(width: maxX - minX + padding * 2, height: maxY - minY + padding * 2)
+
+        let size = CGSize(
+            width: maxX - minX + padding * 2,
+            height: maxY - minY + padding * 2)
+
+        let centerPosition = CGPoint(
+            x: origin.x + size.width / 2,
+            y: origin.y + size.height / 2)
+
         let adjustedPoints = points.map {
             CGPoint(x: $0.x - minX + padding, y: $0.y - minY + padding)
         }
 
         let drawingObject = DrawingObject(
             id: UUID(),
-            position: origin,
+            centerPosition: centerPosition,
             size: size,
             points: adjustedPoints,
             lineWidth: lineWidth)

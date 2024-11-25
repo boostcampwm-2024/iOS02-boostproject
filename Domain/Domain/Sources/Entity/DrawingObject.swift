@@ -17,8 +17,9 @@ public final class DrawingObject: WhiteboardObject {
 
     public init(
         id: UUID,
-        position: CGPoint,
+        centerPosition: CGPoint,
         size: CGSize,
+        scale: CGFloat = 1,
         points: [CGPoint],
         lineWidth: CGFloat,
         selectedBy: Profile? = nil
@@ -27,8 +28,9 @@ public final class DrawingObject: WhiteboardObject {
         self.lineWidth = lineWidth
         super.init(
             id: id,
-            position: position,
+            centerPosition: centerPosition,
             size: size,
+            scale: scale,
             selectedBy: selectedBy)
     }
 

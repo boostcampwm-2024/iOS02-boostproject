@@ -11,6 +11,7 @@ import UIKit
 final class TextObjectView: WhiteboardObjectView {
     private let textField: UITextField = {
         let textField = UITextField()
+        textField.textAlignment = .center
         textField.placeholder = "Hello AirplaIN"
         return textField
     }()
@@ -34,10 +35,11 @@ final class TextObjectView: WhiteboardObjectView {
         textField.backgroundColor = .clear
     }
 
-    private func configureLayout() {
+    override func configureLayout() {
         textField
             .addToSuperview(self)
             .edges(equalTo: self)
+        super.configureLayout()
     }
 
     override func update(with object: WhiteboardObject) {

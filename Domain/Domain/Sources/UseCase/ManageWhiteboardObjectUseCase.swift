@@ -14,7 +14,7 @@ public final class ManageWhiteboardObjectUseCase: ManageWhiteboardObjectUseCaseI
     public var removedObjectPublisher: AnyPublisher<WhiteboardObject, Never>
     public var selectedObjectIDPublisher: AnyPublisher<UUID?, Never>
 
-    private var whiteboardObjectStorage: WhiteboardObjectSet
+    private var whiteboardObjectSet: WhiteboardObjectSet
 
     private let addedWhiteboardSubject: PassthroughSubject<WhiteboardObject, Never>
     private let updatedWhiteboardSubject: PassthroughSubject<WhiteboardObject, Never>
@@ -37,18 +37,18 @@ public final class ManageWhiteboardObjectUseCase: ManageWhiteboardObjectUseCaseI
         removedObjectPublisher = removedWhiteboardSubject.eraseToAnyPublisher()
         selectedObjectIDPublisher = selectedObjectIDSubject.eraseToAnyPublisher()
 
-        whiteboardObjectStorage = WhiteboardObjectSet()
+        whiteboardObjectSet = WhiteboardObjectSet()
         myProfile = profileRepository.loadProfile()
         self.whiteboardObjectRepository = whiteboardRepository
     }
 
     @discardableResult
     public func addObject(whiteboardObject: WhiteboardObject) async -> Bool {
-        let isContains = await whiteboardObjectStorage.contains(object: whiteboardObject)
+        let isContains = await whiteboardObjectSet.contains(object: whiteboardObject)
         guard !isContains else { return false }
 
         await whiteboardObjectRepository.send(whiteboardObject: whiteboardObject, isDeleted: false)
-        await whiteboardObjectStorage.insert(object: whiteboardObject)
+        await whiteboardObjectSet.insert(object: whiteboardObject)
         addedWhiteboardSubject.send(whiteboardObject)
 
         return true
@@ -56,11 +56,11 @@ public final class ManageWhiteboardObjectUseCase: ManageWhiteboardObjectUseCaseI
 
     @discardableResult
     public func updateObject(whiteboardObject: WhiteboardObject) async -> Bool {
-        let isContains = await whiteboardObjectStorage.contains(object: whiteboardObject)
+        let isContains = await whiteboardObjectSet.contains(object: whiteboardObject)
         guard isContains else { return false }
 
         await whiteboardObjectRepository.send(whiteboardObject: whiteboardObject, isDeleted: false)
-        await whiteboardObjectStorage.update(object: whiteboardObject)
+        await whiteboardObjectSet.update(object: whiteboardObject)
         updatedWhiteboardSubject.send(whiteboardObject)
 
         return true
@@ -68,11 +68,11 @@ public final class ManageWhiteboardObjectUseCase: ManageWhiteboardObjectUseCaseI
 
     @discardableResult
     public func removeObject(whiteboardObject: WhiteboardObject) async -> Bool {
-        let isContains = await whiteboardObjectStorage.contains(object: whiteboardObject)
+        let isContains = await whiteboardObjectSet.contains(object: whiteboardObject)
         guard isContains else { return false }
 
         await whiteboardObjectRepository.send(whiteboardObject: whiteboardObject, isDeleted: true)
-        await whiteboardObjectStorage.remove(object: whiteboardObject)
+        await whiteboardObjectSet.remove(object: whiteboardObject)
         removedWhiteboardSubject.send(whiteboardObject)
 
         return true
@@ -83,7 +83,7 @@ public final class ManageWhiteboardObjectUseCase: ManageWhiteboardObjectUseCaseI
         await deselect()
 
         guard
-            let object = await whiteboardObjectStorage.fetchObjectByID(id: whiteboardObjectID),
+            let object = await whiteboardObjectSet.fetchObjectByID(id: whiteboardObjectID),
             object.selectedBy == nil
         else { return false }
 
@@ -98,13 +98,35 @@ public final class ManageWhiteboardObjectUseCase: ManageWhiteboardObjectUseCaseI
         guard let selectedObjectID = selectedObjectIDSubject.value else { return false }
 
         guard
-            let selectedObject = await whiteboardObjectStorage.fetchObjectByID(id: selectedObjectID),
+            let selectedObject = await whiteboardObjectSet.fetchObjectByID(id: selectedObjectID),
             selectedObject.selectedBy == myProfile
         else { return false }
 
         selectedObject.deselect()
         await updateObject(whiteboardObject: selectedObject)
         return true
+    }
+
+    @discardableResult
+    public func changeSize(whiteboardObjectID: UUID, to scale: CGFloat) async -> Bool {
+        guard
+            let object = await whiteboardObjectSet.fetchObjectByID(id: whiteboardObjectID),
+            object.selectedBy == myProfile
+        else { return false }
+
+        object.changeScale(to: scale)
+        return await updateObject(whiteboardObject: object)
+    }
+
+    @discardableResult
+    public func changePosition(whiteboardObjectID: UUID, to position: CGPoint) async -> Bool {
+        guard
+            let object = await whiteboardObjectSet.fetchObjectByID(id: whiteboardObjectID),
+            object.selectedBy == myProfile
+        else { return false }
+
+        object.changePosition(position: position)
+        return await updateObject(whiteboardObject: object)
     }
 }
 
@@ -114,7 +136,7 @@ extension ManageWhiteboardObjectUseCase: WhiteboardObjectRepositoryDelegate {
         didReceive object: WhiteboardObject
     ) {
         Task {
-            let isContains = await whiteboardObjectStorage.contains(object: object)
+            let isContains = await whiteboardObjectSet.contains(object: object)
 
             if isContains {
                 await updateObject(whiteboardObject: object)

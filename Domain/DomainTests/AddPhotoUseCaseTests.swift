@@ -38,7 +38,7 @@ final class AddPhotoUseCaseTests: XCTestCase {
         do {
             photoObject = try useCase.addPhoto(
                 imageData: dummyImageData,
-                position: position,
+                centerPosition: position,
                 size: size)
         } catch {
             XCTFail("photoObject should not fail.")
@@ -47,7 +47,7 @@ final class AddPhotoUseCaseTests: XCTestCase {
 
         // 검증
         XCTAssertEqual(photoObject.photoURL.lastPathComponent.suffix(4), ".jpg")
-        XCTAssertEqual(photoObject.position, position)
+        XCTAssertEqual(photoObject.centerPosition, position)
         XCTAssertEqual(photoObject.size, size)
     }
 }
