@@ -11,6 +11,7 @@ public class WhiteboardObject: Equatable, Codable {
     public private(set) var centerPosition: CGPoint
     public private(set) var size: CGSize
     public private(set) var scale: CGFloat
+    public private(set) var angle: CGFloat
     public private(set) var selectedBy: Profile?
     public private(set) var updatedAt: Date
 
@@ -19,12 +20,14 @@ public class WhiteboardObject: Equatable, Codable {
         centerPosition: CGPoint,
         size: CGSize,
         scale: CGFloat = 1,
+        angle: CGFloat = 0,
         selectedBy: Profile? = nil
     ) {
         self.id = id
         self.centerPosition = centerPosition
         self.size = size
         self.scale = scale
+        self.angle = angle
         self.selectedBy = selectedBy
         updatedAt = Date()
     }
@@ -49,6 +52,10 @@ public class WhiteboardObject: Equatable, Codable {
 
     func changePosition(position: CGPoint) {
         self.centerPosition = position
+    }
+
+    func changeAngle(to angle: CGFloat) {
+        self.angle = angle
     }
 }
 

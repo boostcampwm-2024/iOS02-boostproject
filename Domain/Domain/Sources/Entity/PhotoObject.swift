@@ -17,6 +17,7 @@ public final class PhotoObject: WhiteboardObject {
         centerPosition: CGPoint,
         size: CGSize,
         scale: CGFloat = 1,
+        angle: CGFloat = 0,
         photoURL: URL,
         selectedBy: Profile? = nil
     ) {
@@ -26,6 +27,7 @@ public final class PhotoObject: WhiteboardObject {
             centerPosition: centerPosition,
             size: size,
             scale: scale,
+            angle: angle,
             selectedBy: selectedBy)
     }
 
