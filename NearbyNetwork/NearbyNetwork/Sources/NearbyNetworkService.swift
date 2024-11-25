@@ -56,10 +56,13 @@ extension NearbyNetworkService: NearbyNetworkInterface {
                 }
                 self.serviceBrowser.startBrowsingForPeers()
                 Thread.sleep(forTimeInterval: 3.0)
-                connectionDelegate?.nearbyNetwork(self, didFind: foundPeers
-                    .values
-                    .map { $0 }
-                    .sorted(by: { $0.name < $1.name }))
+                serialQueue.async { [weak self] in
+                    guard let self else { return }
+                    connectionDelegate?.nearbyNetwork(self, didFind: foundPeers
+                        .values
+                        .map { $0 }
+                        .sorted(by: { $0.name < $1.name }))
+                }
                 self.serviceBrowser.stopBrowsingForPeers()
             }
         }
