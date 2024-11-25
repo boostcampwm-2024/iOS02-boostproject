@@ -44,8 +44,7 @@ public final class ManageWhiteboardObjectUseCase: ManageWhiteboardObjectUseCaseI
 
     @discardableResult
     public func addObject(whiteboardObject: WhiteboardObject) async -> Bool {
-        let isContains = await whiteboardObjectSet.contains(object: whiteboardObject)
-        guard !isContains else { return false }
+        guard await !whiteboardObjectSet.contains(object: whiteboardObject) else { return false }
 
         await whiteboardObjectRepository.send(whiteboardObject: whiteboardObject, isDeleted: false)
         await whiteboardObjectSet.insert(object: whiteboardObject)
@@ -56,8 +55,7 @@ public final class ManageWhiteboardObjectUseCase: ManageWhiteboardObjectUseCaseI
 
     @discardableResult
     public func updateObject(whiteboardObject: WhiteboardObject) async -> Bool {
-        let isContains = await whiteboardObjectSet.contains(object: whiteboardObject)
-        guard isContains else { return false }
+        guard await whiteboardObjectSet.contains(object: whiteboardObject) else { return false }
 
         await whiteboardObjectRepository.send(whiteboardObject: whiteboardObject, isDeleted: false)
         await whiteboardObjectSet.update(object: whiteboardObject)
@@ -68,8 +66,7 @@ public final class ManageWhiteboardObjectUseCase: ManageWhiteboardObjectUseCaseI
 
     @discardableResult
     public func removeObject(whiteboardObject: WhiteboardObject) async -> Bool {
-        let isContains = await whiteboardObjectSet.contains(object: whiteboardObject)
-        guard isContains else { return false }
+        guard await whiteboardObjectSet.contains(object: whiteboardObject) else { return false }
 
         await whiteboardObjectRepository.send(whiteboardObject: whiteboardObject, isDeleted: true)
         await whiteboardObjectSet.remove(object: whiteboardObject)
