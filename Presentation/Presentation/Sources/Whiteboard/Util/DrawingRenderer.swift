@@ -28,6 +28,6 @@ struct DrawingRenderer: DrawingRendererInterface {
 
             context.cgContext.strokePath()
         }
-        return image
+        return image.withRenderingMode(.alwaysTemplate)
     }
 }
