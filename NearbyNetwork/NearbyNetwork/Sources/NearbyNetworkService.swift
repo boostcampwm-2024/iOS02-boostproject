@@ -267,7 +267,6 @@ extension NearbyNetworkService: MCNearbyServiceBrowserDelegate {
                 name: peerID.displayName,
                 info: info)
             foundPeers[peerID] = connection
-            foundPeers[peerID] = connection
             connectionDelegate?.nearbyNetwork(self, didFind: foundPeers.values.map { $0 })
         }
     }
