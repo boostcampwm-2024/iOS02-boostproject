@@ -51,8 +51,15 @@ extension NearbyNetworkService: NearbyNetworkInterface {
         DispatchQueue.global().async { [weak self] in
             guard let self = self else { return }
             while continueSearching {
+                serialQueue.async { [weak self] in
+                    self?.foundPeers.removeAll()
+                }
                 self.serviceBrowser.startBrowsingForPeers()
                 Thread.sleep(forTimeInterval: 3.0)
+                connectionDelegate?.nearbyNetwork(self, didFind: foundPeers
+                    .values
+                    .map { $0 }
+                    .sorted(by: { $0.name < $1.name }))
                 self.serviceBrowser.stopBrowsingForPeers()
             }
         }
@@ -267,7 +274,6 @@ extension NearbyNetworkService: MCNearbyServiceBrowserDelegate {
                 name: peerID.displayName,
                 info: info)
             foundPeers[peerID] = connection
-            connectionDelegate?.nearbyNetwork(self, didFind: foundPeers.values.map { $0 })
         }
     }
 
@@ -276,7 +282,6 @@ extension NearbyNetworkService: MCNearbyServiceBrowserDelegate {
             guard let self = self else { return }
             guard let lostPeer = foundPeers[peerID] else { return }
             foundPeers[peerID] = nil
-            connectionDelegate?.nearbyNetwork(self, didLost: lostPeer)
         }
     }
 }
