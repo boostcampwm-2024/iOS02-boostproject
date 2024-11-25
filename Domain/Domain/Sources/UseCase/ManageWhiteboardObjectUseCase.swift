@@ -44,8 +44,7 @@ public final class ManageWhiteboardObjectUseCase: ManageWhiteboardObjectUseCaseI
 
     @discardableResult
     public func addObject(whiteboardObject: WhiteboardObject) async -> Bool {
-        let isContains = await whiteboardObjectSet.contains(object: whiteboardObject)
-        guard !isContains else { return false }
+        guard await !whiteboardObjectSet.contains(object: whiteboardObject) else { return false }
 
         await whiteboardObjectRepository.send(whiteboardObject: whiteboardObject, isDeleted: false)
         await whiteboardObjectSet.insert(object: whiteboardObject)
@@ -56,8 +55,7 @@ public final class ManageWhiteboardObjectUseCase: ManageWhiteboardObjectUseCaseI
 
     @discardableResult
     public func updateObject(whiteboardObject: WhiteboardObject) async -> Bool {
-        let isContains = await whiteboardObjectSet.contains(object: whiteboardObject)
-        guard isContains else { return false }
+        guard await whiteboardObjectSet.contains(object: whiteboardObject) else { return false }
 
         await whiteboardObjectRepository.send(whiteboardObject: whiteboardObject, isDeleted: false)
         await whiteboardObjectSet.update(object: whiteboardObject)
@@ -68,8 +66,7 @@ public final class ManageWhiteboardObjectUseCase: ManageWhiteboardObjectUseCaseI
 
     @discardableResult
     public func removeObject(whiteboardObject: WhiteboardObject) async -> Bool {
-        let isContains = await whiteboardObjectSet.contains(object: whiteboardObject)
-        guard isContains else { return false }
+        guard await whiteboardObjectSet.contains(object: whiteboardObject) else { return false }
 
         await whiteboardObjectRepository.send(whiteboardObject: whiteboardObject, isDeleted: true)
         await whiteboardObjectSet.remove(object: whiteboardObject)
@@ -108,13 +105,19 @@ public final class ManageWhiteboardObjectUseCase: ManageWhiteboardObjectUseCaseI
     }
 
     @discardableResult
-    public func changeSize(whiteboardObjectID: UUID, to scale: CGFloat) async -> Bool {
+    public func changeSizeAndAngle(
+        whiteboardObjectID: UUID,
+        scale: CGFloat,
+        angle: CGFloat
+    ) async -> Bool {
         guard
             let object = await whiteboardObjectSet.fetchObjectByID(id: whiteboardObjectID),
             object.selectedBy == myProfile
         else { return false }
 
         object.changeScale(to: scale)
+        object.changeAngle(to: angle)
+
         return await updateObject(whiteboardObject: object)
     }
 

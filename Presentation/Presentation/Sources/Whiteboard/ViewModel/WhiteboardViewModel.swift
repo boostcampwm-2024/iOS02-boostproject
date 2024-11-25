@@ -22,7 +22,10 @@ public final class WhiteboardViewModel: ViewModel {
         case addTextObject(point: CGPoint, viewSize: CGSize)
         case selectObject(objectID: UUID)
         case deselectObject
-        case changeObjectScale(objectID: UUID, scale: CGFloat)
+        case changeObjectScaleAndAngle(
+            objectID: UUID,
+            scale: CGFloat,
+            angle: CGFloat)
         case changeObjectPosition(objectID: UUID, point: CGPoint)
     }
 
@@ -91,8 +94,8 @@ public final class WhiteboardViewModel: ViewModel {
             selectObject(objectID: objectID)
         case .deselectObject:
             deselectObject()
-        case .changeObjectScale(let objectID, let scale):
-            changeObjectScale(objectID: objectID, to: scale)
+        case .changeObjectScaleAndAngle(let objectID, let scale, let angle):
+            changeObjectScale(objectID: objectID, scale: scale, angle: angle)
         case .changeObjectPosition(let objectID, let position):
             changeObjectPosition(objectID: objectID, to: position)
         }
@@ -180,9 +183,16 @@ public final class WhiteboardViewModel: ViewModel {
         }
     }
 
-    private func changeObjectScale(objectID: UUID, to scale: CGFloat) {
+    private func changeObjectScale(
+        objectID: UUID,
+        scale: CGFloat,
+        angle: CGFloat
+    ) {
         Task {
-            await manageWhiteboardObjectUseCase.changeSize(whiteboardObjectID: objectID, to: scale)
+            await manageWhiteboardObjectUseCase.changeSizeAndAngle(
+                whiteboardObjectID: objectID,
+                scale: scale,
+                angle: angle)
         }
     }
 

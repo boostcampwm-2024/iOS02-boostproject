@@ -38,4 +38,8 @@ final class ProfileIconView: UIView {
         backgroundColor = UIColor(hex: profileIcon.colorHex)
         layer.cornerRadius = profileIconSize / 2
     }
+
+    func rotate(angle: CGFloat) {
+        iconLabel.transform = CGAffineTransform(rotationAngle: angle)
+    }
 }

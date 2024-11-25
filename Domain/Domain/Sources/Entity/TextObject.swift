@@ -17,6 +17,7 @@ public class TextObject: WhiteboardObject {
         centerPosition: CGPoint,
         size: CGSize,
         scale: CGFloat = 1,
+        angle: CGFloat = 0,
         text: String,
         selectedBy: Profile? = nil
     ) {
@@ -26,6 +27,7 @@ public class TextObject: WhiteboardObject {
             centerPosition: centerPosition,
             size: size,
             scale: scale,
+            angle: angle,
             selectedBy: selectedBy)
     }
 

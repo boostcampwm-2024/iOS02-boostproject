@@ -248,11 +248,15 @@ final class ManageWhiteboardObjectsUseCaseTests: XCTestCase {
             id: UUID(),
             centerPosition: .zero,
             size: CGSize(width: 100, height: 100),
+            scale: 1,
             selectedBy: myProfile)
 
         // 실행
         await useCase.addObject(whiteboardObject: targetObject)
-        let isSuccess = await useCase.changeSize(whiteboardObjectID: targetObject.id, to: 2)
+        let isSuccess = await useCase.changeSizeAndAngle(
+            whiteboardObjectID: targetObject.id,
+            scale: 2,
+            angle: targetObject.angle)
 
         // 검증
         XCTAssertTrue(isSuccess)
@@ -267,11 +271,15 @@ final class ManageWhiteboardObjectsUseCaseTests: XCTestCase {
             id: UUID(),
             centerPosition: .zero,
             size: CGSize(width: 100, height: 100),
+            scale: 1,
             selectedBy: strangerProfile)
 
         // 실행
         await useCase.addObject(whiteboardObject: targetObject)
-        let isFailure = await !useCase.changeSize(whiteboardObjectID: targetObject.id, to: 2)
+        let isFailure = await !useCase.changeSizeAndAngle(
+            whiteboardObjectID: targetObject.id,
+            scale: 2,
+            angle: targetObject.angle)
 
         // 검증
         XCTAssertTrue(isFailure)
@@ -285,16 +293,88 @@ final class ManageWhiteboardObjectsUseCaseTests: XCTestCase {
             id: UUID(),
             centerPosition: .zero,
             size: CGSize(width: 100, height: 100),
+            scale: 1,
             selectedBy: nil)
 
         // 실행
         await useCase.addObject(whiteboardObject: targetObject)
-        let isFailure = await !useCase.changeSize(whiteboardObjectID: targetObject.id, to: 2)
+        let isFailure = await !useCase.changeSizeAndAngle(
+            whiteboardObjectID: targetObject.id,
+            scale: 2,
+            angle: targetObject.angle)
 
         // 검증
         XCTAssertTrue(isFailure)
         XCTAssertEqual(targetObject.scale, 1)
     }
+
+    // 오브젝트 angle 변경 성공하는지 테스트
+    func testChangeAngleSuccess() async {
+        // 준비
+        let targetObject = WhiteboardObject(
+            id: UUID(),
+            centerPosition: .zero,
+            size: CGSize(width: 100, height: 100),
+            angle: 0,
+            selectedBy: myProfile)
+
+        // 실행
+        await useCase.addObject(whiteboardObject: targetObject)
+        let isSuccess = await useCase.changeSizeAndAngle(
+            whiteboardObjectID: targetObject.id,
+            scale: targetObject.scale,
+            angle: 1)
+
+        // 검증
+        XCTAssertTrue(isSuccess)
+        XCTAssertEqual(targetObject.angle, 1)
+    }
+
+    // 다른 사람이 선택 중일 때 angle 변경 실패하는지 테스트
+    func testChangeAngleFailsWhenSelectedByOther() async {
+        // 준비
+        let strangerProfile = Profile(nickname: "Other", profileIcon: .cold)
+        let targetObject = WhiteboardObject(
+            id: UUID(),
+            centerPosition: .zero,
+            size: CGSize(width: 100, height: 100),
+            angle: 0,
+            selectedBy: strangerProfile)
+
+        // 실행
+        await useCase.addObject(whiteboardObject: targetObject)
+        let isFailure = await !useCase.changeSizeAndAngle(
+            whiteboardObjectID: targetObject.id,
+            scale: targetObject.scale,
+            angle: 1)
+
+        // 검증
+        XCTAssertTrue(isFailure)
+        XCTAssertEqual(targetObject.angle, 0)
+    }
+
+    // 선택하지 않은 상태라 angle 변경 실패하는지 테스트
+    func testChangeAngleFailsWhenNotSelected() async {
+        // 준비
+        let targetObject = WhiteboardObject(
+            id: UUID(),
+            centerPosition: .zero,
+            size: CGSize(width: 100, height: 100),
+            angle: 0,
+            selectedBy: nil)
+
+        // 실행
+        await useCase.addObject(whiteboardObject: targetObject)
+        let isFailure = await !useCase.changeSizeAndAngle(
+            whiteboardObjectID: targetObject.id,
+            scale: targetObject.scale,
+            angle: 1)
+
+        // 검증
+        XCTAssertTrue(isFailure)
+        XCTAssertEqual(targetObject.angle, 0)
+    }
+
     // TODO: - 객체 수신, 삭제 테스트 코드 추가
 }
 

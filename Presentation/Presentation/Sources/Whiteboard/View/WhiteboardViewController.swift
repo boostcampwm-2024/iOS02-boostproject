@@ -150,10 +150,6 @@ public final class WhiteboardViewController: UIViewController {
         canvasView.addSubview(objectView)
     }
 
-    private func addText() {
-        viewModel.action(input: .addTextObject(point: visibleCenterPoint, viewSize: view.frame.size))
-    }
-
     // TODO: 이후에 Done 버튼이 생길경우 사용할 메소드
     private func endEditObject() {
         view.endEditing(true)
@@ -170,12 +166,12 @@ public final class WhiteboardViewController: UIViewController {
         viewModel.action(input: .finishUsingTool)
     }
 
-    @objc private func handleScrollViewTapGesture(_ gesture: UITapGestureRecognizer) {
+    @objc private func handleScrollViewTapGesture(gesture: UITapGestureRecognizer) {
         let location = gesture.location(in: canvasView)
         let touchedView = canvasView.hitTest(location, with: nil)
 
         if let touchedView = touchedView as? WhiteboardObjectView {
-            viewModel.action(input: .selectObject(objectID: touchedView.objectId))
+            viewModel.action(input: .selectObject(objectID: touchedView.objectID))
         } else {
             viewModel.action(input: .deselectObject)
         }
@@ -186,7 +182,9 @@ public final class WhiteboardViewController: UIViewController {
 extension WhiteboardViewController: WhiteboardToolBarDelegate {
     func whiteboardToolBar(_ sender: WhiteboardToolBar, selectedTool: WhiteboardTool) {
         viewModel.action(input: .selectTool(tool: selectedTool))
-        if selectedTool == .text { addText() }
+        if selectedTool == .text {
+            viewModel.action(input: .addTextObject(point: visibleCenterPoint, viewSize: view.frame.size))
+        }
     }
 }
 
@@ -231,16 +229,24 @@ extension WhiteboardViewController: PHPickerViewControllerDelegate {
 }
 
 extension WhiteboardViewController: WhiteboardObjectViewDelegate {
-    public func whiteboardObjectViewDidEndPanning(
+    public func whiteboardObjectViewDidEndScaling(
         _ sender: WhiteboardObjectView,
         objectID: UUID,
-        scale: CGFloat
+        scale: CGFloat,
+        angle: CGFloat
     ) {
-        viewModel.action(input: .changeObjectScale(objectID: objectID, scale: scale))
-        scrollView.isScrollEnabled = true
+        viewModel.action(
+            input: .changeObjectScaleAndAngle(
+                objectID: objectID,
+                scale: scale,
+                angle: angle))
     }
 
-    public func whiteboardObjectViewDidStartPanning(_ sender: WhiteboardObjectView) {
-        scrollView.isScrollEnabled = false
+    public func whiteboardObjectViewDidEndMoving(
+        _ sender: WhiteboardObjectView,
+        objectID: UUID,
+        newCenter: CGPoint
+    ) {
+        viewModel.action(input: .changeObjectPosition(objectID: objectID, point: newCenter))
     }
 }

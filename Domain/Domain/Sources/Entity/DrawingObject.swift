@@ -20,6 +20,7 @@ public final class DrawingObject: WhiteboardObject {
         centerPosition: CGPoint,
         size: CGSize,
         scale: CGFloat = 1,
+        angle: CGFloat = 0,
         points: [CGPoint],
         lineWidth: CGFloat,
         selectedBy: Profile? = nil
@@ -31,6 +32,7 @@ public final class DrawingObject: WhiteboardObject {
             centerPosition: centerPosition,
             size: size,
             scale: scale,
+            angle: angle,
             selectedBy: selectedBy)
     }
 
