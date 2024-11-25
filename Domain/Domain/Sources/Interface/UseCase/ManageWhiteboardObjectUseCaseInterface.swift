@@ -68,6 +68,4 @@ public protocol ManageWhiteboardObjectUseCaseInterface {
         whiteboardObjectID: UUID,
         scale: CGFloat,
         angle: CGFloat) async -> Bool
-
-
 }

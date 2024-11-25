@@ -372,7 +372,7 @@ final class ManageWhiteboardObjectsUseCaseTests: XCTestCase {
 
         // 검증
         XCTAssertTrue(isFailure)
-        XCTAssertEqual(targetObject.scale, 0)
+        XCTAssertEqual(targetObject.angle, 0)
     }
 
     // TODO: - 객체 수신, 삭제 테스트 코드 추가
