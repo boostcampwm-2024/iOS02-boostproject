@@ -34,7 +34,8 @@ public final class WhiteboardUseCase: WhiteboardUseCaseInterface {
     }
 
     public func startPublishingWhiteboard() {
-        whiteboardRepository.startPublishing()
+        let myProfile = profileRepository.loadProfile()
+        whiteboardRepository.startPublishing(myProfile: myProfile)
     }
 
     public func startSearchingWhiteboard() {

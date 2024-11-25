@@ -14,7 +14,7 @@ public final class WhiteboardRepository: WhiteboardRepositoryInterface {
     private var connections: [UUID: NetworkConnection]
     private var participantsInfo: [String: String]
     private let decoder = JSONDecoder()
-    private let myProfile: Profile
+    private var myProfile: Profile
 
     public init(nearbyNetworkInterface: NearbyNetworkInterface, myProfile: Profile) {
         self.nearbyNetwork = nearbyNetworkInterface
@@ -24,8 +24,9 @@ public final class WhiteboardRepository: WhiteboardRepositoryInterface {
         self.nearbyNetwork.connectionDelegate = self
     }
 
-    public func startPublishing() {
-        updatePublishingInfo()
+    public func startPublishing(myProfile: Profile) {
+        self.myProfile = myProfile
+        updatePublishingInfo(myProfile: myProfile)
         nearbyNetwork.startPublishing(with: participantsInfo)
     }
 
@@ -54,7 +55,7 @@ public final class WhiteboardRepository: WhiteboardRepositoryInterface {
         nearbyNetwork.stopSearching()
     }
 
-    private func updatePublishingInfo() {
+    private func updatePublishingInfo(myProfile: Profile) {
         var newIconList: [String] = []
         newIconList.append(myProfile.profileIcon.emoji)
 
@@ -143,7 +144,7 @@ extension WhiteboardRepository: NearbyNetworkConnectionDelegate {
             let requestedInfo = ["participants": invitationInfo]
 
             connections[connection.id] = NetworkConnection(id: connection.id, name: "", info: requestedInfo)
-            updatePublishingInfo()
+            updatePublishingInfo(myProfile: myProfile)
             nearbyNetwork.startPublishing(with: self.participantsInfo)
         } catch {
             // TODO: - 에러 처리
@@ -164,7 +165,7 @@ extension WhiteboardRepository: NearbyNetworkConnectionDelegate {
         else { return }
 
         connections[connection.id] = nil
-        updatePublishingInfo()
+        updatePublishingInfo(myProfile: myProfile)
         nearbyNetwork.startPublishing(with: self.participantsInfo)
     }
 }
