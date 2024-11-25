@@ -108,12 +108,7 @@ extension WhiteboardRepository: NearbyNetworkConnectionDelegate {
     }
 
     public func nearbyNetwork(_ sender: any NearbyNetworkInterface, didLost connection: NetworkConnection) {
-        let lostedWhiteboard = Whiteboard(
-            id: connection.id,
-            name: "",
-            participantIcons: []
-        )
-        delegate?.whiteboardRepository(self, didLost: lostedWhiteboard.id)
+        delegate?.whiteboardRepository(self, didLost: connection.id)
     }
 
     public func nearbyNetworkCannotConnect(_ sender: any NearbyNetworkInterface) {
