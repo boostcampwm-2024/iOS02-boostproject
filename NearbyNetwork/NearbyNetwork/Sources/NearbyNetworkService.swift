@@ -283,7 +283,6 @@ extension NearbyNetworkService: MCNearbyServiceBrowserDelegate {
     public func browser(_ browser: MCNearbyServiceBrowser, lostPeer peerID: MCPeerID) {
         serialQueue.async { [weak self] in
             guard let self = self else { return }
-            guard let lostPeer = foundPeers[peerID] else { return }
             foundPeers[peerID] = nil
         }
     }
