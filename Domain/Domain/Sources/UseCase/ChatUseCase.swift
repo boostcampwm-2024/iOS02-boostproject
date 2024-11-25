@@ -12,7 +12,7 @@ public final class ChatUseCase: ChatUseCaseInterface {
     private let chatMessageSubject: PassthroughSubject<ChatMessage, Never>
     private var chatRepository: ChatRepositoryInterface
 
-    init(chatRepository: ChatRepositoryInterface) {
+    public init(chatRepository: ChatRepositoryInterface) {
         self.chatMessageSubject = PassthroughSubject<ChatMessage, Never>()
         self.chatMessagePublisher = chatMessageSubject.eraseToAnyPublisher()
         self.chatRepository = chatRepository
