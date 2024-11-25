@@ -8,11 +8,15 @@ import Domain
 import UIKit
 
 public protocol WhiteboardObjectViewDelegate: AnyObject {
-    func whiteboardObjectViewDidStartPanning(_ sender: WhiteboardObjectView)
-    func whiteboardObjectViewDidEndPanning(
+    func whiteboardObjectViewDidEndScaling(
         _ sender: WhiteboardObjectView,
         objectID: UUID,
-        scale: CGFloat)
+        scale: CGFloat,
+        angle: CGFloat)
+    func whiteboardObjectViewDidEndMoving(
+        _ sender: WhiteboardObjectView,
+        objectID: UUID,
+        newCenter: CGPoint)
 }
 
 public class WhiteboardObjectView: UIView {
@@ -52,11 +56,12 @@ public class WhiteboardObjectView: UIView {
     }()
 
     private let borderLayer: CALayer
-    let objectId: UUID
+    let objectID: UUID
     weak var delegate: WhiteboardObjectViewDelegate?
+    private var initialControlAngle: CGFloat?
 
     init(whiteboardObject: WhiteboardObject) {
-        objectId = whiteboardObject.id
+        objectID = whiteboardObject.id
         borderLayer = CALayer()
         super.init(frame: .zero)
 
@@ -67,7 +72,7 @@ public class WhiteboardObjectView: UIView {
     }
 
     required init?(coder: NSCoder) {
-        objectId = UUID()
+        objectID = UUID()
         borderLayer = CALayer()
         super.init(coder: coder)
         configureAttribute()
@@ -86,6 +91,9 @@ public class WhiteboardObjectView: UIView {
     private func configureAttribute() {
         let controlPanGesture = UIPanGestureRecognizer(target: self, action: #selector(handleControlPanning))
         controlView.addGestureRecognizer(controlPanGesture)
+
+        let moveGesture = UIPanGestureRecognizer(target: self, action: #selector(handleMoveObjectView))
+        addGestureRecognizer(moveGesture)
     }
 
     func configureLayout() {
@@ -131,6 +139,7 @@ public class WhiteboardObjectView: UIView {
         controlView.isHidden = false
         borderLayer.frame = calculateBorderFrame()
         borderLayer.borderColor = profileColor.cgColor
+        gestureRecognizers?.forEach { $0.isEnabled = true }
     }
 
     func deselect() {
@@ -138,6 +147,7 @@ public class WhiteboardObjectView: UIView {
         borderLayer.removeFromSuperlayer()
         profileIconView.isHidden = true
         controlView.isHidden = true
+        gestureRecognizers?.forEach { $0.isEnabled = false }
     }
 
     func update(with object: WhiteboardObject) {
@@ -147,7 +157,7 @@ public class WhiteboardObjectView: UIView {
         self.center = center
         self.bounds = bounds
 
-        applyScale(scale: object.scale)
+        applyTransform(scale: object.scale, angle: object.angle)
 
         if let selector = object.selectedBy {
             select(selector: selector)
@@ -169,22 +179,31 @@ public class WhiteboardObjectView: UIView {
         let controlPoint = gesture.location(in: superview)
         switch gesture.state {
         case .began:
-            delegate?.whiteboardObjectViewDidStartPanning(self)
+            let initialAngle = atan2(transform.b, transform.a)
+            initialControlAngle = calculateAngle(controlPoint: controlPoint) - initialAngle
         case .changed:
-            guard let scale = calculateScale(controlPoint: controlPoint) else { return }
-            applyScale(scale: scale)
+            let scale = calculateScale(controlPoint: controlPoint)
+            var angle = calculateAngle(controlPoint: controlPoint)
+            angle = lockAngle(angle: angle)
+            applyTransform(
+                scale: scale,
+                angle: angle)
         case .ended:
-            guard let scale = calculateScale(controlPoint: controlPoint) else { return }
-            delegate?.whiteboardObjectViewDidEndPanning(
+            let scale = calculateScale(controlPoint: controlPoint)
+            var angle = calculateAngle(controlPoint: controlPoint)
+            angle = lockAngle(angle: angle)
+            delegate?.whiteboardObjectViewDidEndScaling(
                 self,
-                objectID: objectId,
-                scale: scale)
+                objectID: objectID,
+                scale: scale,
+                angle: angle)
+            initialControlAngle = nil
         default:
             break
         }
     }
 
-    private func calculateScale(controlPoint: CGPoint) -> CGFloat? {
+    private func calculateScale(controlPoint: CGPoint) -> CGFloat {
         let initialDistance = hypot(
             bounds.midX - bounds.maxX,
             bounds.midY - bounds.maxY)
@@ -196,16 +215,34 @@ public class WhiteboardObjectView: UIView {
         return distance / initialDistance
     }
 
-    private func applyScale(scale: CGFloat) {
+    private func lockAngle(angle: CGFloat) -> CGFloat {
+        let epsilon: CGFloat = 0.05
+        let anglesToLock: [CGFloat] = [0, .pi / 2, .pi, -(.pi / 2), -(.pi)]
+
+        for angleToLock in anglesToLock {
+            let difference = abs(angle - angleToLock)
+            if difference < epsilon { return angleToLock }
+        }
+
+        return angle
+    }
+
+    private func calculateAngle(controlPoint: CGPoint) -> CGFloat {
+        let currentControlAngle = atan2(
+            controlPoint.y - center.y,
+            controlPoint.x - center.x)
+
+        return currentControlAngle - (initialControlAngle ?? 0)
+    }
+
+    private func applyTransform(scale: CGFloat, angle: CGFloat) {
         CATransaction.setAnimationDuration(0)
 
         let inverseScale = 1 / scale
         let profileIconSize = WhiteboardObjectViewLayoutConstant.profileIconSize
         let profileIconViewOffset = (profileIconSize * scale - profileIconSize) / 2
 
-        transform = CGAffineTransform
-            .identity
-            .scaledBy(x: scale, y: scale)
+        profileIconView.rotate(angle: -angle)
         profileIconView.transform = CGAffineTransform
             .identity
             .scaledBy(x: inverseScale, y: inverseScale)
@@ -214,6 +251,33 @@ public class WhiteboardObjectView: UIView {
             .identity
             .scaledBy(x: inverseScale, y: inverseScale)
         borderLayer.borderWidth = WhiteboardObjectViewLayoutConstant.selectorViewBorderWidth * inverseScale
+        transform = CGAffineTransform
+            .identity
+            .scaledBy(x: scale, y: scale)
+            .rotated(by: angle)
+    }
+
+    @objc private func handleMoveObjectView(gesture: UIPanGestureRecognizer) {
+
+        let translation = gesture.translation(in: superview)
+        let newCenter = CGPoint(
+            x: center.x + translation.x,
+            y: center.y + translation.y
+        )
+
+        switch gesture.state {
+        case .possible, .began:
+            break
+        case .changed:
+            center = newCenter
+        default:
+            delegate?.whiteboardObjectViewDidEndMoving(
+                self,
+                objectID: objectID,
+                newCenter: newCenter)
+        }
+
+        gesture.setTranslation(.zero, in: superview)
     }
 }
 
