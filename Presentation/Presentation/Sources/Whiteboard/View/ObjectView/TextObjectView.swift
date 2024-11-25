@@ -43,7 +43,7 @@ final class TextObjectView: WhiteboardObjectView {
     override func update(with object: WhiteboardObject) {
         super.update(with: object)
         guard let textObject = object as? TextObject else { return }
-        print(textObject.text)
+
         textView.text = textObject.text
     }
 
