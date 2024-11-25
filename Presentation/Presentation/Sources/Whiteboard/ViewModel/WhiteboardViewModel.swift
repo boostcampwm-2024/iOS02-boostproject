@@ -22,11 +22,9 @@ public final class WhiteboardViewModel: ViewModel {
         case addTextObject(point: CGPoint, viewSize: CGSize)
         case selectObject(objectID: UUID)
         case deselectObject
-        case changeObjectScaleAndAngle(
-            objectID: UUID,
-            scale: CGFloat,
-            angle: CGFloat)
-        case changeObjectPosition(objectID: UUID, point: CGPoint)
+        case changeObjectScaleAndAngle(scale: CGFloat, angle: CGFloat)
+        case changeObjectPosition(point: CGPoint)
+        case deleteObject
     }
 
     struct Output {
@@ -34,6 +32,7 @@ public final class WhiteboardViewModel: ViewModel {
         let addedWhiteboardObjectPublisher: AnyPublisher<WhiteboardObject, Never>
         let updatedWhiteboardObjectPublisher: AnyPublisher<WhiteboardObject, Never>
         let removedWhiteboardObjectPublisher: AnyPublisher<WhiteboardObject, Never>
+        let objectViewSelectedPublisher: AnyPublisher<UUID?, Never>
     }
 
     let output: Output
@@ -43,6 +42,7 @@ public final class WhiteboardViewModel: ViewModel {
     private let textObjectUseCase: TextObjectUseCaseInterface
     private let manageWhiteboardToolUseCase: ManageWhiteboardToolUseCaseInterface
     private let manageWhiteboardObjectUseCase: ManageWhiteboardObjectUseCaseInterface
+    private let selectedObjectSubject: CurrentValueSubject<UUID?, Never>
 
     public init(
         whiteboardUseCase: WhiteboardUseCaseInterface,
@@ -58,6 +58,7 @@ public final class WhiteboardViewModel: ViewModel {
         self.textObjectUseCase = textObjectUseCase
         self.manageWhiteboardToolUseCase = managemanageWhiteboardToolUseCase
         self.manageWhiteboardObjectUseCase = manageWhiteboardObjectUseCase
+        selectedObjectSubject = CurrentValueSubject(nil)
 
         output = Output(
             whiteboardToolPublisher: manageWhiteboardToolUseCase
@@ -67,7 +68,9 @@ public final class WhiteboardViewModel: ViewModel {
             updatedWhiteboardObjectPublisher: manageWhiteboardObjectUseCase
                 .updatedObjectPublisher,
             removedWhiteboardObjectPublisher: manageWhiteboardObjectUseCase
-                .removedObjectPublisher
+                .removedObjectPublisher,
+            objectViewSelectedPublisher: selectedObjectSubject
+                .eraseToAnyPublisher()
         )
     }
 
@@ -94,33 +97,23 @@ public final class WhiteboardViewModel: ViewModel {
             selectObject(objectID: objectID)
         case .deselectObject:
             deselectObject()
-        case .changeObjectScaleAndAngle(let objectID, let scale, let angle):
-            changeObjectScale(objectID: objectID, scale: scale, angle: angle)
-        case .changeObjectPosition(let objectID, let position):
-            changeObjectPosition(objectID: objectID, to: position)
+        case .changeObjectScaleAndAngle(let scale, let angle):
+            changeObjectScale(scale: scale, angle: angle)
+        case .changeObjectPosition(let position):
+            changeObjectPosition(to: position)
+        case .deleteObject:
+            deleteObject()
         }
     }
 
     private func selectTool(with tool: WhiteboardTool) {
         manageWhiteboardToolUseCase.selectTool(tool: tool)
+        deselectObject()
     }
 
     private func finishUsingTool() {
         let currentTool = manageWhiteboardToolUseCase.currentTool()
         guard let currentTool else { return }
-
-        switch currentTool {
-        case .drawing:
-            break
-        case .text:
-            break
-        case .photo:
-            break
-        case .game:
-            break
-        case .chat:
-            break
-        }
 
         manageWhiteboardToolUseCase.finishUsingTool()
     }
@@ -172,33 +165,45 @@ public final class WhiteboardViewModel: ViewModel {
     }
 
     private func selectObject(objectID: UUID) {
+        guard manageWhiteboardToolUseCase.currentTool() == nil else { return }
         Task {
-            await manageWhiteboardObjectUseCase.select(whiteboardObjectID: objectID)
+            let isSuccess = await manageWhiteboardObjectUseCase.select(whiteboardObjectID: objectID)
+            if isSuccess {
+                selectedObjectSubject.send(nil)
+                selectedObjectSubject.send(objectID)
+            }
         }
     }
 
     private func deselectObject() {
         Task {
-            await manageWhiteboardObjectUseCase.deselect()
+            let isSuccess = await manageWhiteboardObjectUseCase.deselect()
+            if isSuccess { selectedObjectSubject.send(nil) }
         }
     }
 
-    private func changeObjectScale(
-        objectID: UUID,
-        scale: CGFloat,
-        angle: CGFloat
-    ) {
+    private func changeObjectScale(scale: CGFloat, angle: CGFloat) {
+        guard let selectedObjectID = selectedObjectSubject.value else { return }
         Task {
             await manageWhiteboardObjectUseCase.changeSizeAndAngle(
-                whiteboardObjectID: objectID,
+                whiteboardObjectID: selectedObjectID,
                 scale: scale,
                 angle: angle)
         }
     }
 
-    private func changeObjectPosition(objectID: UUID, to point: CGPoint) {
+    private func changeObjectPosition(to point: CGPoint) {
+        guard let selectedObjectID = selectedObjectSubject.value else { return }
         Task {
-            await manageWhiteboardObjectUseCase.changePosition(whiteboardObjectID: objectID, to: point)
+            await manageWhiteboardObjectUseCase.changePosition(whiteboardObjectID: selectedObjectID, to: point)
+        }
+    }
+
+    private func deleteObject() {
+        guard let selectedObjectID = selectedObjectSubject.value else { return }
+        Task {
+            let isSuccess = await manageWhiteboardObjectUseCase.removeObject(whiteboardObjectID: selectedObjectID)
+            if isSuccess { selectedObjectSubject.send(nil) }
         }
     }
 }

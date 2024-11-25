@@ -10,18 +10,35 @@ import UIKit
 
 protocol WhiteboardToolBarDelegate: AnyObject {
     func whiteboardToolBar(_ sender: WhiteboardToolBar, selectedTool: WhiteboardTool)
+    func whiteboardToolBarDidTapDeleteButton(_ sender: WhiteboardToolBar)
 }
 
-final class WhiteboardToolBar: UIStackView {
-    private enum WhiteboardToolBarLayoutConstant {
-        static let toolbarSpacing: CGFloat = 30
+final class WhiteboardToolBar: UIView {
+    enum ToolBarMode {
+        case normal
+        case delete
     }
 
+    private enum WhiteboardToolBarLayoutConstant {
+        static let toolbarSpacing: CGFloat = 30
+        static let deleteButtonWidth: CGFloat = 50
+    }
+
+    private let toolStackView = UIStackView()
     private let drawing = UIButton()
     private let text = UIButton()
     private let photo = UIButton()
     private let game = UIButton()
     private let chat = UIButton()
+    private let deleteButton: UIButton = {
+        let button = UIButton()
+        button.setImage(
+            UIImage(systemName: "trash.circle"),
+            for: .normal)
+        button.tintColor = .wordleRed
+        button.isHidden = true
+        return button
+    }()
     private var tools: [WhiteboardTool: UIButton] = [:]
     weak var delegate: WhiteboardToolBarDelegate?
 
@@ -30,13 +47,14 @@ final class WhiteboardToolBar: UIStackView {
         initialize()
     }
 
-    required init(coder: NSCoder) {
+    required init?(coder: NSCoder) {
         super.init(coder: coder)
         initialize()
     }
 
     private func initialize() {
         configureAttribute()
+        configureLayout()
         configureButtons()
     }
 
@@ -47,16 +65,42 @@ final class WhiteboardToolBar: UIStackView {
         }
     }
 
+    func configure(with mode: ToolBarMode) {
+        switch mode {
+        case .normal:
+            toolStackView.isHidden = false
+            deleteButton.isHidden = true
+        case .delete:
+            toolStackView.isHidden = true
+            deleteButton.isHidden = false
+        }
+    }
+
     private func configureAttribute() {
-        distribution = .fillEqually
-        spacing = WhiteboardToolBarLayoutConstant.toolbarSpacing
+        toolStackView.distribution = .fillEqually
+        toolStackView.spacing = WhiteboardToolBarLayoutConstant.toolbarSpacing
+    }
+
+    private func configureLayout() {
+        toolStackView
+            .addToSuperview(self)
+            .edges(equalTo: self)
+
+        deleteButton
+            .addToSuperview(self)
+            .size(
+                width: WhiteboardToolBarLayoutConstant.deleteButtonWidth,
+                height: 40,
+                priority: .defaultLow)
+            .verticalEdges(equalTo: self)
+            .centerX(equalTo: self.centerXAnchor)
     }
 
     private func configureButtons() {
         let buttons = [drawing, text, photo, game, chat]
         zip(WhiteboardTool.allCases, buttons).forEach { whiteboardTool, button in
             tools[whiteboardTool] = button
-            addArrangedSubview(button)
+            toolStackView.addArrangedSubview(button)
             button.setImage(whiteboardTool.defaultIcon, for: .normal)
             button.tintColor = .airplainBlue
             button.addAction(
@@ -66,6 +110,13 @@ final class WhiteboardToolBar: UIStackView {
                 },
                 for: .touchUpInside )
         }
+
+        deleteButton.addAction(
+            UIAction { [weak self] _ in
+                guard let self else { return }
+                self.delegate?.whiteboardToolBarDidTapDeleteButton(self)
+            },
+            for: .touchUpInside)
     }
 }
 

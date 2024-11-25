@@ -23,6 +23,7 @@ public final class WhiteboardViewController: UIViewController {
     private let viewModel: WhiteboardViewModel
     private var objectViewFactory: WhiteboardObjectViewFactoryable
     private var whiteboardObjectViews: [UUID: WhiteboardObjectView]
+    private var selectedObjectView: WhiteboardObjectView?
     private var cancellables: Set<AnyCancellable>
     private var visibleCenterPoint: CGPoint {
         let centerX = scrollView.contentOffset.x + (scrollView.bounds.width / 2)
@@ -51,8 +52,22 @@ public final class WhiteboardViewController: UIViewController {
         bind()
     }
 
+    public override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        navigationController?.isNavigationBarHidden = true
+    }
+
     private func configureAttribute() {
+        let editDoneButton = UIBarButtonItem(
+            title: "완료",
+            style: .done,
+            target: self,
+            action: #selector(endEditObject))
+        navigationItem.rightBarButtonItem = editDoneButton
+        navigationController?.navigationBar.backItem?.title = ""
+        navigationController?.isNavigationBarHidden = false
         view.backgroundColor = .systemBackground
+
         drawingView.isHidden = true
         toolbar.delegate = self
         drawingView.delegate = self
@@ -92,7 +107,10 @@ public final class WhiteboardViewController: UIViewController {
             .sink { [weak self] tool in
                 self?.toolbar.select(tool: tool)
                 self?.configureDrawingView(isDrawing: tool == .drawing)
+                self?.navigationItem.rightBarButtonItem?.isHidden = tool == nil
+
                 guard let tool else { return }
+
                 switch tool {
                 case .photo:
                     self?.presentImagePicker()
@@ -128,6 +146,26 @@ public final class WhiteboardViewController: UIViewController {
                 objectView.removeFromSuperview()
             }
             .store(in: &cancellables)
+
+        viewModel.output.objectViewSelectedPublisher
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] objectID in
+                if
+                    let objectID,
+                    let objectView = self?.whiteboardObjectViews[objectID]
+                {
+                    self?.selectedObjectView = objectView
+                    self?.selectedObjectView?.configureEditable(isEditable: true)
+                    self?.navigationItem.rightBarButtonItem?.isHidden = false
+                    self?.toolbar.configure(with: .delete)
+                } else {
+                    self?.selectedObjectView?.configureEditable(isEditable: false)
+                    self?.selectedObjectView = nil
+                    self?.navigationItem.rightBarButtonItem?.isHidden = true
+                    self?.toolbar.configure(with: .normal)
+                }
+            }
+            .store(in: &cancellables)
     }
 
     private func configureDrawingView(isDrawing: Bool) {
@@ -150,9 +188,10 @@ public final class WhiteboardViewController: UIViewController {
         canvasView.addSubview(objectView)
     }
 
-    // TODO: 이후에 Done 버튼이 생길경우 사용할 메소드
-    private func endEditObject() {
+    @objc private func endEditObject() {
         view.endEditing(true)
+        viewModel.action(input: .finishUsingTool)
+        viewModel.action(input: .deselectObject)
     }
 
     private func presentImagePicker() {
@@ -182,9 +221,15 @@ public final class WhiteboardViewController: UIViewController {
 extension WhiteboardViewController: WhiteboardToolBarDelegate {
     func whiteboardToolBar(_ sender: WhiteboardToolBar, selectedTool: WhiteboardTool) {
         viewModel.action(input: .selectTool(tool: selectedTool))
+
         if selectedTool == .text {
             viewModel.action(input: .addTextObject(point: visibleCenterPoint, viewSize: view.frame.size))
+            viewModel.action(input: .finishUsingTool)
         }
+    }
+
+    func whiteboardToolBarDidTapDeleteButton(_ sender: WhiteboardToolBar) {
+        viewModel.action(input: .deleteObject)
     }
 }
 
@@ -231,22 +276,13 @@ extension WhiteboardViewController: PHPickerViewControllerDelegate {
 extension WhiteboardViewController: WhiteboardObjectViewDelegate {
     public func whiteboardObjectViewDidEndScaling(
         _ sender: WhiteboardObjectView,
-        objectID: UUID,
         scale: CGFloat,
         angle: CGFloat
     ) {
-        viewModel.action(
-            input: .changeObjectScaleAndAngle(
-                objectID: objectID,
-                scale: scale,
-                angle: angle))
+        viewModel.action(input: .changeObjectScaleAndAngle(scale: scale, angle: angle))
     }
 
-    public func whiteboardObjectViewDidEndMoving(
-        _ sender: WhiteboardObjectView,
-        objectID: UUID,
-        newCenter: CGPoint
-    ) {
-        viewModel.action(input: .changeObjectPosition(objectID: objectID, point: newCenter))
+    public func whiteboardObjectViewDidEndMoving(_ sender: WhiteboardObjectView, newCenter: CGPoint) {
+        viewModel.action(input: .changeObjectPosition(point: newCenter))
     }
 }

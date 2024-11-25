@@ -99,7 +99,6 @@
 			isa = PBXGroup;
 			children = (
 				0080E8C52CE2F04F0095B958 /* WhiteboardObjectView.swift */,
-				6F199EF02CE31A05005DC40F /* WhiteboardToolBar.swift */,
 				6F21477C2CE4EFCF00B55E2C /* TextObjectView.swift */,
 				00D2DD992CE8DCEA0089F0BA /* DrawingObjectView.swift */,
 				004B21802CEB5BC000A5BEB8 /* PhotoObjectView.swift */,
@@ -151,6 +150,7 @@
 			children = (
 				6F199EF22CE3203A005DC40F /* WhiteboardViewController.swift */,
 				00D2DD972CE8CD300089F0BA /* DrawingView.swift */,
+				6F199EF02CE31A05005DC40F /* WhiteboardToolBar.swift */,
 				004645F22CE60A1B00C76EDB /* ObjectView */,
 			);
 			path = View;

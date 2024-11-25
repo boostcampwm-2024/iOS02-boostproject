@@ -65,12 +65,15 @@ public final class ManageWhiteboardObjectUseCase: ManageWhiteboardObjectUseCaseI
     }
 
     @discardableResult
-    public func removeObject(whiteboardObject: WhiteboardObject) async -> Bool {
-        guard await whiteboardObjectSet.contains(object: whiteboardObject) else { return false }
+    public func removeObject(whiteboardObjectID: UUID) async -> Bool {
+        guard
+            let object = await whiteboardObjectSet.fetchObjectByID(id: whiteboardObjectID),
+            object.selectedBy == myProfile
+        else { return false }
 
-        await whiteboardObjectRepository.send(whiteboardObject: whiteboardObject, isDeleted: true)
-        await whiteboardObjectSet.remove(object: whiteboardObject)
-        removedWhiteboardSubject.send(whiteboardObject)
+        await whiteboardObjectSet.remove(object: object)
+        await whiteboardObjectRepository.send(whiteboardObject: object, isDeleted: true)
+        removedWhiteboardSubject.send(object)
 
         return true
     }
@@ -154,7 +157,7 @@ extension ManageWhiteboardObjectUseCase: WhiteboardObjectRepositoryDelegate {
         didDelete object: WhiteboardObject
     ) {
         Task {
-            await removeObject(whiteboardObject: object)
+            await removeObject(whiteboardObjectID: object.id)
         }
     }
 }
