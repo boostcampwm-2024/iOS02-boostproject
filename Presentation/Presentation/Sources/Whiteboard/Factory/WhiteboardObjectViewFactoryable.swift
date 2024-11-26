@@ -15,6 +15,8 @@ public protocol WhiteboardObjectViewFactoryable {
 public struct WhiteboardObjectViewFactory: WhiteboardObjectViewFactoryable {
     public weak var whiteboardObjectViewDelegate: WhiteboardObjectViewDelegate?
 
+    public init() {}
+
     public func create(with whiteboardObject: WhiteboardObject) -> WhiteboardObjectView? {
         let whiteboardObjectView: WhiteboardObjectView?
 

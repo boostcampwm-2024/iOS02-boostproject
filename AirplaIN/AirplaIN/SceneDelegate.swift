@@ -25,15 +25,47 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // TODO: - 임시 의존성 주입
         let nearbyNetworkService = NearbyNetworkService(serviceName: "airplain")
         let profileRepository = ProfileRepository(persistenceService: PersistenceService())
-        let whiteboardRepository = WhiteboardRepository(nearbyNetworkInterface: nearbyNetworkService, myProfile: profileRepository.loadProfile())
+        let filePersistenceService = FilePersistence()
+
+        let whiteboardRepository = WhiteboardRepository(
+            nearbyNetworkInterface: nearbyNetworkService,
+            myProfile: profileRepository.loadProfile())
+        let whiteboardObjectRepository = WhiteboardObjectRepository(
+            nearbyNetwork: nearbyNetworkService,
+            filePersistence: filePersistenceService)
+
         let whiteboardUseCase = WhiteboardUseCase(
             whiteboardRepository: whiteboardRepository,
             profileRepository: profileRepository)
-        let viewModel = WhiteboardListViewModel(whiteboardUseCase: whiteboardUseCase)
-        let viewController = WhiteboardListViewController(viewModel: viewModel)
+        let profileUseCase = ProfileUseCase(repository: profileRepository)
+        let manageWhieboardObjectUseCase = ManageWhiteboardObjectUseCase(
+            profileRepository: profileRepository,
+            whiteboardRepository: whiteboardObjectRepository)
+        let manageWhiteboardToolUseCase = ManageWhiteboardToolUseCase()
+        let textObjectUseCase = TextObjectUseCase(textFieldDefaultSize: CGSize(width: 200, height: 50))
+        let drawObjectUseCase = DrawObjectUseCase()
+        guard let addPhotoUseCase = try? AddPhotoUseCase() else { return }
+        let whiteboardObjectSendUseCase = WhiteboardObjectSendUseCase(repository: whiteboardObjectRepository)
+
+        let whiteboardObjectViewFactory = WhiteboardObjectViewFactory()
+
+        let whiteboardListViewModel = WhiteboardListViewModel(whiteboardUseCase: whiteboardUseCase)
+        let whiteboardViewModel = WhiteboardViewModel(
+            whiteboardUseCase: whiteboardUseCase,
+            addPhotoUseCase: addPhotoUseCase,
+            drawObjectUseCase: drawObjectUseCase,
+            textObjectUseCase: textObjectUseCase,
+            managemanageWhiteboardToolUseCase: manageWhiteboardToolUseCase,
+            manageWhiteboardObjectUseCase: manageWhieboardObjectUseCase)
+        let profileViewModel = ProfileViewModel(profileUseCase: profileUseCase)
+
+        let whiteboardListViewController = WhiteboardListViewController(viewModel: whiteboardListViewModel,
+                                                                        whiteboardViewModel: whiteboardViewModel,
+                                                                        whiteboardObjectViewFactory: whiteboardObjectViewFactory,
+                                                                        profileViewModel: profileViewModel)
 
         let window = UIWindow(windowScene: windowScene)
-        let navigationController = UINavigationController(rootViewController: viewController)
+        let navigationController = UINavigationController(rootViewController: whiteboardListViewController)
         navigationController.isNavigationBarHidden = true
         window.rootViewController = navigationController
         window.makeKeyAndVisible()

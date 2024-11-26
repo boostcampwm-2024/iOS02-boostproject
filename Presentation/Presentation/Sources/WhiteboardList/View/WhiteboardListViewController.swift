@@ -8,14 +8,10 @@
 import Combine
 import Domain
 import UIKit
-// TODO: - Profile View 이동 주입 시점 변경시 삭제 될 모듈 (DataSource, Persistence)
-import DataSource
-import Persistence
-import NearbyNetwork
 
 public final class WhiteboardListViewController: UIViewController {
     private enum WhiteboardListLayoutConstant {
-        static let buttonSize: CGFloat = 26
+        static let buttonSize: CGFloat = 44
         static let upperComponentTopMargin: CGFloat = 70
         static let mainTitleLabelWidth: CGFloat = 199
         static let mainTitleLabelHeight: CGFloat = 43
@@ -64,8 +60,19 @@ public final class WhiteboardListViewController: UIViewController {
     private let viewModel: WhiteboardListViewModel
     private var cancellables = Set<AnyCancellable>()
 
-    public init(viewModel: WhiteboardListViewModel) {
+    private let whiteboardViewModel: WhiteboardViewModel
+    private let whiteboardObjectViewFactory: WhiteboardObjectViewFactoryable
+    private let profileViewModel: ProfileViewModel
+
+    public init(viewModel: WhiteboardListViewModel,
+                whiteboardViewModel: WhiteboardViewModel,
+                whiteboardObjectViewFactory: WhiteboardObjectViewFactoryable,
+                profileViewModel: ProfileViewModel
+    ) {
         self.viewModel = viewModel
+        self.whiteboardViewModel = whiteboardViewModel
+        self.whiteboardObjectViewFactory = whiteboardObjectViewFactory
+        self.profileViewModel = profileViewModel
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -94,18 +101,26 @@ public final class WhiteboardListViewController: UIViewController {
         view.backgroundColor = .systemBackground
 
         let createWhiteboardAction = UIAction { [weak self] _ in
-            // TODO: - 임시 화면 전환 코드
             self?.viewModel.action(input: .createWhiteboard)
+
+            guard
+                let whiteboardViewModel = self?.whiteboardViewModel,
+                let whiteboardObjectViewFactory = self?.whiteboardObjectViewFactory
+            else { return }
+
+            let whiteboardViewController = WhiteboardViewController(viewModel: whiteboardViewModel,
+                                                                    objectViewFactory: whiteboardObjectViewFactory)
+            self?.navigationController?.isNavigationBarHidden = false
+            self?.navigationController?.pushViewController(whiteboardViewController, animated: true)
         }
         createWhiteboardButton.addAction(createWhiteboardAction, for: .touchUpInside)
 
         // TODO: - Profile View 이동 주입 시점
         let showProfileViewController = UIAction { [weak self] _ in
-            let profileRepository = ProfileRepository(persistenceService: PersistenceService())
-            let viewModel = ProfileViewModel(profileUseCase: ProfileUseCase(repository: profileRepository))
+            guard let profileViewModel = self?.profileViewModel else { return }
             let profileViewController = UINavigationController(
-                rootViewController: ProfileViewController(viewModel: viewModel))
-            profileViewController.modalPresentationStyle = UIModalPresentationStyle.fullScreen
+                rootViewController: ProfileViewController(viewModel: profileViewModel))
+            profileViewController.modalPresentationStyle = .fullScreen
             self?.present(profileViewController, animated: true)
         }
         configureProfileButton.addAction(showProfileViewController, for: .touchUpInside)
@@ -244,6 +259,9 @@ extension WhiteboardListViewController: UICollectionViewDelegate {
     public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard let selectedWhiteboard = dataSource?.itemIdentifier(for: indexPath) else { return }
         viewModel.action(input: .joinWhiteboard(whiteboard: selectedWhiteboard))
-        // TODO: - 화면 전환
+        let whiteboardViewController = WhiteboardViewController(viewModel: whiteboardViewModel,
+                                                                objectViewFactory: whiteboardObjectViewFactory)
+        self.navigationController?.isNavigationBarHidden = false
+        self.navigationController?.pushViewController(whiteboardViewController, animated: true)
     }
 }

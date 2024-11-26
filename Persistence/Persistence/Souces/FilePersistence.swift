@@ -16,6 +16,8 @@ public struct FilePersistence: FilePersistenceInterface {
     }
     private let logger = Logger()
 
+    public init() {}
+
     public func save(dataInfo: DataInformationDTO, data: Data?) -> URL? {
         guard let directoryURL = documentDirectoryURL?
             .appendingPathComponent(

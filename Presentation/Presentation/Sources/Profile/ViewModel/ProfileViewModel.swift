@@ -9,7 +9,7 @@ import Combine
 import Domain
 import Foundation
 
-final class ProfileViewModel: ViewModel {
+public final class ProfileViewModel: ViewModel {
     enum Input {
         case updateProfileNickname(nickname: String)
         case updateProfileIcon(profileIcon: ProfileIcon)
@@ -24,7 +24,7 @@ final class ProfileViewModel: ViewModel {
     private let profileSubject: CurrentValueSubject<Profile, Never>
     let output: Output
 
-    init(profileUseCase: ProfileUseCase) {
+    public init(profileUseCase: ProfileUseCase) {
         self.profileUseCase = profileUseCase
         let profile = profileUseCase.loadProfile()
         profileSubject = CurrentValueSubject<Profile, Never>(profile)
