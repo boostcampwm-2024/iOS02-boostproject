@@ -8,7 +8,7 @@
 import Domain
 import UIKit
 
-class ChatListCell: UICollectionViewListCell {
+class MessageCell: UICollectionViewListCell {
     private var chatMessage: ChatMessage?
 
     func update(with newMessage: ChatMessage) {
