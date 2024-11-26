@@ -16,8 +16,7 @@ public protocol FilePersistenceInterface {
     @discardableResult
     func save(
         dataInfo: DataInformationDTO,
-        data: Data?,
-        fileType: String?) -> URL?
+        data: Data?) -> URL?
 
     /// path위치에 있는 데이터를 가져옵니다.
     /// - Parameter path: 가져올 데이터의 위치를 URL로 받습니다.

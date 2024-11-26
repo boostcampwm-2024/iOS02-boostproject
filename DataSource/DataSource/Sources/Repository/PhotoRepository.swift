@@ -21,10 +21,7 @@ public final class PhotoRepository: PhotoRepositoryInterface {
             type: .imageData,
             isDeleted: false)
 
-        let photoURL = filePersistence.save(
-            dataInfo: dataInformation,
-            data: imageData,
-            fileType: ".jpg")
+        let photoURL = filePersistence.save(dataInfo: dataInformation, data: imageData)
         return photoURL
     }
 }
