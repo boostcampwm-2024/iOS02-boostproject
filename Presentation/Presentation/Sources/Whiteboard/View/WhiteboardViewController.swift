@@ -55,6 +55,7 @@ public final class WhiteboardViewController: UIViewController {
     public override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         navigationController?.isNavigationBarHidden = true
+        viewModel.action(input: .disconnectWhiteboard)
     }
 
     private func configureAttribute() {

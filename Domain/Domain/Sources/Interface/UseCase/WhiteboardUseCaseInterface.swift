@@ -18,6 +18,9 @@ public protocol WhiteboardUseCaseInterface {
 
     /// 주변 화이트보드를 탐색합니다.
     func startSearchingWhiteboard()
+    
+    /// 화이트보드와 연결을 끊습니다. 
+    func disconnectWhiteboard()
 
     /// 선택한 화이트보드와 연결을 시도합니다.
     /// - Parameter whiteboard: 연결할 화이트보드
