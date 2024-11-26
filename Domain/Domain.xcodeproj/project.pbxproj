@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		00036B822CF56414007D1244 /* PhotoRepositoryInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00036B812CF56414007D1244 /* PhotoRepositoryInterface.swift */; };
+		00036B862CF58D7C007D1244 /* WhiteboardObjectSetInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00036B852CF58D7C007D1244 /* WhiteboardObjectSetInterface.swift */; };
 		003D5A2B2CEB1FF0005F3D09 /* PhotoObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 003D5A2A2CEB1FEA005F3D09 /* PhotoObject.swift */; };
 		003D5A2D2CEB21AA005F3D09 /* AddPhotoUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 003D5A2C2CEB217E005F3D09 /* AddPhotoUseCase.swift */; };
 		003D5A2F2CEB21B6005F3D09 /* AddPhotoUseCaseInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 003D5A2E2CEB21B2005F3D09 /* AddPhotoUseCaseInterface.swift */; };
@@ -78,6 +79,7 @@
 
 /* Begin PBXFileReference section */
 		00036B812CF56414007D1244 /* PhotoRepositoryInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoRepositoryInterface.swift; sourceTree = "<group>"; };
+		00036B852CF58D7C007D1244 /* WhiteboardObjectSetInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhiteboardObjectSetInterface.swift; sourceTree = "<group>"; };
 		003D5A2A2CEB1FEA005F3D09 /* PhotoObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoObject.swift; sourceTree = "<group>"; };
 		003D5A2C2CEB217E005F3D09 /* AddPhotoUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPhotoUseCase.swift; sourceTree = "<group>"; };
 		003D5A2E2CEB21B2005F3D09 /* AddPhotoUseCaseInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPhotoUseCaseInterface.swift; sourceTree = "<group>"; };
@@ -206,6 +208,7 @@
 			children = (
 				0080E9192CE4B0880095B958 /* UseCase */,
 				0080E8CC2CE446270095B958 /* Repository */,
+				00036B852CF58D7C007D1244 /* WhiteboardObjectSetInterface.swift */,
 			);
 			path = Interface;
 			sourceTree = "<group>";
@@ -446,6 +449,7 @@
 				005BCC512CF01D29001B3623 /* WhiteboardObjectSet.swift in Sources */,
 				A8E97BDB2CE5A6D500B28063 /* ProfileRepositoryInterface.swift in Sources */,
 				A8E97BD92CE5A6B800B28063 /* ProfileIcon.swift in Sources */,
+				00036B862CF58D7C007D1244 /* WhiteboardObjectSetInterface.swift in Sources */,
 				A8E97C072CE5E45500B28063 /* WhiteboardObjectSendUseCase.swift in Sources */,
 				A8E97BD82CE5A6B800B28063 /* Profile.swift in Sources */,
 				00036B822CF56414007D1244 /* PhotoRepositoryInterface.swift in Sources */,

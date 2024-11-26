@@ -13,7 +13,7 @@ final class TextObjectUseCaseTests: XCTestCase {
 
     override func setUpWithError() throws {
         let mockCGSize = CGSize(width: 200, height: 50)
-        useCase = TextObjectUseCase(textFieldDefaultSize: mockCGSize)
+        useCase = TextObjectUseCase(whiteboardObjectSet: WhiteboardObjectSet(), textFieldDefaultSize: mockCGSize)
     }
 
     override func tearDownWithError() throws {

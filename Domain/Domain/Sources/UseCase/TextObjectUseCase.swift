@@ -10,8 +10,10 @@ import Foundation
 
 public final class TextObjectUseCase: TextObjectUseCaseInterface {
     private let textFieldDefaultSize: CGSize
+    private let whiteboardObjectSet: WhiteboardObjectSet
 
-    public init(textFieldDefaultSize: CGSize) {
+    public init(whiteboardObjectSet: WhiteboardObjectSet, textFieldDefaultSize: CGSize) {
+        self.whiteboardObjectSet = whiteboardObjectSet
         self.textFieldDefaultSize = textFieldDefaultSize
     }
 
@@ -21,5 +23,15 @@ public final class TextObjectUseCase: TextObjectUseCaseInterface {
             centerPosition: point,
             size: textFieldDefaultSize,
             text: "Hello, AirplaIN!")
+    }
+
+    public func editText(id: UUID, text: String) async {
+        guard
+            let texboardObject = await whiteboardObjectSet
+                .fetchObjectByID(id: id) as? TextObject
+        else { return }
+  
+        texboardObject.updateText(text: text)
+        await whiteboardObjectSet.update(object: texboardObject)
     }
 }

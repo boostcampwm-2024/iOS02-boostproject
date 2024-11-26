@@ -14,7 +14,7 @@ public final class ManageWhiteboardObjectUseCase: ManageWhiteboardObjectUseCaseI
     public var removedObjectPublisher: AnyPublisher<WhiteboardObject, Never>
     public var selectedObjectIDPublisher: AnyPublisher<UUID?, Never>
 
-    private var whiteboardObjectSet: WhiteboardObjectSet
+    private var whiteboardObjectSet: WhiteboardObjectSetInterface
 
     private let addedWhiteboardSubject: PassthroughSubject<WhiteboardObject, Never>
     private let updatedWhiteboardSubject: PassthroughSubject<WhiteboardObject, Never>
@@ -25,7 +25,8 @@ public final class ManageWhiteboardObjectUseCase: ManageWhiteboardObjectUseCaseI
 
     public init(
         profileRepository: ProfileRepositoryInterface,
-        whiteboardRepository: WhiteboardObjectRepositoryInterface
+        whiteboardRepository: WhiteboardObjectRepositoryInterface,
+        whiteboardObjectSet: WhiteboardObjectSetInterface
     ) {
         addedWhiteboardSubject = PassthroughSubject<WhiteboardObject, Never>()
         updatedWhiteboardSubject = PassthroughSubject<WhiteboardObject, Never>()
@@ -37,7 +38,7 @@ public final class ManageWhiteboardObjectUseCase: ManageWhiteboardObjectUseCaseI
         removedObjectPublisher = removedWhiteboardSubject.eraseToAnyPublisher()
         selectedObjectIDPublisher = selectedObjectIDSubject.eraseToAnyPublisher()
 
-        whiteboardObjectSet = WhiteboardObjectSet()
+        self.whiteboardObjectSet = whiteboardObjectSet
         myProfile = profileRepository.loadProfile()
         self.whiteboardObjectRepository = whiteboardRepository
     }

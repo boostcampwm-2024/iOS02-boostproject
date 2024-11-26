@@ -7,27 +7,31 @@
 
 import Foundation
 
-actor WhiteboardObjectSet {
-    private var whiteboardObjects: Set<WhiteboardObject> = []
+public actor WhiteboardObjectSet: WhiteboardObjectSetInterface {
+    private var whiteboardObjects: Set<WhiteboardObject>
 
-    func contains(object: WhiteboardObject) -> Bool {
+    public init() {
+        whiteboardObjects = []
+    }
+
+    public func contains(object: WhiteboardObject) -> Bool {
         return whiteboardObjects.contains(object)
     }
 
-    func insert(object: WhiteboardObject) {
+    public func insert(object: WhiteboardObject) {
         whiteboardObjects.insert(object)
     }
 
-    func remove(object: WhiteboardObject) {
+    public func remove(object: WhiteboardObject) {
         whiteboardObjects.remove(object)
     }
 
-    func update(object: WhiteboardObject) {
+    public func update(object: WhiteboardObject) {
         remove(object: object)
         insert(object: object)
     }
 
-    func fetchObjectByID(id: UUID) -> WhiteboardObject? {
+    public func fetchObjectByID(id: UUID) -> WhiteboardObject? {
         return whiteboardObjects.first { $0.id == id }
     }
 }

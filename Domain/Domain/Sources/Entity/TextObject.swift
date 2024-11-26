@@ -8,7 +8,7 @@
 import Foundation
 
 public class TextObject: WhiteboardObject {
-    public var text: String
+    public private(set) var text: String
 
     private enum CodingKeys: String, CodingKey { case text }
 
@@ -42,5 +42,9 @@ public class TextObject: WhiteboardObject {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(text, forKey: .text)
         try super.encode(to: encoder)
+    }
+
+    func updateText(text: String) {
+        self.text = text
     }
 }
