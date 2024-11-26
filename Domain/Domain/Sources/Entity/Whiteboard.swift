@@ -7,7 +7,7 @@
 import Foundation
 
 public struct Whiteboard: Hashable {
-    public let id: UUID
+    public let ID: UUID
     public let name: String
     public let participantIcons: [ProfileIcon]
 
@@ -20,13 +20,13 @@ public struct Whiteboard: Hashable {
         participantIcons: [ProfileIcon],
         objects: [WhiteboardObject] = []
     ) {
-        self.id = id
+        self.ID = id
         self.name = name
         self.participantIcons = participantIcons
         self.objects = objects
     }
 
     public func hash(into hasher: inout Hasher) {
-        hasher.combine(id)
+        hasher.combine(ID)
     }
 }

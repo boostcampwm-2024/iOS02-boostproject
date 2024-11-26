@@ -8,7 +8,7 @@
 public final class WhiteboardObjectSendUseCase: WhiteObjectSendUseCaseInterface {
     private let repository: WhiteboardObjectRepositoryInterface
 
-    init(repository: WhiteboardObjectRepositoryInterface) {
+    public init(repository: WhiteboardObjectRepositoryInterface) {
         self.repository = repository
     }
 

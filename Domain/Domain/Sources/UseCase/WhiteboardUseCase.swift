@@ -11,7 +11,7 @@ import Foundation
 public final class WhiteboardUseCase: WhiteboardUseCaseInterface {
     private var whiteboardRepository: WhiteboardRepositoryInterface
     private var profileRepository: ProfileRepositoryInterface
-    private let whiteboardListSubject: PassthroughSubject<[Whiteboard], Never>
+    private let whiteboardListSubject: CurrentValueSubject<[Whiteboard], Never>
     public let whiteboardListPublisher: AnyPublisher<[Whiteboard], Never>
 
     public init(
@@ -20,7 +20,7 @@ public final class WhiteboardUseCase: WhiteboardUseCaseInterface {
     ) {
         self.whiteboardRepository = whiteboardRepository
         self.profileRepository = profileRepository
-        whiteboardListSubject = PassthroughSubject<[Whiteboard], Never>()
+        whiteboardListSubject = CurrentValueSubject<[Whiteboard], Never>([])
         whiteboardListPublisher = whiteboardListSubject.eraseToAnyPublisher()
         self.whiteboardRepository.delegate = self
     }
@@ -34,8 +34,8 @@ public final class WhiteboardUseCase: WhiteboardUseCaseInterface {
     }
 
     public func startPublishingWhiteboard() {
-        let profile = profileRepository.loadProfile()
-        whiteboardRepository.startPublishing(with: [profile])
+        let myProfile = profileRepository.loadProfile()
+        whiteboardRepository.startPublishing(myProfile: myProfile)
     }
 
     public func startSearchingWhiteboard() {
@@ -45,6 +45,11 @@ public final class WhiteboardUseCase: WhiteboardUseCaseInterface {
     public func stopSearchingWhiteboard() {
         whiteboardRepository.stopSearching()
     }
+
+    public func joinWhiteboard(whiteboard: Whiteboard) throws {
+        let profile = profileRepository.loadProfile()
+        try whiteboardRepository.joinWhiteboard(whiteboard: whiteboard, myProfile: profile)
+    }
 }
 
 extension WhiteboardUseCase: WhiteboardRepositoryDelegate {
@@ -53,5 +58,12 @@ extension WhiteboardUseCase: WhiteboardRepositoryDelegate {
         didFind whiteboards: [Whiteboard]
     ) {
         whiteboardListSubject.send(whiteboards)
+    }
+
+    public func whiteboardRepository(_ sender: any WhiteboardRepositoryInterface, didLost whiteboardId: UUID) {
+        let updatedWhiteboards = whiteboardListSubject
+            .value
+            .filter { $0.ID != whiteboardId }
+        whiteboardListSubject.send(updatedWhiteboards)
     }
 }
