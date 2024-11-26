@@ -31,7 +31,7 @@ public final class TextObjectUseCase: TextObjectUseCaseInterface {
                 .fetchObjectByID(id: id) as? TextObject
         else { return }
 
-        texboardObject.updateText(text: text)
+        texboardObject.update(text: text)
         await whiteboardObjectSet.update(object: texboardObject)
     }
 }
