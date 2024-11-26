@@ -108,8 +108,9 @@ public final class WhiteboardListViewController: UIViewController {
                 let whiteboardObjectViewFactory = self?.whiteboardObjectViewFactory
             else { return }
 
-            let whiteboardViewController = WhiteboardViewController(viewModel: whiteboardViewModel,
-                                                                    objectViewFactory: whiteboardObjectViewFactory)
+            let whiteboardViewController = WhiteboardViewController(
+                viewModel: whiteboardViewModel,
+                objectViewFactory: whiteboardObjectViewFactory)
             self?.navigationController?.isNavigationBarHidden = false
             self?.navigationController?.pushViewController(whiteboardViewController, animated: true)
         }

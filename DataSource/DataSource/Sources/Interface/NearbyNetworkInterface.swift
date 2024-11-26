@@ -75,8 +75,7 @@ public protocol NearbyNetworkConnectionDelegate: AnyObject {
         _ sender: NearbyNetworkInterface,
         didConnect connection: NetworkConnection,
         with context: Data?,
-        isHost: Bool
-    )
+        isHost: Bool)
 
     /// 연결됐던 기기와 연결이 끊어졌을 때 실행됩니다.
     /// - Parameters:
@@ -85,8 +84,7 @@ public protocol NearbyNetworkConnectionDelegate: AnyObject {
     func nearbyNetwork(
         _ sender: NearbyNetworkInterface,
         didDisconnect connection: NetworkConnection,
-        isHost: Bool
-    )
+        isHost: Bool)
 }
 
 public protocol NearbyNetworkReceiptDelegate: AnyObject {

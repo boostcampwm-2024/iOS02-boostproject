@@ -42,7 +42,7 @@ public final class WhiteboardRepository: WhiteboardRepositoryInterface {
         let participantsInfo = ["participants": profileIcons]
 
         let connection = NetworkConnection(
-            id: whiteboard.id,
+            id: whiteboard.ID,
             name: whiteboard.name,
             info: participantsInfo)
 
