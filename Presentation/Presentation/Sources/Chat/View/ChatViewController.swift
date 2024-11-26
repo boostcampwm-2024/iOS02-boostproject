@@ -32,11 +32,13 @@ public final class ChatViewController: UIViewController {
     private var cancellables: Set<AnyCancellable>
 
     // TODO: 테스트 코드
-    private var someChat = [
-        ChatMessage(message: "안녕하세요, 딴입니다.", sender: Profile(nickname: "Ddan", profileIcon: .angel)),
-        ChatMessage(message: "안녕하세요. 안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요", sender: Profile(nickname: "Ddan", profileIcon: .angel)),
-        ChatMessage(message: "안녕하세요, 딴입니다.안녕하세요, 딴입니다.안녕하세요, 딴입니다.안녕하세요, 딴입니다.안녕하세요, 딴입니다.", sender: Profile(nickname: "Ddan", profileIcon: .angel)),
-        ChatMessage(message: "라라라라라라라라라라라라라라라라라라라라라라라라라라라라라라라라라라라라라라라라라라라라", sender: Profile(nickname: "Ddan", profileIcon: .angel))
+    private lazy var someChat = [
+        ChatMessage(message: "아웃풋하고오겠습니다.", sender: Profile(nickname: "딩동", profileIcon: .angel)),
+        ChatMessage(message: "조심히 다녀오세요", sender: viewModel.output.myProfile),
+        ChatMessage(message: "조이랑 다우니", sender: Profile(nickname: "딴", profileIcon: .cold)),
+        ChatMessage(message: "싸우지 마세요", sender: Profile(nickname: "딴", profileIcon: .cold)),
+        ChatMessage(message: "저희 싸우는 거 아니에요ㅎㅎ", sender: Profile(nickname: "다우니", profileIcon: .angel)),
+        ChatMessage(message: "알아서좀할게요알아서좀할게요알아서좀할게요알아서좀할게요알아서좀할게요", sender: Profile(nickname: "조이", profileIcon: .devil))
     ]
 
     public init(viewModel: ChatViewModel) {
@@ -76,8 +78,12 @@ public final class ChatViewController: UIViewController {
     }
 
     private func configureDataSource() {
-        let cellRegistration = UICollectionView
+        let myMessageCellRegistration = UICollectionView
             .CellRegistration<MyMessageCell, ChatMessage> { (cell, _, chatMessage) in
+                cell.update(with: chatMessage)
+            }
+        let peerMessageCellRegistration = UICollectionView
+            .CellRegistration<PeerMessageCell, ChatMessage> { (cell, _, chatMessage) in
                 cell.update(with: chatMessage)
             }
 
@@ -86,11 +92,11 @@ public final class ChatViewController: UIViewController {
             cellProvider: { [weak self] collectionView, indexPath, chatMessage in
                 let cell = chatMessage.sender == self?.viewModel.output.myProfile ?
                 collectionView.dequeueConfiguredReusableCell(
-                    using: cellRegistration,
+                    using: myMessageCellRegistration,
                     for: indexPath,
                     item: chatMessage):
                 collectionView.dequeueConfiguredReusableCell(
-                    using: cellRegistration,
+                    using: peerMessageCellRegistration,
                     for: indexPath,
                     item: chatMessage)
                 return cell
