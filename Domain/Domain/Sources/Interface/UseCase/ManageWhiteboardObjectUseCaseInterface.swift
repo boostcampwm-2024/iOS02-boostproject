@@ -34,9 +34,9 @@ public protocol ManageWhiteboardObjectUseCaseInterface {
     func updateObject(whiteboardObject: WhiteboardObject) async -> Bool
 
     /// 화이트보드를 제거하는 메서드
-    /// - Returns: 추가 성공 여부
+    /// - Returns: 제거 성공 여부
     @discardableResult
-    func removeObject(whiteboardObject: WhiteboardObject) async -> Bool
+    func removeObject(whiteboardObjectID: UUID) async -> Bool
 
     /// 화이트보드 오브젝트를 선택합니다.
     /// - Parameter whiteboardObject: 선택할 오브젝트

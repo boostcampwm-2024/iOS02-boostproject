@@ -10,13 +10,9 @@ import UIKit
 public protocol WhiteboardObjectViewDelegate: AnyObject {
     func whiteboardObjectViewDidEndScaling(
         _ sender: WhiteboardObjectView,
-        objectID: UUID,
         scale: CGFloat,
         angle: CGFloat)
-    func whiteboardObjectViewDidEndMoving(
-        _ sender: WhiteboardObjectView,
-        objectID: UUID,
-        newCenter: CGPoint)
+    func whiteboardObjectViewDidEndMoving(_ sender: WhiteboardObjectView, newCenter: CGPoint)
 }
 
 public class WhiteboardObjectView: UIView {
@@ -69,6 +65,7 @@ public class WhiteboardObjectView: UIView {
         configureAttribute()
         configureLayout()
         update(with: whiteboardObject)
+        configureEditable(isEditable: false)
     }
 
     required init?(coder: NSCoder) {
@@ -77,6 +74,7 @@ public class WhiteboardObjectView: UIView {
         super.init(coder: coder)
         configureAttribute()
         configureLayout()
+        configureEditable(isEditable: false)
     }
 
     override public func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
@@ -124,6 +122,11 @@ public class WhiteboardObjectView: UIView {
                 inset: WhiteboardObjectViewLayoutConstant.controlViewInset)
     }
 
+    func configureEditable(isEditable: Bool) {
+        controlView.isHidden = !isEditable
+        gestureRecognizers?.forEach { $0.isEnabled = isEditable }
+    }
+
     func select(selector: Profile) {
         CATransaction.setAnimationDuration(0)
 
@@ -139,15 +142,12 @@ public class WhiteboardObjectView: UIView {
         controlView.isHidden = false
         borderLayer.frame = calculateBorderFrame()
         borderLayer.borderColor = profileColor.cgColor
-        gestureRecognizers?.forEach { $0.isEnabled = true }
     }
 
     func deselect() {
         CATransaction.setAnimationDuration(0)
         borderLayer.removeFromSuperlayer()
         profileIconView.isHidden = true
-        controlView.isHidden = true
-        gestureRecognizers?.forEach { $0.isEnabled = false }
     }
 
     func update(with object: WhiteboardObject) {
@@ -194,7 +194,6 @@ public class WhiteboardObjectView: UIView {
             angle = lockAngle(angle: angle)
             delegate?.whiteboardObjectViewDidEndScaling(
                 self,
-                objectID: objectID,
                 scale: scale,
                 angle: angle)
             initialControlAngle = nil
@@ -271,10 +270,7 @@ public class WhiteboardObjectView: UIView {
         case .changed:
             center = newCenter
         default:
-            delegate?.whiteboardObjectViewDidEndMoving(
-                self,
-                objectID: objectID,
-                newCenter: newCenter)
+            delegate?.whiteboardObjectViewDidEndMoving(self, newCenter: newCenter)
         }
 
         gesture.setTranslation(.zero, in: superview)

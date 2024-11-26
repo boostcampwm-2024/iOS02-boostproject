@@ -9,11 +9,14 @@ import Domain
 import UIKit
 
 final class TextObjectView: WhiteboardObjectView {
-    private let textField: UITextField = {
-        let textField = UITextField()
-        textField.textAlignment = .center
-        textField.placeholder = "Hello AirplaIN"
-        return textField
+    private let textView: UITextView = {
+        let textView = UITextView()
+        textView.textAlignment = .center
+        textView.textColor = .airplainBlack
+        textView.isScrollEnabled = false
+        textView.backgroundColor = .clear
+        textView.isUserInteractionEnabled = false
+        return textView
     }()
 
     init(textObject: TextObject) {
@@ -26,17 +29,12 @@ final class TextObjectView: WhiteboardObjectView {
         super.init(coder: coder)
     }
 
-    override func becomeFirstResponder() -> Bool {
-        textField.becomeFirstResponder()
-    }
-
     private func configureAttribute() {
-        textField.delegate = self
-        textField.backgroundColor = .clear
+        textView.delegate = self
     }
 
     override func configureLayout() {
-        textField
+        textView
             .addToSuperview(self)
             .edges(equalTo: self)
         super.configureLayout()
@@ -45,23 +43,34 @@ final class TextObjectView: WhiteboardObjectView {
     override func update(with object: WhiteboardObject) {
         super.update(with: object)
         guard let textObject = object as? TextObject else { return }
-        textField.text = textObject.text
+
+        textView.text = textObject.text
+    }
+
+    override func configureEditable(isEditable: Bool) {
+        super.configureEditable(isEditable: isEditable)
+        textView.isUserInteractionEnabled = isEditable
     }
 }
 
-extension TextObjectView: UITextFieldDelegate {
-    func textField(
-        _ textField: UITextField,
-        shouldChangeCharactersIn range: NSRange,
-        replacementString string: String
+extension TextObjectView: UITextViewDelegate {
+    func textView(
+        _ textView: UITextView,
+        shouldChangeTextIn range: NSRange,
+        replacementText text: String
     ) -> Bool {
+        guard text != "\n" else {
+            textView.resignFirstResponder()
+            return false
+        }
+
         let maxLength = 15
-        guard let text = textField.text else { return true }
-        let newlength = text.count + string.count - range.length
+        guard let originText = textView.text else { return true }
+        let newlength = originText.count + text.count - range.length
         return newlength < maxLength
     }
 
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        textField.resignFirstResponder()
+    func textViewDidEndEditing(_ textView: UITextView) {
+        // TODO: - TextView 수정 로직 추가
     }
 }

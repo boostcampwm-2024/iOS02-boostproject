@@ -20,6 +20,6 @@ public final class TextObjectUseCase: TextObjectUseCaseInterface {
             id: UUID(),
             centerPosition: point,
             size: textFieldDefaultSize,
-            text: "")
+            text: "Hello, AirplaIN!")
     }
 }

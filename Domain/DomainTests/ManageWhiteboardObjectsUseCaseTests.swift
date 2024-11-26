@@ -128,7 +128,8 @@ final class ManageWhiteboardObjectsUseCaseTests: XCTestCase {
         let targetObject = WhiteboardObject(
             id: UUID(),
             centerPosition: .zero,
-            size: CGSize(width: 100, height: 100))
+            size: CGSize(width: 100, height: 100),
+            selectedBy: myProfile)
         var receivedObject: WhiteboardObject?
 
         useCase.removedObjectPublisher
@@ -139,7 +140,7 @@ final class ManageWhiteboardObjectsUseCaseTests: XCTestCase {
         await useCase.addObject(whiteboardObject: object1)
         await useCase.addObject(whiteboardObject: targetObject)
         await useCase.addObject(whiteboardObject: object2)
-        let isSuceess = await useCase.removeObject(whiteboardObject: targetObject)
+        let isSuceess = await useCase.removeObject(whiteboardObjectID: targetObject.id)
 
         // 검증
         XCTAssertTrue(isSuceess)
@@ -160,7 +161,40 @@ final class ManageWhiteboardObjectsUseCaseTests: XCTestCase {
             .store(in: &cancellables)
 
         // 실행
-        let isFailure = await !useCase.removeObject(whiteboardObject: object)
+        let isFailure = await !useCase.removeObject(whiteboardObjectID: object.id)
+
+        // 검증
+        XCTAssertTrue(isFailure)
+        XCTAssertNil(receivedObject)
+    }
+
+    // 다른 사람이 선택한 화이트보드 오브젝트 삭제 실패하는지 테스트
+    func testRemoveObjectFailsWhenSelectedByOther() async {
+        // 준비
+        let object1 = WhiteboardObject(
+            id: UUID(),
+            centerPosition: .zero,
+            size: CGSize(width: 100, height: 100))
+        let object2 = WhiteboardObject(
+            id: UUID(),
+            centerPosition: .zero,
+            size: CGSize(width: 100, height: 100))
+        let targetObject = WhiteboardObject(
+            id: UUID(),
+            centerPosition: .zero,
+            size: CGSize(width: 100, height: 100),
+            selectedBy: Profile(nickname: "other", profileIcon: .angel))
+        var receivedObject: WhiteboardObject?
+
+        useCase.removedObjectPublisher
+            .sink { receivedObject = $0 }
+            .store(in: &cancellables)
+
+        // 실행
+        await useCase.addObject(whiteboardObject: object1)
+        await useCase.addObject(whiteboardObject: targetObject)
+        await useCase.addObject(whiteboardObject: object2)
+        let isFailure = await !useCase.removeObject(whiteboardObjectID: targetObject.id)
 
         // 검증
         XCTAssertTrue(isFailure)
@@ -374,8 +408,6 @@ final class ManageWhiteboardObjectsUseCaseTests: XCTestCase {
         XCTAssertTrue(isFailure)
         XCTAssertEqual(targetObject.angle, 0)
     }
-
-    // TODO: - 객체 수신, 삭제 테스트 코드 추가
 }
 
 final class MockProfileRepository: ProfileRepositoryInterface {
