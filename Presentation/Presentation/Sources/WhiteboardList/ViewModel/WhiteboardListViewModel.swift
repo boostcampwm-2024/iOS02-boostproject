@@ -22,7 +22,6 @@ public final class WhiteboardListViewModel: ViewModel {
     }
 
     struct Output {
-        let whiteboardPublisher: AnyPublisher<Whiteboard, Never>
         let whiteboardListPublisher: AnyPublisher<[Whiteboard], Never>
     }
 
@@ -33,7 +32,6 @@ public final class WhiteboardListViewModel: ViewModel {
         self.whiteboardUseCase = whiteboardUseCase
         whiteboardSubject = PassthroughSubject<Whiteboard, Never>()
         self.output = Output(
-            whiteboardPublisher: whiteboardSubject.eraseToAnyPublisher(),
             whiteboardListPublisher: whiteboardUseCase.whiteboardListPublisher)
     }
 

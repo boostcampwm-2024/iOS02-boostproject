@@ -246,13 +246,6 @@ public final class WhiteboardListViewController: UIViewController {
     }
 
     private func bind() {
-        viewModel.output.whiteboardPublisher
-            .receive(on: DispatchQueue.main)
-            .sink { _ in
-                // TODO: 화이트보드 추가
-            }
-            .store(in: &cancellables)
-
         viewModel.output.whiteboardListPublisher
             .receive(on: DispatchQueue.main)
             .sink { [weak self] whiteboards in
