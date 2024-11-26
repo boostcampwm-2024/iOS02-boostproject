@@ -44,7 +44,7 @@ public class TextObject: WhiteboardObject {
         try super.encode(to: encoder)
     }
 
-    func updateText(text: String) {
+    func update(text: String) {
         self.text = text
     }
 }

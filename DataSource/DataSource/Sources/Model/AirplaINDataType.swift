@@ -12,5 +12,5 @@ public enum AirplaINDataType: String, Codable {
     case drawing
     case game
     case chat
-    case jpg
+    case imageData
 }

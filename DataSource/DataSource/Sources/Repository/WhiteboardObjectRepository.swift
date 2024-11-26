@@ -35,7 +35,7 @@ public final class WhiteboardObjectRepository: WhiteboardObjectRepositoryInterfa
         case let photoObject as PhotoObject:
             async let sendJPEGTask: () = sendJPEG(
                 photoObject: photoObject,
-                type: .jpg,
+                type: .imageData,
                 isDeleted: isDeleted)
             async let sendPhotoObjectTask: () = send(
                 whiteboardObject: photoObject,
@@ -75,7 +75,7 @@ public final class WhiteboardObjectRepository: WhiteboardObjectRepositoryInterfa
     ) async {
         let dataInformation = DataInformationDTO(
             id: photoObject.id,
-            type: .jpg,
+            type: .imageData,
             isDeleted: isDeleted)
         await nearbyNetwork.send(fileURL: photoObject.photoURL, info: dataInformation)
     }
@@ -91,7 +91,7 @@ extension WhiteboardObjectRepository: NearbyNetworkReceiptDelegate {
         didReceiveURL URL: URL,
         info: DataInformationDTO
     ) {
-        if info.type != .jpg {
+        if info.type != .imageData {
             handleWhiteboardObject(didReceiveURL: URL, info: info)
         } else {
             handlePhotoData(didReceiveURL: URL, info: info)

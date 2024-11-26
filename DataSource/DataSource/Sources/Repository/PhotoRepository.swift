@@ -18,7 +18,7 @@ public final class PhotoRepository: PhotoRepositoryInterface {
     public func savePhoto(id: UUID, imageData: Data) -> URL? {
         let dataInformation = DataInformationDTO(
             id: id,
-            type: .jpg,
+            type: .imageData,
             isDeleted: false)
 
         let photoURL = filePersistence.save(
