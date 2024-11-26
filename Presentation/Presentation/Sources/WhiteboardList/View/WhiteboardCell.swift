@@ -28,7 +28,9 @@ class WhiteboardCell: UICollectionViewCell {
     private let titleLabel: UILabel = {
         let label = UILabel()
         label.font = AirplainFont.Subtitle2
-        label.textColor = .black
+        let originColor = UIColor(named: "AirplainBlack") ?? .black
+        let resolvedColor = originColor.resolvedColor(with: UITraitCollection(userInterfaceStyle: .light))
+        label.textColor = resolvedColor
         return label
     }()
 
