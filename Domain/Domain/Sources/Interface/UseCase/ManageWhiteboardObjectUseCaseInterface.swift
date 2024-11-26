@@ -21,22 +21,29 @@ public protocol ManageWhiteboardObjectUseCaseInterface {
     /// 화이트보드 객체가 선택/선택 해제될 때 이벤트를 방출합니다
     var selectedObjectIDPublisher: AnyPublisher<UUID?, Never> { get }
 
-    /// 화이트보드 객체를 추가하는 메서드
-    /// - Parameter whiteboardObject: 추가할 화이트보드 객체
+    /// 화이트보드 오브젝트를 추가합니다.
+    /// - Parameters:
+    ///   - whiteboardObject: 추가할 오브젝트
+    ///   - isReceivedObject: 기기 외부로부터 수신 받았는지 여부
     /// - Returns: 추가 성공 여부
     @discardableResult
-    func addObject(whiteboardObject: WhiteboardObject) async -> Bool
+    func addObject(whiteboardObject: WhiteboardObject, isReceivedObject: Bool) async -> Bool
 
-    /// 화이트보드 객체를 수정하는 메서드
-    /// - Parameter whiteboardObject: 수정할 화이트보드 객체
-    /// - Returns: 추가 성공 여부
+    /// 화이트보드 오브젝트를 수정합니다.
+    /// - Parameters:
+    ///   - whiteboardObject: 수정할 오브젝트
+    ///   - isReceivedObject: 기기 외부로부터 수신 받았는지 여부
+    /// - Returns: 수정 성공 여부
     @discardableResult
-    func updateObject(whiteboardObject: WhiteboardObject) async -> Bool
+    func updateObject(whiteboardObject: WhiteboardObject, isReceivedObject: Bool) async -> Bool
 
-    /// 화이트보드를 제거하는 메서드
-    /// - Returns: 제거 성공 여부
+    /// 화이트보드 오브젝트를 제거합니다.
+    /// - Parameters:
+    ///   - whiteboardObjectID: 제거할 오브젝트의 ID
+    ///   - isReceivedObject: 기기 외부로부터 수신 받았는지 여부
+    /// - Returns: 삭제 성공 여부
     @discardableResult
-    func removeObject(whiteboardObjectID: UUID) async -> Bool
+    func removeObject(whiteboardObjectID: UUID, isReceivedObject: Bool) async -> Bool
 
     /// 화이트보드 오브젝트를 선택합니다.
     /// - Parameter whiteboardObject: 선택할 오브젝트
