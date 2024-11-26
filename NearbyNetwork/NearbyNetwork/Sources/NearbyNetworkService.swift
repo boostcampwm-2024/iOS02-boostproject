@@ -53,6 +53,14 @@ extension NearbyNetworkService: NearbyNetworkInterface {
         serviceBrowser.stopBrowsingForPeers()
     }
 
+    public func restartSearching() {
+        serialQueue.sync {
+            serviceBrowser.stopBrowsingForPeers()
+            foundPeers.removeAll()
+            serviceBrowser.startBrowsingForPeers()
+        }
+    }
+
     public func startPublishing(with info: [String: String]) {
         isHost = true
         serviceAdvertiser.stopAdvertisingPeer()

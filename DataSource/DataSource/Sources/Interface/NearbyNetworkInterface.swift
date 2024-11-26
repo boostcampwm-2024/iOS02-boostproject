@@ -17,6 +17,9 @@ public protocol NearbyNetworkInterface {
     /// 주변 기기 검색을 중지합니다.
     func stopSearching()
 
+    /// 주변 기기 검색을 중지 후 다시 시작합니다. 
+    func restartSearching()
+
     /// 주변에 내 기기를 정보와 함께 알립니다.
     /// - Parameter data: 담을 정보
     func startPublishing(with info: [String: String])

@@ -56,6 +56,7 @@ public final class WhiteboardListViewController: UIViewController {
     }()
 
     private let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
+    private let refreshControl = UIRefreshControl()
     private var dataSource: UICollectionViewDiffableDataSource<Int, Whiteboard>?
     private let viewModel: WhiteboardListViewModel
     private var cancellables = Set<AnyCancellable>()
@@ -171,8 +172,14 @@ public final class WhiteboardListViewController: UIViewController {
     private func configureCollectionView() {
         collectionView.delegate = self
         collectionView.collectionViewLayout = createCollectionViewLayout()
-        collectionView.backgroundColor = .white
+        collectionView.backgroundColor = .systemBackground
         collectionView.register(WhiteboardCell.self, forCellWithReuseIdentifier: WhiteboardCell.reuseIdentifier)
+
+        let refreshAction = UIAction { [weak self] _ in
+            self?.refreshWhiteboardList()
+        }
+        refreshControl.addAction(refreshAction, for: .valueChanged)
+        collectionView.refreshControl = refreshControl
     }
 
     private func createCollectionViewLayout() -> UICollectionViewLayout {
@@ -237,14 +244,8 @@ public final class WhiteboardListViewController: UIViewController {
         guard let dataSource = dataSource else { return }
         dataSource.apply(snapshot, animatingDifferences: true)
     }
-    private func bind() {
-        viewModel.output.whiteboardPublisher
-            .receive(on: DispatchQueue.main)
-            .sink { _ in
-                // TODO: 화이트보드 추가
-            }
-            .store(in: &cancellables)
 
+    private func bind() {
         viewModel.output.whiteboardListPublisher
             .receive(on: DispatchQueue.main)
             .sink { [weak self] whiteboards in
@@ -252,6 +253,13 @@ public final class WhiteboardListViewController: UIViewController {
                 self?.applySnapshot(whiteboards: whiteboards)
             }
             .store(in: &cancellables)
+    }
+
+    private func refreshWhiteboardList() {
+        viewModel.action(input: .refreshWhiteboardList)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
+            self?.refreshControl.endRefreshing()
+        }
     }
 }
 

@@ -18,10 +18,10 @@ public final class WhiteboardListViewModel: ViewModel {
         case searchWhiteboard
         case joinWhiteboard(whiteboard: Whiteboard)
         case stopSearchingWhiteboard
+        case refreshWhiteboardList
     }
 
     struct Output {
-        let whiteboardPublisher: AnyPublisher<Whiteboard, Never>
         let whiteboardListPublisher: AnyPublisher<[Whiteboard], Never>
     }
 
@@ -32,7 +32,6 @@ public final class WhiteboardListViewModel: ViewModel {
         self.whiteboardUseCase = whiteboardUseCase
         whiteboardSubject = PassthroughSubject<Whiteboard, Never>()
         self.output = Output(
-            whiteboardPublisher: whiteboardSubject.eraseToAnyPublisher(),
             whiteboardListPublisher: whiteboardUseCase.whiteboardListPublisher)
     }
 
@@ -46,6 +45,8 @@ public final class WhiteboardListViewModel: ViewModel {
             joinWhiteboard(whiteboard: whiteboard)
         case .stopSearchingWhiteboard:
             stopSearchingWhiteboard()
+        case .refreshWhiteboardList:
+            refreshWhiteboardList()
         }
     }
 
@@ -69,5 +70,9 @@ public final class WhiteboardListViewModel: ViewModel {
 
     private func stopSearchingWhiteboard() {
         whiteboardUseCase.stopSearchingWhiteboard()
+    }
+
+    private func refreshWhiteboardList() {
+        whiteboardUseCase.refreshWhiteboardList()
     }
 }
