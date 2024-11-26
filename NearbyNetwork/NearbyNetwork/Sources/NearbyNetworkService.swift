@@ -76,6 +76,10 @@ extension NearbyNetworkService: NearbyNetworkInterface {
         serviceAdvertiser.stopAdvertisingPeer()
     }
 
+    public func disconnectAll() {
+        session.disconnect()
+    }
+
     public func joinConnection(connection: NetworkConnection, context: RequestedContext) throws {
         isHost = false
 

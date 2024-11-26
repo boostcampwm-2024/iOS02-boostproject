@@ -34,6 +34,11 @@ public final class WhiteboardRepository: WhiteboardRepositoryInterface {
         nearbyNetwork.startSearching()
     }
 
+    public func disconnectWhiteboard() {
+        nearbyNetwork.disconnectAll()
+        nearbyNetwork.stopPublishing()
+    }
+
     public func joinWhiteboard(whiteboard: Whiteboard, myProfile: Profile) throws {
         let profileIcons = whiteboard.participantIcons
             .map { $0.emoji }

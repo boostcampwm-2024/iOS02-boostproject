@@ -25,6 +25,7 @@ public final class WhiteboardViewModel: ViewModel {
         case changeObjectScaleAndAngle(scale: CGFloat, angle: CGFloat)
         case changeObjectPosition(point: CGPoint)
         case deleteObject
+        case disconnectWhiteboard
     }
 
     struct Output {
@@ -103,6 +104,8 @@ public final class WhiteboardViewModel: ViewModel {
             changeObjectPosition(to: position)
         case .deleteObject:
             deleteObject()
+        case .disconnectWhiteboard:
+            disconnectWhiteboard()
         }
     }
 
@@ -205,5 +208,9 @@ public final class WhiteboardViewModel: ViewModel {
             let isSuccess = await manageWhiteboardObjectUseCase.removeObject(whiteboardObjectID: selectedObjectID)
             if isSuccess { selectedObjectSubject.send(nil) }
         }
+    }
+
+    private func disconnectWhiteboard() {
+        whiteboardUseCase.disconnectWhiteboard()
     }
 }

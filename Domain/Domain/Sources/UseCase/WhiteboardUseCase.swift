@@ -46,6 +46,10 @@ public final class WhiteboardUseCase: WhiteboardUseCaseInterface {
         whiteboardRepository.stopSearching()
     }
 
+    public func disconnectWhiteboard() {
+        whiteboardRepository.disconnectWhiteboard()
+    }
+
     public func joinWhiteboard(whiteboard: Whiteboard) throws {
         let profile = profileRepository.loadProfile()
         try whiteboardRepository.joinWhiteboard(whiteboard: whiteboard, myProfile: profile)
