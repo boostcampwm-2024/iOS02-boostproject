@@ -8,7 +8,9 @@
 import UIKit
 
 final class PeerMessageCell: MessageCell {
-    private enum PeerMessageCellLayoutConstant {
+    enum PeerMessageCellLayoutConstant {
+        static let defaultTopPadding: CGFloat = 17
+        static let betweenTopPadding: CGFloat = 11
         static let profileIconSize: CGFloat = 31
     }
 
@@ -35,26 +37,29 @@ final class PeerMessageCell: MessageCell {
         let uiView = UIView()
         uiView.backgroundColor = .gray200
         uiView.layer.cornerRadius = 15
-        uiView.layer.maskedCorners = CACornerMask(
-            arrayLiteral: .layerMinXMinYCorner,
-            .layerMaxXMinYCorner,
-            .layerMaxXMaxYCorner)
 
         return uiView
     }()
 
-    private var customViewConstraints: (labelWidth: NSLayoutConstraint,
-                                        labelLeading: NSLayoutConstraint)?
+    private var customViewConstraints: (
+        labelWidth: NSLayoutConstraint,
+        labelLeading: NSLayoutConstraint,
+        messageTopPadding: NSLayoutConstraint)?
 
     override func updateConfiguration(using state: UICellConfigurationState) {
         setupViewsIfNeeded()
 
-        guard let chatMessage = state.chatMessage else { return }
-        messageView.text = chatMessage.message
+        guard let chatMessageCellModel = state.chatMessageCellModel else { return }
+
+        messageBackgroundConfigureLayout(chatMessageType: chatMessageCellModel.chatMessageType)
+        cellHeightConfigureLayout(chatMessageType: chatMessageCellModel.chatMessageType)
+        profileViewConfigureAttribute(chatMessageType: chatMessageCellModel.chatMessageType)
+
+        messageView.text = chatMessageCellModel.chatMessage.message
         profileIconView.configure(
-            profileIcon: chatMessage.sender.profileIcon,
+            profileIcon: chatMessageCellModel.chatMessage.sender.profileIcon,
             profileIconSize: PeerMessageCellLayoutConstant.profileIconSize)
-        profileNameView.text = chatMessage.sender.nickname
+        profileNameView.text = chatMessageCellModel.chatMessage.sender.nickname
     }
 
     private func setupViewsIfNeeded() {
@@ -80,7 +85,6 @@ final class PeerMessageCell: MessageCell {
 
         profileNameView
             .addToSuperview(contentView)
-            .top(equalTo: contentView.topAnchor, inset: 17)
             .bottom(equalTo: messageBackground.topAnchor, inset: 8)
             .leading(equalTo: messageBackground.leadingAnchor, inset: 0)
 
@@ -90,10 +94,68 @@ final class PeerMessageCell: MessageCell {
                 .constraint(lessThanOrEqualToConstant: contentView.frame.width * 3 / 4),
             labelLeading: messageView
                 .leadingAnchor
-                .constraint(equalTo: profileIconView.trailingAnchor, constant: 15))
+                .constraint(equalTo: profileIconView.trailingAnchor, constant: 15),
+            messageTopPadding: profileNameView
+                .topAnchor
+                .constraint(equalTo: contentView.topAnchor, constant: PeerMessageCellLayoutConstant.defaultTopPadding))
         NSLayoutConstraint.activate([
             constraints.labelWidth,
-            constraints.labelLeading])
+            constraints.labelLeading,
+            constraints.messageTopPadding])
         customViewConstraints = constraints
+    }
+
+    private func messageBackgroundConfigureLayout(chatMessageType: ChatMessageType) {
+        switch chatMessageType {
+        case .first, .between:
+            messageBackground.layer.maskedCorners = CACornerMask(
+                arrayLiteral: .layerMinXMinYCorner,
+                .layerMinXMaxYCorner,
+                .layerMaxXMinYCorner,
+                .layerMaxXMaxYCorner)
+        default:
+            messageBackground.layer.maskedCorners = CACornerMask(
+                arrayLiteral: .layerMinXMinYCorner,
+                .layerMaxXMinYCorner,
+                .layerMaxXMaxYCorner)
+        }
+    }
+
+    private func cellHeightConfigureLayout(chatMessageType: ChatMessageType) {
+        guard var topPaddingConstraint = customViewConstraints?.messageTopPadding else { return }
+        NSLayoutConstraint.deactivate([
+            topPaddingConstraint
+        ])
+        switch chatMessageType {
+        case .single, .first:
+            topPaddingConstraint = profileNameView
+                .topAnchor
+                .constraint(equalTo: contentView.topAnchor, constant: PeerMessageCellLayoutConstant.defaultTopPadding)
+        case .between, .last:
+            topPaddingConstraint = messageView
+                .topAnchor
+                .constraint(equalTo: contentView.topAnchor, constant: PeerMessageCellLayoutConstant.betweenTopPadding)
+        }
+        NSLayoutConstraint.activate([
+            topPaddingConstraint
+        ])
+        customViewConstraints?.messageTopPadding = topPaddingConstraint
+    }
+
+    private func profileViewConfigureAttribute(chatMessageType: ChatMessageType) {
+        switch chatMessageType {
+        case .single:
+            profileIconView.isHidden = false
+            profileNameView.isHidden = false
+        case .first:
+            profileIconView.isHidden = true
+            profileNameView.isHidden = false
+        case .between:
+            profileIconView.isHidden = true
+            profileNameView.isHidden = true
+        case .last:
+            profileIconView.isHidden = false
+            profileNameView.isHidden = true
+        }
     }
 }
