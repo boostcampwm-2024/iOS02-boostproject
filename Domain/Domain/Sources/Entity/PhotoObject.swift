@@ -43,5 +43,4 @@ public final class PhotoObject: WhiteboardObject {
         try container.encode(photoURL, forKey: .photoURL)
         try super.encode(to: encoder)
     }
-
 }

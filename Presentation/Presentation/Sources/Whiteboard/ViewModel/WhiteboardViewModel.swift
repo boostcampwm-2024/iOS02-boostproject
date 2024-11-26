@@ -20,6 +20,7 @@ public final class WhiteboardViewModel: ViewModel {
         case finishDrawing
         case finishUsingTool
         case addTextObject(point: CGPoint, viewSize: CGSize)
+        case editTextObject(text: String)
         case selectObject(objectID: UUID)
         case deselectObject
         case changeObjectScaleAndAngle(scale: CGFloat, angle: CGFloat)
@@ -94,6 +95,8 @@ public final class WhiteboardViewModel: ViewModel {
             finishUsingTool()
         case .addTextObject(let point, let viewSize):
             addText(at: point, viewSize: viewSize)
+        case .editTextObject(let text):
+            editText(text: text)
         case .selectObject(let objectID):
             selectObject(objectID: objectID)
         case .deselectObject:
@@ -132,16 +135,15 @@ public final class WhiteboardViewModel: ViewModel {
         point: CGPoint,
         size: CGSize
     ) {
-        do {
-            let photoObject = try addPhotoUseCase.addPhoto(
+        guard
+            let photoObject = addPhotoUseCase.addPhoto(
                 imageData: imageData,
                 centerPosition: point,
                 size: size)
-            Task {
-                await manageWhiteboardObjectUseCase.addObject(whiteboardObject: photoObject)
-            }
-        } catch {
-        // TODO: - 사진 추가 실패 시 오류 처리
+        else { return }
+
+        Task {
+            await manageWhiteboardObjectUseCase.addObject(whiteboardObject: photoObject)
         }
     }
 
@@ -161,6 +163,13 @@ public final class WhiteboardViewModel: ViewModel {
     private func addText(at point: CGPoint, viewSize: CGSize) {
         let textObject = textObjectUseCase.addText(centerPoint: point, size: viewSize)
         addWhiteboardObject(object: textObject)
+    }
+
+    private func editText(text: String) {
+        guard let selectedObjectID = selectedObjectSubject.value else { return }
+        Task {
+            await textObjectUseCase.editText(id: selectedObjectID, text: text)
+        }
     }
 
     private func startPublishing() {

@@ -15,7 +15,7 @@ final class PhotoObjectView: WhiteboardObjectView {
         super.init(whiteboardObject: photoObject)
         configureAttribute()
         configureLayout()
-        configureImage(with: photoObject)
+        configureImage(with: photoObject.photoURL)
     }
 
     required init?(coder: NSCoder) {
@@ -33,9 +33,9 @@ final class PhotoObjectView: WhiteboardObjectView {
         super.configureLayout()
     }
 
-    private func configureImage(with object: PhotoObject) {
+    private func configureImage(with imageURL: URL) {
         guard
-            let imageData = try? Data(contentsOf: object.photoURL),
+            let imageData = try? Data(contentsOf: imageURL),
             let image = UIImage(data: imageData)
         else { return }
 

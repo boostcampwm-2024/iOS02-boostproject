@@ -4,6 +4,7 @@
 //
 //  Created by 이동현 on 11/13/24.
 //
+import Foundation
 
 public protocol WhiteboardObjectRepositoryInterface {
     /// WhiteboardObjectRepository의 delegate
@@ -24,4 +25,12 @@ public protocol WhiteboardObjectRepositoryDelegate: AnyObject {
     /// - Parameters:
     ///   - object: 삭제된 화이트보드 오브젝트
     func whiteboardObjectRepository(_ sender: WhiteboardObjectRepositoryInterface, didDelete object: WhiteboardObject)
+
+    /// 사진을 수신하면 실행됩니다.
+    /// - Parameters:
+    ///   - photoID: 추가된 사진의 아이디
+    func whiteboardObjectRepository(
+        _ sender: WhiteboardObjectRepositoryInterface,
+        didReceive photoID: UUID,
+        savedURL: URL)
 }

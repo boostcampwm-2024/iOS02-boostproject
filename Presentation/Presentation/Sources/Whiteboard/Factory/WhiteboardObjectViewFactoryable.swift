@@ -5,15 +5,17 @@
 //  Created by 이동현 on 11/12/24.
 //
 import Domain
-import Foundation
+import UIKit
 
 public protocol WhiteboardObjectViewFactoryable {
     var whiteboardObjectViewDelegate: WhiteboardObjectViewDelegate? { get set }
+    var textViewDelegate: UITextViewDelegate? { get set }
     func create(with whiteboardObject: WhiteboardObject) -> WhiteboardObjectView?
 }
 
 public struct WhiteboardObjectViewFactory: WhiteboardObjectViewFactoryable {
     public weak var whiteboardObjectViewDelegate: WhiteboardObjectViewDelegate?
+    public weak var textViewDelegate: UITextViewDelegate?
 
     public init() {}
 
@@ -22,7 +24,7 @@ public struct WhiteboardObjectViewFactory: WhiteboardObjectViewFactoryable {
 
         switch whiteboardObject {
         case let textObject as TextObject:
-            whiteboardObjectView = TextObjectView(textObject: textObject)
+            whiteboardObjectView = TextObjectView(textObject: textObject, textViewDelegate: textViewDelegate)
         case let drawingObject as DrawingObject:
             whiteboardObjectView = DrawingObjectView(drawingObject: drawingObject)
         case let photoObject as PhotoObject:

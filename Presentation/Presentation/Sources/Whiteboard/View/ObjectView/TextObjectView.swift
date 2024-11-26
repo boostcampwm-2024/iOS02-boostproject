@@ -19,18 +19,17 @@ final class TextObjectView: WhiteboardObjectView {
         return textView
     }()
 
-    init(textObject: TextObject) {
+    init(
+        textObject: TextObject,
+        textViewDelegate: UITextViewDelegate?
+    ) {
         super.init(whiteboardObject: textObject)
-        configureAttribute()
         configureLayout()
+        textView.delegate = textViewDelegate
     }
 
     required init?(coder: NSCoder) {
         super.init(coder: coder)
-    }
-
-    private func configureAttribute() {
-        textView.delegate = self
     }
 
     override func configureLayout() {
@@ -50,27 +49,5 @@ final class TextObjectView: WhiteboardObjectView {
     override func configureEditable(isEditable: Bool) {
         super.configureEditable(isEditable: isEditable)
         textView.isUserInteractionEnabled = isEditable
-    }
-}
-
-extension TextObjectView: UITextViewDelegate {
-    func textView(
-        _ textView: UITextView,
-        shouldChangeTextIn range: NSRange,
-        replacementText text: String
-    ) -> Bool {
-        guard text != "\n" else {
-            textView.resignFirstResponder()
-            return false
-        }
-
-        let maxLength = 15
-        guard let originText = textView.text else { return true }
-        let newlength = originText.count + text.count - range.length
-        return newlength < maxLength
-    }
-
-    func textViewDidEndEditing(_ textView: UITextView) {
-        // TODO: - TextView 수정 로직 추가
     }
 }

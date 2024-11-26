@@ -20,7 +20,8 @@ final class ManageWhiteboardObjectsUseCaseTests: XCTestCase {
 
         useCase = ManageWhiteboardObjectUseCase(
             profileRepository: profileRepository,
-            whiteboardRepository: MockWhiteObjectRepository())
+            whiteboardRepository: MockWhiteObjectRepository(),
+            whiteboardObjectSet: WhiteboardObjectSet())
         cancellables = []
     }
 
