@@ -50,7 +50,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             textFieldDefaultSize: CGSize(width: 200, height: 50))
         let drawObjectUseCase = DrawObjectUseCase()
         let addPhotoUseCase = AddPhotoUseCase(photoRepository: photoRepository)
-        let whiteboardObjectSendUseCase = WhiteboardObjectSendUseCase(repository: whiteboardObjectRepository)
 
         let whiteboardObjectViewFactory = WhiteboardObjectViewFactory()
 
@@ -64,10 +63,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             manageWhiteboardObjectUseCase: manageWhieboardObjectUseCase)
         let profileViewModel = ProfileViewModel(profileUseCase: profileUseCase)
 
-        let whiteboardListViewController = WhiteboardListViewController(viewModel: whiteboardListViewModel,
-                                                                        whiteboardViewModel: whiteboardViewModel,
-                                                                        whiteboardObjectViewFactory: whiteboardObjectViewFactory,
-                                                                        profileViewModel: profileViewModel)
+        let whiteboardListViewController = WhiteboardListViewController(
+            viewModel: whiteboardListViewModel,
+            whiteboardViewModel: whiteboardViewModel,
+            whiteboardObjectViewFactory: whiteboardObjectViewFactory,
+            profileViewModel: profileViewModel)
 
         let window = UIWindow(windowScene: windowScene)
         let navigationController = UINavigationController(rootViewController: whiteboardListViewController)
