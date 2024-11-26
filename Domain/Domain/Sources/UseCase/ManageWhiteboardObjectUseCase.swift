@@ -139,6 +139,20 @@ public final class ManageWhiteboardObjectUseCase: ManageWhiteboardObjectUseCaseI
 extension ManageWhiteboardObjectUseCase: WhiteboardObjectRepositoryDelegate {
     public func whiteboardObjectRepository(
         _ sender: any WhiteboardObjectRepositoryInterface,
+        didReceive photoID: UUID,
+        savedURL: URL
+    ) {
+        Task {
+            guard
+                let photoObject = await whiteboardObjectSet
+                    .fetchObjectByID(id: photoID) as? PhotoObject
+            else { return }
+            await updateObject(whiteboardObject: photoObject)
+        }
+    }
+
+    public func whiteboardObjectRepository(
+        _ sender: any WhiteboardObjectRepositoryInterface,
         didReceive object: WhiteboardObject
     ) {
         Task {

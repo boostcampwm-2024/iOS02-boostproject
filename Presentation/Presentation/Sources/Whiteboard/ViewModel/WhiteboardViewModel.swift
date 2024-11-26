@@ -129,16 +129,15 @@ public final class WhiteboardViewModel: ViewModel {
         point: CGPoint,
         size: CGSize
     ) {
-        do {
-            let photoObject = try addPhotoUseCase.addPhoto(
+        guard
+            let photoObject = addPhotoUseCase.addPhoto(
                 imageData: imageData,
                 centerPosition: point,
                 size: size)
-            Task {
-                await manageWhiteboardObjectUseCase.addObject(whiteboardObject: photoObject)
-            }
-        } catch {
-        // TODO: - 사진 추가 실패 시 오류 처리
+        else { return }
+
+        Task {
+            await manageWhiteboardObjectUseCase.addObject(whiteboardObject: photoObject)
         }
     }
 
