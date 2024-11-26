@@ -22,7 +22,6 @@ public final class NearbyNetworkService: NSObject {
 
     private let logger = Logger()
     private var isHost = false
-    private var continueSearching = true
     private var requestInfo: [MCPeerID: Data] = [:]
     private let encoder = JSONEncoder()
     private let serialQueue = DispatchQueue(label: "NNS.serialQueue")
@@ -47,29 +46,11 @@ public final class NearbyNetworkService: NSObject {
 // MARK: - NearbyNetworkInterface
 extension NearbyNetworkService: NearbyNetworkInterface {
     public func startSearching() {
-        continueSearching = true
-        DispatchQueue.global().async { [weak self] in
-            guard let self = self else { return }
-            while continueSearching {
-                serialQueue.async { [weak self] in
-                    self?.foundPeers.removeAll()
-                }
-                self.serviceBrowser.startBrowsingForPeers()
-                Thread.sleep(forTimeInterval: 3.0)
-                serialQueue.async { [weak self] in
-                    guard let self else { return }
-                    connectionDelegate?.nearbyNetwork(self, didFind: foundPeers
-                        .values
-                        .map { $0 }
-                        .sorted(by: { $0.name < $1.name }))
-                }
-                self.serviceBrowser.stopBrowsingForPeers()
-            }
-        }
+        serviceBrowser.startBrowsingForPeers()
     }
 
     public func stopSearching() {
-        continueSearching = false
+        serviceBrowser.stopBrowsingForPeers()
     }
 
     public func startPublishing(with info: [String: String]) {
@@ -155,7 +136,7 @@ extension NearbyNetworkService: MCSessionDelegate {
     ) {
         logger.log(level: .debug, "\(peerID.displayName) \(state.description)")
 
-        serialQueue.async { [weak self] in
+        serialQueue.sync { [weak self] in
             guard let self = self else { return }
 
             switch state {
@@ -269,21 +250,30 @@ extension NearbyNetworkService: MCNearbyServiceBrowserDelegate {
         foundPeer peerID: MCPeerID,
         withDiscoveryInfo info: [String: String]?
     ) {
-        serialQueue.async { [weak self] in
-            guard let self = self else { return }
+        serialQueue.sync { [weak self] in
+            guard let self else { return }
             guard let uuid = UUID(uuidString: peerID.displayName) else { return }
+
             let connection = NetworkConnection(
                 id: uuid,
                 name: peerID.displayName,
                 info: info)
+
             foundPeers[peerID] = connection
+            connectionDelegate?.nearbyNetwork(self, didFind: foundPeers
+                .values
+                .map { $0 }
+                .sorted(by: { $0.name < $1.name }))
         }
     }
 
     public func browser(_ browser: MCNearbyServiceBrowser, lostPeer peerID: MCPeerID) {
-        serialQueue.async { [weak self] in
-            guard let self = self else { return }
+        serialQueue.sync { [weak self] in
+            guard let self else { return }
+            guard let lostPeer = foundPeers[peerID] else { return }
+
             foundPeers[peerID] = nil
+            connectionDelegate?.nearbyNetwork(self, didLost: lostPeer)
         }
     }
 }
