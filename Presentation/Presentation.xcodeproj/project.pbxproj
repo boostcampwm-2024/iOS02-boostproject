@@ -28,6 +28,7 @@
 		6FA7DBEC2CF56103007333C6 /* ChatViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FA7DBEB2CF56103007333C6 /* ChatViewModel.swift */; };
 		6FA7DBEE2CF56457007333C6 /* MessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FA7DBED2CF56457007333C6 /* MessageCell.swift */; };
 		6FA7DBF02CF5665B007333C6 /* MyMessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FA7DBEF2CF5665B007333C6 /* MyMessageCell.swift */; };
+		6FA7DBF22CF56A3F007333C6 /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FA7DBF12CF56A3F007333C6 /* ChatViewController.swift */; };
 		A8525DC32CE200230089DA5E /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A8525DC22CE200230089DA5E /* Colors.xcassets */; };
 		A8525DCB2CE203D50089DA5E /* UIView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8525DCA2CE203D50089DA5E /* UIView+.swift */; };
 		A85260252CE3447E0089DA5E /* UIColor+.swift in Sources */ = {isa = PBXBuildFile; fileRef = A85260242CE3447E0089DA5E /* UIColor+.swift */; };
@@ -77,6 +78,7 @@
 		6FA7DBEB2CF56103007333C6 /* ChatViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewModel.swift; sourceTree = "<group>"; };
 		6FA7DBED2CF56457007333C6 /* MessageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageCell.swift; sourceTree = "<group>"; };
 		6FA7DBEF2CF5665B007333C6 /* MyMessageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyMessageCell.swift; sourceTree = "<group>"; };
+		6FA7DBF12CF56A3F007333C6 /* ChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
 		A8525DC22CE200230089DA5E /* Colors.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Colors.xcassets; sourceTree = "<group>"; };
 		A8525DC72CE201D50089DA5E /* AirplainFont.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AirplainFont.swift; sourceTree = "<group>"; };
 		A8525DCA2CE203D50089DA5E /* UIView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+.swift"; sourceTree = "<group>"; };
@@ -253,6 +255,7 @@
 		6FA7DBE72CF4B4DA007333C6 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				6FA7DBF12CF56A3F007333C6 /* ChatViewController.swift */,
 				6FA7DBE82CF4B4E1007333C6 /* ChatTextFieldView.swift */,
 				6FA7DBEA2CF560D5007333C6 /* Cell */,
 			);
@@ -448,6 +451,7 @@
 				A8E97ABF2CE4E94D00B28063 /* SelectProfileIconViewController.swift in Sources */,
 				A8E979C52CE493E900B28063 /* ProfileViewController.swift in Sources */,
 				6FA7DBF02CF5665B007333C6 /* MyMessageCell.swift in Sources */,
+				6FA7DBF22CF56A3F007333C6 /* ChatViewController.swift in Sources */,
 				A85260252CE3447E0089DA5E /* UIColor+.swift in Sources */,
 				00D2DD982CE8CD300089F0BA /* DrawingView.swift in Sources */,
 				A8E979CA2CE49A1800B28063 /* ProfileViewModel.swift in Sources */,
