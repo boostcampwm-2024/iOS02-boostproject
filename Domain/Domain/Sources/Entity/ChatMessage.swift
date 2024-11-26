@@ -10,15 +10,15 @@ import Foundation
 public struct ChatMessage: Codable {
     public let message: String
     public let sender: Profile
-    public let sendedAt: Date
+    public let sentAt: Date
 
     public init(
         message: String,
         sender: Profile,
-        sendedAt: Date = Date()
+        sentAt: Date = Date()
     ) {
         self.message = message
         self.sender = sender
-        self.sendedAt = sendedAt
+        self.sentAt = sentAt
     }
 }
