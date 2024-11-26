@@ -31,54 +31,6 @@ public final class ChatViewController: UIViewController {
     private let viewModel: ChatViewModel
     private var cancellables: Set<AnyCancellable>
 
-    // TODO: 테스트 코드
-    private lazy var someChat = [
-        ChatMessageCellModel(chatMessage: ChatMessage(message: "오늘 점심 뭐먹을까요??", sender: Profile(nickname: "딩동", profileIcon: .angel)), chatMessageType: .single),
-        ChatMessageCellModel(chatMessage: ChatMessage(message: "음.. 전 고민좀해보겠습니다..", sender: viewModel.output.myProfile), chatMessageType: .single),
-        ChatMessageCellModel(chatMessage: ChatMessage(message: "슬쩍 국밥 제시해보겠습니다하하하하하하하하하하ㅏㅎ하ㅏㅎ하ㅏ하하하하하.", sender: Profile(nickname: "딩동", profileIcon: .angel)), chatMessageType: .first),
-        ChatMessageCellModel(chatMessage: ChatMessage(message: "아니면 햄버거도 괜찮습니다...", sender: Profile(nickname: "딩동", profileIcon: .angel)), chatMessageType: .last),
-        ChatMessageCellModel(chatMessage: ChatMessage(message: "돈까스는 어떠신지.", sender: Profile(nickname: "조이", profileIcon: .devil)), chatMessageType: .single),
-        ChatMessageCellModel(chatMessage: ChatMessage(message: "저는 쭈꾸미 추천해보겠습니다.", sender: Profile(nickname: "다우니", profileIcon: .cold)), chatMessageType: .first),
-        ChatMessageCellModel(chatMessage: ChatMessage(message: "햄버거도 좋습니다.", sender: Profile(nickname: "다우니", profileIcon: .cold)), chatMessageType: .between),
-        ChatMessageCellModel(chatMessage: ChatMessage(message: "다 좋긴해요", sender: Profile(nickname: "다우니", profileIcon: .cold)), chatMessageType: .last),
-        ChatMessageCellModel(chatMessage: ChatMessage(message: "음.. 전 고민좀해보겠습니다..", sender: viewModel.output.myProfile), chatMessageType: .first),
-        ChatMessageCellModel(chatMessage: ChatMessage(message: "음.. 전 고민좀해보겠습니다..", sender: viewModel.output.myProfile), chatMessageType: .between),
-        ChatMessageCellModel(chatMessage: ChatMessage(message: "룰렛 돌리시죠..", sender: viewModel.output.myProfile), chatMessageType: .last),
-        ChatMessageCellModel(chatMessage: ChatMessage(message: "오늘 점심 뭐먹을까요??", sender: Profile(nickname: "딩동", profileIcon: .angel)), chatMessageType: .single),
-        ChatMessageCellModel(chatMessage: ChatMessage(message: "음.. 전 고민좀해보겠습니다..", sender: viewModel.output.myProfile), chatMessageType: .single),
-        ChatMessageCellModel(chatMessage: ChatMessage(message: "슬쩍 국밥 제시해보겠습니다하하하하하하하하하하ㅏㅎ하ㅏㅎ하ㅏ하하하하하.", sender: Profile(nickname: "딩동", profileIcon: .angel)), chatMessageType: .first),
-        ChatMessageCellModel(chatMessage: ChatMessage(message: "아니면 햄버거도 괜찮습니다...", sender: Profile(nickname: "딩동", profileIcon: .angel)), chatMessageType: .last),
-        ChatMessageCellModel(chatMessage: ChatMessage(message: "돈까스는 어떠신지.", sender: Profile(nickname: "조이", profileIcon: .devil)), chatMessageType: .single),
-        ChatMessageCellModel(chatMessage: ChatMessage(message: "저는 쭈꾸미 추천해보겠습니다.", sender: Profile(nickname: "다우니", profileIcon: .cold)), chatMessageType: .first),
-        ChatMessageCellModel(chatMessage: ChatMessage(message: "햄버거도 좋습니다.", sender: Profile(nickname: "다우니", profileIcon: .cold)), chatMessageType: .between),
-        ChatMessageCellModel(chatMessage: ChatMessage(message: "다 좋긴해요", sender: Profile(nickname: "다우니", profileIcon: .cold)), chatMessageType: .last),
-        ChatMessageCellModel(chatMessage: ChatMessage(message: "음.. 전 고민좀해보겠습니다..", sender: viewModel.output.myProfile), chatMessageType: .first),
-        ChatMessageCellModel(chatMessage: ChatMessage(message: "음.. 전 고민좀해보겠습니다..", sender: viewModel.output.myProfile), chatMessageType: .between),
-        ChatMessageCellModel(chatMessage: ChatMessage(message: "룰렛 돌리시죠..", sender: viewModel.output.myProfile), chatMessageType: .last),
-        ChatMessageCellModel(chatMessage: ChatMessage(message: "오늘 점심 뭐먹을까요??", sender: Profile(nickname: "딩동", profileIcon: .angel)), chatMessageType: .single),
-        ChatMessageCellModel(chatMessage: ChatMessage(message: "음.. 전 고민좀해보겠습니다..", sender: viewModel.output.myProfile), chatMessageType: .single),
-        ChatMessageCellModel(chatMessage: ChatMessage(message: "슬쩍 국밥 제시해보겠습니다하하하하하하하하하하ㅏㅎ하ㅏㅎ하ㅏ하하하하하.", sender: Profile(nickname: "딩동", profileIcon: .angel)), chatMessageType: .first),
-        ChatMessageCellModel(chatMessage: ChatMessage(message: "아니면 햄버거도 괜찮습니다...", sender: Profile(nickname: "딩동", profileIcon: .angel)), chatMessageType: .last),
-        ChatMessageCellModel(chatMessage: ChatMessage(message: "돈까스는 어떠신지.", sender: Profile(nickname: "조이", profileIcon: .devil)), chatMessageType: .single),
-        ChatMessageCellModel(chatMessage: ChatMessage(message: "저는 쭈꾸미 추천해보겠습니다.", sender: Profile(nickname: "다우니", profileIcon: .cold)), chatMessageType: .first),
-        ChatMessageCellModel(chatMessage: ChatMessage(message: "햄버거도 좋습니다.", sender: Profile(nickname: "다우니", profileIcon: .cold)), chatMessageType: .between),
-        ChatMessageCellModel(chatMessage: ChatMessage(message: "다 좋긴해요", sender: Profile(nickname: "다우니", profileIcon: .cold)), chatMessageType: .last),
-        ChatMessageCellModel(chatMessage: ChatMessage(message: "음.. 전 고민좀해보겠습니다..", sender: viewModel.output.myProfile), chatMessageType: .first),
-        ChatMessageCellModel(chatMessage: ChatMessage(message: "음.. 전 고민좀해보겠습니다..", sender: viewModel.output.myProfile), chatMessageType: .between),
-        ChatMessageCellModel(chatMessage: ChatMessage(message: "룰렛 돌리시죠..", sender: viewModel.output.myProfile), chatMessageType: .last),
-        ChatMessageCellModel(chatMessage: ChatMessage(message: "오늘 점심 뭐먹을까요??", sender: Profile(nickname: "딩동", profileIcon: .angel)), chatMessageType: .single),
-        ChatMessageCellModel(chatMessage: ChatMessage(message: "음.. 전 고민좀해보겠습니다..", sender: viewModel.output.myProfile), chatMessageType: .single),
-        ChatMessageCellModel(chatMessage: ChatMessage(message: "슬쩍 국밥 제시해보겠습니다하하하하하하하하하하ㅏㅎ하ㅏㅎ하ㅏ하하하하하.", sender: Profile(nickname: "딩동", profileIcon: .angel)), chatMessageType: .first),
-        ChatMessageCellModel(chatMessage: ChatMessage(message: "아니면 햄버거도 괜찮습니다...", sender: Profile(nickname: "딩동", profileIcon: .angel)), chatMessageType: .last),
-        ChatMessageCellModel(chatMessage: ChatMessage(message: "돈까스는 어떠신지.", sender: Profile(nickname: "조이", profileIcon: .devil)), chatMessageType: .single),
-        ChatMessageCellModel(chatMessage: ChatMessage(message: "저는 쭈꾸미 추천해보겠습니다.", sender: Profile(nickname: "다우니", profileIcon: .cold)), chatMessageType: .first),
-        ChatMessageCellModel(chatMessage: ChatMessage(message: "햄버거도 좋습니다.", sender: Profile(nickname: "다우니", profileIcon: .cold)), chatMessageType: .between),
-        ChatMessageCellModel(chatMessage: ChatMessage(message: "다 좋긴해요", sender: Profile(nickname: "다우니", profileIcon: .cold)), chatMessageType: .last),
-        ChatMessageCellModel(chatMessage: ChatMessage(message: "음.. 전 고민좀해보겠습니다..", sender: viewModel.output.myProfile), chatMessageType: .first),
-        ChatMessageCellModel(chatMessage: ChatMessage(message: "음.. 전 고민좀해보겠습니다..", sender: viewModel.output.myProfile), chatMessageType: .between),
-        ChatMessageCellModel(chatMessage: ChatMessage(message: "룰렛 돌리시죠..", sender: viewModel.output.myProfile), chatMessageType: .last)
-    ]
-
     public init(viewModel: ChatViewModel) {
         self.viewModel = viewModel
         cancellables = []
@@ -140,19 +92,21 @@ public final class ChatViewController: UIViewController {
                     item: chatMessageCellModel)
                 return cell
             })
-
-        var snapshot = NSDiffableDataSourceSnapshot<CollectionViewSection, ChatMessageCellModel>()
-        snapshot.appendSections([.chat])
-        snapshot.appendItems(someChat)
-        dataSource?.apply(snapshot, animatingDifferences: true)
     }
 
     private func bind() {
         viewModel.output.chatMessageListPublisher
             .receive(on: DispatchQueue.main)
             .sink { chatMessageList in
-                print(chatMessageList)
+                dump(chatMessageList)
             }
             .store(in: &cancellables)
+    }
+
+    private func dataApply(chatMessageList: [ChatMessageCellModel]) {
+        var snapshot = NSDiffableDataSourceSnapshot<CollectionViewSection, ChatMessageCellModel>()
+        snapshot.appendSections([.chat])
+        snapshot.appendItems(chatMessageList)
+        dataSource?.apply(snapshot, animatingDifferences: true)
     }
 }
