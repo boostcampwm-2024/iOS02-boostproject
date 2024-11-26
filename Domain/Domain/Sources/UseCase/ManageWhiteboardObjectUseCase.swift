@@ -157,7 +157,8 @@ extension ManageWhiteboardObjectUseCase: WhiteboardObjectRepositoryDelegate {
                 let photoObject = await whiteboardObjectSet
                     .fetchObjectByID(id: photoID) as? PhotoObject
             else { return }
-            await updateObject(whiteboardObject: photoObject)
+            photoObject.configurePhotoURL(with: savedURL)
+            await updateObject(whiteboardObject: photoObject, isReceivedObject: true)
         }
     }
 

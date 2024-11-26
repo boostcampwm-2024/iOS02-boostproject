@@ -262,7 +262,7 @@ extension WhiteboardViewController: PHPickerViewControllerDelegate {
         itemProvider.loadObject(ofClass: UIImage.self) { image, _ in
             guard
                 let selectedImage = image as? UIImage,
-                let imageData = selectedImage.jpegData(compressionQuality: 1)
+                let imageData = selectedImage.jpegData(compressionQuality: 0.1)
             else { return }
 
             DispatchQueue.main.async {
