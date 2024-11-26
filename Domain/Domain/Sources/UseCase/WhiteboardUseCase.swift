@@ -50,6 +50,10 @@ public final class WhiteboardUseCase: WhiteboardUseCaseInterface {
         let profile = profileRepository.loadProfile()
         try whiteboardRepository.joinWhiteboard(whiteboard: whiteboard, myProfile: profile)
     }
+
+    public func refreshWhiteboardList() {
+        whiteboardRepository.restartSearching()
+    }
 }
 
 extension WhiteboardUseCase: WhiteboardRepositoryDelegate {

@@ -25,4 +25,7 @@ public protocol WhiteboardUseCaseInterface {
 
     /// 화이트보드 탐색을 중지합니다.
     func stopSearchingWhiteboard()
+    
+    /// 화이트보드 탐색을 중단 후 다시 시작합니다. 
+    func refreshWhiteboardList()
 }

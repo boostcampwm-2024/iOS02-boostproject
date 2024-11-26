@@ -55,6 +55,10 @@ public final class WhiteboardRepository: WhiteboardRepositoryInterface {
         nearbyNetwork.stopSearching()
     }
 
+    public func restartSearching() {
+        nearbyNetwork.restartSearching()
+    }
+
     private func updatePublishingInfo(myProfile: Profile) {
         var newIconList: [String] = []
         newIconList.append(myProfile.profileIcon.emoji)
