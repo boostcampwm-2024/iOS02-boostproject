@@ -34,7 +34,10 @@ public final class ChatRepository: ChatRepositoryInterface {
             isDeleted: false)
         guard
             let url = filePersistence
-                .save(dataInfo: chatMessageInformation, data: chatMessageData)
+                .save(
+                    dataInfo: chatMessageInformation,
+                    data: chatMessageData,
+                    fileType: nil)
         else {
             logger.log(level: .error, "url저장 실패: 데이터를 보내지 못했습니다.")
             return nil
@@ -55,7 +58,10 @@ extension ChatRepository: NearbyNetworkReceiptDelegate {
         info: DataInformationDTO
     ) {
         guard let receivedData = filePersistence.load(path: URL) else { return }
-        filePersistence.save(dataInfo: info, data: receivedData)
+        filePersistence.save(
+            dataInfo: info,
+            data: receivedData,
+            fileType: nil)
         guard
             let chatMessage = try? JSONDecoder().decode(
                 ChatMessage.self,

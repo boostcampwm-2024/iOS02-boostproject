@@ -30,7 +30,7 @@ public final class TextObjectUseCase: TextObjectUseCaseInterface {
             let texboardObject = await whiteboardObjectSet
                 .fetchObjectByID(id: id) as? TextObject
         else { return }
-  
+
         texboardObject.updateText(text: text)
         await whiteboardObjectSet.update(object: texboardObject)
     }

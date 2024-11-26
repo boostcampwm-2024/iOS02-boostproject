@@ -24,15 +24,17 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
         // TODO: - 임시 의존성 주입
         let nearbyNetworkService = NearbyNetworkService(serviceName: "airplain")
-        let profileRepository = ProfileRepository(persistenceService: PersistenceService())
         let filePersistenceService = FilePersistence()
+        let whiteboardObjectSet = WhiteboardObjectSet()
 
+        let profileRepository = ProfileRepository(persistenceService: PersistenceService())
         let whiteboardRepository = WhiteboardRepository(
             nearbyNetworkInterface: nearbyNetworkService,
             myProfile: profileRepository.loadProfile())
         let whiteboardObjectRepository = WhiteboardObjectRepository(
             nearbyNetwork: nearbyNetworkService,
             filePersistence: filePersistenceService)
+        let photoRepository = PhotoRepository(filePersistence: filePersistenceService)
 
         let whiteboardUseCase = WhiteboardUseCase(
             whiteboardRepository: whiteboardRepository,
@@ -40,11 +42,14 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let profileUseCase = ProfileUseCase(repository: profileRepository)
         let manageWhieboardObjectUseCase = ManageWhiteboardObjectUseCase(
             profileRepository: profileRepository,
-            whiteboardRepository: whiteboardObjectRepository)
+            whiteboardRepository: whiteboardObjectRepository,
+            whiteboardObjectSet: whiteboardObjectSet)
         let manageWhiteboardToolUseCase = ManageWhiteboardToolUseCase()
-        let textObjectUseCase = TextObjectUseCase(textFieldDefaultSize: CGSize(width: 200, height: 50))
+        let textObjectUseCase = TextObjectUseCase(
+            whiteboardObjectSet: whiteboardObjectSet,
+            textFieldDefaultSize: CGSize(width: 200, height: 50))
         let drawObjectUseCase = DrawObjectUseCase()
-        guard let addPhotoUseCase = try? AddPhotoUseCase() else { return }
+        let addPhotoUseCase = AddPhotoUseCase(photoRepository: photoRepository)
         let whiteboardObjectSendUseCase = WhiteboardObjectSendUseCase(repository: whiteboardObjectRepository)
 
         let whiteboardObjectViewFactory = WhiteboardObjectViewFactory()
