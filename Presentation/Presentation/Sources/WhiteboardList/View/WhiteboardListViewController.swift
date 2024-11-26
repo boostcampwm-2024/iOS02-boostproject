@@ -260,8 +260,9 @@ extension WhiteboardListViewController: UICollectionViewDelegate {
     public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard let selectedWhiteboard = dataSource?.itemIdentifier(for: indexPath) else { return }
         viewModel.action(input: .joinWhiteboard(whiteboard: selectedWhiteboard))
-        let whiteboardViewController = WhiteboardViewController(viewModel: whiteboardViewModel,
-                                                                objectViewFactory: whiteboardObjectViewFactory)
+        let whiteboardViewController = WhiteboardViewController(
+            viewModel: whiteboardViewModel,
+            objectViewFactory: whiteboardObjectViewFactory)
         self.navigationController?.isNavigationBarHidden = false
         self.navigationController?.pushViewController(whiteboardViewController, animated: true)
     }
