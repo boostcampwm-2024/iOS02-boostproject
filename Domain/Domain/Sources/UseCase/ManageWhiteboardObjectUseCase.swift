@@ -48,11 +48,12 @@ public final class ManageWhiteboardObjectUseCase: ManageWhiteboardObjectUseCaseI
     public func addObject(whiteboardObject: WhiteboardObject, isReceivedObject: Bool) async -> Bool {
         guard await !whiteboardObjectSet.contains(object: whiteboardObject) else { return false }
 
+        await whiteboardObjectSet.insert(object: whiteboardObject)
+        addedWhiteboardSubject.send(whiteboardObject)
+
         if !isReceivedObject {
             await whiteboardObjectRepository.send(whiteboardObject: whiteboardObject, isDeleted: false)
         }
-        await whiteboardObjectSet.insert(object: whiteboardObject)
-        addedWhiteboardSubject.send(whiteboardObject)
 
         return true
     }
@@ -61,12 +62,12 @@ public final class ManageWhiteboardObjectUseCase: ManageWhiteboardObjectUseCaseI
     public func updateObject(whiteboardObject: WhiteboardObject, isReceivedObject: Bool) async -> Bool {
         guard await whiteboardObjectSet.contains(object: whiteboardObject) else { return false }
 
+        await whiteboardObjectSet.update(object: whiteboardObject)
+        updatedWhiteboardSubject.send(whiteboardObject)
+
         if !isReceivedObject {
             await whiteboardObjectRepository.send(whiteboardObject: whiteboardObject, isDeleted: false)
         }
-
-        await whiteboardObjectSet.update(object: whiteboardObject)
-        updatedWhiteboardSubject.send(whiteboardObject)
 
         return true
     }
@@ -77,13 +78,13 @@ public final class ManageWhiteboardObjectUseCase: ManageWhiteboardObjectUseCaseI
             let object = await whiteboardObjectSet.fetchObjectByID(id: whiteboardObjectID)
         else { return false }
 
+        await whiteboardObjectSet.remove(object: object)
+        removedWhiteboardSubject.send(object)
+
         if !isReceivedObject {
             guard object.selectedBy == myProfile else { return false }
             await whiteboardObjectRepository.send(whiteboardObject: object, isDeleted: true)
         }
-
-        await whiteboardObjectSet.remove(object: object)
-        removedWhiteboardSubject.send(object)
 
         return true
     }
