@@ -12,6 +12,8 @@ final class PeerMessageCell: MessageCell {
         static let defaultTopPadding: CGFloat = 17
         static let betweenTopPadding: CGFloat = 11
         static let profileIconSize: CGFloat = 31
+        static let profileIconTrailingPadding: CGFloat = 15
+        static let profileNameBottomPadding: CGFloat = 8
     }
 
     private let profileIconView = ProfileIconView()
@@ -28,7 +30,6 @@ final class PeerMessageCell: MessageCell {
         label.textColor = .black
         label.font = AirplainFont.Body2
         label.numberOfLines = 0
-        label.lineBreakStrategy = .standard
 
         return label
     }()
@@ -36,7 +37,7 @@ final class PeerMessageCell: MessageCell {
     private let messageBackground: UIView = {
         let uiView = UIView()
         uiView.backgroundColor = .gray200
-        uiView.layer.cornerRadius = 15
+        uiView.layer.cornerRadius = MessageCellLayoutConstant.messageCornerRadius
 
         return uiView
     }()
@@ -78,14 +79,14 @@ final class PeerMessageCell: MessageCell {
 
         messageView
             .addToSuperview(contentView)
-            .bottom(equalTo: contentView.bottomAnchor, inset: 7)
+            .bottom(equalTo: contentView.bottomAnchor, inset: MessageCellLayoutConstant.messageViewPadding)
 
         messageBackground
-            .edges(equalTo: messageView, inset: -7)
+            .edges(equalTo: messageView, inset: -MessageCellLayoutConstant.messageViewPadding)
 
         profileNameView
             .addToSuperview(contentView)
-            .bottom(equalTo: messageBackground.topAnchor, inset: 8)
+            .bottom(equalTo: messageBackground.topAnchor, inset: PeerMessageCellLayoutConstant.profileNameBottomPadding)
             .leading(equalTo: messageBackground.leadingAnchor, inset: 0)
 
         let constraints = (
@@ -94,7 +95,9 @@ final class PeerMessageCell: MessageCell {
                 .constraint(lessThanOrEqualToConstant: contentView.frame.width * 3 / 4),
             labelLeading: messageView
                 .leadingAnchor
-                .constraint(equalTo: profileIconView.trailingAnchor, constant: 15),
+                .constraint(
+                    equalTo: profileIconView.trailingAnchor,
+                    constant: PeerMessageCellLayoutConstant.profileIconTrailingPadding),
             messageTopPadding: profileNameView
                 .topAnchor
                 .constraint(equalTo: contentView.topAnchor, constant: PeerMessageCellLayoutConstant.defaultTopPadding))

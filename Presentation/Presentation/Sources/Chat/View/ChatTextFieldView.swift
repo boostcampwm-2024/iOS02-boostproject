@@ -12,6 +12,8 @@ final class ChatTextFieldView: UIView {
         static let sendButtonSize: CGFloat = 23
         static let sendButtonTraillingInset: CGFloat = 16
         static let textFieldLeadingInset: CGFloat = 20
+        static let textFieldBorderWidth: CGFloat = 1
+        static let textFieldCornerRadius: CGFloat = 20
     }
 
     private let textField: UITextField = {
@@ -35,8 +37,8 @@ final class ChatTextFieldView: UIView {
     private let backgroundView: UIView = {
         let view = UIView()
         view.layer.borderColor = UIColor.gray500.cgColor
-        view.layer.borderWidth = 1
-        view.layer.cornerRadius = 20
+        view.layer.borderWidth = ChatTextFieldLayoutConstant.textFieldBorderWidth
+        view.layer.cornerRadius = ChatTextFieldLayoutConstant.textFieldCornerRadius
 
         return view
     }()

@@ -18,7 +18,6 @@ final class MyMessageCell: MessageCell {
         label.textColor = .white
         label.font = AirplainFont.Body2
         label.numberOfLines = 0
-        label.lineBreakStrategy = .standard
 
         return label
     }()
@@ -26,7 +25,7 @@ final class MyMessageCell: MessageCell {
     private let messageBackground: UIView = {
         let uiView = UIView()
         uiView.backgroundColor = .airplainBlue
-        uiView.layer.cornerRadius = 15
+        uiView.layer.cornerRadius = MessageCellLayoutConstant.messageCornerRadius
 
         return uiView
     }()
@@ -55,10 +54,10 @@ final class MyMessageCell: MessageCell {
 
         messageView
             .addToSuperview(contentView)
-            .bottom(equalTo: contentView.bottomAnchor, inset: 7)
+            .bottom(equalTo: contentView.bottomAnchor, inset: MessageCellLayoutConstant.messageViewPadding)
 
         messageBackground
-            .edges(equalTo: messageView, inset: -7)
+            .edges(equalTo: messageView, inset: -MessageCellLayoutConstant.messageViewPadding)
 
         let constraints = (
             labelWidth: messageView
@@ -66,10 +65,14 @@ final class MyMessageCell: MessageCell {
                 .constraint(lessThanOrEqualToConstant: contentView.frame.width * 3 / 4),
             labelTrailing: messageView
                 .trailingAnchor
-                .constraint(equalTo: contentView.trailingAnchor, constant: -7),
+                .constraint(
+                    equalTo: contentView.trailingAnchor,
+                    constant: -MessageCellLayoutConstant.messageViewPadding),
             messageTopPadding: messageView
                 .topAnchor
-                .constraint(equalTo: contentView.topAnchor, constant: MyMessageCellLayoutConstant.defaultTopPadding)
+                .constraint(
+                    equalTo: contentView.topAnchor,
+                    constant: MyMessageCellLayoutConstant.defaultTopPadding)
         )
         NSLayoutConstraint.activate([
             constraints.labelWidth,

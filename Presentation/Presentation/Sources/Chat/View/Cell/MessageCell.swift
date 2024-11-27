@@ -9,6 +9,10 @@ import Domain
 import UIKit
 
 class MessageCell: UICollectionViewListCell {
+    enum MessageCellLayoutConstant {
+        static let messageCornerRadius: CGFloat = 15
+        static let messageViewPadding: CGFloat = 7
+    }
     private var chatMessageCellModel: ChatMessageCellModel?
 
     func update(with newMessage: ChatMessageCellModel) {
