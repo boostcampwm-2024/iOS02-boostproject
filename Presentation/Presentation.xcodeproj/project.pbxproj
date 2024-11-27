@@ -32,6 +32,8 @@
 		A81E7AC82CF5CAD5007E8414 /* KeyboardTileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A81E7AC72CF5CAD5007E8414 /* KeyboardTileView.swift */; };
 		A81E7BD42CF6E76D007E8414 /* WordleGuideView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A81E7BD32CF6E76D007E8414 /* WordleGuideView.swift */; };
 		A81E7BD62CF6E797007E8414 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A81E7BD52CF6E797007E8414 /* Images.xcassets */; };
+		A81E7BD82CF6E94F007E8414 /* WordleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A81E7BD72CF6E94F007E8414 /* WordleView.swift */; };
+		A81E7BDB2CF6E973007E8414 /* WordleViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A81E7BDA2CF6E973007E8414 /* WordleViewModel.swift */; };
 		A8525DC32CE200230089DA5E /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A8525DC22CE200230089DA5E /* Colors.xcassets */; };
 		A8525DCB2CE203D50089DA5E /* UIView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8525DCA2CE203D50089DA5E /* UIView+.swift */; };
 		A85260252CE3447E0089DA5E /* UIColor+.swift in Sources */ = {isa = PBXBuildFile; fileRef = A85260242CE3447E0089DA5E /* UIColor+.swift */; };
@@ -85,6 +87,8 @@
 		A81E7AC72CF5CAD5007E8414 /* KeyboardTileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardTileView.swift; sourceTree = "<group>"; };
 		A81E7BD32CF6E76D007E8414 /* WordleGuideView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordleGuideView.swift; sourceTree = "<group>"; };
 		A81E7BD52CF6E797007E8414 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		A81E7BD72CF6E94F007E8414 /* WordleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordleView.swift; sourceTree = "<group>"; };
+		A81E7BDA2CF6E973007E8414 /* WordleViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordleViewModel.swift; sourceTree = "<group>"; };
 		A8525DC22CE200230089DA5E /* Colors.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Colors.xcassets; sourceTree = "<group>"; };
 		A8525DC72CE201D50089DA5E /* AirplainFont.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AirplainFont.swift; sourceTree = "<group>"; };
 		A8525DCA2CE203D50089DA5E /* UIView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+.swift"; sourceTree = "<group>"; };
@@ -246,6 +250,7 @@
 			children = (
 				A81E7AB92CF5C762007E8414 /* Model */,
 				A81E7AC42CF5CA07007E8414 /* View */,
+				A81E7BD92CF6E95C007E8414 /* ViewModel */,
 			);
 			path = Wordle;
 			sourceTree = "<group>";
@@ -267,8 +272,17 @@
 				A81E7AC52CF5CA18007E8414 /* WordleTileView.swift */,
 				A81E7AC72CF5CAD5007E8414 /* KeyboardTileView.swift */,
 				A81E7BD32CF6E76D007E8414 /* WordleGuideView.swift */,
+				A81E7BD72CF6E94F007E8414 /* WordleView.swift */,
 			);
 			path = View;
+			sourceTree = "<group>";
+		};
+		A81E7BD92CF6E95C007E8414 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				A81E7BDA2CF6E973007E8414 /* WordleViewModel.swift */,
+			);
+			path = ViewModel;
 			sourceTree = "<group>";
 		};
 		A8525DC12CE200110089DA5E /* Resources */ = {
@@ -452,6 +466,7 @@
 				A85260292CE344C60089DA5E /* ProfileIconView.swift in Sources */,
 				A81E7AC82CF5CAD5007E8414 /* KeyboardTileView.swift in Sources */,
 				004B21812CEB5BC000A5BEB8 /* PhotoObjectView.swift in Sources */,
+				A81E7BDB2CF6E973007E8414 /* WordleViewModel.swift in Sources */,
 				A81E7ABD2CF5C7A7007E8414 /* WordleState.swift in Sources */,
 				A8E97ABF2CE4E94D00B28063 /* SelectProfileIconViewController.swift in Sources */,
 				A8E979C52CE493E900B28063 /* ProfileViewController.swift in Sources */,
@@ -464,6 +479,7 @@
 				6F199EF32CE3203A005DC40F /* WhiteboardViewController.swift in Sources */,
 				A81E7ABF2CF5C7FE007E8414 /* KeyboardState.swift in Sources */,
 				6F199EF12CE31A05005DC40F /* WhiteboardToolBar.swift in Sources */,
+				A81E7BD82CF6E94F007E8414 /* WordleView.swift in Sources */,
 				6F21477D2CE4EFCF00B55E2C /* TextObjectView.swift in Sources */,
 				00D2DD9A2CE8DCEA0089F0BA /* DrawingObjectView.swift in Sources */,
 				0080E8D12CE4A00F0095B958 /* WhiteboardViewModel.swift in Sources */,
