@@ -36,6 +36,7 @@ public final class ChatViewController: UIViewController {
         self.viewModel = viewModel
         cancellables = []
         super.init(nibName: nil, bundle: nil)
+        chatTextFieldView.configureDelegate(self)
     }
 
     required public init?(coder: NSCoder) {
@@ -159,5 +160,18 @@ public final class ChatViewController: UIViewController {
 
     @objc private func keyboardDown() {
         view.transform = .identity
+    }
+}
+
+extension ChatViewController: ChatTextFieldViewDelegate {
+    func chatTextFieldView(_ sender: ChatTextFieldView, sendMessage: String) {
+        viewModel.action(input: .send(message: sendMessage))
+    }
+
+    public func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        guard let message = textField.text else { return true }
+        viewModel.action(input: .send(message: message))
+        textField.text = ""
+        return true
     }
 }
