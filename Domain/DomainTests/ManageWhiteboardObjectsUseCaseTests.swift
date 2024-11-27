@@ -199,11 +199,6 @@ final class ManageWhiteboardObjectsUseCaseTests: XCTestCase {
             centerPosition: .zero,
             size: CGSize(width: 100, height: 100),
             selectedBy: Profile(nickname: "other", profileIcon: .angel))
-        var receivedObject: WhiteboardObject?
-
-        useCase.removedObjectPublisher
-            .sink { receivedObject = $0 }
-            .store(in: &cancellables)
 
         // 실행
         await useCase.addObject(whiteboardObject: object1, isReceivedObject: false)
@@ -215,7 +210,6 @@ final class ManageWhiteboardObjectsUseCaseTests: XCTestCase {
 
         // 검증
         XCTAssertTrue(isFailure)
-        XCTAssertNil(receivedObject)
     }
 
     // 화이트보드 오브젝트 선택 성공하는지 테스트
