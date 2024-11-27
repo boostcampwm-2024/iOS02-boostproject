@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct ChatMessage: Codable {
+public struct ChatMessage: Codable, Hashable {
     public let message: String
     public let sender: Profile
     public let sentAt: Date

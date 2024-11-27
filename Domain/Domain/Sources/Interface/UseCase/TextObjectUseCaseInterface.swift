@@ -16,4 +16,10 @@ public protocol TextObjectUseCaseInterface {
     ///   - size: 현재 뷰의 크기
     /// - Returns: 현재 화면 중앙에 위치한 TextObject를 반환
     func addText(centerPoint: CGPoint, size: CGSize) -> TextObject
+
+    /// TextObject의 text를 수정합니다.
+    /// - Parameters:
+    ///   - id: 수정할 TextObject의 아이디
+    ///   - text: 수정할 text
+    func editText(id: UUID, text: String) async
 }

@@ -5,6 +5,7 @@
 //  Created by 박승찬 on 11/21/24.
 //
 
+import Combine
 import Domain
 import OSLog
 
@@ -12,12 +13,14 @@ public final class WhiteboardObjectRepository: WhiteboardObjectRepositoryInterfa
     public weak var delegate: WhiteboardObjectRepositoryDelegate?
     private var nearbyNetwork: NearbyNetworkInterface
     private let filePersistence: FilePersistenceInterface
+    private var cancellables: Set<AnyCancellable>
     private let logger = Logger()
 
     public init(nearbyNetwork: NearbyNetworkInterface, filePersistence: FilePersistenceInterface) {
         self.nearbyNetwork = nearbyNetwork
         self.filePersistence = filePersistence
-        self.nearbyNetwork.receiptDelegate = self
+        cancellables = []
+        bindNearbyNetwork()
     }
 
     public func send(whiteboardObject: WhiteboardObject, isDeleted: Bool) async {
@@ -33,10 +36,16 @@ public final class WhiteboardObjectRepository: WhiteboardObjectRepositoryInterfa
                 type: .drawing,
                 isDeleted: isDeleted)
         case let photoObject as PhotoObject:
-            await send(
+            async let sendJPEGTask: () = sendJPEG(
+                photoObject: photoObject,
+                type: .imageData,
+                isDeleted: isDeleted)
+            async let sendPhotoObjectTask: () = send(
                 whiteboardObject: photoObject,
                 type: .photo,
                 isDeleted: isDeleted)
+            await sendJPEGTask
+            await sendPhotoObjectTask
         default:
             break
         }
@@ -53,27 +62,58 @@ public final class WhiteboardObjectRepository: WhiteboardObjectRepositoryInterfa
             type: type,
             isDeleted: isDeleted)
         guard let url = filePersistence
-            .save(dataInfo: objectInformation, data: objectData)
+            .save(dataInfo: objectInformation, data: objectData, fileType: nil)
         else {
             logger.log(level: .error, "url저장 실패: 데이터를 보내지 못했습니다.")
             return
         }
         await nearbyNetwork.send(fileURL: url, info: objectInformation)
     }
-}
 
-extension WhiteboardObjectRepository: NearbyNetworkReceiptDelegate {
-    public func nearbyNetwork(_ sender: any NearbyNetworkInterface, didReceive data: Data) {
-        // TODO: 사용하지 않을 인터페이스로 예상
+    // TODO: - 사진 데이터를 photo Object와 따로 보내야함! 추후 전송 방식 개선하기
+    private func sendJPEG(
+        photoObject: PhotoObject,
+        type: AirplaINDataType,
+        isDeleted: Bool
+    ) async {
+        let dataInformation = DataInformationDTO(
+            id: photoObject.id,
+            type: .imageData,
+            isDeleted: isDeleted)
+        await nearbyNetwork.send(fileURL: photoObject.photoURL, info: dataInformation)
     }
 
-    public func nearbyNetwork(
-        _ sender: any NearbyNetworkInterface,
-        didReceiveURL URL: URL,
-        info: DataInformationDTO
-    ) {
+    private func bindNearbyNetwork() {
+        nearbyNetwork.reciptURLPublisher
+            .sink { [weak self] url, dataInfo in
+                switch dataInfo.type {
+                case .imageData:
+                    self?.handlePhotoData(didReceiveURL: url, info: dataInfo)
+                case .chat, .whiteboard:
+                    break
+                default:
+                    self?.handleWhiteboardObject(didReceiveURL: url, info: dataInfo)
+                }
+            }
+            .store(in: &cancellables)
+    }
+
+    private func handlePhotoData(didReceiveURL URL: URL, info: DataInformationDTO) {
         guard let receiveData = filePersistence.load(path: URL) else { return }
-        filePersistence.save(dataInfo: info, data: receiveData)
+        guard let savedURL = filePersistence.save(dataInfo: info, data: receiveData, fileType: ".jpg") else { return }
+
+        if !info.isDeleted {
+            delegate?.whiteboardObjectRepository(
+                self,
+                didReceive: info.id,
+                savedURL: savedURL)
+        }
+    }
+
+    private func handleWhiteboardObject(didReceiveURL URL: URL, info: DataInformationDTO) {
+        guard let receiveData = filePersistence.load(path: URL) else { return }
+
+        filePersistence.save(dataInfo: info, data: receiveData, fileType: nil)
         guard let whiteboardObject = try? JSONDecoder().decode(
             info.type.decodableType,
             from: receiveData)

@@ -5,11 +5,13 @@
 //  Created by 최정인 on 11/7/24.
 //
 
+import Combine
 import Foundation
 
 public protocol NearbyNetworkInterface {
+    var reciptDataPublisher: AnyPublisher<Data, Never> { get }
+    var reciptURLPublisher: AnyPublisher<(url: URL, dataInfo: DataInformationDTO), Never> { get }
     var connectionDelegate: NearbyNetworkConnectionDelegate? { get set }
-    var receiptDelegate: NearbyNetworkReceiptDelegate? { get set }
 
     /// 주변 기기를 검색합니다.
     func startSearching()
@@ -17,12 +19,18 @@ public protocol NearbyNetworkInterface {
     /// 주변 기기 검색을 중지합니다.
     func stopSearching()
 
+    /// 주변 기기 검색을 중지 후 다시 시작합니다. 
+    func restartSearching()
+
     /// 주변에 내 기기를 정보와 함께 알립니다.
     /// - Parameter data: 담을 정보
     func startPublishing(with info: [String: String])
 
     /// 주변에 내 기기 알리는 것을 중지합니다.
     func stopPublishing()
+
+    /// 연결된 모든 피어와 연결을 끊습니다. 
+    func disconnectAll()
 
     /// 주변 기기와 연결을 시도합니다.
     /// - Parameter connection: 연결할 기기
@@ -57,7 +65,7 @@ public protocol NearbyNetworkConnectionDelegate: AnyObject {
 
     /// 주변 기기와의 연결에 실패했을 때 실행됩니다.
     func nearbyNetworkCannotConnect(_ sender: NearbyNetworkInterface)
-    
+
     /// 주변 기기와 연결에 성공하였을 때 실행됩니다.
     /// - Parameters:
     ///   - connection: 연결된 기기
@@ -85,20 +93,4 @@ public protocol NearbyNetworkConnectionDelegate: AnyObject {
         _ sender: NearbyNetworkInterface,
         didDisconnect connection: NetworkConnection,
         isHost: Bool)
-}
-
-public protocol NearbyNetworkReceiptDelegate: AnyObject {
-    /// 데이터를 수신했을 때 실행됩니다.
-    /// - Parameters:
-    ///   - data: 수신된 데이터
-    func nearbyNetwork(_ sender: NearbyNetworkInterface, didReceive data: Data)
-
-    /// 파일을 수신했을 때 실행됩니다.
-    /// - Parameters:
-    ///  - URL: 수신한 파일의 URL
-    ///  - info: 파일에 대한 정보
-    func nearbyNetwork(
-        _ sender: NearbyNetworkInterface,
-        didReceiveURL URL: URL,
-        info: DataInformationDTO)
 }

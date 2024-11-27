@@ -38,6 +38,7 @@ public final class WhiteboardViewController: UIViewController {
         whiteboardObjectViews = [:]
         super.init(nibName: nil, bundle: nil)
         self.objectViewFactory.whiteboardObjectViewDelegate = self
+        self.objectViewFactory.textViewDelegate = self
     }
 
     public required init?(coder: NSCoder) {
@@ -55,6 +56,7 @@ public final class WhiteboardViewController: UIViewController {
     public override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         navigationController?.isNavigationBarHidden = true
+        viewModel.action(input: .disconnectWhiteboard)
     }
 
     private func configureAttribute() {
@@ -284,5 +286,28 @@ extension WhiteboardViewController: WhiteboardObjectViewDelegate {
 
     public func whiteboardObjectViewDidEndMoving(_ sender: WhiteboardObjectView, newCenter: CGPoint) {
         viewModel.action(input: .changeObjectPosition(point: newCenter))
+    }
+}
+
+extension WhiteboardViewController: UITextViewDelegate {
+    public func textView(
+        _ textView: UITextView,
+        shouldChangeTextIn range: NSRange,
+        replacementText text: String
+    ) -> Bool {
+        guard text != "\n" else {
+            textView.resignFirstResponder()
+            viewModel.action(input: .editTextObject(text: textView.text ?? ""))
+            return false
+        }
+
+        let maxLength = 20
+        guard let originText = textView.text else { return true }
+        let newlength = originText.count + text.count - range.length
+        return newlength < maxLength
+    }
+
+    public func textViewDidEndEditing(_ textView: UITextView) {
+        viewModel.action(input: .editTextObject(text: textView.text ?? ""))
     }
 }

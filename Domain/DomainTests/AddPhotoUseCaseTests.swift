@@ -8,17 +8,19 @@
 import Domain
 import XCTest
 
+final class MockPhotoRepository: PhotoRepositoryInterface {
+    func savePhoto(id: UUID, imageData: Data) -> URL? {
+        return URL(filePath: "photo.jpg")
+    }
+}
+
 final class AddPhotoUseCaseTests: XCTestCase {
     private var useCase: AddPhotoUseCase!
 
     override func setUp() {
         super.setUp()
-
-        do {
-            useCase = try AddPhotoUseCase()
-        } catch {
-            XCTFail("init photoUseCase should success.")
-        }
+        let mockPhotoRepository = MockPhotoRepository()
+        useCase =  AddPhotoUseCase(photoRepository: mockPhotoRepository)
     }
 
     override func tearDown() {
@@ -32,21 +34,17 @@ final class AddPhotoUseCaseTests: XCTestCase {
         let dummyImageData = Data()
         let position = CGPoint(x: 100, y: 100)
         let size = CGSize(width: 200, height: 200)
-        let photoObject: PhotoObject
+        let photoObject: PhotoObject?
 
         // 실행
-        do {
-            photoObject = try useCase.addPhoto(
-                imageData: dummyImageData,
-                centerPosition: position,
-                size: size)
-        } catch {
-            XCTFail("photoObject should not fail.")
-            return
-        }
+        photoObject = useCase.addPhoto(
+            imageData: dummyImageData,
+            centerPosition: position,
+            size: size)
 
         // 검증
-        XCTAssertEqual(photoObject.photoURL.lastPathComponent.suffix(4), ".jpg")
+        XCTAssertNotNil(photoObject)
+        guard let photoObject else { return }
         XCTAssertEqual(photoObject.centerPosition, position)
         XCTAssertEqual(photoObject.size, size)
     }

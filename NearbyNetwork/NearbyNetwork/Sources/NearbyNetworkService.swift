@@ -5,6 +5,7 @@
 //  Created by 최정인 on 11/7/24.
 //
 
+import Combine
 import DataSource
 import Foundation
 import MultipeerConnectivity
@@ -12,7 +13,10 @@ import OSLog
 
 public final class NearbyNetworkService: NSObject {
     public weak var connectionDelegate: NearbyNetworkConnectionDelegate?
-    public weak var receiptDelegate: NearbyNetworkReceiptDelegate?
+    public let reciptDataPublisher: AnyPublisher<Data, Never>
+    public let reciptURLPublisher: AnyPublisher<(url: URL, dataInfo: DataInformationDTO), Never>
+    private let reciptDataSubject = PassthroughSubject<Data, Never>()
+    private let reciptURLSubject = PassthroughSubject<(url: URL, dataInfo: DataInformationDTO), Never>()
     private let peerID: MCPeerID
     private let session: MCSession
     private var serviceAdvertiser: MCNearbyServiceAdvertiser
@@ -35,6 +39,9 @@ public final class NearbyNetworkService: NSObject {
             serviceType: serviceName)
         serviceBrowser = MCNearbyServiceBrowser(peer: peerID, serviceType: serviceName)
 
+        reciptDataPublisher = reciptDataSubject.eraseToAnyPublisher()
+        reciptURLPublisher = reciptURLSubject.eraseToAnyPublisher()
+
         super.init()
 
         session.delegate = self
@@ -53,6 +60,14 @@ extension NearbyNetworkService: NearbyNetworkInterface {
         serviceBrowser.stopBrowsingForPeers()
     }
 
+    public func restartSearching() {
+        serialQueue.sync {
+            serviceBrowser.stopBrowsingForPeers()
+            foundPeers.removeAll()
+            serviceBrowser.startBrowsingForPeers()
+        }
+    }
+
     public func startPublishing(with info: [String: String]) {
         isHost = true
         serviceAdvertiser.stopAdvertisingPeer()
@@ -66,6 +81,10 @@ extension NearbyNetworkService: NearbyNetworkInterface {
 
     public func stopPublishing() {
         serviceAdvertiser.stopAdvertisingPeer()
+    }
+
+    public func disconnectAll() {
+        session.disconnect()
     }
 
     public func joinConnection(connection: NetworkConnection, context: RequestedContext) throws {
@@ -178,7 +197,7 @@ extension NearbyNetworkService: MCSessionDelegate {
             logger.log(level: .error, "\(peerID.displayName)와 연결되어 있지 않음")
             return
         }
-        receiptDelegate?.nearbyNetwork(self, didReceive: data)
+        reciptDataSubject.send(data)
     }
 
     public func session(
@@ -212,10 +231,7 @@ extension NearbyNetworkService: MCSessionDelegate {
             let dto = try? JSONDecoder().decode(DataInformationDTO.self, from: jsonData)
         else { return }
 
-        receiptDelegate?.nearbyNetwork(
-            self,
-            didReceiveURL: localURL,
-            info: dto)
+        reciptURLSubject.send((url: localURL, dataInfo: dto))
     }
 }
 
