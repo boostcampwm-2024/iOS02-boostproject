@@ -150,12 +150,12 @@ public final class ChatViewController: UIViewController {
         chatListView.addGestureRecognizer(tapGesture)
     }
 
-
     private func bind() {
         viewModel.output.chatMessageListPublisher
             .receive(on: DispatchQueue.main)
             .sink { [weak self] chatMessageList in
                 self?.applySnapshot(chatMessageList: chatMessageList)
+                self?.didTapMoveScrollButton(chatMessageList: chatMessageList)
             }
             .store(in: &cancellables)
     }
@@ -190,6 +190,14 @@ public final class ChatViewController: UIViewController {
         view.endEditing(true)
     }
 
+    private func didTapMoveScrollButton(chatMessageList: [ChatMessageCellModel]) {
+        DispatchQueue.main.async { [weak self] in
+            self?.chatListView.scrollToItem(
+                at: IndexPath(row: chatMessageList.count-1, section: 0),
+                at: .bottom,
+                animated: true)
+        }
+    }
 }
 
 extension ChatViewController: ChatTextFieldViewDelegate {
