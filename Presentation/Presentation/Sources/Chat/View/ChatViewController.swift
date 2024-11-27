@@ -12,7 +12,8 @@ import UIKit
 public final class ChatViewController: UIViewController {
     private enum ChatLayoutConstant {
         static let textFieldHeight: CGFloat = 41
-        static let textFieldBottomPadding: CGFloat = 9
+        static let textFieldTopPadding: CGFloat = 6
+        static let textFieldBottomPadding: CGFloat = 6
     }
 
     private enum CollectionViewSection: Hashable {
@@ -91,7 +92,7 @@ public final class ChatViewController: UIViewController {
             .addToSuperview(view)
             .horizontalEdges(equalTo: view, inset: horizontalMargin)
             .top(equalTo: view.safeAreaLayoutGuide.topAnchor, inset: 0)
-            .bottom(equalTo: chatTextFieldView.topAnchor, inset: 0)
+            .bottom(equalTo: chatTextFieldView.topAnchor, inset: ChatLayoutConstant.textFieldTopPadding)
     }
 
     private func configureDataSource() {

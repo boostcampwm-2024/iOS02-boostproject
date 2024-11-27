@@ -67,7 +67,6 @@ public final class WhiteboardListViewController: UIViewController {
     private let profileRepository: ProfileRepositoryInterface
     private let chatUseCase: ChatUseCaseInterface
 
-
     public init(
         viewModel: WhiteboardListViewModel,
         whiteboardViewModel: WhiteboardViewModel,
