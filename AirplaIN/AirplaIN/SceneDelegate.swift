@@ -49,6 +49,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             whiteboardObjectSet: whiteboardObjectSet,
             textFieldDefaultSize: CGSize(width: 200, height: 50))
         let drawObjectUseCase = DrawObjectUseCase()
+        let gameObjectUseCase = GameObjectUseCase(repository: GameRepository(persistenceService: PersistenceService()))
         let addPhotoUseCase = AddPhotoUseCase(photoRepository: photoRepository)
 
         let whiteboardObjectViewFactory = WhiteboardObjectViewFactory()
@@ -59,6 +60,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             addPhotoUseCase: addPhotoUseCase,
             drawObjectUseCase: drawObjectUseCase,
             textObjectUseCase: textObjectUseCase,
+            gameObjectUseCase: gameObjectUseCase,
             managemanageWhiteboardToolUseCase: manageWhiteboardToolUseCase,
             manageWhiteboardObjectUseCase: manageWhieboardObjectUseCase)
         let profileViewModel = ProfileViewModel(profileUseCase: profileUseCase)

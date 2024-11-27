@@ -29,7 +29,8 @@ public struct WhiteboardObjectViewFactory: WhiteboardObjectViewFactoryable {
             whiteboardObjectView = DrawingObjectView(drawingObject: drawingObject)
         case let photoObject as PhotoObject:
             whiteboardObjectView = PhotoObjectView(photoObject: photoObject)
-
+        case let gameObject as GameObject:
+            whiteboardObjectView = GameObjectView(gameObject: gameObject)
         default:
             whiteboardObjectView = nil
         }

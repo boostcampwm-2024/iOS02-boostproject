@@ -65,7 +65,7 @@ public protocol NearbyNetworkConnectionDelegate: AnyObject {
 
     /// 주변 기기와의 연결에 실패했을 때 실행됩니다.
     func nearbyNetworkCannotConnect(_ sender: NearbyNetworkInterface)
-    
+
     /// 주변 기기와 연결에 성공하였을 때 실행됩니다.
     /// - Parameters:
     ///   - connection: 연결된 기기
