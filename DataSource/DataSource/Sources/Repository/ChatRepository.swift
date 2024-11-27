@@ -63,8 +63,7 @@ public final class ChatRepository: ChatRepositoryInterface {
         guard let receivedData = filePersistence.load(path: url) else { return }
         filePersistence.save(
             dataInfo: dataInfo,
-            data: receivedData,
-            fileType: nil)
+            data: receivedData)
         guard
             let chatMessage = try? JSONDecoder().decode(
                 ChatMessage.self,
