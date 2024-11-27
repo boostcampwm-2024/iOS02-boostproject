@@ -36,16 +36,14 @@ public final class WhiteboardObjectRepository: WhiteboardObjectRepositoryInterfa
                 type: .drawing,
                 isDeleted: isDeleted)
         case let photoObject as PhotoObject:
-            async let sendJPEGTask: () = sendJPEG(
-                photoObject: photoObject,
-                type: .imageData,
-                isDeleted: isDeleted)
-            async let sendPhotoObjectTask: () = send(
+            await send(
                 whiteboardObject: photoObject,
                 type: .photo,
                 isDeleted: isDeleted)
-            await sendJPEGTask
-            await sendPhotoObjectTask
+            await sendJPEG(
+                photoObject: photoObject,
+                type: .imageData,
+                isDeleted: isDeleted)
         default:
             break
         }
