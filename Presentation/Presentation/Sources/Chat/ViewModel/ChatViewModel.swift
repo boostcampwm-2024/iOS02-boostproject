@@ -23,13 +23,13 @@ public class ChatViewModel: ViewModel {
     private let chatUseCase: ChatUseCaseInterface
     private var cancellables: Set<AnyCancellable>
 
-    public init(myProfile: Profile, chatUseCase: ChatUseCaseInterface) {
+    public init(chatUseCase: ChatUseCaseInterface, profileRepository: ProfileRepositoryInterface) {
         self.chatUseCase = chatUseCase
         self.chatMessages = []
         self.chatMessageCellModelListSubject = PassthroughSubject<[ChatMessageCellModel], Never>()
         self.cancellables = []
         output = Output(
-            myProfile: myProfile,
+            myProfile: profileRepository.loadProfile(),
             chatMessageListPublisher: chatMessageCellModelListSubject.eraseToAnyPublisher()
         )
 

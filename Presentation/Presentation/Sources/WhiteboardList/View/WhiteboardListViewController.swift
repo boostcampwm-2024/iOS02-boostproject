@@ -64,16 +64,24 @@ public final class WhiteboardListViewController: UIViewController {
     private let whiteboardViewModel: WhiteboardViewModel
     private let whiteboardObjectViewFactory: WhiteboardObjectViewFactoryable
     private let profileViewModel: ProfileViewModel
+    private let profileRepository: ProfileRepositoryInterface
+    private let chatUseCase: ChatUseCaseInterface
 
-    public init(viewModel: WhiteboardListViewModel,
-                whiteboardViewModel: WhiteboardViewModel,
-                whiteboardObjectViewFactory: WhiteboardObjectViewFactoryable,
-                profileViewModel: ProfileViewModel
+
+    public init(
+        viewModel: WhiteboardListViewModel,
+        whiteboardViewModel: WhiteboardViewModel,
+        whiteboardObjectViewFactory: WhiteboardObjectViewFactoryable,
+        profileViewModel: ProfileViewModel,
+        profileRepository: ProfileRepositoryInterface,
+        chatUseCase: ChatUseCaseInterface
     ) {
         self.viewModel = viewModel
         self.whiteboardViewModel = whiteboardViewModel
         self.whiteboardObjectViewFactory = whiteboardObjectViewFactory
         self.profileViewModel = profileViewModel
+        self.profileRepository = profileRepository
+        self.chatUseCase = chatUseCase
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -106,12 +114,16 @@ public final class WhiteboardListViewController: UIViewController {
 
             guard
                 let whiteboardViewModel = self?.whiteboardViewModel,
-                let whiteboardObjectViewFactory = self?.whiteboardObjectViewFactory
+                let whiteboardObjectViewFactory = self?.whiteboardObjectViewFactory,
+                let profileRepository = self?.profileRepository,
+                let chatUseCase = self?.chatUseCase
             else { return }
 
             let whiteboardViewController = WhiteboardViewController(
                 viewModel: whiteboardViewModel,
-                objectViewFactory: whiteboardObjectViewFactory)
+                objectViewFactory: whiteboardObjectViewFactory,
+                profileRepository: profileRepository,
+                chatUseCase: chatUseCase)
             self?.navigationController?.isNavigationBarHidden = false
             self?.navigationController?.pushViewController(whiteboardViewController, animated: true)
         }
@@ -270,7 +282,9 @@ extension WhiteboardListViewController: UICollectionViewDelegate {
         viewModel.action(input: .joinWhiteboard(whiteboard: selectedWhiteboard))
         let whiteboardViewController = WhiteboardViewController(
             viewModel: whiteboardViewModel,
-            objectViewFactory: whiteboardObjectViewFactory)
+            objectViewFactory: whiteboardObjectViewFactory,
+            profileRepository: profileRepository,
+            chatUseCase: chatUseCase)
         self.navigationController?.isNavigationBarHidden = false
         self.navigationController?.pushViewController(whiteboardViewController, animated: true)
     }

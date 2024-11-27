@@ -35,6 +35,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             nearbyNetwork: nearbyNetworkService,
             filePersistence: filePersistenceService)
         let photoRepository = PhotoRepository(filePersistence: filePersistenceService)
+        let chatRepository = ChatRepository(
+            nearbyNetwork: nearbyNetworkService,
+            filePersistence: filePersistenceService)
 
         let whiteboardUseCase = WhiteboardUseCase(
             whiteboardRepository: whiteboardRepository,
@@ -50,6 +53,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             textFieldDefaultSize: CGSize(width: 200, height: 50))
         let drawObjectUseCase = DrawObjectUseCase()
         let addPhotoUseCase = AddPhotoUseCase(photoRepository: photoRepository)
+        let chatUseCase = ChatUseCase(chatRepository: chatRepository)
 
         let whiteboardObjectViewFactory = WhiteboardObjectViewFactory()
 
@@ -67,7 +71,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             viewModel: whiteboardListViewModel,
             whiteboardViewModel: whiteboardViewModel,
             whiteboardObjectViewFactory: whiteboardObjectViewFactory,
-            profileViewModel: profileViewModel)
+            profileViewModel: profileViewModel,
+            profileRepository: profileRepository,
+            chatUseCase: chatUseCase)
 
         let window = UIWindow(windowScene: windowScene)
         let navigationController = UINavigationController(rootViewController: whiteboardListViewController)

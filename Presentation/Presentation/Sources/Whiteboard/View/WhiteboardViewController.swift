@@ -30,10 +30,19 @@ public final class WhiteboardViewController: UIViewController {
         let centerY = scrollView.contentOffset.y + (scrollView.bounds.height / 2)
         return CGPoint(x: centerX, y: centerY)
     }
+    private let profileRepository: ProfileRepositoryInterface
+    private let chatUseCase: ChatUseCaseInterface
 
-    public init(viewModel: WhiteboardViewModel, objectViewFactory: WhiteboardObjectViewFactoryable) {
+    public init(
+        viewModel: WhiteboardViewModel,
+        objectViewFactory: WhiteboardObjectViewFactoryable,
+        profileRepository: ProfileRepositoryInterface,
+        chatUseCase: ChatUseCaseInterface
+    ) {
         self.viewModel = viewModel
         self.objectViewFactory = objectViewFactory
+        self.profileRepository = profileRepository
+        self.chatUseCase = chatUseCase
         cancellables = []
         whiteboardObjectViews = [:]
         super.init(nibName: nil, bundle: nil)
@@ -116,6 +125,8 @@ public final class WhiteboardViewController: UIViewController {
                 switch tool {
                 case .photo:
                     self?.presentImagePicker()
+                case .chat:
+                    self?.presentChatViewController()
                 default:
                     break
                 }
@@ -216,6 +227,12 @@ public final class WhiteboardViewController: UIViewController {
         } else {
             viewModel.action(input: .deselectObject)
         }
+    }
+
+    private func presentChatViewController() {
+        let chatViewModel = ChatViewModel(chatUseCase: chatUseCase, profileRepository: profileRepository)
+        let chatViewController = ChatViewController(viewModel: chatViewModel)
+        self.present(chatViewController, animated: true)
     }
 }
 
