@@ -31,12 +31,14 @@ public final class ChatViewController: UIViewController {
     private var dataSource: UICollectionViewDiffableDataSource<CollectionViewSection, ChatMessageCellModel>?
     private let viewModel: ChatViewModel
     private var cancellables: Set<AnyCancellable>
+    private var keyboardSize: CGRect?
 
     public init(viewModel: ChatViewModel) {
         self.viewModel = viewModel
         cancellables = []
         super.init(nibName: nil, bundle: nil)
         chatTextFieldView.configureDelegate(self)
+        chatListView.delegate = self
     }
 
     required public init?(coder: NSCoder) {
@@ -48,6 +50,7 @@ public final class ChatViewController: UIViewController {
         configureAttribute()
         configureLayout()
         configureDataSource()
+        configureGesture()
         bind()
     }
 
@@ -59,6 +62,11 @@ public final class ChatViewController: UIViewController {
     override public func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         configureTearDownObserver()
+    }
+
+    override public func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesBegan(touches, with: event)
+        view.endEditing(true)
     }
 
     private func configureAttribute() {
@@ -130,6 +138,13 @@ public final class ChatViewController: UIViewController {
             object: nil)
     }
 
+    private func configureGesture() {
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(endEditingView))
+        tapGesture.cancelsTouchesInView = false
+        chatListView.addGestureRecognizer(tapGesture)
+    }
+
+
     private func bind() {
         viewModel.output.chatMessageListPublisher
             .receive(on: DispatchQueue.main)
@@ -149,18 +164,26 @@ public final class ChatViewController: UIViewController {
     @objc private func keyboardUp(notification: NSNotification) {
         guard let keyboardFrame: NSValue = notification
             .userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
-        let keyboardRectangle = keyboardFrame.cgRectValue
+        keyboardSize = keyboardFrame.cgRectValue
+        guard let keyboardSize else { return }
 
         UIView.animate(withDuration: 0.3) { [weak self] in
-            self?.view.transform = CGAffineTransform(
-                translationX: 0,
-                y: -keyboardRectangle.height)
+            self?.view.frame.size.height -= keyboardSize.height
         }
     }
 
     @objc private func keyboardDown() {
-        view.transform = .identity
+        guard let keyboardSize else { return }
+
+        UIView.animate(withDuration: 0.3) { [weak self] in
+            self?.view.frame.size.height += keyboardSize.height
+        }
     }
+
+    @objc private func endEditingView() {
+        view.endEditing(true)
+    }
+
 }
 
 extension ChatViewController: ChatTextFieldViewDelegate {
@@ -173,5 +196,14 @@ extension ChatViewController: ChatTextFieldViewDelegate {
         viewModel.action(input: .send(message: message))
         textField.text = ""
         return true
+    }
+}
+
+extension ChatViewController: UICollectionViewDelegate {
+    public func collectionView(
+        _ collectionView: UICollectionView,
+        shouldHighlightItemAt indexPath: IndexPath
+    ) -> Bool {
+        return false
     }
 }
