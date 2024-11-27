@@ -72,7 +72,10 @@ public class ChatViewModel: ViewModel {
                 case .first, .between:
                     messageType = .last
                 }
-                convertedMessages.append(ChatMessageCellModel(chatMessage: sortedMessages[index], chatMessageType: messageType))
+                convertedMessages.append(
+                    ChatMessageCellModel(
+                        chatMessage: sortedMessages[index],
+                        chatMessageType: messageType))
                 continue
             }
             if sortedMessages[index].sender == sortedMessages[index+1].sender {
@@ -92,7 +95,10 @@ public class ChatViewModel: ViewModel {
                     messageType = .first
                 }
             }
-            convertedMessages.append(ChatMessageCellModel(chatMessage: sortedMessages[index], chatMessageType: messageType))
+            convertedMessages.append(
+                ChatMessageCellModel(
+                    chatMessage: sortedMessages[index],
+                    chatMessageType: messageType))
         }
         return convertedMessages
     }
