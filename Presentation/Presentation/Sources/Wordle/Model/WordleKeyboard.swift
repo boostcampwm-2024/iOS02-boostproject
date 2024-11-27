@@ -7,5 +7,5 @@
 
 struct WordleKeyboard {
     let alphabet: String?
-    var wordleState: KeyboardState
+    var keyboardState: KeyboardState
 }

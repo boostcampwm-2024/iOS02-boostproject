@@ -10,36 +10,36 @@ import Foundation
 
 final class WordleViewModel: ObservableObject {
     @Published var keyboard: [[WordleKeyboard]] = [
-        [WordleKeyboard(alphabet: "Q", wordleState: .unused),
-         WordleKeyboard(alphabet: "W", wordleState: .unused),
-         WordleKeyboard(alphabet: "E", wordleState: .unused),
-         WordleKeyboard(alphabet: "R", wordleState: .unused),
-         WordleKeyboard(alphabet: "T", wordleState: .unused),
-         WordleKeyboard(alphabet: "Y", wordleState: .unused),
-         WordleKeyboard(alphabet: "U", wordleState: .unused),
-         WordleKeyboard(alphabet: "I", wordleState: .unused),
-         WordleKeyboard(alphabet: "O", wordleState: .unused),
-         WordleKeyboard(alphabet: "P", wordleState: .unused)],
+        [WordleKeyboard(alphabet: "Q", keyboardState: .unused),
+         WordleKeyboard(alphabet: "W", keyboardState: .unused),
+         WordleKeyboard(alphabet: "E", keyboardState: .unused),
+         WordleKeyboard(alphabet: "R", keyboardState: .unused),
+         WordleKeyboard(alphabet: "T", keyboardState: .unused),
+         WordleKeyboard(alphabet: "Y", keyboardState: .unused),
+         WordleKeyboard(alphabet: "U", keyboardState: .unused),
+         WordleKeyboard(alphabet: "I", keyboardState: .unused),
+         WordleKeyboard(alphabet: "O", keyboardState: .unused),
+         WordleKeyboard(alphabet: "P", keyboardState: .unused)],
 
-        [WordleKeyboard(alphabet: "A", wordleState: .unused),
-         WordleKeyboard(alphabet: "S", wordleState: .unused),
-         WordleKeyboard(alphabet: "D", wordleState: .unused),
-         WordleKeyboard(alphabet: "F", wordleState: .unused),
-         WordleKeyboard(alphabet: "G", wordleState: .unused),
-         WordleKeyboard(alphabet: "H", wordleState: .unused),
-         WordleKeyboard(alphabet: "J", wordleState: .unused),
-         WordleKeyboard(alphabet: "K", wordleState: .unused),
-         WordleKeyboard(alphabet: "L", wordleState: .unused)],
+        [WordleKeyboard(alphabet: "A", keyboardState: .unused),
+         WordleKeyboard(alphabet: "S", keyboardState: .unused),
+         WordleKeyboard(alphabet: "D", keyboardState: .unused),
+         WordleKeyboard(alphabet: "F", keyboardState: .unused),
+         WordleKeyboard(alphabet: "G", keyboardState: .unused),
+         WordleKeyboard(alphabet: "H", keyboardState: .unused),
+         WordleKeyboard(alphabet: "J", keyboardState: .unused),
+         WordleKeyboard(alphabet: "K", keyboardState: .unused),
+         WordleKeyboard(alphabet: "L", keyboardState: .unused)],
 
-        [WordleKeyboard(alphabet: nil, wordleState: .enter),
-         WordleKeyboard(alphabet: "Z", wordleState: .unused),
-         WordleKeyboard(alphabet: "X", wordleState: .unused),
-         WordleKeyboard(alphabet: "C", wordleState: .unused),
-         WordleKeyboard(alphabet: "V", wordleState: .unused),
-         WordleKeyboard(alphabet: "B", wordleState: .unused),
-         WordleKeyboard(alphabet: "N", wordleState: .unused),
-         WordleKeyboard(alphabet: "M", wordleState: .unused),
-         WordleKeyboard(alphabet: nil, wordleState: .erase)]
+        [WordleKeyboard(alphabet: nil, keyboardState: .enter),
+         WordleKeyboard(alphabet: "Z", keyboardState: .unused),
+         WordleKeyboard(alphabet: "X", keyboardState: .unused),
+         WordleKeyboard(alphabet: "C", keyboardState: .unused),
+         WordleKeyboard(alphabet: "V", keyboardState: .unused),
+         WordleKeyboard(alphabet: "B", keyboardState: .unused),
+         WordleKeyboard(alphabet: "N", keyboardState: .unused),
+         WordleKeyboard(alphabet: "M", keyboardState: .unused),
+         WordleKeyboard(alphabet: nil, keyboardState: .erase)]
     ]
 
     @Published var wordle: [[Wordle]] = Array(
@@ -67,7 +67,7 @@ final class WordleViewModel: ObservableObject {
     }
 
     private func typeWordleKeyboard(keyboard: WordleKeyboard) {
-        switch keyboard.wordleState {
+        switch keyboard.keyboardState {
         case .enter:
             submitWordle()
         case .erase:
@@ -147,15 +147,15 @@ final class WordleViewModel: ObservableObject {
     private func changeKeyboardState(alphabet: String, state: KeyboardState) {
         for index in 0..<3 {
             guard let keyboardIndex = keyboard[index].firstIndex(where: { $0.alphabet == alphabet}) else { continue }
-            switch keyboard[index][keyboardIndex].wordleState {
+            switch keyboard[index][keyboardIndex].keyboardState {
             case .correct:
                 return
             case .misplaced:
                 if state == .correct {
-                    keyboard[index][keyboardIndex].wordleState = state
+                    keyboard[index][keyboardIndex].keyboardState = state
                 }
             default:
-                keyboard[index][keyboardIndex].wordleState = state
+                keyboard[index][keyboardIndex].keyboardState = state
             }
         }
     }

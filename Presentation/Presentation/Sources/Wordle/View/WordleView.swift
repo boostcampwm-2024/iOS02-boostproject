@@ -125,7 +125,7 @@ struct WordleView: View {
                                 viewModel.action(input: .typeKeyboard(keyboard: viewModel.keyboard[row][col]))
                             }
                             .disabled(
-                                viewModel.keyboard[row][col].wordleState == .enter ?
+                                viewModel.keyboard[row][col].keyboardState == .enter ?
                                 !viewModel.canSubmitWordle : viewModel.isGameOver)
                     }
                 }

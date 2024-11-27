@@ -20,7 +20,7 @@ struct KeyboardTileView: View {
 
     // 타일 색상
     private var keywordColor: Color {
-        switch wordleKeyboard.wordleState {
+        switch wordleKeyboard.keyboardState {
         case .unused, .enter, .erase:
                 .gray200
         case .wrong:
@@ -34,7 +34,7 @@ struct KeyboardTileView: View {
 
     // Text 색상
     private var keyboardTextColor: Color {
-        switch wordleKeyboard.wordleState {
+        switch wordleKeyboard.keyboardState {
         case .unused, .enter, .erase:
                 .airplainBlack
         default:
@@ -53,11 +53,11 @@ struct KeyboardTileView: View {
                     Text(alphabet)
                         .font(Font(AirplainFont.Heading3))
                         .foregroundStyle(keyboardTextColor)
-                } else if wordleKeyboard.wordleState == .erase {
+                } else if wordleKeyboard.keyboardState == .erase {
                     Text("⌫")
                         .font(Font(AirplainFont.Heading3))
                         .foregroundStyle(keyboardTextColor)
-                } else if wordleKeyboard.wordleState == .enter {
+                } else if wordleKeyboard.keyboardState == .enter {
                     Text("ENTER")
                         .font(.system(size: KeyboardTileViewLayoutConstant.enterFontSize, weight: .bold))
                         .foregroundStyle(keyboardTextColor)
