@@ -98,8 +98,8 @@ public final class ChatViewController: UIViewController {
     private func bind() {
         viewModel.output.chatMessageListPublisher
             .receive(on: DispatchQueue.main)
-            .sink { chatMessageList in
-                dump(chatMessageList)
+            .sink { [weak self] chatMessageList in
+                self?.applySnapshot(chatMessageList: chatMessageList)
             }
             .store(in: &cancellables)
     }

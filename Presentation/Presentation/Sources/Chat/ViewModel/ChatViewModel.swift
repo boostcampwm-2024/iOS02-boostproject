@@ -14,21 +14,23 @@ public class ChatViewModel: ViewModel {
     }
     struct Output {
         let myProfile: Profile
-        let chatMessageListPublisher: AnyPublisher<[ChatMessage], Never>
+        let chatMessageListPublisher: AnyPublisher<[ChatMessageCellModel], Never>
     }
 
     let output: Output
-    private var chatMessageList: CurrentValueSubject<[ChatMessage], Never>
+    private var chatMessages: [ChatMessage]
+    private var chatMessageCellModelListSubject: PassthroughSubject<[ChatMessageCellModel], Never>
     private let chatUseCase: ChatUseCaseInterface
     private var cancellables: Set<AnyCancellable>
 
     public init(myProfile: Profile, chatUseCase: ChatUseCaseInterface) {
         self.chatUseCase = chatUseCase
-        self.chatMessageList = CurrentValueSubject<[ChatMessage], Never>([])
+        self.chatMessages = []
+        self.chatMessageCellModelListSubject = PassthroughSubject<[ChatMessageCellModel], Never>()
         self.cancellables = []
         output = Output(
             myProfile: myProfile,
-            chatMessageListPublisher: chatMessageList.eraseToAnyPublisher()
+            chatMessageListPublisher: chatMessageCellModelListSubject.eraseToAnyPublisher()
         )
 
         receviedMessage()
@@ -49,9 +51,49 @@ public class ChatViewModel: ViewModel {
 
     private func receviedMessage() {
         chatUseCase.chatMessagePublisher
-            .sink { [weak self] in
-                self?.chatMessageList.value.append($0)
+            .sink { [weak self] chatMessage in
+                self?.chatMessages.append(chatMessage)
+                guard let convertedMessages = self?.convertToCellModel() else { return }
+                self?.chatMessageCellModelListSubject.send(convertedMessages)
             }
             .store(in: &cancellables)
+    }
+
+    private func convertToCellModel() -> [ChatMessageCellModel] {
+        let sortedMessages = chatMessages
+            .sorted { $0.sentAt < $1.sentAt }
+        var convertedMessages: [ChatMessageCellModel] = []
+        var messageType: ChatMessageType = .last
+        for index in 0..<chatMessages.count {
+            if index == chatMessages.count-1 {
+                switch messageType {
+                case .single, .last:
+                    messageType = .single
+                case .first, .between:
+                    messageType = .last
+                }
+                convertedMessages.append(ChatMessageCellModel(chatMessage: sortedMessages[index], chatMessageType: messageType))
+                continue
+            }
+            if sortedMessages[index].sender == sortedMessages[index+1].sender {
+                switch messageType {
+                case .single, .last:
+                    messageType = .first
+                case .first, .between:
+                    messageType = .between
+                }
+            } else {
+                switch messageType {
+                case .single:
+                    messageType = .single
+                case .first, .between:
+                    messageType = .last
+                case .last:
+                    messageType = .first
+                }
+            }
+            convertedMessages.append(ChatMessageCellModel(chatMessage: sortedMessages[index], chatMessageType: messageType))
+        }
+        return convertedMessages
     }
 }
