@@ -192,7 +192,10 @@ extension ChatViewController: ChatTextFieldViewDelegate {
     }
 
     public func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        guard let message = textField.text else { return true }
+        guard
+            let message = textField.text,
+            !message.isEmpty
+        else { return true }
         viewModel.action(input: .send(message: message))
         textField.text = ""
         return true
