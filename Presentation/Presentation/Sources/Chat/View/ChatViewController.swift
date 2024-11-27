@@ -50,6 +50,16 @@ public final class ChatViewController: UIViewController {
         bind()
     }
 
+    override public func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        configureSetUpObserver()
+    }
+
+    override public func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        configureTearDownObserver()
+    }
+
     private func configureAttribute() {
         view.backgroundColor = .systemBackground
         chatListView.showsVerticalScrollIndicator = false
@@ -95,6 +105,30 @@ public final class ChatViewController: UIViewController {
             })
     }
 
+    private func configureSetUpObserver() {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(keyboardUp),
+            name: UIResponder.keyboardWillShowNotification,
+            object: nil)
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(keyboardDown),
+            name: UIResponder.keyboardWillHideNotification,
+            object: nil)
+    }
+
+    private func configureTearDownObserver() {
+        NotificationCenter.default.removeObserver(
+            self,
+            name: UIResponder.keyboardWillShowNotification,
+            object: nil)
+        NotificationCenter.default.removeObserver(
+            self,
+            name: UIResponder.keyboardWillHideNotification,
+            object: nil)
+    }
+
     private func bind() {
         viewModel.output.chatMessageListPublisher
             .receive(on: DispatchQueue.main)
@@ -109,5 +143,21 @@ public final class ChatViewController: UIViewController {
         snapshot.appendSections([.chat])
         snapshot.appendItems(chatMessageList)
         dataSource?.apply(snapshot, animatingDifferences: true)
+    }
+
+    @objc private func keyboardUp(notification: NSNotification) {
+        guard let keyboardFrame: NSValue = notification
+            .userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
+        let keyboardRectangle = keyboardFrame.cgRectValue
+
+        UIView.animate(withDuration: 0.3) { [weak self] in
+            self?.view.transform = CGAffineTransform(
+                translationX: 0,
+                y: -keyboardRectangle.height)
+        }
+    }
+
+    @objc private func keyboardDown() {
+        view.transform = .identity
     }
 }
