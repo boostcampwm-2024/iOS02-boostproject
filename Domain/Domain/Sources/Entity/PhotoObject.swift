@@ -8,7 +8,7 @@
 import Foundation
 
 public final class PhotoObject: WhiteboardObject {
-    public let photoURL: URL
+    public private(set) var photoURL: URL
 
     private enum CodingKeys: String, CodingKey { case photoURL }
 
@@ -42,5 +42,9 @@ public final class PhotoObject: WhiteboardObject {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(photoURL, forKey: .photoURL)
         try super.encode(to: encoder)
+    }
+
+    func configurePhotoURL(with URL: URL) {
+        photoURL = URL
     }
 }

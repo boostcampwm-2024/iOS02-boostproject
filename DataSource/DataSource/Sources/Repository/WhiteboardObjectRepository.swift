@@ -36,16 +36,14 @@ public final class WhiteboardObjectRepository: WhiteboardObjectRepositoryInterfa
                 type: .drawing,
                 isDeleted: isDeleted)
         case let photoObject as PhotoObject:
-            async let sendJPEGTask: () = sendJPEG(
-                photoObject: photoObject,
-                type: .imageData,
-                isDeleted: isDeleted)
-            async let sendPhotoObjectTask: () = send(
+            await send(
                 whiteboardObject: photoObject,
                 type: .photo,
                 isDeleted: isDeleted)
-            await sendJPEGTask
-            await sendPhotoObjectTask
+            await sendJPEG(
+                photoObject: photoObject,
+                type: .imageData,
+                isDeleted: isDeleted)
         default:
             break
         }
@@ -62,7 +60,7 @@ public final class WhiteboardObjectRepository: WhiteboardObjectRepositoryInterfa
             type: type,
             isDeleted: isDeleted)
         guard let url = filePersistence
-            .save(dataInfo: objectInformation, data: objectData, fileType: nil)
+            .save(dataInfo: objectInformation, data: objectData)
         else {
             logger.log(level: .error, "url저장 실패: 데이터를 보내지 못했습니다.")
             return
@@ -100,7 +98,7 @@ public final class WhiteboardObjectRepository: WhiteboardObjectRepositoryInterfa
 
     private func handlePhotoData(didReceiveURL URL: URL, info: DataInformationDTO) {
         guard let receiveData = filePersistence.load(path: URL) else { return }
-        guard let savedURL = filePersistence.save(dataInfo: info, data: receiveData, fileType: ".jpg") else { return }
+        guard let savedURL = filePersistence.save(dataInfo: info, data: receiveData) else { return }
 
         if !info.isDeleted {
             delegate?.whiteboardObjectRepository(
@@ -113,7 +111,7 @@ public final class WhiteboardObjectRepository: WhiteboardObjectRepositoryInterfa
     private func handleWhiteboardObject(didReceiveURL URL: URL, info: DataInformationDTO) {
         guard let receiveData = filePersistence.load(path: URL) else { return }
 
-        filePersistence.save(dataInfo: info, data: receiveData, fileType: nil)
+        filePersistence.save(dataInfo: info, data: receiveData)
         guard let whiteboardObject = try? JSONDecoder().decode(
             info.type.decodableType,
             from: receiveData)

@@ -20,7 +20,7 @@ public final class ManageWhiteboardObjectUseCase: ManageWhiteboardObjectUseCaseI
     private let updatedWhiteboardSubject: PassthroughSubject<WhiteboardObject, Never>
     private let removedWhiteboardSubject: PassthroughSubject<WhiteboardObject, Never>
     private let selectedObjectIDSubject: CurrentValueSubject<UUID?, Never>
-    private let whiteboardObjectRepository: WhiteboardObjectRepositoryInterface
+    private var whiteboardObjectRepository: WhiteboardObjectRepositoryInterface
     private let myProfile: Profile
 
     public init(
@@ -41,40 +41,50 @@ public final class ManageWhiteboardObjectUseCase: ManageWhiteboardObjectUseCaseI
         self.whiteboardObjectSet = whiteboardObjectSet
         myProfile = profileRepository.loadProfile()
         self.whiteboardObjectRepository = whiteboardRepository
+        whiteboardObjectRepository.delegate = self
     }
 
     @discardableResult
-    public func addObject(whiteboardObject: WhiteboardObject) async -> Bool {
+    public func addObject(whiteboardObject: WhiteboardObject, isReceivedObject: Bool) async -> Bool {
         guard await !whiteboardObjectSet.contains(object: whiteboardObject) else { return false }
 
-        await whiteboardObjectRepository.send(whiteboardObject: whiteboardObject, isDeleted: false)
         await whiteboardObjectSet.insert(object: whiteboardObject)
         addedWhiteboardSubject.send(whiteboardObject)
 
+        if !isReceivedObject {
+            await whiteboardObjectRepository.send(whiteboardObject: whiteboardObject, isDeleted: false)
+        }
+
         return true
     }
 
     @discardableResult
-    public func updateObject(whiteboardObject: WhiteboardObject) async -> Bool {
+    public func updateObject(whiteboardObject: WhiteboardObject, isReceivedObject: Bool) async -> Bool {
         guard await whiteboardObjectSet.contains(object: whiteboardObject) else { return false }
 
-        await whiteboardObjectRepository.send(whiteboardObject: whiteboardObject, isDeleted: false)
         await whiteboardObjectSet.update(object: whiteboardObject)
         updatedWhiteboardSubject.send(whiteboardObject)
 
+        if !isReceivedObject {
+            await whiteboardObjectRepository.send(whiteboardObject: whiteboardObject, isDeleted: false)
+        }
+
         return true
     }
 
     @discardableResult
-    public func removeObject(whiteboardObjectID: UUID) async -> Bool {
+    public func removeObject(whiteboardObjectID: UUID, isReceivedObject: Bool) async -> Bool {
         guard
-            let object = await whiteboardObjectSet.fetchObjectByID(id: whiteboardObjectID),
-            object.selectedBy == myProfile
+            let object = await whiteboardObjectSet.fetchObjectByID(id: whiteboardObjectID)
         else { return false }
 
         await whiteboardObjectSet.remove(object: object)
-        await whiteboardObjectRepository.send(whiteboardObject: object, isDeleted: true)
         removedWhiteboardSubject.send(object)
+
+        if !isReceivedObject {
+            guard object.selectedBy == myProfile else { return false }
+            await whiteboardObjectRepository.send(whiteboardObject: object, isDeleted: true)
+        }
 
         return true
     }
@@ -89,7 +99,7 @@ public final class ManageWhiteboardObjectUseCase: ManageWhiteboardObjectUseCaseI
         else { return false }
 
         object.select(by: myProfile)
-        await updateObject(whiteboardObject: object)
+        await updateObject(whiteboardObject: object, isReceivedObject: false)
         selectedObjectIDSubject.send(whiteboardObjectID)
         return true
     }
@@ -104,7 +114,7 @@ public final class ManageWhiteboardObjectUseCase: ManageWhiteboardObjectUseCaseI
         else { return false }
 
         selectedObject.deselect()
-        await updateObject(whiteboardObject: selectedObject)
+        await updateObject(whiteboardObject: selectedObject, isReceivedObject: false)
         return true
     }
 
@@ -122,7 +132,7 @@ public final class ManageWhiteboardObjectUseCase: ManageWhiteboardObjectUseCaseI
         object.changeScale(to: scale)
         object.changeAngle(to: angle)
 
-        return await updateObject(whiteboardObject: object)
+        return await updateObject(whiteboardObject: object, isReceivedObject: false)
     }
 
     @discardableResult
@@ -133,7 +143,7 @@ public final class ManageWhiteboardObjectUseCase: ManageWhiteboardObjectUseCaseI
         else { return false }
 
         object.changePosition(position: position)
-        return await updateObject(whiteboardObject: object)
+        return await updateObject(whiteboardObject: object, isReceivedObject: false)
     }
 }
 
@@ -148,7 +158,8 @@ extension ManageWhiteboardObjectUseCase: WhiteboardObjectRepositoryDelegate {
                 let photoObject = await whiteboardObjectSet
                     .fetchObjectByID(id: photoID) as? PhotoObject
             else { return }
-            await updateObject(whiteboardObject: photoObject)
+            photoObject.configurePhotoURL(with: savedURL)
+            await updateObject(whiteboardObject: photoObject, isReceivedObject: true)
         }
     }
 
@@ -160,9 +171,9 @@ extension ManageWhiteboardObjectUseCase: WhiteboardObjectRepositoryDelegate {
             let isContains = await whiteboardObjectSet.contains(object: object)
 
             if isContains {
-                await updateObject(whiteboardObject: object)
+                await updateObject(whiteboardObject: object, isReceivedObject: true)
             } else {
-                await addObject(whiteboardObject: object)
+                await addObject(whiteboardObject: object, isReceivedObject: true)
             }
         }
     }
@@ -172,7 +183,7 @@ extension ManageWhiteboardObjectUseCase: WhiteboardObjectRepositoryDelegate {
         didDelete object: WhiteboardObject
     ) {
         Task {
-            await removeObject(whiteboardObjectID: object.id)
+            await removeObject(whiteboardObjectID: object.id, isReceivedObject: true)
         }
     }
 }

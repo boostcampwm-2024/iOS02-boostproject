@@ -139,7 +139,6 @@ public class WhiteboardObjectView: UIView {
             profileIcon: profileIcon,
             profileIconSize: WhiteboardObjectViewLayoutConstant.profileIconSize)
         profileIconView.isHidden = false
-        controlView.isHidden = false
         borderLayer.frame = calculateBorderFrame()
         borderLayer.borderColor = profileColor.cgColor
     }

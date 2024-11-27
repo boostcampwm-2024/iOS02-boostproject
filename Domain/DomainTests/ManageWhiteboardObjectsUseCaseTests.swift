@@ -43,7 +43,9 @@ final class ManageWhiteboardObjectsUseCaseTests: XCTestCase {
             .store(in: &cancellables)
 
         // 실행
-        let isSuccess = await useCase.addObject(whiteboardObject: targetObject)
+        let isSuccess = await useCase.addObject(
+            whiteboardObject: targetObject,
+            isReceivedObject: false)
 
         // 검증
         XCTAssertTrue(isSuccess)
@@ -59,8 +61,12 @@ final class ManageWhiteboardObjectsUseCaseTests: XCTestCase {
             size: CGSize(width: 100, height: 100))
 
         // 실행
-        let isSuccess = await useCase.addObject(whiteboardObject: targetObject)
-        let isFailure = await !useCase.addObject(whiteboardObject: targetObject)
+        let isSuccess = await useCase.addObject(
+            whiteboardObject: targetObject,
+            isReceivedObject: false)
+        let isFailure = await !useCase.addObject(
+            whiteboardObject: targetObject,
+            isReceivedObject: false)
 
         // 검증
         XCTAssertTrue(isSuccess)
@@ -86,8 +92,10 @@ final class ManageWhiteboardObjectsUseCaseTests: XCTestCase {
             .store(in: &cancellables)
 
         // 실행
-        await useCase.addObject(whiteboardObject: object)
-        let isSuccess = await useCase.updateObject(whiteboardObject: updatedObject)
+        await useCase.addObject(whiteboardObject: object, isReceivedObject: false)
+        let isSuccess = await useCase.updateObject(
+            whiteboardObject: updatedObject,
+            isReceivedObject: false)
 
         // 검증
         XCTAssertTrue(isSuccess)
@@ -108,7 +116,9 @@ final class ManageWhiteboardObjectsUseCaseTests: XCTestCase {
             .store(in: &cancellables)
 
         // 실행
-        let isFailure = await !useCase.updateObject(whiteboardObject: targetObject)
+        let isFailure = await !useCase.updateObject(
+            whiteboardObject: targetObject,
+            isReceivedObject: false)
 
         // 검증
         XCTAssertTrue(isFailure)
@@ -138,10 +148,12 @@ final class ManageWhiteboardObjectsUseCaseTests: XCTestCase {
             .store(in: &cancellables)
 
         // 실행
-        await useCase.addObject(whiteboardObject: object1)
-        await useCase.addObject(whiteboardObject: targetObject)
-        await useCase.addObject(whiteboardObject: object2)
-        let isSuceess = await useCase.removeObject(whiteboardObjectID: targetObject.id)
+        await useCase.addObject(whiteboardObject: object1, isReceivedObject: false)
+        await useCase.addObject(whiteboardObject: targetObject, isReceivedObject: false)
+        await useCase.addObject(whiteboardObject: object2, isReceivedObject: false)
+        let isSuceess = await useCase.removeObject(
+            whiteboardObjectID: targetObject.id,
+            isReceivedObject: false)
 
         // 검증
         XCTAssertTrue(isSuceess)
@@ -162,7 +174,9 @@ final class ManageWhiteboardObjectsUseCaseTests: XCTestCase {
             .store(in: &cancellables)
 
         // 실행
-        let isFailure = await !useCase.removeObject(whiteboardObjectID: object.id)
+        let isFailure = await !useCase.removeObject(
+            whiteboardObjectID: object.id,
+            isReceivedObject: false)
 
         // 검증
         XCTAssertTrue(isFailure)
@@ -185,21 +199,17 @@ final class ManageWhiteboardObjectsUseCaseTests: XCTestCase {
             centerPosition: .zero,
             size: CGSize(width: 100, height: 100),
             selectedBy: Profile(nickname: "other", profileIcon: .angel))
-        var receivedObject: WhiteboardObject?
-
-        useCase.removedObjectPublisher
-            .sink { receivedObject = $0 }
-            .store(in: &cancellables)
 
         // 실행
-        await useCase.addObject(whiteboardObject: object1)
-        await useCase.addObject(whiteboardObject: targetObject)
-        await useCase.addObject(whiteboardObject: object2)
-        let isFailure = await !useCase.removeObject(whiteboardObjectID: targetObject.id)
+        await useCase.addObject(whiteboardObject: object1, isReceivedObject: false)
+        await useCase.addObject(whiteboardObject: targetObject, isReceivedObject: false)
+        await useCase.addObject(whiteboardObject: object2, isReceivedObject: false)
+        let isFailure = await !useCase.removeObject(
+            whiteboardObjectID: targetObject.id,
+            isReceivedObject: false)
 
         // 검증
         XCTAssertTrue(isFailure)
-        XCTAssertNil(receivedObject)
     }
 
     // 화이트보드 오브젝트 선택 성공하는지 테스트
@@ -212,7 +222,7 @@ final class ManageWhiteboardObjectsUseCaseTests: XCTestCase {
             selectedBy: nil)
 
         // 실행
-        await useCase.addObject(whiteboardObject: targetObject)
+        await useCase.addObject(whiteboardObject: targetObject, isReceivedObject: false)
         let isSuccess = await useCase.select(whiteboardObjectID: targetObject.id)
 
         // 검증
@@ -232,7 +242,7 @@ final class ManageWhiteboardObjectsUseCaseTests: XCTestCase {
             selectedBy: strangerProfile)
 
         // 실행
-        await useCase.addObject(whiteboardObject: targetObject)
+        await useCase.addObject(whiteboardObject: targetObject, isReceivedObject: false)
         let isFailure = await !useCase.select(whiteboardObjectID: targetObject.id)
 
         // 검증
@@ -268,7 +278,7 @@ final class ManageWhiteboardObjectsUseCaseTests: XCTestCase {
             selectedBy: nil)
 
         // 실행
-        await useCase.addObject(whiteboardObject: targetObject)
+        await useCase.addObject(whiteboardObject: targetObject, isReceivedObject: false)
         await useCase.select(whiteboardObjectID: targetObject.id)
         let isSuccess = await useCase.deselect()
 
@@ -287,7 +297,7 @@ final class ManageWhiteboardObjectsUseCaseTests: XCTestCase {
             selectedBy: myProfile)
 
         // 실행
-        await useCase.addObject(whiteboardObject: targetObject)
+        await useCase.addObject(whiteboardObject: targetObject, isReceivedObject: false)
         let isSuccess = await useCase.changeSizeAndAngle(
             whiteboardObjectID: targetObject.id,
             scale: 2,
@@ -310,7 +320,7 @@ final class ManageWhiteboardObjectsUseCaseTests: XCTestCase {
             selectedBy: strangerProfile)
 
         // 실행
-        await useCase.addObject(whiteboardObject: targetObject)
+        await useCase.addObject(whiteboardObject: targetObject, isReceivedObject: false)
         let isFailure = await !useCase.changeSizeAndAngle(
             whiteboardObjectID: targetObject.id,
             scale: 2,
@@ -332,7 +342,7 @@ final class ManageWhiteboardObjectsUseCaseTests: XCTestCase {
             selectedBy: nil)
 
         // 실행
-        await useCase.addObject(whiteboardObject: targetObject)
+        await useCase.addObject(whiteboardObject: targetObject, isReceivedObject: false)
         let isFailure = await !useCase.changeSizeAndAngle(
             whiteboardObjectID: targetObject.id,
             scale: 2,
@@ -354,7 +364,7 @@ final class ManageWhiteboardObjectsUseCaseTests: XCTestCase {
             selectedBy: myProfile)
 
         // 실행
-        await useCase.addObject(whiteboardObject: targetObject)
+        await useCase.addObject(whiteboardObject: targetObject, isReceivedObject: false)
         let isSuccess = await useCase.changeSizeAndAngle(
             whiteboardObjectID: targetObject.id,
             scale: targetObject.scale,
@@ -377,7 +387,7 @@ final class ManageWhiteboardObjectsUseCaseTests: XCTestCase {
             selectedBy: strangerProfile)
 
         // 실행
-        await useCase.addObject(whiteboardObject: targetObject)
+        await useCase.addObject(whiteboardObject: targetObject, isReceivedObject: false)
         let isFailure = await !useCase.changeSizeAndAngle(
             whiteboardObjectID: targetObject.id,
             scale: targetObject.scale,
@@ -399,7 +409,7 @@ final class ManageWhiteboardObjectsUseCaseTests: XCTestCase {
             selectedBy: nil)
 
         // 실행
-        await useCase.addObject(whiteboardObject: targetObject)
+        await useCase.addObject(whiteboardObject: targetObject, isReceivedObject: false)
         let isFailure = await !useCase.changeSizeAndAngle(
             whiteboardObjectID: targetObject.id,
             scale: targetObject.scale,

@@ -33,6 +33,12 @@ final class PhotoObjectView: WhiteboardObjectView {
         super.configureLayout()
     }
 
+    override func update(with object: WhiteboardObject) {
+        super.update(with: object)
+        guard let photoObject = object as? PhotoObject else { return }
+        configureImage(with: photoObject.photoURL)
+    }
+
     private func configureImage(with imageURL: URL) {
         guard
             let imageData = try? Data(contentsOf: imageURL),

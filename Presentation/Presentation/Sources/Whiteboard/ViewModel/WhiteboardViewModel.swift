@@ -126,7 +126,8 @@ public final class WhiteboardViewModel: ViewModel {
 
     private func addWhiteboardObject(object: WhiteboardObject) {
         Task {
-            await manageWhiteboardObjectUseCase.addObject(whiteboardObject: object)
+            await manageWhiteboardObjectUseCase
+                .addObject(whiteboardObject: object, isReceivedObject: false)
         }
     }
 
@@ -143,7 +144,8 @@ public final class WhiteboardViewModel: ViewModel {
         else { return }
 
         Task {
-            await manageWhiteboardObjectUseCase.addObject(whiteboardObject: photoObject)
+            await manageWhiteboardObjectUseCase
+                .addObject(whiteboardObject: photoObject, isReceivedObject: false)
         }
     }
 
@@ -214,7 +216,8 @@ public final class WhiteboardViewModel: ViewModel {
     private func deleteObject() {
         guard let selectedObjectID = selectedObjectSubject.value else { return }
         Task {
-            let isSuccess = await manageWhiteboardObjectUseCase.removeObject(whiteboardObjectID: selectedObjectID)
+            let isSuccess = await manageWhiteboardObjectUseCase
+                .removeObject(whiteboardObjectID: selectedObjectID, isReceivedObject: false)
             if isSuccess { selectedObjectSubject.send(nil) }
         }
     }

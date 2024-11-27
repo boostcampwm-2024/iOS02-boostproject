@@ -61,6 +61,7 @@ final class DrawingView: UIView {
             drawLine(to: point)
         case .ended:
             delegate?.drawingViewDidEndDrawing(self)
+            drawingLayer.path = nil
             previousPoint = nil
         default:
             break

@@ -36,11 +36,7 @@ public final class ChatRepository: ChatRepositoryInterface {
             type: .chat,
             isDeleted: false)
         guard
-            let url = filePersistence
-                .save(
-                    dataInfo: chatMessageInformation,
-                    data: chatMessageData,
-                    fileType: nil)
+            let url = filePersistence.save(dataInfo: chatMessageInformation, data: chatMessageData)
         else {
             logger.log(level: .error, "url저장 실패: 데이터를 보내지 못했습니다.")
             return nil
@@ -67,8 +63,7 @@ public final class ChatRepository: ChatRepositoryInterface {
         guard let receivedData = filePersistence.load(path: url) else { return }
         filePersistence.save(
             dataInfo: dataInfo,
-            data: receivedData,
-            fileType: nil)
+            data: receivedData)
         guard
             let chatMessage = try? JSONDecoder().decode(
                 ChatMessage.self,
