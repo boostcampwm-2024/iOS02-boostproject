@@ -52,6 +52,12 @@ public final class ChatViewController: UIViewController {
         configureDataSource()
         configureGesture()
         bind()
+
+        if let sheetPresentationController = sheetPresentationController {
+            sheetPresentationController.detents = [.medium(), .large()]
+            sheetPresentationController.prefersGrabberVisible = true
+            sheetPresentationController.prefersScrollingExpandsWhenScrolledToEdge = false
+        }
     }
 
     override public func viewWillAppear(_ animated: Bool) {
