@@ -5,6 +5,7 @@
 //  Created by 박승찬 on 11/24/24.
 //
 
+import Combine
 import Domain
 import OSLog
 
@@ -12,6 +13,7 @@ public final class ChatRepository: ChatRepositoryInterface {
     public weak var delegate: ChatRepositoryDelegate?
     private var nearbyNetwork: NearbyNetworkInterface
     private let filePersistence: FilePersistenceInterface
+    private var cancellables: Set<AnyCancellable>
     private let logger = Logger()
 
     init(
@@ -22,7 +24,8 @@ public final class ChatRepository: ChatRepositoryInterface {
         self.delegate = delegate
         self.nearbyNetwork = nearbyNetwork
         self.filePersistence = filePersistence
-        self.nearbyNetwork.receiptDelegate = self
+        cancellables = []
+        bindNearbyNetwork()
     }
 
     public func send(message: String, profile: Profile) async -> ChatMessage? {
@@ -46,20 +49,24 @@ public final class ChatRepository: ChatRepositoryInterface {
 
         return chatMessage
     }
-}
 
-extension ChatRepository: NearbyNetworkReceiptDelegate {
-    // TODO: 사용안할 메소드
-    public func nearbyNetwork(_ sender: any NearbyNetworkInterface, didReceive data: Data) { }
+    private func bindNearbyNetwork() {
+        nearbyNetwork.reciptURLPublisher
+            .sink { [weak self] url, dataInfo in
+                switch dataInfo.type {
+                case .chat:
+                    self?.handleChatData(url: url, dataInfo: dataInfo)
+                default:
+                    break
+                }
+            }
+            .store(in: &cancellables)
+    }
 
-    public func nearbyNetwork(
-        _ sender: any NearbyNetworkInterface,
-        didReceiveURL URL: URL,
-        info: DataInformationDTO
-    ) {
-        guard let receivedData = filePersistence.load(path: URL) else { return }
+    private func handleChatData(url: URL, dataInfo: DataInformationDTO) {
+        guard let receivedData = filePersistence.load(path: url) else { return }
         filePersistence.save(
-            dataInfo: info,
+            dataInfo: dataInfo,
             data: receivedData,
             fileType: nil)
         guard

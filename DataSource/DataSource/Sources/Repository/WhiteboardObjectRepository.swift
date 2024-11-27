@@ -5,6 +5,7 @@
 //  Created by 박승찬 on 11/21/24.
 //
 
+import Combine
 import Domain
 import OSLog
 
@@ -12,12 +13,14 @@ public final class WhiteboardObjectRepository: WhiteboardObjectRepositoryInterfa
     public weak var delegate: WhiteboardObjectRepositoryDelegate?
     private var nearbyNetwork: NearbyNetworkInterface
     private let filePersistence: FilePersistenceInterface
+    private var cancellables: Set<AnyCancellable>
     private let logger = Logger()
 
     public init(nearbyNetwork: NearbyNetworkInterface, filePersistence: FilePersistenceInterface) {
         self.nearbyNetwork = nearbyNetwork
         self.filePersistence = filePersistence
-        self.nearbyNetwork.receiptDelegate = self
+        cancellables = []
+        bindNearbyNetwork()
     }
 
     public func send(whiteboardObject: WhiteboardObject, isDeleted: Bool) async {
@@ -79,23 +82,20 @@ public final class WhiteboardObjectRepository: WhiteboardObjectRepositoryInterfa
             isDeleted: isDeleted)
         await nearbyNetwork.send(fileURL: photoObject.photoURL, info: dataInformation)
     }
-}
 
-extension WhiteboardObjectRepository: NearbyNetworkReceiptDelegate {
-    public func nearbyNetwork(_ sender: any NearbyNetworkInterface, didReceive data: Data) {
-        // TODO: 사용하지 않을 인터페이스로 예상
-    }
-
-    public func nearbyNetwork(
-        _ sender: any NearbyNetworkInterface,
-        didReceiveURL URL: URL,
-        info: DataInformationDTO
-    ) {
-        if info.type != .imageData {
-            handleWhiteboardObject(didReceiveURL: URL, info: info)
-        } else {
-            handlePhotoData(didReceiveURL: URL, info: info)
-        }
+    private func bindNearbyNetwork() {
+        nearbyNetwork.reciptURLPublisher
+            .sink { [weak self] url, dataInfo in
+                switch dataInfo.type {
+                case .imageData:
+                    self?.handlePhotoData(didReceiveURL: url, info: dataInfo)
+                case .chat, .whiteboard:
+                    break
+                default:
+                    self?.handleWhiteboardObject(didReceiveURL: url, info: dataInfo)
+                }
+            }
+            .store(in: &cancellables)
     }
 
     private func handlePhotoData(didReceiveURL URL: URL, info: DataInformationDTO) {

@@ -5,11 +5,13 @@
 //  Created by 최정인 on 11/7/24.
 //
 
+import Combine
 import Foundation
 
 public protocol NearbyNetworkInterface {
+    var reciptDataPublisher: AnyPublisher<Data, Never> { get }
+    var reciptURLPublisher: AnyPublisher<(url: URL, dataInfo: DataInformationDTO), Never> { get }
     var connectionDelegate: NearbyNetworkConnectionDelegate? { get set }
-    var receiptDelegate: NearbyNetworkReceiptDelegate? { get set }
 
     /// 주변 기기를 검색합니다.
     func startSearching()
@@ -91,20 +93,4 @@ public protocol NearbyNetworkConnectionDelegate: AnyObject {
         _ sender: NearbyNetworkInterface,
         didDisconnect connection: NetworkConnection,
         isHost: Bool)
-}
-
-public protocol NearbyNetworkReceiptDelegate: AnyObject {
-    /// 데이터를 수신했을 때 실행됩니다.
-    /// - Parameters:
-    ///   - data: 수신된 데이터
-    func nearbyNetwork(_ sender: NearbyNetworkInterface, didReceive data: Data)
-
-    /// 파일을 수신했을 때 실행됩니다.
-    /// - Parameters:
-    ///  - URL: 수신한 파일의 URL
-    ///  - info: 파일에 대한 정보
-    func nearbyNetwork(
-        _ sender: NearbyNetworkInterface,
-        didReceiveURL URL: URL,
-        info: DataInformationDTO)
 }
