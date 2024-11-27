@@ -87,12 +87,10 @@ public class ChatViewModel: ViewModel {
                 }
             } else {
                 switch messageType {
-                case .single:
+                case .single, .last:
                     messageType = .single
                 case .first, .between:
                     messageType = .last
-                case .last:
-                    messageType = .first
                 }
             }
             convertedMessages.append(
