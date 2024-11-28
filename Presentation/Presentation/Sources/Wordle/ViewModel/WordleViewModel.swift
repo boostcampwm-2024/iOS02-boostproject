@@ -6,6 +6,7 @@
 //
 
 import Combine
+import Domain
 import Foundation
 
 final class WordleViewModel: ObservableObject {
@@ -48,15 +49,22 @@ final class WordleViewModel: ObservableObject {
     @Published private(set) var isGameOver = false
     @Published private(set) var canSubmitWordle = false
 
+    private let gameRepository: GameRepositoryInterface
+    let gameObjcet: GameObject
+    private var triedWordleCount = 0
     let wordleWordCount = 5
     let wordleTryCount = 6
-    private var triedWordleCount = 0
-
-    // TODO: Persistance에서 정답 꺼내오기
-    let answerWord = "MONEY"
 
     enum Input {
         case typeKeyboard(keyboard: WordleKeyboard)
+    }
+
+    init(
+        gameRepository: GameRepositoryInterface,
+        gameObject: GameObject
+    ) {
+        self.gameRepository = gameRepository
+        self.gameObjcet = gameObject
     }
 
     func action(input: Input) {
@@ -88,7 +96,7 @@ final class WordleViewModel: ObservableObject {
 
         if currentIndex == wordleWordCount - 1 {
             let inputWord = wordle[triedWordleCount].compactMap { $0.alphabet }.map { String($0) }.joined()
-            guard !words.contains(inputWord) else {
+            guard !gameRepository.containsWord(word: inputWord) else {
                 canSubmitWordle = true
                 return
             }
@@ -122,7 +130,7 @@ final class WordleViewModel: ObservableObject {
               !wordle[triedWordleCount].contains(where: { $0.alphabet == nil })
         else { return }
         let submitWordle = wordle[triedWordleCount].compactMap { $0.alphabet }
-        let answerWordle = Array(answerWord.map { String($0) })
+        let answerWordle = Array(gameObjcet.gameAnswer.map { String($0) })
 
         for index in 0..<wordleWordCount {
             if submitWordle[index] == answerWordle[index] {
@@ -138,7 +146,7 @@ final class WordleViewModel: ObservableObject {
         }
         triedWordleCount += 1
 
-        if answerWord == submitWordle.joined() || triedWordleCount == 6 {
+        if gameObjcet.gameAnswer == submitWordle.joined() || triedWordleCount == 6 {
             isGameOver = true
             canSubmitWordle = false
         }
@@ -160,49 +168,3 @@ final class WordleViewModel: ObservableObject {
         }
     }
 }
-
-// TODO: Persistance 영역에 저장해놓기
-let words: [String] = [
-    "APPLE", "BRAVE", "CHARM", "DRINK", "EAGER",
-    "FABLE", "GLOBE", "HABIT", "IDEAL", "JOKER",
-    "KNEEL", "LUNCH", "MAGIC", "NOBLE", "OCEAN",
-    "PEACE", "QUEST", "RAVEN", "SPIKE", "TRUST",
-    "URBAN", "VIVID", "WITTY", "XENON", "YOUTH",
-    "ZEBRA", "ANGEL", "BEACH", "CHESS", "DOUGH",
-    "EXILE", "FLOCK", "GRACE", "HOVER", "IVORY",
-    "JOINT", "KNEES", "LIGHT", "MOTTO", "NOVEL",
-    "OLIVE", "PLACE", "QUIET", "REACT", "SALTY",
-    "THICK", "UPPER", "VALVE", "WHITE", "YIELD",
-    "ZESTY", "ARISE", "BLEND", "CRANE", "DAISY",
-    "EQUIP", "FEAST", "GROVE", "HEART", "INPUT",
-    "JOLLY", "KITTY", "LUCKY", "MINER", "NIFTY",
-    "OASIS", "PIANO", "QUILT", "RELAX", "SHORE",
-    "TOAST", "UMBRA", "VIGOR", "WHEAT", "XYLEM",
-    "ABIDE", "BLAME", "CROWN", "DANCE", "EAGLE",
-    "FIBER", "GRAPE", "HONEY", "INDEX", "JUMPY",
-    "KNIFE", "LOYAL", "MANGO", "NEEDY", "OVERT",
-    "PLAZA", "QUAKE", "RUMOR", "STONE", "TABLE",
-    "UPSET", "VOCAL", "WHIRL", "AMBER", "BIRTH",
-    "CABLE", "DONUT", "ELBOW", "FENCE", "GLIDE",
-    "HINGE", "INNER", "JEWEL", "LUNAR", "MEDAL",
-    "NURSE", "PENNY", "QUEEN", "RAZOR", "SHELL",
-    "TIGER", "UNDER", "VAPOR", "WHALE", "ARENA",
-    "BACON", "CHARM", "DOUBT", "EJECT", "FLOOD",
-    "GHOST", "HATCH", "IRONY", "JOLLY", "KNOCK",
-    "LEMON", "MERRY", "NORTH", "ORBIT", "PRIDE",
-    "QUARK", "ADORE", "BLOOM", "CRISP", "DEALT",
-    "EVENT", "FLAME", "GRAIN", "HARPY", "INPUT",
-    "JAZZY", "KARMA", "LODGE", "MIRTH", "ONION",
-    "PETTY", "QUICK", "RANCH", "STARK", "TIMID",
-    "UNITY", "WHISK", "ZONAL", "ACORN", "BREAD",
-    "CLIFF", "DWELL", "EXACT", "FLOAT", "GLOVE",
-    "HAPPY", "IDEAL", "JUICE", "KNACK", "LEAFY",
-    "MOTEL", "NAVEL", "OUTER", "PAINT", "QUIRK",
-    "REACT", "SPLIT", "TWIST", "UNITE", "VALUE",
-    "WASTE", "XERIC", "ZONED", "ALIVE", "BRISK",
-    "CRUSH", "DRILL", "EVERY", "FLARE", "GUEST",
-    "HOTEL", "IVORY", "JOKER", "KNELT", "LATCH",
-    "METAL", "NORTH", "OUTDO", "PLUMB", "QUERY",
-    "RHYME", "SPEAR", "TREND", "VAULT", "KOREA",
-    "MONTH", "ROUTE", "READY", "MONEY", "PEARL"
-]
