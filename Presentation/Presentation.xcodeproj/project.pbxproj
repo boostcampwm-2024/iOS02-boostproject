@@ -41,6 +41,7 @@
 		6FA7DBEE2CF56457007333C6 /* MessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FA7DBED2CF56457007333C6 /* MessageCell.swift */; };
 		6FA7DBF02CF5665B007333C6 /* MyMessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FA7DBEF2CF5665B007333C6 /* MyMessageCell.swift */; };
 		6FA7DBF22CF56A3F007333C6 /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FA7DBF12CF56A3F007333C6 /* ChatViewController.swift */; };
+		A81E7BF52CF710EC007E8414 /* GameObjectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A81E7BF42CF710EC007E8414 /* GameObjectView.swift */; };
 		A8525DC32CE200230089DA5E /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A8525DC22CE200230089DA5E /* Colors.xcassets */; };
 		A8525DCB2CE203D50089DA5E /* UIView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8525DCA2CE203D50089DA5E /* UIView+.swift */; };
 		A85260252CE3447E0089DA5E /* UIColor+.swift in Sources */ = {isa = PBXBuildFile; fileRef = A85260242CE3447E0089DA5E /* UIColor+.swift */; };
@@ -103,6 +104,7 @@
 		6FA7DBED2CF56457007333C6 /* MessageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageCell.swift; sourceTree = "<group>"; };
 		6FA7DBEF2CF5665B007333C6 /* MyMessageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyMessageCell.swift; sourceTree = "<group>"; };
 		6FA7DBF12CF56A3F007333C6 /* ChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
+		A81E7BF42CF710EC007E8414 /* GameObjectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameObjectView.swift; sourceTree = "<group>"; };
 		A8525DC22CE200230089DA5E /* Colors.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Colors.xcassets; sourceTree = "<group>"; };
 		A8525DC72CE201D50089DA5E /* AirplainFont.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AirplainFont.swift; sourceTree = "<group>"; };
 		A8525DCA2CE203D50089DA5E /* UIView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+.swift"; sourceTree = "<group>"; };
@@ -136,6 +138,7 @@
 				6F21477C2CE4EFCF00B55E2C /* TextObjectView.swift */,
 				00D2DD992CE8DCEA0089F0BA /* DrawingObjectView.swift */,
 				004B21802CEB5BC000A5BEB8 /* PhotoObjectView.swift */,
+				A81E7BF42CF710EC007E8414 /* GameObjectView.swift */,
 			);
 			path = ObjectView;
 			sourceTree = "<group>";
@@ -536,6 +539,7 @@
 				6FA7DBF22CF56A3F007333C6 /* ChatViewController.swift in Sources */,
 				A85260252CE3447E0089DA5E /* UIColor+.swift in Sources */,
 				00D2DD982CE8CD300089F0BA /* DrawingView.swift in Sources */,
+				A81E7BF52CF710EC007E8414 /* GameObjectView.swift in Sources */,
 				A81E7AC62CF5CA18007E8414 /* WordleTileView.swift in Sources */,
 				A8E979CA2CE49A1800B28063 /* ProfileViewModel.swift in Sources */,
 				0080E8C62CE2F0510095B958 /* WhiteboardObjectView.swift in Sources */,

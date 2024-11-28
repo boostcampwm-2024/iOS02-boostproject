@@ -44,6 +44,10 @@
 		6F47898F2CEB8D8F0016B7AB /* TextObjectUseCaseInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F47898E2CEB8D8F0016B7AB /* TextObjectUseCaseInterface.swift */; };
 		6F68E7852CEC200000945394 /* TextObjectUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F68E7842CEC200000945394 /* TextObjectUseCase.swift */; };
 		6F68E7872CEC593300945394 /* TextObjectUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F68E7862CEC593300945394 /* TextObjectUseCaseTests.swift */; };
+		A81E7BF32CF70C17007E8414 /* GameObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = A81E7BF22CF70C17007E8414 /* GameObject.swift */; };
+		A81E7BF92CF72503007E8414 /* GameObjectUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = A81E7BF82CF72503007E8414 /* GameObjectUseCase.swift */; };
+		A81E7BFB2CF725C2007E8414 /* GameObjectUseCaseInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = A81E7BFA2CF725C2007E8414 /* GameObjectUseCaseInterface.swift */; };
+		A81E7C012CF72A4C007E8414 /* GameRepositoryInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = A81E7C002CF72A4C007E8414 /* GameRepositoryInterface.swift */; };
 		A85260232CE343B20089DA5E /* ProfileUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = A85260222CE343B20089DA5E /* ProfileUseCase.swift */; };
 		A8E97BD82CE5A6B800B28063 /* Profile.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8E97BD62CE5A6B800B28063 /* Profile.swift */; };
 		A8E97BD92CE5A6B800B28063 /* ProfileIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8E97BD72CE5A6B800B28063 /* ProfileIcon.swift */; };
@@ -113,6 +117,10 @@
 		6F47898E2CEB8D8F0016B7AB /* TextObjectUseCaseInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextObjectUseCaseInterface.swift; sourceTree = "<group>"; };
 		6F68E7842CEC200000945394 /* TextObjectUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextObjectUseCase.swift; sourceTree = "<group>"; };
 		6F68E7862CEC593300945394 /* TextObjectUseCaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextObjectUseCaseTests.swift; sourceTree = "<group>"; };
+		A81E7BF22CF70C17007E8414 /* GameObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameObject.swift; sourceTree = "<group>"; };
+		A81E7BF82CF72503007E8414 /* GameObjectUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameObjectUseCase.swift; sourceTree = "<group>"; };
+		A81E7BFA2CF725C2007E8414 /* GameObjectUseCaseInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameObjectUseCaseInterface.swift; sourceTree = "<group>"; };
+		A81E7C002CF72A4C007E8414 /* GameRepositoryInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameRepositoryInterface.swift; sourceTree = "<group>"; };
 		A85260222CE343B20089DA5E /* ProfileUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileUseCase.swift; sourceTree = "<group>"; };
 		A8E97BD62CE5A6B800B28063 /* Profile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Profile.swift; sourceTree = "<group>"; };
 		A8E97BD72CE5A6B800B28063 /* ProfileIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileIcon.swift; sourceTree = "<group>"; };
@@ -159,6 +167,7 @@
 				00D2DD902CE88D260089F0BA /* ManageWhiteboardToolUseCase.swift */,
 				003D5A2C2CEB217E005F3D09 /* AddPhotoUseCase.swift */,
 				6F3BCDCF2CF3322C005F6642 /* ChatUseCase.swift */,
+				A81E7BF82CF72503007E8414 /* GameObjectUseCase.swift */,
 			);
 			path = UseCase;
 			sourceTree = "<group>";
@@ -193,6 +202,7 @@
 				6F21477A2CE4CEAE00B55E2C /* TextObject.swift */,
 				00683D682CE37F2F000D28E4 /* DrawingObject.swift */,
 				003D5A2A2CEB1FEA005F3D09 /* PhotoObject.swift */,
+				A81E7BF22CF70C17007E8414 /* GameObject.swift */,
 				6F3BCDC72CF31CB4005F6642 /* ChatMessage.swift */,
 			);
 			path = Entity;
@@ -216,6 +226,7 @@
 				A8E97BDA2CE5A6D500B28063 /* ProfileRepositoryInterface.swift */,
 				6F3BCDC92CF31DBA005F6642 /* ChatRepositoryInterface.swift */,
 				00036B812CF56414007D1244 /* PhotoRepositoryInterface.swift */,
+				A81E7C002CF72A4C007E8414 /* GameRepositoryInterface.swift */,
 			);
 			path = Repository;
 			sourceTree = "<group>";
@@ -231,6 +242,7 @@
 				00D2DD872CE88BD80089F0BA /* ManageWhiteboardToolUseCaseInterface.swift */,
 				003D5A2E2CEB21B2005F3D09 /* AddPhotoUseCaseInterface.swift */,
 				6F3BCDCD2CF3312A005F6642 /* ChatUseCaseInterface.swift */,
+				A81E7BFA2CF725C2007E8414 /* GameObjectUseCaseInterface.swift */,
 			);
 			path = UseCase;
 			sourceTree = "<group>";
@@ -444,16 +456,20 @@
 				A8E97BDB2CE5A6D500B28063 /* ProfileRepositoryInterface.swift in Sources */,
 				A8E97BD92CE5A6B800B28063 /* ProfileIcon.swift in Sources */,
 				00036B862CF58D7C007D1244 /* WhiteboardObjectSetInterface.swift in Sources */,
+				A81E7BF32CF70C17007E8414 /* GameObject.swift in Sources */,
 				A8E97BD82CE5A6B800B28063 /* Profile.swift in Sources */,
 				00036B822CF56414007D1244 /* PhotoRepositoryInterface.swift in Sources */,
 				A85260232CE343B20089DA5E /* ProfileUseCase.swift in Sources */,
 				5BDFD93A2CE2EE3100DA4F5B /* WhiteboardUseCase.swift in Sources */,
+				A81E7BF92CF72503007E8414 /* GameObjectUseCase.swift in Sources */,
 				6F3BCDD02CF3322C005F6642 /* ChatUseCase.swift in Sources */,
 				5BDFD9342CE1F7DB00DA4F5B /* Whiteboard.swift in Sources */,
+				A81E7BFB2CF725C2007E8414 /* GameObjectUseCaseInterface.swift in Sources */,
 				5BDFD9372CE2E6BC00DA4F5B /* WhiteboardRepositoryInterface.swift in Sources */,
 				5B6542482CE44631000168AD /* WhiteboardUseCaseInterface.swift in Sources */,
 				00D2DD842CE8864B0089F0BA /* ManageWhiteboardObjectUseCaseInterface.swift in Sources */,
 				6F3BCDCE2CF3312A005F6642 /* ChatUseCaseInterface.swift in Sources */,
+				A81E7C012CF72A4C007E8414 /* GameRepositoryInterface.swift in Sources */,
 				6F47898F2CEB8D8F0016B7AB /* TextObjectUseCaseInterface.swift in Sources */,
 				00D2DD882CE88BD80089F0BA /* ManageWhiteboardToolUseCaseInterface.swift in Sources */,
 				003D5A2B2CEB1FF0005F3D09 /* PhotoObject.swift in Sources */,

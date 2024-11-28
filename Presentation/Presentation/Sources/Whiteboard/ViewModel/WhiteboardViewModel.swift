@@ -21,6 +21,7 @@ public final class WhiteboardViewModel: ViewModel {
         case finishUsingTool
         case addTextObject(point: CGPoint, viewSize: CGSize)
         case editTextObject(text: String)
+        case addGameObjcet(point: CGPoint)
         case selectObject(objectID: UUID)
         case deselectObject
         case changeObjectScaleAndAngle(scale: CGFloat, angle: CGFloat)
@@ -42,6 +43,7 @@ public final class WhiteboardViewModel: ViewModel {
     private let addPhotoUseCase: AddPhotoUseCase
     private let drawObjectUseCase: DrawObjectUseCaseInterface
     private let textObjectUseCase: TextObjectUseCaseInterface
+    private let gameObjectUseCase: GameObjectUseCaseInterface
     private let manageWhiteboardToolUseCase: ManageWhiteboardToolUseCaseInterface
     private let manageWhiteboardObjectUseCase: ManageWhiteboardObjectUseCaseInterface
     private let selectedObjectSubject: CurrentValueSubject<UUID?, Never>
@@ -51,6 +53,7 @@ public final class WhiteboardViewModel: ViewModel {
         addPhotoUseCase: AddPhotoUseCase,
         drawObjectUseCase: DrawObjectUseCaseInterface,
         textObjectUseCase: TextObjectUseCaseInterface,
+        gameObjectUseCase: GameObjectUseCaseInterface,
         managemanageWhiteboardToolUseCase: ManageWhiteboardToolUseCaseInterface,
         manageWhiteboardObjectUseCase: ManageWhiteboardObjectUseCaseInterface
     ) {
@@ -58,6 +61,7 @@ public final class WhiteboardViewModel: ViewModel {
         self.addPhotoUseCase = addPhotoUseCase
         self.drawObjectUseCase = drawObjectUseCase
         self.textObjectUseCase = textObjectUseCase
+        self.gameObjectUseCase = gameObjectUseCase
         self.manageWhiteboardToolUseCase = managemanageWhiteboardToolUseCase
         self.manageWhiteboardObjectUseCase = manageWhiteboardObjectUseCase
         selectedObjectSubject = CurrentValueSubject(nil)
@@ -109,6 +113,8 @@ public final class WhiteboardViewModel: ViewModel {
             deleteObject()
         case .disconnectWhiteboard:
             disconnectWhiteboard()
+        case .addGameObjcet(let point):
+            addGame(at: point)
         }
     }
 
@@ -172,6 +178,11 @@ public final class WhiteboardViewModel: ViewModel {
         Task {
             await textObjectUseCase.editText(id: selectedObjectID, text: text)
         }
+    }
+
+    private func addGame(at point: CGPoint) {
+        let gameObject = gameObjectUseCase.createGame(centerPoint: point)
+        addWhiteboardObject(object: gameObject)
     }
 
     private func startPublishing() {

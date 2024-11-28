@@ -13,14 +13,14 @@ public final class PersistenceService: PersistenceInterface {
 
     public init() {}
 
-    public func save<T: Codable>(data: T, forKey key: String) {
+    public func save<T: Encodable>(data: T, forKey key: String) {
         let encoder = JSONEncoder()
         if let encoded = try? encoder.encode(data) {
             userDefaults.set(encoded, forKey: key)
         }
     }
 
-    public func load<T: Codable>(forKey key: String) -> T? {
+    public func load<T: Decodable>(forKey key: String) -> T? {
         guard let data = userDefaults.data(forKey: key) else { return nil }
         let decoder = JSONDecoder()
         guard let decoded = try? decoder.decode(T.self, from: data) else { return nil }
