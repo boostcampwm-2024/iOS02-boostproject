@@ -16,6 +16,11 @@ public protocol GameRepositoryInterface {
     /// - Parameter wordleAnswerSet: 게임 정답 Set
     func saveWordleAnswerSet(wordleAnswerSet: [String])
 
+    /// 입력한 단어가 게임 정답 Set에 포함되어 있는지 여부를 판단합니다.
+    /// - Parameter word: 입력한 단어
+    /// - Returns: 게임 정답 Set 포함 여부
+    func containsWord(word: String) -> Bool
+
     /// 저장된 게임 기록을 불러옵니다.
     /// - Parameter gameID: 게임 기록을 불러올 게임 ID
     /// - Returns: 게임 History

@@ -33,6 +33,15 @@ public final class GameRepository: GameRepositoryInterface {
         persistenceService.save(data: wordleAnswerSet, forKey: wordleAnswerKey)
     }
 
+    public func containsWord(word: String) -> Bool {
+        guard
+            let wordleSet: [String] = persistenceService.load(forKey: wordleAnswerKey),
+            wordleSet.contains(word)
+        else { return false }
+
+        return true
+    }
+
     public func loadWordleHistory(gameID: UUID) -> [String] {
         guard
             let wordleHistory: [UUID: [String]] = persistenceService.load(forKey: wordleAnswerKey),
