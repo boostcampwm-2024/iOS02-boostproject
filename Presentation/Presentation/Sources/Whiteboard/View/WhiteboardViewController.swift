@@ -228,7 +228,10 @@ public final class WhiteboardViewController: UIViewController {
     }
 
     private func presentChatViewController() {
-        let chatViewModel = ChatViewModel(chatUseCase: chatUseCase, profileRepository: profileRepository)
+        let chatViewModel = ChatViewModel(
+            chatUseCase: chatUseCase,
+            profileRepository: profileRepository,
+            chatMessages: viewModel.output.chatMessages)
         let chatViewController = ChatViewController(viewModel: chatViewModel)
         self.present(chatViewController, animated: true)
     }

@@ -63,6 +63,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             addPhotoUseCase: addPhotoUseCase,
             drawObjectUseCase: drawObjectUseCase,
             textObjectUseCase: textObjectUseCase,
+            chatUseCase: chatUseCase,
             managemanageWhiteboardToolUseCase: manageWhiteboardToolUseCase,
             manageWhiteboardObjectUseCase: manageWhieboardObjectUseCase)
         let profileViewModel = ProfileViewModel(profileUseCase: profileUseCase)

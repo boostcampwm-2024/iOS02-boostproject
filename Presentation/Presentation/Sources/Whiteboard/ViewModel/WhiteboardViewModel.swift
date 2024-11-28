@@ -35,22 +35,26 @@ public final class WhiteboardViewModel: ViewModel {
         let updatedWhiteboardObjectPublisher: AnyPublisher<WhiteboardObject, Never>
         let removedWhiteboardObjectPublisher: AnyPublisher<WhiteboardObject, Never>
         let objectViewSelectedPublisher: AnyPublisher<UUID?, Never>
+        var chatMessages: [ChatMessage]
     }
 
-    let output: Output
+    private(set) var output: Output
     private let whiteboardUseCase: WhiteboardUseCaseInterface
     private let addPhotoUseCase: AddPhotoUseCase
     private let drawObjectUseCase: DrawObjectUseCaseInterface
     private let textObjectUseCase: TextObjectUseCaseInterface
+    private let chatUseCase: ChatUseCase
     private let manageWhiteboardToolUseCase: ManageWhiteboardToolUseCaseInterface
     private let manageWhiteboardObjectUseCase: ManageWhiteboardObjectUseCaseInterface
     private let selectedObjectSubject: CurrentValueSubject<UUID?, Never>
+    private var cancellables: Set<AnyCancellable>
 
     public init(
         whiteboardUseCase: WhiteboardUseCaseInterface,
         addPhotoUseCase: AddPhotoUseCase,
         drawObjectUseCase: DrawObjectUseCaseInterface,
         textObjectUseCase: TextObjectUseCaseInterface,
+        chatUseCase: ChatUseCase,
         managemanageWhiteboardToolUseCase: ManageWhiteboardToolUseCaseInterface,
         manageWhiteboardObjectUseCase: ManageWhiteboardObjectUseCaseInterface
     ) {
@@ -58,9 +62,11 @@ public final class WhiteboardViewModel: ViewModel {
         self.addPhotoUseCase = addPhotoUseCase
         self.drawObjectUseCase = drawObjectUseCase
         self.textObjectUseCase = textObjectUseCase
+        self.chatUseCase = chatUseCase
         self.manageWhiteboardToolUseCase = managemanageWhiteboardToolUseCase
         self.manageWhiteboardObjectUseCase = manageWhiteboardObjectUseCase
         selectedObjectSubject = CurrentValueSubject(nil)
+        cancellables = []
 
         output = Output(
             whiteboardToolPublisher: manageWhiteboardToolUseCase
@@ -72,8 +78,10 @@ public final class WhiteboardViewModel: ViewModel {
             removedWhiteboardObjectPublisher: manageWhiteboardObjectUseCase
                 .removedObjectPublisher,
             objectViewSelectedPublisher: selectedObjectSubject
-                .eraseToAnyPublisher()
+                .eraseToAnyPublisher(),
+            chatMessages: []
         )
+        receviedMessage()
     }
 
     func action(input: Input) {
@@ -224,5 +232,13 @@ public final class WhiteboardViewModel: ViewModel {
 
     private func disconnectWhiteboard() {
         whiteboardUseCase.disconnectWhiteboard()
+    }
+
+    private func receviedMessage() {
+        chatUseCase.chatMessagePublisher
+            .sink { [weak self] chatMessage in
+                self?.output.chatMessages.append(chatMessage)
+            }
+            .store(in: &cancellables)
     }
 }

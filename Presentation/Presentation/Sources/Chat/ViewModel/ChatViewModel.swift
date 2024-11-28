@@ -11,6 +11,7 @@ import Domain
 public class ChatViewModel: ViewModel {
     enum Input {
         case send(message: String)
+        case loadChat
     }
     struct Output {
         let myProfile: Profile
@@ -23,9 +24,13 @@ public class ChatViewModel: ViewModel {
     private let chatUseCase: ChatUseCaseInterface
     private var cancellables: Set<AnyCancellable>
 
-    public init(chatUseCase: ChatUseCaseInterface, profileRepository: ProfileRepositoryInterface) {
+    public init(
+        chatUseCase: ChatUseCaseInterface,
+        profileRepository: ProfileRepositoryInterface,
+        chatMessages: [ChatMessage]
+    ) {
         self.chatUseCase = chatUseCase
-        self.chatMessages = []
+        self.chatMessages = chatMessages
         self.chatMessageCellModelListSubject = PassthroughSubject<[ChatMessageCellModel], Never>()
         self.cancellables = []
         output = Output(
@@ -40,6 +45,8 @@ public class ChatViewModel: ViewModel {
         switch input {
         case .send(let message):
             send(message: message)
+        case .loadChat:
+            loadChat()
         }
     }
 
@@ -53,10 +60,13 @@ public class ChatViewModel: ViewModel {
         chatUseCase.chatMessagePublisher
             .sink { [weak self] chatMessage in
                 self?.chatMessages.append(chatMessage)
-                guard let convertedMessages = self?.convertToCellModel() else { return }
-                self?.chatMessageCellModelListSubject.send(convertedMessages)
+//                guard let convertedMessages = self?.convertToCellModel() else { return }
+                self?.loadChat()
             }
             .store(in: &cancellables)
+    }
+    private func loadChat() {
+        chatMessageCellModelListSubject.send(convertToCellModel())
     }
 
     private func convertToCellModel() -> [ChatMessageCellModel] {

@@ -53,6 +53,7 @@ public final class ChatViewController: UIViewController {
         configureDataSource()
         configureGesture()
         bind()
+        viewModel.action(input: .loadChat)
 
         if let sheetPresentationController = sheetPresentationController {
             sheetPresentationController.detents = [.medium(), .large()]
