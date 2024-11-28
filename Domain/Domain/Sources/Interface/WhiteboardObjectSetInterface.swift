@@ -25,7 +25,7 @@ public protocol WhiteboardObjectSetInterface {
     /// 집합에 있는 오브젝트를 업데이트 합니다.
     /// - Parameter object: 업데이트할 오브젝트
     func update(object: WhiteboardObject) async
-    
+
     /// ID로 집합에있는 오브젝트를 가져옵니다.
     /// - Parameter id: 가져올 오브젝트의 ID
     /// - Returns: 오브젝트

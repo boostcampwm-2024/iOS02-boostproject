@@ -18,7 +18,7 @@ public protocol WhiteboardUseCaseInterface {
 
     /// 주변 화이트보드를 탐색합니다.
     func startSearchingWhiteboard()
-    
+
     /// 화이트보드와 연결을 끊습니다. 
     func disconnectWhiteboard()
 
@@ -28,7 +28,7 @@ public protocol WhiteboardUseCaseInterface {
 
     /// 화이트보드 탐색을 중지합니다.
     func stopSearchingWhiteboard()
-    
+
     /// 화이트보드 탐색을 중단 후 다시 시작합니다. 
     func refreshWhiteboardList()
 }

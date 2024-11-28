@@ -21,7 +21,7 @@ public protocol WhiteboardRepositoryInterface {
 
     /// 화이트보드 탐색을 중단 후 다시 시작합니다. 
     func restartSearching()
-    
+
     /// 화이트보드와 연결을 끊습니다. 
     func disconnectWhiteboard()
 
