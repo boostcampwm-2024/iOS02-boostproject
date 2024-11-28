@@ -7,6 +7,10 @@
 
 import UIKit
 
+protocol ChatTextFieldViewDelegate: AnyObject, UITextFieldDelegate {
+    func chatTextFieldView(_ sender: ChatTextFieldView, sendMessage: String)
+}
+
 final class ChatTextFieldView: UIView {
     private enum ChatTextFieldLayoutConstant {
         static let sendButtonSize: CGFloat = 23
@@ -18,6 +22,7 @@ final class ChatTextFieldView: UIView {
 
     private let textField: UITextField = {
         let uiTextField = UITextField()
+        uiTextField.returnKeyType = .send
         uiTextField.borderStyle = .none
         uiTextField.placeholder = "메시지 입력"
 
@@ -43,14 +48,18 @@ final class ChatTextFieldView: UIView {
         return view
     }()
 
+    weak var delegate: ChatTextFieldViewDelegate?
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         configureLayout()
+        configureButtonAction()
     }
 
     required init?(coder: NSCoder) {
         super.init(coder: coder)
         configureLayout()
+        configureButtonAction()
     }
 
     private func configureLayout() {
@@ -73,5 +82,23 @@ final class ChatTextFieldView: UIView {
             .leading(equalTo: self.leadingAnchor,
                      inset: ChatTextFieldLayoutConstant.textFieldLeadingInset)
             .trailing(equalTo: sendButton.leadingAnchor, inset: 0)
+    }
+
+    private func configureButtonAction() {
+        let sendAction = UIAction { [weak self] _ in
+            guard
+                let message = self?.textField.text,
+                !message.isEmpty,
+                let self
+            else { return }
+            delegate?.chatTextFieldView(self, sendMessage: message)
+            textField.text = ""
+        }
+        sendButton.addAction(sendAction, for: .touchUpInside)
+    }
+
+    public func configureDelegate(delegate: ChatTextFieldViewDelegate) {
+        textField.delegate = delegate
+        self.delegate = delegate
     }
 }

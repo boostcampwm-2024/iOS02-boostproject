@@ -16,12 +16,10 @@ public final class ChatRepository: ChatRepositoryInterface {
     private var cancellables: Set<AnyCancellable>
     private let logger = Logger()
 
-    init(
-        delegate: ChatRepositoryDelegate?,
+    public init(
         nearbyNetwork: NearbyNetworkInterface,
         filePersistence: FilePersistenceInterface
     ) {
-        self.delegate = delegate
         self.nearbyNetwork = nearbyNetwork
         self.filePersistence = filePersistence
         cancellables = []

@@ -12,6 +12,7 @@ class MessageCell: UICollectionViewListCell {
     enum MessageCellLayoutConstant {
         static let messageCornerRadius: CGFloat = 15
         static let messageViewPadding: CGFloat = 7
+        static let messageMinWidth: CGFloat = 15
     }
     private var chatMessageCellModel: ChatMessageCellModel?
 

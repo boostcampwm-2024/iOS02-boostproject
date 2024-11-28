@@ -30,10 +30,19 @@ public final class WhiteboardViewController: UIViewController {
         let centerY = scrollView.contentOffset.y + (scrollView.bounds.height / 2)
         return CGPoint(x: centerX, y: centerY)
     }
+    private let profileRepository: ProfileRepositoryInterface
+    private let chatUseCase: ChatUseCaseInterface
 
-    public init(viewModel: WhiteboardViewModel, objectViewFactory: WhiteboardObjectViewFactoryable) {
+    public init(
+        viewModel: WhiteboardViewModel,
+        objectViewFactory: WhiteboardObjectViewFactoryable,
+        profileRepository: ProfileRepositoryInterface,
+        chatUseCase: ChatUseCaseInterface
+    ) {
         self.viewModel = viewModel
         self.objectViewFactory = objectViewFactory
+        self.profileRepository = profileRepository
+        self.chatUseCase = chatUseCase
         cancellables = []
         whiteboardObjectViews = [:]
         super.init(nibName: nil, bundle: nil)
@@ -217,11 +226,24 @@ public final class WhiteboardViewController: UIViewController {
             viewModel.action(input: .deselectObject)
         }
     }
+
+    private func presentChatViewController() {
+        let chatViewModel = ChatViewModel(
+            chatUseCase: chatUseCase,
+            profileRepository: profileRepository,
+            chatMessages: viewModel.output.chatMessages)
+        let chatViewController = ChatViewController(viewModel: chatViewModel)
+        self.present(chatViewController, animated: true)
+    }
 }
 
 // MARK: - WhiteboardToolBarDelegate
 extension WhiteboardViewController: WhiteboardToolBarDelegate {
     func whiteboardToolBar(_ sender: WhiteboardToolBar, selectedTool: WhiteboardTool) {
+        guard selectedTool != .chat else {
+            self.presentChatViewController()
+            return
+        }
         viewModel.action(input: .selectTool(tool: selectedTool))
 
         if selectedTool == .text {
