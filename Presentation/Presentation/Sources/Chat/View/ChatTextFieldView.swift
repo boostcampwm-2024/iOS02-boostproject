@@ -97,7 +97,7 @@ final class ChatTextFieldView: UIView {
         sendButton.addAction(sendAction, for: .touchUpInside)
     }
 
-    public func configureDelegate(_ delegate: ChatTextFieldViewDelegate) {
+    public func configureDelegate(delegate: ChatTextFieldViewDelegate) {
         textField.delegate = delegate
         self.delegate = delegate
     }

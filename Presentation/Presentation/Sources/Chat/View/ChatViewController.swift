@@ -38,8 +38,6 @@ public final class ChatViewController: UIViewController {
         self.viewModel = viewModel
         cancellables = []
         super.init(nibName: nil, bundle: nil)
-        chatTextFieldView.configureDelegate(self)
-        chatListView.delegate = self
     }
 
     required public init?(coder: NSCoder) {
@@ -54,12 +52,6 @@ public final class ChatViewController: UIViewController {
         configureGesture()
         bind()
         viewModel.action(input: .loadChat)
-
-        if let sheetPresentationController = sheetPresentationController {
-            sheetPresentationController.detents = [.medium(), .large()]
-            sheetPresentationController.prefersGrabberVisible = true
-            sheetPresentationController.prefersScrollingExpandsWhenScrolledToEdge = false
-        }
     }
 
     override public func viewWillAppear(_ animated: Bool) {
@@ -80,6 +72,13 @@ public final class ChatViewController: UIViewController {
     private func configureAttribute() {
         view.backgroundColor = .systemBackground
         chatListView.showsVerticalScrollIndicator = false
+        chatTextFieldView.configureDelegate(delegate: self)
+        chatListView.delegate = self
+        if let sheetPresentationController = sheetPresentationController {
+            sheetPresentationController.detents = [.medium(), .large()]
+            sheetPresentationController.prefersGrabberVisible = true
+            sheetPresentationController.prefersScrollingExpandsWhenScrolledToEdge = false
+        }
     }
 
     private func configureLayout() {
@@ -157,8 +156,8 @@ public final class ChatViewController: UIViewController {
             .receive(on: DispatchQueue.main)
             .sink { [weak self] chatMessageList in
                 self?.applySnapshot(chatMessageList: chatMessageList)
-                self?.didTapMoveScrollButton(chatMessageList: chatMessageList)
-                HapticManager.shared.hapticImpact(style: .heavy)
+                self?.scrollToBottom(chatMessageList: chatMessageList)
+                HapticManager.hapticImpact(style: .heavy)
             }
             .store(in: &cancellables)
     }
@@ -193,7 +192,7 @@ public final class ChatViewController: UIViewController {
         view.endEditing(true)
     }
 
-    private func didTapMoveScrollButton(chatMessageList: [ChatMessageCellModel]) {
+    private func scrollToBottom(chatMessageList: [ChatMessageCellModel]) {
         DispatchQueue.main.async { [weak self] in
             self?.chatListView.scrollToItem(
                 at: IndexPath(row: chatMessageList.count-1, section: 0),
