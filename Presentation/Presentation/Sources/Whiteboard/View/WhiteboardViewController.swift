@@ -8,7 +8,11 @@
 import Combine
 import Domain
 import PhotosUI
+import SwiftUI
 import UIKit
+// TODO: 추후 개선
+import DataSource
+import Persistence
 
 public final class WhiteboardViewController: UIViewController {
     private enum WhiteboardLayoutConstant {
@@ -39,6 +43,7 @@ public final class WhiteboardViewController: UIViewController {
         super.init(nibName: nil, bundle: nil)
         self.objectViewFactory.whiteboardObjectViewDelegate = self
         self.objectViewFactory.textViewDelegate = self
+        self.objectViewFactory.gameObjectDelegate = self
     }
 
     public required init?(coder: NSCoder) {
@@ -51,6 +56,11 @@ public final class WhiteboardViewController: UIViewController {
         configureAttribute()
         configureScrollView()
         bind()
+    }
+
+    public override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.isNavigationBarHidden = false
     }
 
     public override func viewWillDisappear(_ animated: Bool) {
@@ -312,5 +322,17 @@ extension WhiteboardViewController: UITextViewDelegate {
 
     public func textViewDidEndEditing(_ textView: UITextView) {
         viewModel.action(input: .editTextObject(text: textView.text ?? ""))
+    }
+}
+
+extension WhiteboardViewController: GameObjectDelegate {
+    public func gameObjectDelegateDidDoubleTap(_ sender: GameObjectView, gameObject: GameObject) {
+        viewModel.action(input: .deselectObject)
+        let gameRepository = GameRepository(persistenceService: PersistenceService())
+        let wordelViewModel = WordleViewModel(gameRepository: gameRepository, gameObject: gameObject)
+        let wordleView = WordleView(viewModel: wordelViewModel)
+        let hostingController = UIHostingController(rootView: NavigationStack { wordleView })
+        hostingController.modalPresentationStyle = .fullScreen
+        present(hostingController, animated: true)
     }
 }
