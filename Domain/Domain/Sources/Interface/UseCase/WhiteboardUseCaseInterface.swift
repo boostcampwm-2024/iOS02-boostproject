@@ -31,4 +31,7 @@ public protocol WhiteboardUseCaseInterface {
     
     /// 화이트보드 탐색을 중단 후 다시 시작합니다. 
     func refreshWhiteboardList()
+    
+    /// 프로필 정보를 업데이트 합니다. 
+    func updateProfile()
 }

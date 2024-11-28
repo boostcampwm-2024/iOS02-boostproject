@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct NetworkConnection {
+public struct NetworkConnection: Codable {
     public let id: UUID
     public let name: String
     public let info: [String: String]?

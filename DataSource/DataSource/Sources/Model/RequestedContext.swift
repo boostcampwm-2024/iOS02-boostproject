@@ -9,8 +9,10 @@ import Foundation
 
 public struct RequestedContext: Codable {
     let participant: String
+    let name: String
 
-    public init(participant: String) {
+    public init(participant: String, name: String) {
         self.participant = participant
+        self.name = name
     }
 }

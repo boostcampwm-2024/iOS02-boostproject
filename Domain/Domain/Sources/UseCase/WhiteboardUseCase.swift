@@ -58,6 +58,11 @@ public final class WhiteboardUseCase: WhiteboardUseCaseInterface {
     public func refreshWhiteboardList() {
         whiteboardRepository.restartSearching()
     }
+
+    public func updateProfile() {
+        let profile = profileRepository.loadProfile()
+        whiteboardRepository.updateProfile(myProfile: profile)
+    }
 }
 
 extension WhiteboardUseCase: WhiteboardRepositoryDelegate {

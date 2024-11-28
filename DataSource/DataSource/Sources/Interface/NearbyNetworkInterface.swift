@@ -28,7 +28,7 @@ public protocol NearbyNetworkInterface {
 
     /// 주변에 내 기기 알리는 것을 중지합니다.
     func stopPublishing()
-    
+
     /// 연결된 모든 피어와 연결을 끊습니다. 
     func disconnectAll()
 
@@ -65,7 +65,7 @@ public protocol NearbyNetworkConnectionDelegate: AnyObject {
 
     /// 주변 기기와의 연결에 실패했을 때 실행됩니다.
     func nearbyNetworkCannotConnect(_ sender: NearbyNetworkInterface)
-    
+
     /// 주변 기기와 연결에 성공하였을 때 실행됩니다.
     /// - Parameters:
     ///   - connection: 연결된 기기
@@ -78,19 +78,15 @@ public protocol NearbyNetworkConnectionDelegate: AnyObject {
     /// 주변 기기와 연결에 성공했을 때 실행됩니다. 
     /// - Parameters:
     ///   - context: 참여자가 보낸 정보
-    ///   - isHost: 호스트 여부
     func nearbyNetwork(
         _ sender: NearbyNetworkInterface,
         didConnect connection: NetworkConnection,
-        with context: Data?,
-        isHost: Bool)
+        with context: Data?)
 
     /// 연결됐던 기기와 연결이 끊어졌을 때 실행됩니다.
     /// - Parameters:
     ///   - connection: 연결이 끊긴 기기
-    ///   - isHost: 호스트 여부
     func nearbyNetwork(
         _ sender: NearbyNetworkInterface,
-        didDisconnect connection: NetworkConnection,
-        isHost: Bool)
+        didDisconnect connection: NetworkConnection)
 }

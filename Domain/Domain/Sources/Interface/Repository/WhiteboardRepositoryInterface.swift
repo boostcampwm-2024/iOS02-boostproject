@@ -12,6 +12,10 @@ public protocol WhiteboardRepositoryInterface {
     /// 주변에 내 기기를 참여자의 아이콘 정보와 함께 화이트보드를 알립니다.
     /// - Parameter myProfile: 나의 프로필
     func startPublishing(myProfile: Profile)
+    
+    /// 프로필 정보를 업데이트 합니다.
+    /// - Parameter myProfile: 나의 프로필
+    func updateProfile(myProfile: Profile)
 
     /// 주변 화이트보드를 탐색합니다.
     func startSearching()

@@ -5,26 +5,42 @@
 //  Created by 최다경 on 11/12/24.
 //
 
+import Combine
 import Domain
 import Foundation
 
 public final class WhiteboardRepository: WhiteboardRepositoryInterface {
     private var nearbyNetwork: NearbyNetworkInterface
     public weak var delegate: WhiteboardRepositoryDelegate?
+    public var recentPeerPublisher: AnyPublisher<Profile, Never>
+    private var recentPeerSubject = PassthroughSubject<Profile, Never>()
     private var connections: [UUID: NetworkConnection]
     private var participantsInfo: [String: String]
     private let decoder = JSONDecoder()
+    private let encoder = JSONEncoder()
     private var myProfile: Profile
+    private var isHost: Bool = false
+    private var publishingCandidate: NetworkConnection?
+    private var isPublishingCandidate: Bool = false
+    private var cancellables: Set<AnyCancellable>
 
     public init(nearbyNetworkInterface: NearbyNetworkInterface, myProfile: Profile) {
         self.nearbyNetwork = nearbyNetworkInterface
         self.participantsInfo = [:]
         self.connections = [:]
         self.myProfile = myProfile
+        cancellables = []
+        self.recentPeerPublisher = recentPeerSubject.eraseToAnyPublisher()
+        bindNearbyNetwork()
         self.nearbyNetwork.connectionDelegate = self
     }
 
+    public func updateProfile(myProfile: Profile) {
+        self.myProfile = myProfile
+    }
+
     public func startPublishing(myProfile: Profile) {
+        isHost = true
         self.myProfile = myProfile
         updatePublishingInfo(myProfile: myProfile)
         nearbyNetwork.startPublishing(with: participantsInfo)
@@ -37,9 +53,12 @@ public final class WhiteboardRepository: WhiteboardRepositoryInterface {
     public func disconnectWhiteboard() {
         nearbyNetwork.disconnectAll()
         nearbyNetwork.stopPublishing()
+        clearConnectionInfo()
     }
 
     public func joinWhiteboard(whiteboard: Whiteboard, myProfile: Profile) throws {
+        isHost = false
+
         let profileIcons = whiteboard.participantIcons
             .map { $0.emoji }
             .joined(separator: ",")
@@ -48,10 +67,10 @@ public final class WhiteboardRepository: WhiteboardRepositoryInterface {
 
         let connection = NetworkConnection(
             id: whiteboard.ID,
-            name: whiteboard.name,
+            name: myProfile.nickname,
             info: participantsInfo)
 
-        let context = RequestedContext(participant: myProfile.profileIcon.emoji)
+        let context = RequestedContext(participant: myProfile.profileIcon.emoji, name: myProfile.nickname)
 
         try nearbyNetwork.joinConnection(connection: connection, context: context)
     }
@@ -80,6 +99,47 @@ public final class WhiteboardRepository: WhiteboardRepositoryInterface {
         let newInfo = newIconList.joined(separator: ",")
         self.participantsInfo["participants"] = newInfo
         self.participantsInfo["host"] = myProfile.nickname
+    }
+
+    private func clearConnectionInfo() {
+        self.connections.removeAll()
+        self.participantsInfo.removeAll()
+        isHost = false
+        isPublishingCandidate = false
+        publishingCandidate = nil
+    }
+
+    private func assignPublishingCandidate() {
+        let candidate = connections.values.first
+        publishingCandidate = candidate
+        sendConnectionInfo()
+    }
+
+    private func sendConnectionInfo() {
+        guard
+            let candidate = publishingCandidate,
+            let emojiString = participantsInfo["participants"]
+        else { return }
+        let emojiToRemove = myProfile.profileIcon.emoji
+        let emojiList = emojiString
+            .split(separator: ",")
+            .map { String($0) }
+            .filter { $0 != emojiToRemove }
+
+        let newEmojiString = emojiList.joined(separator: ",")
+        var newParticipantsInfo = participantsInfo
+        newParticipantsInfo["participants"] = newEmojiString
+        let connectionList = connections.map { ($0.key, $0.value) }
+        let orderedKeys = connectionList.map { $0.0 }
+        let orderedValues = connectionList.map { $0.1 }
+
+        let assinInfo = PublisherInfo(publishingCandidate: candidate,
+                                      IDs: orderedKeys,
+                                      connections: orderedValues,
+                                      participantsInfo: newParticipantsInfo)
+
+        guard let encodedInfo = try? encoder.encode(assinInfo) else { return }
+        nearbyNetwork.send(data: encodedInfo)
     }
 }
 
@@ -136,8 +196,7 @@ extension WhiteboardRepository: NearbyNetworkConnectionDelegate {
     public func nearbyNetwork(
         _ sender: any NearbyNetworkInterface,
         didConnect connection: NetworkConnection,
-        with context: Data?,
-        isHost: Bool
+        with context: Data?
     ) {
         if !isHost { return }
 
@@ -147,14 +206,21 @@ extension WhiteboardRepository: NearbyNetworkConnectionDelegate {
                 let prevInfo = self.participantsInfo["participants"]
             else { return }
 
-            let decodedContext = try JSONDecoder().decode(RequestedContext.self, from: context)
+            let decodedContext = try decoder.decode(RequestedContext.self, from: context)
             let invitationInfo = decodedContext.participant
             let currentInfo = prevInfo + "," + invitationInfo
             let requestedInfo = ["participants": invitationInfo]
 
-            connections[connection.id] = NetworkConnection(id: connection.id, name: "", info: requestedInfo)
+            guard let profileIcon = ProfileIcon(rawValue: invitationInfo) else { return }
+
+            let profile = Profile(nickname: decodedContext.name, profileIcon: profileIcon)
+
+            recentPeerSubject.send(profile)
+
+            connections[connection.id] = NetworkConnection(id: connection.id, name: decodedContext.name, info: requestedInfo)
             updatePublishingInfo(myProfile: myProfile)
             nearbyNetwork.startPublishing(with: self.participantsInfo)
+            assignPublishingCandidate()
         } catch {
             // TODO: - 에러 처리
         }
@@ -162,19 +228,46 @@ extension WhiteboardRepository: NearbyNetworkConnectionDelegate {
 
     public func nearbyNetwork(
         _ sender: any NearbyNetworkInterface,
-        didDisconnect connection: NetworkConnection,
-        isHost: Bool
+        didDisconnect connection: NetworkConnection
     ) {
-        if !isHost { return }
-        guard
-            let prevInfo = self.participantsInfo["participants"],
-            let lostConnection = connections[connection.id],
-            let lostInfo = lostConnection.info,
-            let lostIcon = lostInfo["participants"]
-        else { return }
+        if isHost {
+            connections[connection.id] = nil
+            assignPublishingCandidate()
+            updatePublishingInfo(myProfile: myProfile)
+            nearbyNetwork.startPublishing(with: self.participantsInfo)
+        }
 
-        connections[connection.id] = nil
-        updatePublishingInfo(myProfile: myProfile)
-        nearbyNetwork.startPublishing(with: self.participantsInfo)
+        let lostConnectionName = connection.name
+            .map { String($0) }
+            .suffix(from: 36)
+            .joined()
+
+        let isHostLosted = lostConnectionName == participantsInfo["host"]
+
+        if isHostLosted && isPublishingCandidate {
+            guard let hostName = participantsInfo["host"] else { return }
+            isHost = true
+            participantsInfo["host"] = myProfile.nickname
+            connections = connections.filter { $0.value.name != myProfile.nickname }
+            assignPublishingCandidate()
+            startPublishing(myProfile: myProfile)
+        }
+    }
+
+    private func bindNearbyNetwork() {
+        nearbyNetwork.reciptDataPublisher
+            .sink { [weak self] data in
+                guard let decodedData = try? JSONDecoder().decode(PublisherInfo.self, from: data) else { return }
+                if decodedData.publishingCandidate.name == self?.myProfile.nickname {
+                    self?.isPublishingCandidate = true
+                } else {
+                    self?.isPublishingCandidate = false
+                }
+
+                let newConnections = Dictionary(uniqueKeysWithValues: zip(decodedData.IDs, decodedData.connections))
+                self?.connections = newConnections
+                self?.participantsInfo = decodedData.participantsInfo
+            }
+            .store(in: &cancellables)
     }
 }
