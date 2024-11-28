@@ -158,6 +158,7 @@ public final class ChatViewController: UIViewController {
             .sink { [weak self] chatMessageList in
                 self?.applySnapshot(chatMessageList: chatMessageList)
                 self?.didTapMoveScrollButton(chatMessageList: chatMessageList)
+                HapticManager.shared.hapticImpact(style: .heavy)
             }
             .store(in: &cancellables)
     }

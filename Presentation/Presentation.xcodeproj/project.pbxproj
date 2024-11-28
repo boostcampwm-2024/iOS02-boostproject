@@ -23,6 +23,7 @@
 		5BE0D1BC2CEC7D2300F43946 /* WhiteboardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BE0D1BB2CEC7D2300F43946 /* WhiteboardCell.swift */; };
 		6F199EF12CE31A05005DC40F /* WhiteboardToolBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F199EF02CE31A05005DC40F /* WhiteboardToolBar.swift */; };
 		6F199EF32CE3203A005DC40F /* WhiteboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F199EF22CE3203A005DC40F /* WhiteboardViewController.swift */; };
+		6F1EB9A72CF83538000EECB7 /* HapticManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F1EB9A62CF83538000EECB7 /* HapticManager.swift */; };
 		6F21477D2CE4EFCF00B55E2C /* TextObjectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F21477C2CE4EFCF00B55E2C /* TextObjectView.swift */; };
 		6F25BE442CF5BC44005BCAA2 /* PeerMessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F25BE432CF5BC44005BCAA2 /* PeerMessageCell.swift */; };
 		6F25BE472CF5BF79005BCAA2 /* ChatMessageCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F25BE462CF5BF6F005BCAA2 /* ChatMessageCellModel.swift */; };
@@ -75,6 +76,7 @@
 		5BE0D1BB2CEC7D2300F43946 /* WhiteboardCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhiteboardCell.swift; sourceTree = "<group>"; };
 		6F199EF02CE31A05005DC40F /* WhiteboardToolBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhiteboardToolBar.swift; sourceTree = "<group>"; };
 		6F199EF22CE3203A005DC40F /* WhiteboardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhiteboardViewController.swift; sourceTree = "<group>"; };
+		6F1EB9A62CF83538000EECB7 /* HapticManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticManager.swift; sourceTree = "<group>"; };
 		6F21477C2CE4EFCF00B55E2C /* TextObjectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextObjectView.swift; sourceTree = "<group>"; };
 		6F25BE432CF5BC44005BCAA2 /* PeerMessageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeerMessageCell.swift; sourceTree = "<group>"; };
 		6F25BE462CF5BF6F005BCAA2 /* ChatMessageCellModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessageCellModel.swift; sourceTree = "<group>"; };
@@ -239,6 +241,14 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		6F1EB9A52CF8352F000EECB7 /* Manager */ = {
+			isa = PBXGroup;
+			children = (
+				6F1EB9A62CF83538000EECB7 /* HapticManager.swift */,
+			);
+			path = Manager;
+			sourceTree = "<group>";
+		};
 		6F25BE452CF5BF63005BCAA2 /* Model */ = {
 			isa = PBXGroup;
 			children = (
@@ -296,6 +306,7 @@
 		A8525DC52CE201C00089DA5E /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				6F1EB9A52CF8352F000EECB7 /* Manager */,
 				A8525DC92CE202D30089DA5E /* Extension */,
 				A8525DC62CE201CB0089DA5E /* DesignSystem */,
 				0080E8D22CE4A0820095B958 /* ViewModel.swift */,
@@ -484,6 +495,7 @@
 				5B2BC78F2CE4F66F00893B9E /* WhiteboardListViewModel.swift in Sources */,
 				0080E8CA2CE2FF750095B958 /* WhiteboardObjectViewFactoryable.swift in Sources */,
 				00683D762CE4B828000D28E4 /* DrawingRenderer.swift in Sources */,
+				6F1EB9A72CF83538000EECB7 /* HapticManager.swift in Sources */,
 				6F25BE472CF5BF79005BCAA2 /* ChatMessageCellModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -60,7 +60,6 @@ public class ChatViewModel: ViewModel {
         chatUseCase.chatMessagePublisher
             .sink { [weak self] chatMessage in
                 self?.chatMessages.append(chatMessage)
-//                guard let convertedMessages = self?.convertToCellModel() else { return }
                 self?.loadChat()
             }
             .store(in: &cancellables)
