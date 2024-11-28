@@ -28,7 +28,7 @@ public protocol NearbyNetworkInterface {
 
     /// 주변에 내 기기 알리는 것을 중지합니다.
     func stopPublishing()
-    
+
     /// 연결된 모든 피어와 연결을 끊습니다. 
     func disconnectAll()
 

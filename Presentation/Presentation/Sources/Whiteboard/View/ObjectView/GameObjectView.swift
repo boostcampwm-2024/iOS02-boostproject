@@ -40,10 +40,11 @@ final class GameObjectView: WhiteboardObjectView {
         return label
     }()
 
-    private let winnersLabel = {
+    private let winnersLabel: UILabel = {
         let label = UILabel()
         label.font = AirplainFont.Body5
         label.textColor = .gray800
+        label.numberOfLines = 3
         return label
     }()
 
@@ -104,6 +105,7 @@ final class GameObjectView: WhiteboardObjectView {
         for index in 0..<min(maxWinnerCount, gameWinners.count) {
             winnerText += "\(rankings[index]) \(gameWinners[index].nickname) \(gameWinners[index].triedCount)/\(maxTryCount) 🔥\n"
         }
+        winnerText.removeLast()
         winnersLabel.text = winnerText
     }
 }

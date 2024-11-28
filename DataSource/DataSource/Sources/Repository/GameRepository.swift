@@ -15,7 +15,7 @@ public final class GameRepository: GameRepositoryInterface {
     public init(persistenceService: PersistenceInterface) {
         self.persistenceService = persistenceService
     }
-    
+
     public func randomGameAnswer() -> String {
         guard
             let wordleSet: [String] = persistenceService.load(forKey: wordleKey),
