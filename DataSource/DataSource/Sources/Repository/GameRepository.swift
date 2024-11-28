@@ -10,7 +10,8 @@ import Foundation
 
 public final class GameRepository: GameRepositoryInterface {
     private let persistenceService: PersistenceInterface
-    private let wordleKey = "AirplainWordle"
+    private let wordleAnswerKey = "AirplainWordle"
+    private let wordleHistoryKey = "AirplainWordleHistory"
 
     public init(persistenceService: PersistenceInterface) {
         self.persistenceService = persistenceService
@@ -18,18 +19,31 @@ public final class GameRepository: GameRepositoryInterface {
 
     public func randomGameAnswer() -> String {
         guard
-            let wordleSet: [String] = persistenceService.load(forKey: wordleKey),
+            let wordleSet: [String] = persistenceService.load(forKey: wordleAnswerKey),
             let wordleAnswer = wordleSet.randomElement()
         else {
-            saveWordleSet(wordleSet: gameWords)
+            saveWordleAnswerSet(wordleAnswerSet: gameWords)
             return gameWords.randomElement() ?? "KOREA"
         }
 
         return wordleAnswer
     }
 
-    public func saveWordleSet(wordleSet: [String]) {
-        persistenceService.save(data: wordleSet, forKey: wordleKey)
+    public func saveWordleAnswerSet(wordleAnswerSet: [String]) {
+        persistenceService.save(data: wordleAnswerSet, forKey: wordleAnswerKey)
+    }
+
+    public func loadWordleHistory(gameID: UUID) -> [String] {
+        guard
+            let wordleHistory: [UUID: [String]] = persistenceService.load(forKey: wordleAnswerKey),
+            let gameHistory = wordleHistory[gameID]
+        else { return [] }
+        return gameHistory
+    }
+
+    public func saveWordleHistory(gameID: UUID, wordleHistory: [String]) {
+        let gameHistory: [UUID: [String]] = [gameID: wordleHistory]
+        persistenceService.save(data: gameHistory, forKey: wordleHistoryKey)
     }
 }
 
