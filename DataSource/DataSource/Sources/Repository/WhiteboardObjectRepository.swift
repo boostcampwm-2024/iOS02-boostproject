@@ -44,6 +44,11 @@ public final class WhiteboardObjectRepository: WhiteboardObjectRepositoryInterfa
                 photoObject: photoObject,
                 type: .imageData,
                 isDeleted: isDeleted)
+        case let gameObject as GameObject:
+            await send(
+                whiteboardObject: gameObject,
+                type: .game,
+                isDeleted: isDeleted)
         default:
             break
         }
@@ -137,6 +142,8 @@ fileprivate extension AirplaINDataType {
             PhotoObject.self
         case .drawing:
             DrawingObject.self
+        case .game:
+            GameObject.self
         default:
             WhiteboardObject.self
         }

@@ -249,6 +249,9 @@ extension WhiteboardViewController: WhiteboardToolBarDelegate {
         if selectedTool == .text {
             viewModel.action(input: .addTextObject(point: visibleCenterPoint, viewSize: view.frame.size))
             viewModel.action(input: .finishUsingTool)
+        } else if selectedTool == .game {
+            viewModel.action(input: .addGameObjcet(point: visibleCenterPoint))
+            viewModel.action(input: .finishUsingTool)
         }
     }
 
