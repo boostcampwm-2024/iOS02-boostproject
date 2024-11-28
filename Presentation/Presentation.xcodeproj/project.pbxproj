@@ -24,6 +24,16 @@
 		6F199EF12CE31A05005DC40F /* WhiteboardToolBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F199EF02CE31A05005DC40F /* WhiteboardToolBar.swift */; };
 		6F199EF32CE3203A005DC40F /* WhiteboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F199EF22CE3203A005DC40F /* WhiteboardViewController.swift */; };
 		6F21477D2CE4EFCF00B55E2C /* TextObjectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F21477C2CE4EFCF00B55E2C /* TextObjectView.swift */; };
+		A81E7ABB2CF5C771007E8414 /* Wordle.swift in Sources */ = {isa = PBXBuildFile; fileRef = A81E7ABA2CF5C771007E8414 /* Wordle.swift */; };
+		A81E7ABD2CF5C7A7007E8414 /* WordleState.swift in Sources */ = {isa = PBXBuildFile; fileRef = A81E7ABC2CF5C7A7007E8414 /* WordleState.swift */; };
+		A81E7ABF2CF5C7FE007E8414 /* KeyboardState.swift in Sources */ = {isa = PBXBuildFile; fileRef = A81E7ABE2CF5C7FE007E8414 /* KeyboardState.swift */; };
+		A81E7AC12CF5C813007E8414 /* WordleKeyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = A81E7AC02CF5C813007E8414 /* WordleKeyboard.swift */; };
+		A81E7AC62CF5CA18007E8414 /* WordleTileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A81E7AC52CF5CA18007E8414 /* WordleTileView.swift */; };
+		A81E7AC82CF5CAD5007E8414 /* KeyboardTileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A81E7AC72CF5CAD5007E8414 /* KeyboardTileView.swift */; };
+		A81E7BD42CF6E76D007E8414 /* WordleGuideView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A81E7BD32CF6E76D007E8414 /* WordleGuideView.swift */; };
+		A81E7BD62CF6E797007E8414 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A81E7BD52CF6E797007E8414 /* Images.xcassets */; };
+		A81E7BD82CF6E94F007E8414 /* WordleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A81E7BD72CF6E94F007E8414 /* WordleView.swift */; };
+		A81E7BDB2CF6E973007E8414 /* WordleViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A81E7BDA2CF6E973007E8414 /* WordleViewModel.swift */; };
 		6F25BE442CF5BC44005BCAA2 /* PeerMessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F25BE432CF5BC44005BCAA2 /* PeerMessageCell.swift */; };
 		6F25BE472CF5BF79005BCAA2 /* ChatMessageCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F25BE462CF5BF6F005BCAA2 /* ChatMessageCellModel.swift */; };
 		6FA7DBE92CF4B4E1007333C6 /* ChatTextFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FA7DBE82CF4B4E1007333C6 /* ChatTextFieldView.swift */; };
@@ -76,6 +86,16 @@
 		6F199EF02CE31A05005DC40F /* WhiteboardToolBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhiteboardToolBar.swift; sourceTree = "<group>"; };
 		6F199EF22CE3203A005DC40F /* WhiteboardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhiteboardViewController.swift; sourceTree = "<group>"; };
 		6F21477C2CE4EFCF00B55E2C /* TextObjectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextObjectView.swift; sourceTree = "<group>"; };
+		A81E7ABA2CF5C771007E8414 /* Wordle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Wordle.swift; sourceTree = "<group>"; };
+		A81E7ABC2CF5C7A7007E8414 /* WordleState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordleState.swift; sourceTree = "<group>"; };
+		A81E7ABE2CF5C7FE007E8414 /* KeyboardState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardState.swift; sourceTree = "<group>"; };
+		A81E7AC02CF5C813007E8414 /* WordleKeyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordleKeyboard.swift; sourceTree = "<group>"; };
+		A81E7AC52CF5CA18007E8414 /* WordleTileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordleTileView.swift; sourceTree = "<group>"; };
+		A81E7AC72CF5CAD5007E8414 /* KeyboardTileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardTileView.swift; sourceTree = "<group>"; };
+		A81E7BD32CF6E76D007E8414 /* WordleGuideView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordleGuideView.swift; sourceTree = "<group>"; };
+		A81E7BD52CF6E797007E8414 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		A81E7BD72CF6E94F007E8414 /* WordleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordleView.swift; sourceTree = "<group>"; };
+		A81E7BDA2CF6E973007E8414 /* WordleViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordleViewModel.swift; sourceTree = "<group>"; };
 		6F25BE432CF5BC44005BCAA2 /* PeerMessageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeerMessageCell.swift; sourceTree = "<group>"; };
 		6F25BE462CF5BF6F005BCAA2 /* ChatMessageCellModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessageCellModel.swift; sourceTree = "<group>"; };
 		6FA7DBE82CF4B4E1007333C6 /* ChatTextFieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatTextFieldView.swift; sourceTree = "<group>"; };
@@ -135,6 +155,7 @@
 				A85260262CE344AF0089DA5E /* Profile */,
 				5B65412E2CE32B11000168AD /* WhiteboardList */,
 				0080E8C32CE2F0310095B958 /* Whiteboard */,
+				A81E7AB42CF5C6D4007E8414 /* Wordle */,
 				6FA7DBE52CF4682F007333C6 /* Chat */,
 			);
 			path = Sources;
@@ -239,32 +260,64 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		6F25BE452CF5BF63005BCAA2 /* Model */ = {
+		A81E7AB42CF5C6D4007E8414 /* Wordle */ = {
 			isa = PBXGroup;
 			children = (
-				6F25BE462CF5BF6F005BCAA2 /* ChatMessageCellModel.swift */,
+				A81E7AB92CF5C762007E8414 /* Model */,
+				A81E7AC42CF5CA07007E8414 /* View */,
+				A81E7BD92CF6E95C007E8414 /* ViewModel */,
+			);
+			path = Wordle;
+			sourceTree = "<group>";
+		};
+		A81E7AB92CF5C762007E8414 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				A81E7ABC2CF5C7A7007E8414 /* WordleState.swift */,
+				A81E7ABA2CF5C771007E8414 /* Wordle.swift */,
+				A81E7ABE2CF5C7FE007E8414 /* KeyboardState.swift */,
+				A81E7AC02CF5C813007E8414 /* WordleKeyboard.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
 		};
-		6FA7DBE52CF4682F007333C6 /* Chat */ = {
+		A81E7AC42CF5CA07007E8414 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				6F25BE452CF5BF63005BCAA2 /* Model */,
-				6FA7DBE72CF4B4DA007333C6 /* View */,
-				6FA7DBE62CF4685A007333C6 /* ViewModel */,
+				A81E7AC52CF5CA18007E8414 /* WordleTileView.swift */,
+				A81E7AC72CF5CAD5007E8414 /* KeyboardTileView.swift */,
+				A81E7BD32CF6E76D007E8414 /* WordleGuideView.swift */,
+				A81E7BD72CF6E94F007E8414 /* WordleView.swift */,
 			);
-			path = Chat;
+			path = View;
 			sourceTree = "<group>";
 		};
-		6FA7DBE62CF4685A007333C6 /* ViewModel */ = {
+		A81E7BD92CF6E95C007E8414 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
-				6FA7DBEB2CF56103007333C6 /* ChatViewModel.swift */,
+				A81E7BDA2CF6E973007E8414 /* WordleViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
 		};
+        6FA7DBE52CF4682F007333C6 /* Chat */ = {
+            isa = PBXGroup;
+            children = (
+                6F25BE452CF5BF63005BCAA2 /* Model */,
+                6FA7DBE72CF4B4DA007333C6 /* View */,
+                6FA7DBE62CF4685A007333C6 /* ViewModel */,
+            );
+            path = Chat;
+            sourceTree = "<group>";
+        };
+        6FA7DBE62CF4685A007333C6 /* ViewModel */ = {
+            isa = PBXGroup;
+            children = (
+                6FA7DBEB2CF56103007333C6 /* ChatViewModel.swift */,
+            );
+            path = ViewModel;
+            sourceTree = "<group>";
+        };
 		6FA7DBE72CF4B4DA007333C6 /* View */ = {
 			isa = PBXGroup;
 			children = (
@@ -285,10 +338,19 @@
 			path = Cell;
 			sourceTree = "<group>";
 		};
+        6F25BE452CF5BF63005BCAA2 /* Model */ = {
+            isa = PBXGroup;
+            children = (
+                6F25BE462CF5BF6F005BCAA2 /* ChatMessageCellModel.swift */,
+            );
+            path = Model;
+            sourceTree = "<group>";
+        };
 		A8525DC12CE200110089DA5E /* Resources */ = {
 			isa = PBXGroup;
 			children = (
 				A8525DC22CE200230089DA5E /* Colors.xcassets */,
+				A81E7BD52CF6E797007E8414 /* Images.xcassets */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -424,6 +486,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A8525DC32CE200230089DA5E /* Colors.xcassets in Resources */,
+				A81E7BD62CF6E797007E8414 /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -455,12 +518,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A81E7ABB2CF5C771007E8414 /* Wordle.swift in Sources */,
 				00CCC2672CE60BCD005FA747 /* AirplainFont.swift in Sources */,
+				A81E7AC12CF5C813007E8414 /* WordleKeyboard.swift in Sources */,
 				5BE0D1BC2CEC7D2300F43946 /* WhiteboardCell.swift in Sources */,
 				A8E97AC12CE4E9A300B28063 /* ProfileIconCollectionViewCell.swift in Sources */,
 				A8E979C72CE4945500B28063 /* LayoutConstant.swift in Sources */,
 				A85260292CE344C60089DA5E /* ProfileIconView.swift in Sources */,
+				A81E7AC82CF5CAD5007E8414 /* KeyboardTileView.swift in Sources */,
 				004B21812CEB5BC000A5BEB8 /* PhotoObjectView.swift in Sources */,
+				A81E7BDB2CF6E973007E8414 /* WordleViewModel.swift in Sources */,
+				A81E7ABD2CF5C7A7007E8414 /* WordleState.swift in Sources */,
 				6FA7DBE92CF4B4E1007333C6 /* ChatTextFieldView.swift in Sources */,
 				A8E97ABF2CE4E94D00B28063 /* SelectProfileIconViewController.swift in Sources */,
 				A8E979C52CE493E900B28063 /* ProfileViewController.swift in Sources */,
@@ -468,12 +536,15 @@
 				6FA7DBF22CF56A3F007333C6 /* ChatViewController.swift in Sources */,
 				A85260252CE3447E0089DA5E /* UIColor+.swift in Sources */,
 				00D2DD982CE8CD300089F0BA /* DrawingView.swift in Sources */,
+				A81E7AC62CF5CA18007E8414 /* WordleTileView.swift in Sources */,
 				A8E979CA2CE49A1800B28063 /* ProfileViewModel.swift in Sources */,
 				0080E8C62CE2F0510095B958 /* WhiteboardObjectView.swift in Sources */,
 				6FA7DBEC2CF56103007333C6 /* ChatViewModel.swift in Sources */,
 				A8525DCB2CE203D50089DA5E /* UIView+.swift in Sources */,
 				6F199EF32CE3203A005DC40F /* WhiteboardViewController.swift in Sources */,
+				A81E7ABF2CF5C7FE007E8414 /* KeyboardState.swift in Sources */,
 				6F199EF12CE31A05005DC40F /* WhiteboardToolBar.swift in Sources */,
+				A81E7BD82CF6E94F007E8414 /* WordleView.swift in Sources */,
 				6FA7DBEE2CF56457007333C6 /* MessageCell.swift in Sources */,
 				6F21477D2CE4EFCF00B55E2C /* TextObjectView.swift in Sources */,
 				6F25BE442CF5BC44005BCAA2 /* PeerMessageCell.swift in Sources */,
@@ -483,6 +554,7 @@
 				5B2BC78E2CE4F66F00893B9E /* WhiteboardListViewController.swift in Sources */,
 				5B2BC78F2CE4F66F00893B9E /* WhiteboardListViewModel.swift in Sources */,
 				0080E8CA2CE2FF750095B958 /* WhiteboardObjectViewFactoryable.swift in Sources */,
+				A81E7BD42CF6E76D007E8414 /* WordleGuideView.swift in Sources */,
 				00683D762CE4B828000D28E4 /* DrawingRenderer.swift in Sources */,
 				6F25BE472CF5BF79005BCAA2 /* ChatMessageCellModel.swift in Sources */,
 			);

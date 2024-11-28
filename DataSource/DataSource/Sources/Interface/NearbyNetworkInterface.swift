@@ -28,7 +28,7 @@ public protocol NearbyNetworkInterface {
 
     /// 주변에 내 기기 알리는 것을 중지합니다.
     func stopPublishing()
-    
+
     /// 연결된 모든 피어와 연결을 끊습니다. 
     func disconnectAll()
 
@@ -65,7 +65,7 @@ public protocol NearbyNetworkConnectionDelegate: AnyObject {
 
     /// 주변 기기와의 연결에 실패했을 때 실행됩니다.
     func nearbyNetworkCannotConnect(_ sender: NearbyNetworkInterface)
-    
+
     /// 주변 기기와 연결에 성공하였을 때 실행됩니다.
     /// - Parameters:
     ///   - connection: 연결된 기기
