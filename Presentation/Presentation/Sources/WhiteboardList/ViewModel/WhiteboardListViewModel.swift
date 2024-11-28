@@ -19,6 +19,7 @@ public final class WhiteboardListViewModel: ViewModel {
         case joinWhiteboard(whiteboard: Whiteboard)
         case stopSearchingWhiteboard
         case refreshWhiteboardList
+        case updateProfile
     }
 
     struct Output {
@@ -47,6 +48,8 @@ public final class WhiteboardListViewModel: ViewModel {
             stopSearchingWhiteboard()
         case .refreshWhiteboardList:
             refreshWhiteboardList()
+        case .updateProfile:
+            updateProfile()
         }
     }
 
@@ -74,5 +77,9 @@ public final class WhiteboardListViewModel: ViewModel {
 
     private func refreshWhiteboardList() {
         whiteboardUseCase.refreshWhiteboardList()
+    }
+
+    private func updateProfile() {
+        whiteboardUseCase.updateProfile()
     }
 }
