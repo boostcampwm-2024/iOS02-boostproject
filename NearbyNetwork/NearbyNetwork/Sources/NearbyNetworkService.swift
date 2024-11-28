@@ -25,13 +25,12 @@ public final class NearbyNetworkService: NSObject {
     private var foundPeers: [MCPeerID: NetworkConnection] = [:]
 
     private let logger = Logger()
-    private var isHost = false
     private var requestInfo: [MCPeerID: Data] = [:]
     private let encoder = JSONEncoder()
     private let serialQueue = DispatchQueue(label: "NNS.serialQueue")
 
-    public init(serviceName: String) {
-        peerID = MCPeerID(displayName: UUID().uuidString)
+    public init(serviceName: String, nickname: String) {
+        peerID = MCPeerID(displayName: UUID().uuidString + nickname)
         session = MCSession(peer: peerID)
         serviceAdvertiser =  MCNearbyServiceAdvertiser(
             peer: peerID,
@@ -64,12 +63,12 @@ extension NearbyNetworkService: NearbyNetworkInterface {
         serialQueue.sync {
             serviceBrowser.stopBrowsingForPeers()
             foundPeers.removeAll()
+            connectionDelegate?.nearbyNetwork(self, didFind: [])
             serviceBrowser.startBrowsingForPeers()
         }
     }
 
     public func startPublishing(with info: [String: String]) {
-        isHost = true
         serviceAdvertiser.stopAdvertisingPeer()
         serviceAdvertiser =  MCNearbyServiceAdvertiser(
             peer: peerID,
@@ -88,8 +87,6 @@ extension NearbyNetworkService: NearbyNetworkInterface {
     }
 
     public func joinConnection(connection: NetworkConnection, context: RequestedContext) throws {
-        isHost = false
-
         let peerID = foundPeers
             .first { $0.value.id == connection.id }?
             .key
@@ -163,12 +160,15 @@ extension NearbyNetworkService: MCSessionDelegate {
                 guard let disconnectedPeer = connectedPeers[peerID] else { return }
                 connectionDelegate?.nearbyNetwork(
                         self,
-                        didDisconnect: disconnectedPeer,
-                        isHost: isHost)
+                        didDisconnect: disconnectedPeer)
                 connectedPeers[peerID] = nil
             case .connected:
                 let connectedPeerInfo = foundPeers[peerID]?.info
-                guard let uuid = UUID(uuidString: peerID.displayName) else { return }
+                let uuidString = peerID.displayName
+                    .map { String($0) }
+                    .prefix(36)
+                    .joined()
+                guard let uuid = UUID(uuidString: uuidString) else { return }
 
                 connectedPeers[peerID] = NetworkConnection(
                     id: uuid,
@@ -180,8 +180,7 @@ extension NearbyNetworkService: MCSessionDelegate {
                 connectionDelegate?.nearbyNetwork(
                         self,
                         didConnect: connection,
-                        with: requestInfo[peerID],
-                        isHost: self.isHost)
+                        with: requestInfo[peerID])
             default:
                 break
             }
@@ -268,7 +267,11 @@ extension NearbyNetworkService: MCNearbyServiceBrowserDelegate {
     ) {
         serialQueue.sync { [weak self] in
             guard let self else { return }
-            guard let uuid = UUID(uuidString: peerID.displayName) else { return }
+            let uuidString = peerID.displayName
+                .map { String($0) }
+                .prefix(36)
+                .joined()
+            guard let uuid = UUID(uuidString: uuidString) else { return }
 
             let connection = NetworkConnection(
                 id: uuid,

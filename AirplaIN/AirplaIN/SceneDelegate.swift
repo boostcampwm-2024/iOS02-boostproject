@@ -23,11 +23,13 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let windowScene = (scene as? UIWindowScene) else { return }
 
         // TODO: - 임시 의존성 주입
-        let nearbyNetworkService = NearbyNetworkService(serviceName: "airplain")
+        let profileRepository = ProfileRepository(persistenceService: PersistenceService())
+        let nearbyNetworkService = NearbyNetworkService(
+            serviceName: "airplain",
+            nickname: profileRepository.loadProfile().nickname)
         let filePersistenceService = FilePersistence()
         let whiteboardObjectSet = WhiteboardObjectSet()
 
-        let profileRepository = ProfileRepository(persistenceService: PersistenceService())
         let whiteboardRepository = WhiteboardRepository(
             nearbyNetworkInterface: nearbyNetworkService,
             myProfile: profileRepository.loadProfile())
