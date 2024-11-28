@@ -74,7 +74,7 @@ public final class ChatViewController: UIViewController {
         chatListView.showsVerticalScrollIndicator = false
         chatTextFieldView.configureDelegate(delegate: self)
         chatListView.delegate = self
-        if let sheetPresentationController = sheetPresentationController {
+        if let sheetPresentationController {
             sheetPresentationController.detents = [.medium(), .large()]
             sheetPresentationController.prefersGrabberVisible = true
             sheetPresentationController.prefersScrollingExpandsWhenScrolledToEdge = false
