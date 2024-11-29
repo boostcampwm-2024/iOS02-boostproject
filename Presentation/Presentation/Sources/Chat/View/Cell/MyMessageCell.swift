@@ -31,7 +31,8 @@ final class MyMessageCell: MessageCell {
     }()
 
     private var customViewConstraints: (
-        labelWidth: NSLayoutConstraint,
+        labelMaxWidth: NSLayoutConstraint,
+        labelMinWidth: NSLayoutConstraint,
         labelTrailing: NSLayoutConstraint,
         messageTopPadding: NSLayoutConstraint)?
 
@@ -60,9 +61,12 @@ final class MyMessageCell: MessageCell {
             .edges(equalTo: messageView, inset: -MessageCellLayoutConstant.messageViewPadding)
 
         let constraints = (
-            labelWidth: messageView
+            labelMaxWidth: messageView
                 .widthAnchor
                 .constraint(lessThanOrEqualToConstant: contentView.frame.width * 3 / 4),
+            labelMinWidth: messageView
+                .widthAnchor
+                .constraint(greaterThanOrEqualToConstant: MessageCellLayoutConstant.messageMinWidth),
             labelTrailing: messageView
                 .trailingAnchor
                 .constraint(
@@ -75,7 +79,8 @@ final class MyMessageCell: MessageCell {
                     constant: MyMessageCellLayoutConstant.defaultTopPadding)
         )
         NSLayoutConstraint.activate([
-            constraints.labelWidth,
+            constraints.labelMaxWidth,
+            constraints.labelMinWidth,
             constraints.labelTrailing,
             constraints.messageTopPadding])
         customViewConstraints = constraints

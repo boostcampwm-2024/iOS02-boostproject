@@ -43,7 +43,8 @@ final class PeerMessageCell: MessageCell {
     }()
 
     private var customViewConstraints: (
-        labelWidth: NSLayoutConstraint,
+        labelMaxWidth: NSLayoutConstraint,
+        labelMinWidth: NSLayoutConstraint,
         labelLeading: NSLayoutConstraint,
         messageTopPadding: NSLayoutConstraint)?
 
@@ -90,9 +91,12 @@ final class PeerMessageCell: MessageCell {
             .leading(equalTo: messageBackground.leadingAnchor, inset: 0)
 
         let constraints = (
-            labelWidth: messageView
+            labelMaxWidth: messageView
                 .widthAnchor
                 .constraint(lessThanOrEqualToConstant: contentView.frame.width * 3 / 4),
+            labelMinWidth: messageView
+                .widthAnchor
+                .constraint(greaterThanOrEqualToConstant: MessageCellLayoutConstant.messageMinWidth),
             labelLeading: messageView
                 .leadingAnchor
                 .constraint(
@@ -102,7 +106,8 @@ final class PeerMessageCell: MessageCell {
                 .topAnchor
                 .constraint(equalTo: contentView.topAnchor, constant: PeerMessageCellLayoutConstant.defaultTopPadding))
         NSLayoutConstraint.activate([
-            constraints.labelWidth,
+            constraints.labelMaxWidth,
+            constraints.labelMinWidth,
             constraints.labelLeading,
             constraints.messageTopPadding])
         customViewConstraints = constraints
