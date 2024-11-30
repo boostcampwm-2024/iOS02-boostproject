@@ -5,22 +5,26 @@
 //  Created by 최다경 on 11/12/24.
 //
 
+import Combine
 import Domain
 import Foundation
 
 public final class WhiteboardRepository: WhiteboardRepositoryInterface {
-    private var nearbyNetwork: NearbyNetworkInterface
     public weak var delegate: WhiteboardRepositoryDelegate?
+    public let recentPeerPublisher: AnyPublisher<Profile, Never>
+    private var nearbyNetwork: NearbyNetworkInterface
     private var connections: [UUID: NetworkConnection]
     private var participantsInfo: [String: String]
     private let decoder = JSONDecoder()
     private var myProfile: Profile
+    private var recentPeerSubject = PassthroughSubject<Profile, Never>()
 
     public init(nearbyNetworkInterface: NearbyNetworkInterface, myProfile: Profile) {
         self.nearbyNetwork = nearbyNetworkInterface
         self.participantsInfo = [:]
         self.connections = [:]
         self.myProfile = myProfile
+        self.recentPeerPublisher = recentPeerSubject.eraseToAnyPublisher()
         self.nearbyNetwork.connectionDelegate = self
     }
 
@@ -51,7 +55,7 @@ public final class WhiteboardRepository: WhiteboardRepositoryInterface {
             name: whiteboard.name,
             info: participantsInfo)
 
-        let context = RequestedContext(participant: myProfile.profileIcon.emoji)
+        let context = RequestedContext(nickname: myProfile.nickname, participant: myProfile.profileIcon.emoji)
 
         try nearbyNetwork.joinConnection(connection: connection, context: context)
     }
@@ -139,10 +143,9 @@ extension WhiteboardRepository: NearbyNetworkConnectionDelegate {
         with context: Data?,
         isHost: Bool
     ) {
-        if !isHost { return }
-
         do {
             guard
+                isHost,
                 let context = context,
                 let prevInfo = self.participantsInfo["participants"]
             else { return }
@@ -151,6 +154,14 @@ extension WhiteboardRepository: NearbyNetworkConnectionDelegate {
             let invitationInfo = decodedContext.participant
             let currentInfo = prevInfo + "," + invitationInfo
             let requestedInfo = ["participants": invitationInfo]
+
+            guard let connectedPeerIcon = ProfileIcon(rawValue: invitationInfo) else { return }
+
+            let connectedPeer = Profile(
+                nickname: decodedContext.nickname,
+                profileIcon: connectedPeerIcon)
+
+            recentPeerSubject.send(connectedPeer)
 
             connections[connection.id] = NetworkConnection(id: connection.id, name: "", info: requestedInfo)
             updatePublishingInfo(myProfile: myProfile)
