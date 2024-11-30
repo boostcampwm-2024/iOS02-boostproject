@@ -64,6 +64,7 @@ extension NearbyNetworkService: NearbyNetworkInterface {
         serialQueue.sync {
             serviceBrowser.stopBrowsingForPeers()
             foundPeers.removeAll()
+            connectionDelegate?.nearbyNetwork(self, didFind: [])
             serviceBrowser.startBrowsingForPeers()
         }
     }
