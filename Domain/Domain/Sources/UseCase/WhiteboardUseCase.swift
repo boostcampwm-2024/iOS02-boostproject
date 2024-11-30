@@ -38,10 +38,6 @@ public final class WhiteboardUseCase: WhiteboardUseCaseInterface {
         whiteboardRepository.startPublishing(myProfile: myProfile)
     }
 
-    public func startSearchingWhiteboard() {
-        whiteboardRepository.startSearching()
-    }
-
     public func stopSearchingWhiteboard() {
         whiteboardRepository.stopSearching()
     }
@@ -55,8 +51,8 @@ public final class WhiteboardUseCase: WhiteboardUseCaseInterface {
         try whiteboardRepository.joinWhiteboard(whiteboard: whiteboard, myProfile: profile)
     }
 
-    public func refreshWhiteboardList() {
-        whiteboardRepository.restartSearching()
+    public func startSearchingWhiteboards() {
+        whiteboardRepository.startSearching()
     }
 }
 

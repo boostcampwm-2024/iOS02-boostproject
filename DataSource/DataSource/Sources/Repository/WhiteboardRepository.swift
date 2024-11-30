@@ -34,10 +34,6 @@ public final class WhiteboardRepository: WhiteboardRepositoryInterface {
         nearbyNetwork.startPublishing(with: participantsInfo)
     }
 
-    public func startSearching() {
-        nearbyNetwork.startSearching()
-    }
-
     public func disconnectWhiteboard() {
         nearbyNetwork.disconnectAll()
         nearbyNetwork.stopPublishing()
@@ -64,8 +60,8 @@ public final class WhiteboardRepository: WhiteboardRepositoryInterface {
         nearbyNetwork.stopSearching()
     }
 
-    public func restartSearching() {
-        nearbyNetwork.restartSearching()
+    public func startSearching() {
+        nearbyNetwork.startSearching()
     }
 
     private func updatePublishingInfo(myProfile: Profile) {

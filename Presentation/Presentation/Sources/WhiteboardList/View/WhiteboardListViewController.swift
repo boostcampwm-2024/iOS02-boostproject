@@ -97,7 +97,7 @@ public final class WhiteboardListViewController: UIViewController {
 
     public override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        viewModel.action(input: .searchWhiteboard)
+        viewModel.action(input: .startSearchingWhiteboards)
     }
 
     public override func viewDidDisappear(_ animated: Bool) {
@@ -267,7 +267,7 @@ public final class WhiteboardListViewController: UIViewController {
     }
 
     private func refreshWhiteboardList() {
-        viewModel.action(input: .refreshWhiteboardList)
+        viewModel.action(input: .startSearchingWhiteboards)
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
             self?.refreshControl.endRefreshing()
         }
