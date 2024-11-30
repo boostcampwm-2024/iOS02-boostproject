@@ -44,10 +44,14 @@ struct WordleView: View {
                         WordleGuideView(isShowingGuideView: $isShowingGuideView)
                     }
                 }
+                .onAppear {
+                    viewModel.action(input: .loadWordleHistory)
+                }
             }
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
                     Button {
+                        viewModel.action(input: .saveWordleHistory)
                         dismiss()
                     } label: {
                         Image(systemName: "xmark")

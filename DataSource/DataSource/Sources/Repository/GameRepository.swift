@@ -44,7 +44,7 @@ public final class GameRepository: GameRepositoryInterface {
 
     public func loadWordleHistory(gameID: UUID) -> [String] {
         guard
-            let wordleHistory: [UUID: [String]] = persistenceService.load(forKey: wordleAnswerKey),
+            let wordleHistory: [UUID: [String]] = persistenceService.load(forKey: wordleHistoryKey),
             let gameHistory = wordleHistory[gameID]
         else { return [] }
         return gameHistory

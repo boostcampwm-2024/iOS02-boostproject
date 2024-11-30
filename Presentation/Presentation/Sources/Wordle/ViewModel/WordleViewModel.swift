@@ -57,6 +57,8 @@ final class WordleViewModel: ObservableObject {
 
     enum Input {
         case typeKeyboard(keyboard: WordleKeyboard)
+        case loadWordleHistory
+        case saveWordleHistory
     }
 
     init(
@@ -71,6 +73,10 @@ final class WordleViewModel: ObservableObject {
         switch input {
         case .typeKeyboard(let keyboard):
             typeWordleKeyboard(keyboard: keyboard)
+        case .loadWordleHistory:
+            loadWordleHistory()
+        case .saveWordleHistory:
+            saveWordleHistory()
         }
     }
 
@@ -130,26 +136,7 @@ final class WordleViewModel: ObservableObject {
               !wordle[triedWordleCount].contains(where: { $0.alphabet == nil })
         else { return }
         let submitWordle = wordle[triedWordleCount].compactMap { $0.alphabet }
-        let answerWordle = Array(gameObjcet.gameAnswer.map { String($0) })
-
-        for index in 0..<wordleWordCount {
-            if submitWordle[index] == answerWordle[index] {
-                wordle[triedWordleCount][index].state = .correct
-                changeKeyboardState(alphabet: submitWordle[index], state: .correct)
-            } else if answerWordle.contains(submitWordle[index]) {
-                wordle[triedWordleCount][index].state = .misplaced
-                changeKeyboardState(alphabet: submitWordle[index], state: .misplaced)
-            } else {
-                wordle[triedWordleCount][index].state = .wrong
-                changeKeyboardState(alphabet: submitWordle[index], state: .wrong)
-            }
-        }
-        triedWordleCount += 1
-
-        if gameObjcet.gameAnswer == submitWordle.joined() || triedWordleCount == 6 {
-            isGameOver = true
-            canSubmitWordle = false
-        }
+        changeWordleState(submitWordle: submitWordle)
     }
 
     private func changeKeyboardState(alphabet: String, state: KeyboardState) {
@@ -165,6 +152,55 @@ final class WordleViewModel: ObservableObject {
             default:
                 keyboard[index][keyboardIndex].keyboardState = state
             }
+        }
+    }
+
+    private func changeWordleState(submitWordle: [String]) {
+        let answerWordle = Array(gameObjcet.gameAnswer.map { String($0) })
+        for index in 0..<wordleWordCount {
+            if submitWordle[index] == answerWordle[index] {
+                wordle[triedWordleCount][index].state = .correct
+                changeKeyboardState(alphabet: submitWordle[index], state: .correct)
+            } else if answerWordle.contains(submitWordle[index]) {
+                wordle[triedWordleCount][index].state = .misplaced
+                changeKeyboardState(alphabet: submitWordle[index], state: .misplaced)
+            } else {
+                wordle[triedWordleCount][index].state = .wrong
+                changeKeyboardState(alphabet: submitWordle[index], state: .wrong)
+            }
+        }
+        triedWordleCount += 1
+
+        guard gameObjcet.gameAnswer == submitWordle.joined() || triedWordleCount == 6  else { return }
+        isGameOver = true
+        canSubmitWordle = false
+    }
+
+    private func loadWordleHistory() {
+        let wordleHistory = gameRepository.loadWordleHistory(gameID: gameObjcet.id)
+        for word in wordleHistory {
+            let wordArray = word.map { String($0) }
+            for index in 0..<wordleWordCount {
+                wordle[triedWordleCount][index].alphabet = wordArray[index]
+            }
+            changeWordleState(submitWordle: wordArray)
+        }
+    }
+
+    private func saveWordleHistory() {
+        var wordleHistory: [String] = []
+        for word in wordle {
+            guard word.filter({ $0.alphabet != nil }).count == 5,
+                  !word.contains(where: { $0.state == .typing })
+            else {
+                gameRepository.saveWordleHistory(gameID: gameObjcet.id, wordleHistory: wordleHistory)
+                return
+            }
+            let wordString = word.compactMap { $0.alphabet }.joined()
+            wordleHistory.append(wordString)
+        }
+        if isGameOver {
+            gameRepository.saveWordleHistory(gameID: gameObjcet.id, wordleHistory: wordleHistory)
         }
     }
 }
