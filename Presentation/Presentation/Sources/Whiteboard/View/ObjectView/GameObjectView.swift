@@ -8,7 +8,7 @@
 import Domain
 import UIKit
 
-final class GameObjectView: WhiteboardObjectView {
+public final class GameObjectView: WhiteboardObjectView {
     private enum GameObjectViewLayoutConstant {
         static let backgroundCornerRadius: CGFloat = 15
         static let wordleLabelTopMargin: CGFloat = 7
@@ -55,14 +55,29 @@ final class GameObjectView: WhiteboardObjectView {
     }()
 
     private let rankings = ["1st", "2nd", "3rd"]
+    private var doubleTapGestureRecognizer: UITapGestureRecognizer?
+    private var gameObject: GameObject?
+    weak var gameObjectDelegate: GameObjectDelegate?
 
-    init(gameObject: GameObject) {
+    init(gameObject: GameObject, gameObjectDelegate: GameObjectDelegate?) {
+        self.gameObject = gameObject
+        self.gameObjectDelegate = gameObjectDelegate
         super.init(whiteboardObject: gameObject)
+        configureAttribute()
         configureLayout()
     }
 
     required init?(coder: NSCoder) {
         super.init(coder: coder)
+    }
+
+    private func configureAttribute() {
+        doubleTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(didDoubleTap))
+
+        guard let doubleTapGestureRecognizer else { return }
+        doubleTapGestureRecognizer.numberOfTapsRequired = 2
+        doubleTapGestureRecognizer.delegate = self
+        self.addGestureRecognizer(doubleTapGestureRecognizer)
     }
 
     override func configureLayout() {
@@ -97,6 +112,11 @@ final class GameObjectView: WhiteboardObjectView {
         super.configureLayout()
     }
 
+    override func configureEditable(isEditable: Bool) {
+        super.configureEditable(isEditable: isEditable)
+        doubleTapGestureRecognizer?.isEnabled = true
+    }
+
     func updateWinners(with gameWinners: [GameWinner]) {
         let maxWinnerCount = 3
         let maxTryCount = 6
@@ -107,5 +127,26 @@ final class GameObjectView: WhiteboardObjectView {
         }
         winnerText.removeLast()
         winnersLabel.text = winnerText
+    }
+
+    @objc private func didDoubleTap() {
+        guard let gameObject else { return }
+        gameObjectDelegate?.gameObjectDelegateDidDoubleTap(self, gameObject: gameObject)
+    }
+}
+
+public protocol GameObjectDelegate: AnyObject {
+    /// 게임 오브젝트 뷰가 더블 탭 되었을 때 호출됩니다.
+    /// - Parameters:
+    ///   - gameObject: 생성된 게임 오브젝트
+    func gameObjectDelegateDidDoubleTap(_ sender: GameObjectView, gameObject: GameObject)
+}
+
+extension GameObjectView {
+    public override func gestureRecognizer(
+        _ gestureRecognizer: UIGestureRecognizer,
+        shouldRequireFailureOf otherGestureRecognizer: UIGestureRecognizer
+    ) -> Bool {
+        return gestureRecognizer != doubleTapGestureRecognizer
     }
 }
