@@ -34,4 +34,8 @@ public actor WhiteboardObjectSet: WhiteboardObjectSetInterface {
     public func fetchObjectByID(id: UUID) -> WhiteboardObject? {
         return whiteboardObjects.first { $0.id == id }
     }
+
+    public func fetchAll() async -> [WhiteboardObject] {
+        return Array(whiteboardObjects.sorted { $0.updatedAt < $1.updatedAt })
+    }
 }

@@ -10,8 +10,8 @@
 		00036B822CF56414007D1244 /* PhotoRepositoryInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00036B812CF56414007D1244 /* PhotoRepositoryInterface.swift */; };
 		00036B862CF58D7C007D1244 /* WhiteboardObjectSetInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00036B852CF58D7C007D1244 /* WhiteboardObjectSetInterface.swift */; };
 		003D5A2B2CEB1FF0005F3D09 /* PhotoObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 003D5A2A2CEB1FEA005F3D09 /* PhotoObject.swift */; };
-		003D5A2D2CEB21AA005F3D09 /* AddPhotoUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 003D5A2C2CEB217E005F3D09 /* AddPhotoUseCase.swift */; };
-		003D5A2F2CEB21B6005F3D09 /* AddPhotoUseCaseInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 003D5A2E2CEB21B2005F3D09 /* AddPhotoUseCaseInterface.swift */; };
+		003D5A2D2CEB21AA005F3D09 /* PhotoUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 003D5A2C2CEB217E005F3D09 /* PhotoUseCase.swift */; };
+		003D5A2F2CEB21B6005F3D09 /* PhotoUseCaseInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 003D5A2E2CEB21B2005F3D09 /* PhotoUseCaseInterface.swift */; };
 		004B217D2CEB2B2300A5BEB8 /* DomainError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 004B217C2CEB2B2300A5BEB8 /* DomainError.swift */; };
 		005BCC512CF01D29001B3623 /* WhiteboardObjectSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 005BCC502CF01D29001B3623 /* WhiteboardObjectSet.swift */; };
 		00683D692CE37F2F000D28E4 /* DrawingObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00683D682CE37F2F000D28E4 /* DrawingObject.swift */; };
@@ -83,8 +83,8 @@
 		00036B812CF56414007D1244 /* PhotoRepositoryInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoRepositoryInterface.swift; sourceTree = "<group>"; };
 		00036B852CF58D7C007D1244 /* WhiteboardObjectSetInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhiteboardObjectSetInterface.swift; sourceTree = "<group>"; };
 		003D5A2A2CEB1FEA005F3D09 /* PhotoObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoObject.swift; sourceTree = "<group>"; };
-		003D5A2C2CEB217E005F3D09 /* AddPhotoUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPhotoUseCase.swift; sourceTree = "<group>"; };
-		003D5A2E2CEB21B2005F3D09 /* AddPhotoUseCaseInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPhotoUseCaseInterface.swift; sourceTree = "<group>"; };
+		003D5A2C2CEB217E005F3D09 /* PhotoUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoUseCase.swift; sourceTree = "<group>"; };
+		003D5A2E2CEB21B2005F3D09 /* PhotoUseCaseInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoUseCaseInterface.swift; sourceTree = "<group>"; };
 		004B217C2CEB2B2300A5BEB8 /* DomainError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DomainError.swift; sourceTree = "<group>"; };
 		005BCC502CF01D29001B3623 /* WhiteboardObjectSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhiteboardObjectSet.swift; sourceTree = "<group>"; };
 		00683D682CE37F2F000D28E4 /* DrawingObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawingObject.swift; sourceTree = "<group>"; };
@@ -165,7 +165,7 @@
 				5BDFD9392CE2EE3100DA4F5B /* WhiteboardUseCase.swift */,
 				00D2DD852CE887540089F0BA /* ManageWhiteboardObjectUseCase.swift */,
 				00D2DD902CE88D260089F0BA /* ManageWhiteboardToolUseCase.swift */,
-				003D5A2C2CEB217E005F3D09 /* AddPhotoUseCase.swift */,
+				003D5A2C2CEB217E005F3D09 /* PhotoUseCase.swift */,
 				6F3BCDCF2CF3322C005F6642 /* ChatUseCase.swift */,
 				A81E7BF82CF72503007E8414 /* GameObjectUseCase.swift */,
 			);
@@ -240,7 +240,7 @@
 				5B6542472CE44631000168AD /* WhiteboardUseCaseInterface.swift */,
 				00D2DD832CE8864B0089F0BA /* ManageWhiteboardObjectUseCaseInterface.swift */,
 				00D2DD872CE88BD80089F0BA /* ManageWhiteboardToolUseCaseInterface.swift */,
-				003D5A2E2CEB21B2005F3D09 /* AddPhotoUseCaseInterface.swift */,
+				003D5A2E2CEB21B2005F3D09 /* PhotoUseCaseInterface.swift */,
 				6F3BCDCD2CF3312A005F6642 /* ChatUseCaseInterface.swift */,
 				A81E7BFA2CF725C2007E8414 /* GameObjectUseCaseInterface.swift */,
 			);
@@ -448,7 +448,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				003D5A2F2CEB21B6005F3D09 /* AddPhotoUseCaseInterface.swift in Sources */,
+				003D5A2F2CEB21B6005F3D09 /* PhotoUseCaseInterface.swift in Sources */,
 				A8E97C052CE5E3AB00B28063 /* ProfileUseCaseInterface.swift in Sources */,
 				004B217D2CEB2B2300A5BEB8 /* DomainError.swift in Sources */,
 				6F3BCDC82CF31CB4005F6642 /* ChatMessage.swift in Sources */,
@@ -481,7 +481,7 @@
 				00683D722CE3A74A000D28E4 /* DrawObjectUseCase.swift in Sources */,
 				00D2DD8F2CE88C640089F0BA /* WhiteboardTool.swift in Sources */,
 				0080E91A2CE4B0880095B958 /* DrawObjectUseCaseInterface.swift in Sources */,
-				003D5A2D2CEB21AA005F3D09 /* AddPhotoUseCase.swift in Sources */,
+				003D5A2D2CEB21AA005F3D09 /* PhotoUseCase.swift in Sources */,
 				00D2DD912CE88D260089F0BA /* ManageWhiteboardToolUseCase.swift in Sources */,
 				00D2DD862CE887540089F0BA /* ManageWhiteboardObjectUseCase.swift in Sources */,
 				00683D692CE37F2F000D28E4 /* DrawingObject.swift in Sources */,

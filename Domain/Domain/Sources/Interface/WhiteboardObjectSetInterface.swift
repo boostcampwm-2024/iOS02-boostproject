@@ -30,4 +30,8 @@ public protocol WhiteboardObjectSetInterface {
     /// - Parameter id: 가져올 오브젝트의 ID
     /// - Returns: 오브젝트
     func fetchObjectByID(id: UUID) async -> WhiteboardObject?
+
+    /// 모든 화이트보드 오브젝트들을 가져옵니다.
+    /// - Returns: 화이트보드 오브젝트 배열
+    func fetchAll() async -> [WhiteboardObject]
 }
