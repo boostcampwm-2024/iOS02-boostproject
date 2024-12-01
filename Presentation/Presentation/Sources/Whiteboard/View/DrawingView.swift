@@ -37,7 +37,7 @@ final class DrawingView: UIView {
 
     private func configureAttributes() {
         backgroundColor = .clear
-        drawingLayer.strokeColor = UIColor.black.cgColor
+        drawingLayer.strokeColor = UIColor.airplainBlack.cgColor
         drawingLayer.lineWidth = 5
         drawingLayer.lineCap = .round
         layer.addSublayer(drawingLayer)
@@ -46,6 +46,10 @@ final class DrawingView: UIView {
         drawingGesture.minimumNumberOfTouches = 1
         drawingGesture.maximumNumberOfTouches = 1
         self.addGestureRecognizer(drawingGesture)
+
+        registerForTraitChanges([UITraitUserInterfaceStyle.self]) { (drawingView: Self, _) in
+            drawingView.drawingLayer.strokeColor = UIColor.airplainBlack.cgColor
+        }
     }
 
     @objc private func handleDrawingGesture(sender: UIPanGestureRecognizer) {
