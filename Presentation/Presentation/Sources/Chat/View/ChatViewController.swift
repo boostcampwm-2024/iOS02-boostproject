@@ -32,7 +32,7 @@ public final class ChatViewController: UIViewController {
     private var dataSource: UICollectionViewDiffableDataSource<CollectionViewSection, ChatMessageCellModel>?
     private let viewModel: ChatViewModel
     private var cancellables: Set<AnyCancellable>
-    private var keyboardSize: CGRect?
+    private var keyboardHeight: CGFloat?
 
     public init(viewModel: ChatViewModel) {
         self.viewModel = viewModel
@@ -82,6 +82,12 @@ public final class ChatViewController: UIViewController {
     }
 
     private func configureLayout() {
+        chatListView
+            .addToSuperview(view)
+            .horizontalEdges(equalTo: view, inset: horizontalMargin)
+            .top(equalTo: view.safeAreaLayoutGuide.topAnchor, inset: 0)
+//            .bottom(equalTo: chatTextFieldView.topAnchor, inset: ChatLayoutConstant.textFieldTopPadding)
+
         chatTextFieldView
             .addToSuperview(view)
             .height(equalTo: ChatLayoutConstant.textFieldHeight)
@@ -89,9 +95,6 @@ public final class ChatViewController: UIViewController {
             .bottom(equalTo: view.safeAreaLayoutGuide.bottomAnchor, inset: ChatLayoutConstant.textFieldBottomPadding)
 
         chatListView
-            .addToSuperview(view)
-            .horizontalEdges(equalTo: view, inset: horizontalMargin)
-            .top(equalTo: view.safeAreaLayoutGuide.topAnchor, inset: 0)
             .bottom(equalTo: chatTextFieldView.topAnchor, inset: ChatLayoutConstant.textFieldTopPadding)
     }
 
@@ -170,22 +173,26 @@ public final class ChatViewController: UIViewController {
     }
 
     @objc private func keyboardUp(notification: NSNotification) {
-        guard let keyboardFrame: NSValue = notification
-            .userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
-        keyboardSize = keyboardFrame.cgRectValue
-        guard let keyboardSize else { return }
+        guard
+            let keyboardFrame: NSValue = notification
+                .userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue
+        else { return }
 
-        UIView.animate(withDuration: 0.3) { [weak self] in
-            self?.view.frame.size.height -= keyboardSize.height
+        var keyboardInset: CGFloat = 0
+        if let keyboardHeight {
+            keyboardInset = keyboardFrame.cgRectValue.height - keyboardHeight
+        } else {
+            keyboardInset = keyboardFrame.cgRectValue.height
         }
+        keyboardHeight = keyboardFrame.cgRectValue.height
+
+        self.view.frame.size.height -= keyboardInset
     }
 
     @objc private func keyboardDown() {
-        guard let keyboardSize else { return }
-
-        UIView.animate(withDuration: 0.3) { [weak self] in
-            self?.view.frame.size.height += keyboardSize.height
-        }
+        guard let keyboardHeight else { return }
+        self.view.frame.size.height += keyboardHeight
+        self.keyboardHeight = nil
     }
 
     @objc private func endEditingView() {
