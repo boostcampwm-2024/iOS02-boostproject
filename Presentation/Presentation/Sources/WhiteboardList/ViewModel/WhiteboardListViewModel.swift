@@ -15,10 +15,9 @@ public final class WhiteboardListViewModel: ViewModel {
 
     enum Input {
         case createWhiteboard
-        case searchWhiteboard
         case joinWhiteboard(whiteboard: Whiteboard)
         case stopSearchingWhiteboard
-        case refreshWhiteboardList
+        case startSearchingWhiteboards
     }
 
     struct Output {
@@ -39,13 +38,11 @@ public final class WhiteboardListViewModel: ViewModel {
         switch input {
         case .createWhiteboard:
             createWhiteboard()
-        case .searchWhiteboard:
-            searchWhiteboard()
         case .joinWhiteboard(let whiteboard):
             joinWhiteboard(whiteboard: whiteboard)
         case .stopSearchingWhiteboard:
             stopSearchingWhiteboard()
-        case .refreshWhiteboardList:
+        case .startSearchingWhiteboards:
             refreshWhiteboardList()
         }
     }
@@ -54,10 +51,6 @@ public final class WhiteboardListViewModel: ViewModel {
         let whiteboard = whiteboardUseCase.createWhiteboard()
         whiteboardUseCase.startPublishingWhiteboard()
         whiteboardSubject.send(whiteboard)
-    }
-
-    private func searchWhiteboard() {
-        whiteboardUseCase.startSearchingWhiteboard()
     }
 
     private func joinWhiteboard(whiteboard: Whiteboard) {
@@ -73,6 +66,6 @@ public final class WhiteboardListViewModel: ViewModel {
     }
 
     private func refreshWhiteboardList() {
-        whiteboardUseCase.refreshWhiteboardList()
+        whiteboardUseCase.startSearchingWhiteboards()
     }
 }
