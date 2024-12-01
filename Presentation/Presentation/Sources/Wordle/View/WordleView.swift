@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct WordleView: View {
+    @Environment(\.colorScheme) private var colorScheme: ColorScheme
     @Environment(\.dismiss) private var dismiss
     @StateObject var viewModel: WordleViewModel
     @State private var isShowingGuideView: Bool = false
@@ -82,8 +83,8 @@ struct WordleView: View {
                     width: WordleViewLayoutConstant.wordleAnswerWidth,
                     height: WordleViewLayoutConstant.wordleAnswerHeight)
 
-            Text(viewModel.gameObjcet.gameAnswer)
-                .foregroundStyle(.white)
+            Text(viewModel.gameObject.gameAnswer)
+                .foregroundStyle(colorScheme == .light ? .white : .black)
                 .font(Font(AirplainFont.Subtitle2))
         }
     }

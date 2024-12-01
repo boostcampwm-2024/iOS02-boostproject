@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct WordleTileView: View {
+    @Environment(\.colorScheme) private var colorScheme: ColorScheme
     @Binding var wordleTile: Wordle
     let size: CGFloat
 
@@ -15,7 +16,7 @@ struct WordleTileView: View {
     private var wordleTileColor: Color {
         switch wordleTile.state {
         case .empty, .typing, .invalid:
-                .white
+                .clear
         case .wrong:
                 .gray500
         case .correct:
@@ -41,9 +42,9 @@ struct WordleTileView: View {
     private var wordleBorderColor: Color {
         switch wordleTile.state {
         case .empty:
-                .gray400
+            colorScheme == .light ? .gray400 : .gray900
         case .typing, .invalid:
-                .gray900
+            colorScheme == .light ? .gray900 : .gray400
         case .correct:
                 .airplainBlue
         case .wrong:

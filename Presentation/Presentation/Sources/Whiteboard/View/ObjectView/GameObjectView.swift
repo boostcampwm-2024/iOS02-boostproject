@@ -29,6 +29,7 @@ public final class GameObjectView: WhiteboardObjectView {
         let label = UILabel()
         label.text = "🎮 Wordle"
         label.font = AirplainFont.Subtitle3
+        label.textColor = .black
         return label
     }()
 
