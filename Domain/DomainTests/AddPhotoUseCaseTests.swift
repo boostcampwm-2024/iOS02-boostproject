@@ -12,7 +12,7 @@ final class MockPhotoRepository: PhotoRepositoryInterface {
     func fetchPhoto(id: UUID) -> Data? {
         return Data()
     }
-    
+
     func savePhoto(id: UUID, imageData: Data) -> URL? {
         return URL(filePath: "photo.jpg")
     }

@@ -20,7 +20,8 @@ final class ManageWhiteboardObjectsUseCaseTests: XCTestCase {
 
         useCase = ManageWhiteboardObjectUseCase(
             profileRepository: profileRepository,
-            whiteboardRepository: MockWhiteObjectRepository(),
+            whiteboardObjectRepository: MockWhiteObjectRepository(),
+            whiteboardRepository: MockWhiteboardRepository(),
             whiteboardObjectSet: WhiteboardObjectSet())
         cancellables = []
     }
@@ -434,9 +435,39 @@ final class MockProfileRepository: ProfileRepositoryInterface {
 }
 
 final class MockWhiteObjectRepository: WhiteboardObjectRepositoryInterface {
-    var delegate: (any Domain.WhiteboardObjectRepositoryDelegate)?
+    var delegate: (any WhiteboardObjectRepositoryDelegate)?
 
-    func send(whiteboardObject: Domain.WhiteboardObject, isDeleted: Bool) async {
-        return
+    func send(
+        whiteboardObject: WhiteboardObject,
+        isDeleted: Bool,
+        to profile: Profile
+    ) async {}
+
+    func send(
+        whiteboardObjects: [WhiteboardObject],
+        isDeleted: Bool,
+        to profile: Profile
+    ) async {}
+
+    func send(whiteboardObject: WhiteboardObject, isDeleted: Bool) async {}
+}
+
+final class MockWhiteboardRepository: WhiteboardRepositoryInterface {
+    var delegate: (any WhiteboardRepositoryDelegate)?
+    var recentPeerPublisher: AnyPublisher<Domain.Profile, Never>
+    private var recentPeerSubject = PassthroughSubject<Domain.Profile, Never>()
+
+    init() {
+        recentPeerPublisher = recentPeerSubject.eraseToAnyPublisher()
     }
+
+    func startPublishing(myProfile: Profile) {}
+
+    func stopSearching() {}
+
+    func startSearching() {}
+
+    func disconnectWhiteboard() {}
+
+    func joinWhiteboard(whiteboard: Domain.Whiteboard, myProfile: Domain.Profile) throws {}
 }
