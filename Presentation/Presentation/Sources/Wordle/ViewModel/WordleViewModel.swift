@@ -50,7 +50,7 @@ final class WordleViewModel: ObservableObject {
     @Published private(set) var canSubmitWordle = false
 
     private let gameRepository: GameRepositoryInterface
-    let gameObjcet: GameObject
+    let gameObject: GameObject
     private var triedWordleCount = 0
     let wordleWordCount = 5
     let wordleTryCount = 6
@@ -66,7 +66,7 @@ final class WordleViewModel: ObservableObject {
         gameObject: GameObject
     ) {
         self.gameRepository = gameRepository
-        self.gameObjcet = gameObject
+        self.gameObject = gameObject
     }
 
     func action(input: Input) {
@@ -156,7 +156,7 @@ final class WordleViewModel: ObservableObject {
     }
 
     private func changeWordleState(submitWordle: [String]) {
-        let answerWordle = Array(gameObjcet.gameAnswer.map { String($0) })
+        let answerWordle = Array(gameObject.gameAnswer.map { String($0) })
         for index in 0..<wordleWordCount {
             if submitWordle[index] == answerWordle[index] {
                 wordle[triedWordleCount][index].state = .correct
@@ -171,13 +171,13 @@ final class WordleViewModel: ObservableObject {
         }
         triedWordleCount += 1
 
-        guard gameObjcet.gameAnswer == submitWordle.joined() || triedWordleCount == 6  else { return }
+        guard gameObject.gameAnswer == submitWordle.joined() || triedWordleCount == 6  else { return }
         isGameOver = true
         canSubmitWordle = false
     }
 
     private func loadWordleHistory() {
-        let wordleHistory = gameRepository.loadWordleHistory(gameID: gameObjcet.id)
+        let wordleHistory = gameRepository.loadWordleHistory(gameID: gameObject.id)
         for word in wordleHistory {
             let wordArray = word.map { String($0) }
             for index in 0..<wordleWordCount {
@@ -193,14 +193,14 @@ final class WordleViewModel: ObservableObject {
             guard word.filter({ $0.alphabet != nil }).count == 5,
                   !word.contains(where: { $0.state == .typing })
             else {
-                gameRepository.saveWordleHistory(gameID: gameObjcet.id, wordleHistory: wordleHistory)
+                gameRepository.saveWordleHistory(gameID: gameObject.id, wordleHistory: wordleHistory)
                 return
             }
             let wordString = word.compactMap { $0.alphabet }.joined()
             wordleHistory.append(wordString)
         }
         if isGameOver {
-            gameRepository.saveWordleHistory(gameID: gameObjcet.id, wordleHistory: wordleHistory)
+            gameRepository.saveWordleHistory(gameID: gameObject.id, wordleHistory: wordleHistory)
         }
     }
 }

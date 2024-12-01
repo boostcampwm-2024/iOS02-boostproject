@@ -21,7 +21,7 @@ public final class WhiteboardViewModel: ViewModel {
         case finishUsingTool
         case addTextObject(point: CGPoint, viewSize: CGSize)
         case editTextObject(text: String)
-        case addGameObjcet(point: CGPoint)
+        case addGameObject(point: CGPoint)
         case selectObject(objectID: UUID)
         case deselectObject
         case changeObjectScaleAndAngle(scale: CGFloat, angle: CGFloat)
@@ -121,7 +121,7 @@ public final class WhiteboardViewModel: ViewModel {
             deleteObject()
         case .disconnectWhiteboard:
             disconnectWhiteboard()
-        case .addGameObjcet(let point):
+        case .addGameObject(let point):
             addGame(at: point)
         }
     }
