@@ -101,7 +101,10 @@ final class WordleViewModel: ObservableObject {
         wordle[triedWordleCount][currentIndex].state = .typing
 
         if currentIndex == wordleWordCount - 1 {
-            let inputWord = wordle[triedWordleCount].compactMap { $0.alphabet }.map { String($0) }.joined()
+            let inputWord = wordle[triedWordleCount]
+                .compactMap { $0.alphabet }
+                .map { String($0) }
+                .joined()
             guard !gameRepository.containsWord(word: inputWord) else {
                 canSubmitWordle = true
                 return
