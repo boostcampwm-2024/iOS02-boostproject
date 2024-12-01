@@ -11,6 +11,7 @@ public protocol WhiteboardObjectViewFactoryable {
     var whiteboardObjectViewDelegate: WhiteboardObjectViewDelegate? { get set }
     var textViewDelegate: UITextViewDelegate? { get set }
     var gameObjectViewDelegate: GameObjectViewDelegate? { get set }
+    var photoObjectViewDelegate: PhotoObjectViewDelegate? { get set }
     func create(with whiteboardObject: WhiteboardObject) -> WhiteboardObjectView?
 }
 
@@ -18,6 +19,7 @@ public struct WhiteboardObjectViewFactory: WhiteboardObjectViewFactoryable {
     public weak var whiteboardObjectViewDelegate: WhiteboardObjectViewDelegate?
     public weak var textViewDelegate: UITextViewDelegate?
     public weak var gameObjectViewDelegate: GameObjectViewDelegate?
+    public weak var photoObjectViewDelegate: PhotoObjectViewDelegate?
 
     public init() {}
 
@@ -30,7 +32,9 @@ public struct WhiteboardObjectViewFactory: WhiteboardObjectViewFactoryable {
         case let drawingObject as DrawingObject:
             whiteboardObjectView = DrawingObjectView(drawingObject: drawingObject)
         case let photoObject as PhotoObject:
-            whiteboardObjectView = PhotoObjectView(photoObject: photoObject)
+            whiteboardObjectView = PhotoObjectView(
+                photoObject: photoObject,
+                photoObjectDelegate: photoObjectViewDelegate)
         case let gameObject as GameObject:
             whiteboardObjectView = GameObjectView(
                 gameObject: gameObject,

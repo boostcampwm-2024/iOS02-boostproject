@@ -7,7 +7,7 @@
 
 import Foundation
 
-public final class AddPhotoUseCase: AddPhotoUseCaseInterface {
+public final class PhotoUseCase: PhotoUseCaseInterface {
     private let photoRepository: PhotoRepositoryInterface
 
     public init(photoRepository: PhotoRepositoryInterface) {
@@ -35,5 +35,9 @@ public final class AddPhotoUseCase: AddPhotoUseCaseInterface {
             photoURL: photoURL)
 
         return photoObject
+    }
+
+    public func fetchPhoto(imageID: UUID) -> Data? {
+        photoRepository.fetchPhoto(id: imageID)
     }
 }

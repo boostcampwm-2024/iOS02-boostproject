@@ -53,6 +53,7 @@ public final class WhiteboardViewController: UIViewController {
         self.objectViewFactory.whiteboardObjectViewDelegate = self
         self.objectViewFactory.textViewDelegate = self
         self.objectViewFactory.gameObjectViewDelegate = self
+        self.objectViewFactory.photoObjectViewDelegate = self
     }
 
     public required init?(coder: NSCoder) {
@@ -91,6 +92,7 @@ public final class WhiteboardViewController: UIViewController {
         drawingView.isHidden = true
         toolbar.delegate = self
         drawingView.delegate = self
+        viewModel.action(input: .finishUsingTool)
     }
 
     private func configureLayout() {
@@ -184,6 +186,18 @@ public final class WhiteboardViewController: UIViewController {
                     self?.navigationItem.rightBarButtonItem?.isHidden = true
                     self?.toolbar.configure(with: .normal)
                 }
+            }
+            .store(in: &cancellables)
+
+        viewModel.output.imagePublisher
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] (id: UUID, imageData: Data) in
+                guard
+                    let objectView = self?.whiteboardObjectViews[id],
+                    let photoObjectView = objectView as? PhotoObjectView
+                else { return }
+
+                photoObjectView.configureImage(imageData: imageData)
             }
             .store(in: &cancellables)
     }
@@ -300,7 +314,7 @@ extension WhiteboardViewController: PHPickerViewControllerDelegate {
             else { return }
 
             DispatchQueue.main.async {
-                self.viewModel.action(input: .addPhoto(
+                self.viewModel.action(input: .addPhotoObject(
                     imageData: imageData,
                     position: self.visibleCenterPoint,
                     size: selectedImage.size))
@@ -355,5 +369,11 @@ extension WhiteboardViewController: GameObjectViewDelegate {
         let hostingController = UIHostingController(rootView: NavigationStack { wordleView })
         hostingController.modalPresentationStyle = .fullScreen
         present(hostingController, animated: true)
+    }
+}
+
+extension WhiteboardViewController: PhotoObjectViewDelegate {
+    public func photoObjectViewWillConfigurePhoto(_ sender: PhotoObjectView) {
+        viewModel.action(input: .fetchImage(imageID: sender.objectID))
     }
 }

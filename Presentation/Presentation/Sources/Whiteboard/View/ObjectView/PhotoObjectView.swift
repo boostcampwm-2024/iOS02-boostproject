@@ -8,14 +8,20 @@
 import Domain
 import UIKit
 
-final class PhotoObjectView: WhiteboardObjectView {
-    let imageView = UIImageView()
+public protocol PhotoObjectViewDelegate: AnyObject {
+    func photoObjectViewWillConfigurePhoto(_ sender: PhotoObjectView)
+}
 
-    init(photoObject: PhotoObject) {
+public final class PhotoObjectView: WhiteboardObjectView {
+    let imageView = UIImageView()
+    weak var photoObjectDelegate: PhotoObjectViewDelegate?
+
+    init(photoObject: PhotoObject, photoObjectDelegate: PhotoObjectViewDelegate?) {
         super.init(whiteboardObject: photoObject)
+        self.photoObjectDelegate = photoObjectDelegate
+
         configureAttribute()
         configureLayout()
-        configureImage(with: photoObject.photoURL)
     }
 
     required init?(coder: NSCoder) {
@@ -24,6 +30,7 @@ final class PhotoObjectView: WhiteboardObjectView {
 
     private func configureAttribute() {
         imageView.contentMode = .scaleAspectFit
+        self.photoObjectDelegate?.photoObjectViewWillConfigurePhoto(self)
     }
 
     override func configureLayout() {
@@ -35,16 +42,10 @@ final class PhotoObjectView: WhiteboardObjectView {
 
     override func update(with object: WhiteboardObject) {
         super.update(with: object)
-        guard let photoObject = object as? PhotoObject else { return }
-        configureImage(with: photoObject.photoURL)
+        photoObjectDelegate?.photoObjectViewWillConfigurePhoto(self)
     }
 
-    private func configureImage(with imageURL: URL) {
-        guard
-            let imageData = try? Data(contentsOf: imageURL),
-            let image = UIImage(data: imageData)
-        else { return }
-
-        imageView.image = image
+    func configureImage(imageData: Data) {
+        imageView.image = UIImage(data: imageData)
     }
 }

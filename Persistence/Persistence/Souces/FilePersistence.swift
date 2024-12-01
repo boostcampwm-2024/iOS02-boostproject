@@ -20,10 +20,9 @@ public struct FilePersistence: FilePersistenceInterface {
 
     public func save(dataInfo: DataInformationDTO, data: Data?) -> URL? {
         guard let directoryURL = documentDirectoryURL?
-            .appendingPathComponent(
-                dataInfo
-                    .type
-                    .directoryName)
+            .appending(path: dataInfo
+                .type
+                .directoryName)
         else { return nil }
 
         createDirectory(at: directoryURL.path)
@@ -46,6 +45,23 @@ public struct FilePersistence: FilePersistenceInterface {
         return data
     }
 
+    public func fetchURL(dataInfo: DataInformationDTO) -> URL? {
+        guard let directoryURL = documentDirectoryURL?
+            .appendingPathComponent(
+                dataInfo
+                    .type
+                    .directoryName)
+        else { return nil }
+
+        let fileURL = directoryURL.appending(path: "\(dataInfo.id.uuidString)")
+
+        if fileManager.fileExists(atPath: fileURL.path()) {
+            return fileURL
+        } else {
+            return nil
+        }
+    }
+
     private func createDirectory(at path: String) {
         do {
             try fileManager.createDirectory(
@@ -62,7 +78,7 @@ public struct FilePersistence: FilePersistenceInterface {
         with data: Data?,
         fileName: String
     ) -> URL {
-        let fileURL = url.appendingPathComponent("\(fileName)")
+        let fileURL = url.appending(path: "\(fileName)")
 
         do {
             try data?.write(to: fileURL)
