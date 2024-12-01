@@ -52,18 +52,15 @@ public final class NearbyNetworkService: NSObject {
 
 // MARK: - NearbyNetworkInterface
 extension NearbyNetworkService: NearbyNetworkInterface {
-    public func startSearching() {
-        serviceBrowser.startBrowsingForPeers()
-    }
-
     public func stopSearching() {
         serviceBrowser.stopBrowsingForPeers()
     }
 
-    public func restartSearching() {
+    public func startSearching() {
         serialQueue.sync {
             serviceBrowser.stopBrowsingForPeers()
             foundPeers.removeAll()
+            connectionDelegate?.nearbyNetwork(self, didFind: [])
             serviceBrowser.startBrowsingForPeers()
         }
     }
