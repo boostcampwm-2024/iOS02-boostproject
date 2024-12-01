@@ -82,12 +82,6 @@ public final class ChatViewController: UIViewController {
     }
 
     private func configureLayout() {
-        chatListView
-            .addToSuperview(view)
-            .horizontalEdges(equalTo: view, inset: horizontalMargin)
-            .top(equalTo: view.safeAreaLayoutGuide.topAnchor, inset: 0)
-//            .bottom(equalTo: chatTextFieldView.topAnchor, inset: ChatLayoutConstant.textFieldTopPadding)
-
         chatTextFieldView
             .addToSuperview(view)
             .height(equalTo: ChatLayoutConstant.textFieldHeight)
@@ -95,6 +89,9 @@ public final class ChatViewController: UIViewController {
             .bottom(equalTo: view.safeAreaLayoutGuide.bottomAnchor, inset: ChatLayoutConstant.textFieldBottomPadding)
 
         chatListView
+            .addToSuperview(view)
+            .horizontalEdges(equalTo: view, inset: horizontalMargin)
+            .top(equalTo: view.safeAreaLayoutGuide.topAnchor, inset: 0)
             .bottom(equalTo: chatTextFieldView.topAnchor, inset: ChatLayoutConstant.textFieldTopPadding)
     }
 
