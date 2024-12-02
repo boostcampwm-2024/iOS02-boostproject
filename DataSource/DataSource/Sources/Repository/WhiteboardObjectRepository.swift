@@ -23,67 +23,119 @@ public final class WhiteboardObjectRepository: WhiteboardObjectRepositoryInterfa
         bindNearbyNetwork()
     }
 
+    public func send(
+        whiteboardObject: WhiteboardObject,
+        isDeleted: Bool,
+        to profile: Profile
+    ) async {
+        await send(
+            whiteboardObject: whiteboardObject,
+            isDeleted: isDeleted,
+            profile: profile)
+    }
+
     public func send(whiteboardObject: WhiteboardObject, isDeleted: Bool) async {
-        switch whiteboardObject {
-        case let textObject as TextObject:
-            await send(
-                whiteboardObject: textObject,
-                type: .text,
-                isDeleted: isDeleted)
-        case let drawingObject as DrawingObject:
-            await send(
-                whiteboardObject: drawingObject,
-                type: .drawing,
-                isDeleted: isDeleted)
-        case let photoObject as PhotoObject:
-            await send(
-                whiteboardObject: photoObject,
-                type: .photo,
-                isDeleted: isDeleted)
-            await sendJPEG(
-                photoObject: photoObject,
-                type: .imageData,
-                isDeleted: isDeleted)
-        case let gameObject as GameObject:
-            await send(
-                whiteboardObject: gameObject,
-                type: .game,
-                isDeleted: isDeleted)
-        default:
-            break
+        await send(
+            whiteboardObject: whiteboardObject,
+            isDeleted: isDeleted,
+            profile: nil)
+    }
+
+    public func send(
+        whiteboardObjects: [WhiteboardObject],
+        isDeleted: Bool,
+        to profile: Profile
+    ) async {
+        await withTaskGroup(of: Void.self) { taskGroup in
+            whiteboardObjects.forEach { object in
+                taskGroup.addTask {
+                    await self.send(
+                        whiteboardObject: object,
+                        isDeleted: isDeleted,
+                        profile: profile)
+                }
+            }
         }
     }
 
     private func send(
         whiteboardObject: WhiteboardObject,
-        type: AirplaINDataType,
-        isDeleted: Bool
+        isDeleted: Bool,
+        profile: Profile?
     ) async {
+        let type: AirplaINDataType?
         let objectData = try? JSONEncoder().encode(whiteboardObject)
+
+        switch whiteboardObject {
+        case _ as TextObject:
+            type = .text
+        case _ as DrawingObject:
+            type = .drawing
+        case let photoObject as PhotoObject:
+            await sendJPEG(
+                photoID: photoObject.id,
+                isDeleted: isDeleted,
+                to: profile)
+            type = .photo
+        case _ as GameObject:
+            type = .game
+        default:
+            type = nil
+        }
+
+        guard let type else { return }
+
         let objectInformation = DataInformationDTO(
             id: whiteboardObject.id,
             type: type,
             isDeleted: isDeleted)
+
         guard let url = filePersistence
             .save(dataInfo: objectInformation, data: objectData)
         else {
             logger.log(level: .error, "url저장 실패: 데이터를 보내지 못했습니다.")
             return
         }
-        await nearbyNetwork.send(fileURL: url, info: objectInformation)
+
+        if let profile {
+            let connection = NetworkConnection(
+                id: profile.id,
+                name: profile.nickname,
+                info: [:])
+            await nearbyNetwork.send(
+                fileURL: url,
+                info: objectInformation,
+                to: connection)
+        } else {
+            await nearbyNetwork.send(fileURL: url, info: objectInformation)
+        }
     }
 
     // TODO: - 사진 데이터를 photo Object와 따로 보내야함! 추후 전송 방식 개선하기
     private func sendJPEG(
-        photoObject: PhotoObject,
-        type: AirplaINDataType,
-        isDeleted: Bool
+        photoID: UUID,
+        isDeleted: Bool,
+        to profile: Profile?
     ) async {
         let dataInformation = DataInformationDTO(
-            id: photoObject.id,
+            id: photoID,
             type: .imageData,
             isDeleted: isDeleted)
-        await nearbyNetwork.send(fileURL: photoObject.photoURL, info: dataInformation)
+
+        guard let photoURL = filePersistence.fetchURL(dataInfo: dataInformation) else { return }
+
+        if let profile {
+            let connection = NetworkConnection(
+                id: profile.id,
+                name: profile.nickname,
+                info: [:])
+            await nearbyNetwork.send(
+                fileURL: photoURL,
+                info: dataInformation,
+                to: connection)
+        } else {
+            await nearbyNetwork.send(fileURL: photoURL, info: dataInformation)
+        }
     }
 
     private func bindNearbyNetwork() {
@@ -102,8 +154,10 @@ public final class WhiteboardObjectRepository: WhiteboardObjectRepositoryInterfa
     }
 
     private func handlePhotoData(didReceiveURL URL: URL, info: DataInformationDTO) {
-        guard let receiveData = filePersistence.load(path: URL) else { return }
-        guard let savedURL = filePersistence.save(dataInfo: info, data: receiveData) else { return }
+        guard
+            let receiveData = filePersistence.load(path: URL),
+            let savedURL = filePersistence.save(dataInfo: info, data: receiveData)
+        else { return }
 
         if !info.isDeleted {
             delegate?.whiteboardObjectRepository(

@@ -22,4 +22,9 @@ public protocol FilePersistenceInterface {
     /// - Parameter path: 가져올 데이터의 위치를 URL로 받습니다.
     /// - Returns: 해당 위치에 존재하는 데이터를 가져옵니다.
     func load(path: URL) -> Data?
+
+    /// 데이터가 저장되어 있다면, 저장되어 있는 URL을 반환합니다.
+    /// - Parameter dataInfo: 저장한 데이터의 정보
+    /// - Returns: 데이터의 저장 위치
+    func fetchURL(dataInfo: DataInformationDTO) -> URL?
 }

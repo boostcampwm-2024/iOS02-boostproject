@@ -9,18 +9,22 @@ import Domain
 import XCTest
 
 final class MockPhotoRepository: PhotoRepositoryInterface {
+    func fetchPhoto(id: UUID) -> Data? {
+        return Data()
+    }
+
     func savePhoto(id: UUID, imageData: Data) -> URL? {
         return URL(filePath: "photo.jpg")
     }
 }
 
 final class AddPhotoUseCaseTests: XCTestCase {
-    private var useCase: AddPhotoUseCase!
+    private var useCase: PhotoUseCase!
 
     override func setUp() {
         super.setUp()
         let mockPhotoRepository = MockPhotoRepository()
-        useCase =  AddPhotoUseCase(photoRepository: mockPhotoRepository)
+        useCase =  PhotoUseCase(photoRepository: mockPhotoRepository)
     }
 
     override func tearDown() {

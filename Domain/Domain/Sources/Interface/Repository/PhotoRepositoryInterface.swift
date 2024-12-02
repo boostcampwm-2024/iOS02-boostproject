@@ -14,4 +14,9 @@ public protocol PhotoRepositoryInterface {
     ///  imageData: 사진 이미지 데이터
     /// - Returns: 저장한 위치 URL
     func savePhoto(id: UUID, imageData: Data) -> URL?
+
+    /// 저장된 사진을 가져옵니다
+    /// - Parameter id: 사진의 id
+    /// - Returns: 사진 데이터
+    func fetchPhoto(id: UUID) -> Data?
 }

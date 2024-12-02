@@ -14,18 +14,20 @@ public final class ManageWhiteboardObjectUseCase: ManageWhiteboardObjectUseCaseI
     public var removedObjectPublisher: AnyPublisher<WhiteboardObject, Never>
     public var selectedObjectIDPublisher: AnyPublisher<UUID?, Never>
 
-    private var whiteboardObjectSet: WhiteboardObjectSetInterface
-
     private let addedWhiteboardSubject: PassthroughSubject<WhiteboardObject, Never>
     private let updatedWhiteboardSubject: PassthroughSubject<WhiteboardObject, Never>
     private let removedWhiteboardSubject: PassthroughSubject<WhiteboardObject, Never>
     private let selectedObjectIDSubject: CurrentValueSubject<UUID?, Never>
-    private var whiteboardObjectRepository: WhiteboardObjectRepositoryInterface
+    private let whiteboardRepository: WhiteboardRepositoryInterface
     private let myProfile: Profile
+    private var whiteboardObjectRepository: WhiteboardObjectRepositoryInterface
+    private var whiteboardObjectSet: WhiteboardObjectSetInterface
+    private var cancellables: Set<AnyCancellable>
 
     public init(
         profileRepository: ProfileRepositoryInterface,
-        whiteboardRepository: WhiteboardObjectRepositoryInterface,
+        whiteboardObjectRepository: WhiteboardObjectRepositoryInterface,
+        whiteboardRepository: WhiteboardRepositoryInterface,
         whiteboardObjectSet: WhiteboardObjectSetInterface
     ) {
         addedWhiteboardSubject = PassthroughSubject<WhiteboardObject, Never>()
@@ -39,9 +41,13 @@ public final class ManageWhiteboardObjectUseCase: ManageWhiteboardObjectUseCaseI
         selectedObjectIDPublisher = selectedObjectIDSubject.eraseToAnyPublisher()
 
         self.whiteboardObjectSet = whiteboardObjectSet
+        self.whiteboardObjectRepository = whiteboardObjectRepository
+        self.whiteboardRepository = whiteboardRepository
         myProfile = profileRepository.loadProfile()
-        self.whiteboardObjectRepository = whiteboardRepository
-        whiteboardObjectRepository.delegate = self
+        cancellables = []
+        self.whiteboardObjectRepository.delegate = self
+
+        bindWhiteboardRepository()
     }
 
     @discardableResult
@@ -145,6 +151,30 @@ public final class ManageWhiteboardObjectUseCase: ManageWhiteboardObjectUseCaseI
         object.changePosition(position: position)
         return await updateObject(whiteboardObject: object, isReceivedObject: false)
     }
+
+    private func bindWhiteboardRepository() {
+        whiteboardRepository.recentPeerPublisher
+            .sink { [weak self] profile in
+                self?.sendAllWhiteboardObjects(to: profile)
+            }
+            .store(in: &cancellables)
+    }
+
+    private func sendAllWhiteboardObjects(to profile: Profile) {
+        Task {
+            let objects = await self.whiteboardObjectSet.fetchAll()
+            let chunckedObjects = stride(from: 0, to: objects.count, by: 5).map {
+                Array(objects[$0..<min($0 + 5, objects.count)])
+            }
+
+            for chuncked in chunckedObjects {
+                await whiteboardObjectRepository.send(
+                    whiteboardObjects: chuncked,
+                    isDeleted: false,
+                    to: profile)
+            }
+        }
+    }
 }
 
 extension ManageWhiteboardObjectUseCase: WhiteboardObjectRepositoryDelegate {
@@ -158,7 +188,7 @@ extension ManageWhiteboardObjectUseCase: WhiteboardObjectRepositoryDelegate {
                 let photoObject = await whiteboardObjectSet
                     .fetchObjectByID(id: photoID) as? PhotoObject
             else { return }
-            photoObject.configurePhotoURL(with: savedURL)
+
             await updateObject(whiteboardObject: photoObject, isReceivedObject: true)
         }
     }

@@ -42,6 +42,16 @@ public protocol NearbyNetworkInterface {
     ///   - fileURL: 파일의 URL
     ///   - info: 파일에 대한 정보
     func send(fileURL: URL, info: DataInformationDTO) async
+
+    /// 특정 기기에게 파일을 전송합니다.
+    /// - Parameters:
+    ///   - fileURL: 파일의 URL
+    ///   - info: 파일에 대한 정보
+    ///   - connection: 전송할 기기 연결 정보
+    func send(
+        fileURL: URL,
+        info: DataSource.DataInformationDTO,
+        to connection: NetworkConnection) async
 }
 
 public protocol NearbyNetworkConnectionDelegate: AnyObject {
