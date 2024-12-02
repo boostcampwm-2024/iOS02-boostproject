@@ -63,11 +63,16 @@ public final class WhiteboardViewController: UIViewController {
         fatalError("WhiteboardViewController 초기화 오류")
     }
 
+    deinit {
+        configureTearDownObserver()
+    }
+
     public override func viewDidLoad() {
         super.viewDidLoad()
         configureLayout()
         configureAttribute()
         configureScrollView()
+        configureSetUpObserver()
         bind()
     }
 
@@ -221,6 +226,30 @@ public final class WhiteboardViewController: UIViewController {
         scrollView.addGestureRecognizer(scrollViewTapGestureRecognizer)
     }
 
+    private func configureSetUpObserver() {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(keyBoardWillAppear),
+            name: UIResponder.keyboardWillShowNotification,
+            object: nil)
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(keyBoardWillDisappear),
+            name: UIResponder.keyboardWillHideNotification,
+            object: nil)
+    }
+
+    private func configureTearDownObserver() {
+        NotificationCenter.default.removeObserver(
+            self,
+            name: UIResponder.keyboardWillShowNotification,
+            object: nil)
+        NotificationCenter.default.removeObserver(
+            self,
+            name: UIResponder.keyboardWillHideNotification,
+            object: nil)
+    }
+
     private func addObjectView(objectView: WhiteboardObjectView) {
         canvasView.addSubview(objectView)
     }
@@ -260,6 +289,20 @@ public final class WhiteboardViewController: UIViewController {
             chatMessages: viewModel.output.chatMessages)
         let chatViewController = ChatViewController(viewModel: chatViewModel)
         self.present(chatViewController, animated: true)
+    }
+
+    @objc private func keyBoardWillAppear(_ sender: Notification) {
+        guard
+            let keyBoardFrame = sender.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue
+        else { return }
+
+        let keyboardHeight = keyBoardFrame.cgRectValue.height
+
+        canvasView.transform = CGAffineTransform(translationX: 0, y: -keyboardHeight)
+    }
+
+    @objc private func keyBoardWillDisappear(_ sender: Notification) {
+        canvasView.transform = .identity
     }
 }
 
