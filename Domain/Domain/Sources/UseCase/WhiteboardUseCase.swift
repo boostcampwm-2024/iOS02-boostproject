@@ -67,7 +67,7 @@ extension WhiteboardUseCase: WhiteboardRepositoryDelegate {
     public func whiteboardRepository(_ sender: any WhiteboardRepositoryInterface, didLost whiteboardId: UUID) {
         let updatedWhiteboards = whiteboardListSubject
             .value
-            .filter { $0.ID != whiteboardId }
+            .filter { $0.id != whiteboardId }
         whiteboardListSubject.send(updatedWhiteboards)
     }
 }

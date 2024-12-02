@@ -47,7 +47,7 @@ public final class WhiteboardRepository: WhiteboardRepositoryInterface {
         let participantsInfo = ["participants": profileIcons]
 
         let connection = NetworkConnection(
-            id: whiteboard.ID,
+            id: whiteboard.id,
             name: whiteboard.name,
             info: participantsInfo)
 
@@ -148,7 +148,6 @@ extension WhiteboardRepository: NearbyNetworkConnectionDelegate {
 
             let decodedContext = try JSONDecoder().decode(RequestedContext.self, from: context)
             let invitationInfo = decodedContext.participant
-            let currentInfo = prevInfo + "," + invitationInfo
             let requestedInfo = ["participants": invitationInfo]
 
             guard let connectedProfileIcon = ProfileIcon(rawValue: invitationInfo) else { return }
@@ -174,12 +173,6 @@ extension WhiteboardRepository: NearbyNetworkConnectionDelegate {
         isHost: Bool
     ) {
         if !isHost { return }
-        guard
-            let prevInfo = self.participantsInfo["participants"],
-            let lostConnection = connections[connection.id],
-            let lostInfo = lostConnection.info,
-            let lostIcon = lostInfo["participants"]
-        else { return }
 
         connections[connection.id] = nil
         updatePublishingInfo(myProfile: myProfile)

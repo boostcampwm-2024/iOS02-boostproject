@@ -129,10 +129,10 @@ struct WordleView: View {
                                 viewModel.keyboard[row][col].alphabet == nil ? enterKeyboardWidth : keyboardWidth,
                             keyboardHeight: keyboardHeight) {
                                 viewModel.action(input: .typeKeyboard(keyboard: viewModel.keyboard[row][col]))
-                            }
-                            .disabled(
-                                viewModel.keyboard[row][col].keyboardState == .enter ?
-                                !viewModel.canSubmitWordle : viewModel.isGameOver)
+                        }
+                        .disabled(
+                            viewModel.keyboard[row][col].keyboardState == .enter ?
+                            !viewModel.canSubmitWordle : viewModel.isGameOver)
                     }
                 }
             }
