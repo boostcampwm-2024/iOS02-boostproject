@@ -43,7 +43,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             whiteboardRepository: whiteboardRepository,
             profileRepository: profileRepository)
         let profileUseCase = ProfileUseCase(repository: profileRepository)
-        let manageWhieboardObjectUseCase = ManageWhiteboardObjectUseCase(
+        let manageWhiteboardObjectUseCase = ManageWhiteboardObjectUseCase(
             profileRepository: profileRepository,
             whiteboardObjectRepository: whiteboardObjectRepository,
             whiteboardRepository: whiteboardRepository,
@@ -54,30 +54,27 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             textFieldDefaultSize: CGSize(width: 200, height: 50))
         let drawObjectUseCase = DrawObjectUseCase()
         let gameObjectUseCase = GameObjectUseCase(repository: GameRepository(persistenceService: PersistenceService()))
-        let addPhotoUseCase = PhotoUseCase(photoRepository: photoRepository)
+        let photoUseCase = PhotoUseCase(photoRepository: photoRepository)
         let chatUseCase = ChatUseCase(chatRepository: chatRepository)
 
         let whiteboardObjectViewFactory = WhiteboardObjectViewFactory()
 
         let whiteboardListViewModel = WhiteboardListViewModel(whiteboardUseCase: whiteboardUseCase)
-        let whiteboardViewModel = WhiteboardViewModel(
-            whiteboardUseCase: whiteboardUseCase,
-            addPhotoUseCase: addPhotoUseCase,
-            drawObjectUseCase: drawObjectUseCase,
-            textObjectUseCase: textObjectUseCase,
-            chatUseCase: chatUseCase,
-            gameObjectUseCase: gameObjectUseCase,
-            managemanageWhiteboardToolUseCase: manageWhiteboardToolUseCase,
-            manageWhiteboardObjectUseCase: manageWhieboardObjectUseCase)
         let profileViewModel = ProfileViewModel(profileUseCase: profileUseCase)
 
         let whiteboardListViewController = WhiteboardListViewController(
             viewModel: whiteboardListViewModel,
-            whiteboardViewModel: whiteboardViewModel,
             whiteboardObjectViewFactory: whiteboardObjectViewFactory,
             profileViewModel: profileViewModel,
             profileRepository: profileRepository,
-            chatUseCase: chatUseCase)
+            whiteboardUseCase: whiteboardUseCase,
+            photoUseCase: photoUseCase,
+            drawObjectUseCase: drawObjectUseCase,
+            textObjectUseCase: textObjectUseCase,
+            chatUseCase: chatUseCase,
+            gameObjectUseCase: gameObjectUseCase,
+            manageWhiteboardToolUseCase: manageWhiteboardToolUseCase,
+            manageWhiteboardObjectUseCase: manageWhiteboardObjectUseCase)
 
         let window = UIWindow(windowScene: windowScene)
         let navigationController = UINavigationController(rootViewController: whiteboardListViewController)

@@ -42,10 +42,10 @@ public final class WhiteboardViewModel: ViewModel {
 
     private(set) var output: Output
     private let whiteboardUseCase: WhiteboardUseCaseInterface
-    private let photoUseCase: PhotoUseCase
+    private let photoUseCase: PhotoUseCaseInterface
     private let drawObjectUseCase: DrawObjectUseCaseInterface
     private let textObjectUseCase: TextObjectUseCaseInterface
-    private let chatUseCase: ChatUseCase
+    private let chatUseCase: ChatUseCaseInterface
     private let gameObjectUseCase: GameObjectUseCaseInterface
     private let manageWhiteboardToolUseCase: ManageWhiteboardToolUseCaseInterface
     private let manageWhiteboardObjectUseCase: ManageWhiteboardObjectUseCaseInterface
@@ -55,21 +55,21 @@ public final class WhiteboardViewModel: ViewModel {
 
     public init(
         whiteboardUseCase: WhiteboardUseCaseInterface,
-        addPhotoUseCase: PhotoUseCase,
+        photoUseCase: PhotoUseCaseInterface,
         drawObjectUseCase: DrawObjectUseCaseInterface,
         textObjectUseCase: TextObjectUseCaseInterface,
-        chatUseCase: ChatUseCase,
+        chatUseCase: ChatUseCaseInterface,
         gameObjectUseCase: GameObjectUseCaseInterface,
-        managemanageWhiteboardToolUseCase: ManageWhiteboardToolUseCaseInterface,
+        manageWhiteboardToolUseCase: ManageWhiteboardToolUseCaseInterface,
         manageWhiteboardObjectUseCase: ManageWhiteboardObjectUseCaseInterface
     ) {
         self.whiteboardUseCase = whiteboardUseCase
-        self.photoUseCase = addPhotoUseCase
+        self.photoUseCase = photoUseCase
         self.drawObjectUseCase = drawObjectUseCase
         self.textObjectUseCase = textObjectUseCase
         self.chatUseCase = chatUseCase
         self.gameObjectUseCase = gameObjectUseCase
-        self.manageWhiteboardToolUseCase = managemanageWhiteboardToolUseCase
+        self.manageWhiteboardToolUseCase = manageWhiteboardToolUseCase
         self.manageWhiteboardObjectUseCase = manageWhiteboardObjectUseCase
         selectedObjectSubject = CurrentValueSubject(nil)
         imageSubject = PassthroughSubject<(id: UUID, imageData: Data), Never>()

@@ -13,8 +13,9 @@ protocol ChatTextFieldViewDelegate: AnyObject, UITextFieldDelegate {
 
 final class ChatTextFieldView: UIView {
     private enum ChatTextFieldLayoutConstant {
-        static let sendButtonSize: CGFloat = 23
-        static let sendButtonTraillingInset: CGFloat = 16
+        static let sendButtonSize: CGFloat = 40
+        static let sendButtonTraillingInset: CGFloat = 8
+        static let sendButtonImageSize: CGFloat = 20
         static let textFieldLeadingInset: CGFloat = 20
         static let textFieldBorderWidth: CGFloat = 1
         static let textFieldCornerRadius: CGFloat = 20
@@ -32,7 +33,11 @@ final class ChatTextFieldView: UIView {
     private let sendButton: UIButton = {
         let button = UIButton()
         var buttonConfiguration = UIButton.Configuration.plain()
+        let imageConfiguration = UIImage
+            .SymbolConfiguration(
+                pointSize: ChatTextFieldLayoutConstant.sendButtonImageSize)
         buttonConfiguration.image = UIImage(systemName: "arrow.up.circle.fill")
+        buttonConfiguration.preferredSymbolConfigurationForImage = imageConfiguration
         button.configuration = buttonConfiguration
         button.tintColor = .airplainBlue
 
