@@ -30,6 +30,7 @@ final class TextObjectView: WhiteboardObjectView {
 
     required init?(coder: NSCoder) {
         super.init(coder: coder)
+        configureLayout()
     }
 
     override func configureLayout() {
@@ -49,5 +50,6 @@ final class TextObjectView: WhiteboardObjectView {
     override func configureEditable(isEditable: Bool) {
         super.configureEditable(isEditable: isEditable)
         textView.isUserInteractionEnabled = isEditable
+        textView.resignFirstResponder()
     }
 }
