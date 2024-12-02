@@ -3,6 +3,16 @@
     {
       "filename" : "WordleGuideImage.png",
       "idiom" : "universal"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "wordleGuide.png",
+      "idiom" : "universal"
     }
   ],
   "info" : {
