@@ -51,4 +51,16 @@ public final class DrawingObject: WhiteboardObject {
         try container.encode(lineWidth, forKey: .lineWidht)
         try super.encode(to: encoder)
     }
+
+    override func deepCopy() -> WhiteboardObject {
+        return DrawingObject(
+            id: id,
+            centerPosition: centerPosition,
+            size: size,
+            scale: scale,
+            angle: angle,
+            points: points,
+            lineWidth: lineWidth,
+            selectedBy: selectedBy)
+    }
 }

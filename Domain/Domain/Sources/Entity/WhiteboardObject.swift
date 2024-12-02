@@ -32,6 +32,16 @@ public class WhiteboardObject: Codable {
         updatedAt = Date()
     }
 
+    func deepCopy() -> WhiteboardObject {
+        return WhiteboardObject(
+            id: id,
+            centerPosition: centerPosition,
+            size: size,
+            scale: scale,
+            angle: angle,
+            selectedBy: selectedBy)
+    }
+
     func select(by profile: Profile) {
         selectedBy = profile
         updatedAt = Date()

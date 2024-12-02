@@ -51,6 +51,17 @@ public final class GameObject: WhiteboardObject {
         try container.encode(gameWinners, forKey: .gameWinners)
         try super.encode(to: encoder)
     }
+
+    override func deepCopy() -> WhiteboardObject {
+        return GameObject(
+            id: id,
+            centerPosition: centerPosition,
+            size: size,
+            scale: scale,
+            angle: angle,
+            gameAnswer: gameAnswer,
+            selectedBy: selectedBy)
+    }
 }
 
 public struct GameWinner: Codable {
