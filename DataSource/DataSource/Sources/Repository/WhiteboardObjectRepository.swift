@@ -51,7 +51,7 @@ public final class WhiteboardObjectRepository: WhiteboardObjectRepositoryInterfa
                 taskGroup.addTask {
                     await self.send(
                         whiteboardObject: object,
-                        isDeleted: false,
+                        isDeleted: isDeleted,
                         profile: profile)
                 }
             }

@@ -151,13 +151,14 @@ extension WhiteboardRepository: NearbyNetworkConnectionDelegate {
             let currentInfo = prevInfo + "," + invitationInfo
             let requestedInfo = ["participants": invitationInfo]
 
-            guard let connectedPeerIcon = ProfileIcon(rawValue: invitationInfo) else { return }
+            guard let connectedProfileIcon = ProfileIcon(rawValue: invitationInfo) else { return }
 
-            let connectedPeer = Profile(
+            let connectedProfile = Profile(
+                id: connection.id,
                 nickname: decodedContext.nickname,
-                profileIcon: connectedPeerIcon)
+                profileIcon: connectedProfileIcon)
 
-            recentPeerSubject.send(connectedPeer)
+            recentPeerSubject.send(connectedProfile)
 
             connections[connection.id] = NetworkConnection(id: connection.id, name: "", info: requestedInfo)
             updatePublishingInfo(myProfile: myProfile)

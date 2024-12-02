@@ -91,9 +91,7 @@ extension NearbyNetworkService: NearbyNetworkInterface {
             .first { $0.value.id == connection.id }?
             .key
         // TODO: Error 수정
-        guard let peerID else {
-            throw NSError()
-        }
+        guard let peerID else { throw NSError() }
 
         do {
             let encodedContext = try encoder.encode(context)
@@ -152,11 +150,14 @@ extension NearbyNetworkService: NearbyNetworkInterface {
         guard
             let infoJsonData,
             let infoJsonString = String(data: infoJsonData, encoding: .utf8),
-            let peer = connectedPeers.first(where: {$0.value == connection})?.key
+            let peer = session
+                .connectedPeers
+                .first(where: { $0.displayName == connection.id.uuidString})
         else { return }
 
         do {
             try await session.sendResource(at: fileURL, withName: infoJsonString, toPeer: peer)
+            self.logger.log(level: .error, "\(peer)에게 file 데이터 전송 성공")
         } catch {
             self.logger.log(level: .error, "\(peer)에게 file 데이터 전송 실패")
         }

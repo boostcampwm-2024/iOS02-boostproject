@@ -163,10 +163,10 @@ public final class ManageWhiteboardObjectUseCase: ManageWhiteboardObjectUseCaseI
     private func sendAllWhiteboardObjects(to profile: Profile) {
         Task {
             let objects = await self.whiteboardObjectSet.fetchAll()
-            let chunckedObjects = stride(from: 0, to: objects.count, by: 10).map {
-                Array(objects[$0..<min($0 + 10, objects.count)])
+            let chunckedObjects = stride(from: 0, to: objects.count, by: 5).map {
+                Array(objects[$0..<min($0 + 5, objects.count)])
             }
-            
+
             for chuncked in chunckedObjects {
                 await whiteboardObjectRepository.send(
                     whiteboardObjects: chuncked,

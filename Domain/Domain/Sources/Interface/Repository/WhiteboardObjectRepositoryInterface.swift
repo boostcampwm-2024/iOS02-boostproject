@@ -9,7 +9,7 @@ import Foundation
 public protocol WhiteboardObjectRepositoryInterface {
     /// WhiteboardObjectRepository의 delegate
     var delegate: WhiteboardObjectRepositoryDelegate? { get set }
-    
+
     /// 특정 사람에게 화이트보드 오브젝트를 전송하는 메서드
     /// - Parameters:
     ///   - whiteboardObject: 전송할 화이트보드 오브젝트
@@ -23,7 +23,7 @@ public protocol WhiteboardObjectRepositoryInterface {
     /// 다른 사람들에게 화이트보드 오브젝트를 전송하는 메서드.
     /// - Parameter whiteboardObject: 전송할 Whiteboard Object
     func send(whiteboardObject: WhiteboardObject, isDeleted: Bool) async
-    
+
     /// 특정 사람에게 화이트보드 오브젝트 배열을 전송하는 메서드
     /// - Parameters:
     ///   - whiteboardObjects: 전송할 화이트보드 오브젝트들
@@ -32,8 +32,7 @@ public protocol WhiteboardObjectRepositoryInterface {
     func send(
         whiteboardObjects: [WhiteboardObject],
         isDeleted: Bool,
-        to profile: Profile
-    ) async
+        to profile: Profile) async
 }
 
 public protocol WhiteboardObjectRepositoryDelegate: AnyObject {

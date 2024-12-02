@@ -12,10 +12,21 @@ public struct Profile: Codable, Hashable {
     public let nickname: String
     public let profileIcon: ProfileIcon
 
-    public init(nickname: String, profileIcon: ProfileIcon) {
-        id = UUID()
+    public init(
+        id: UUID,
+        nickname: String,
+        profileIcon: ProfileIcon
+    ) {
+        self.id = id
         self.nickname = nickname
         self.profileIcon = profileIcon
+    }
+
+    public init(nickname: String, profileIcon: ProfileIcon) {
+        self.init(
+            id: UUID(),
+            nickname: nickname,
+            profileIcon: profileIcon)
     }
 }
 
