@@ -33,13 +33,13 @@ public final class GameRepository: GameRepositoryInterface {
 
     public func saveWordleAnswerSet() {
         let moduleBundle = Bundle(for: GameRepository.self)
-        guard let filePath = moduleBundle.path(forResource: "words.txt", ofType: nil) else {
+        guard let fileURL = moduleBundle.url(forResource: "words", withExtension: "txt") else {
             logger.log(level: .error, "File 불러오기 실패: word.txt 파일을 찾을 수 없습니다.")
             return
         }
 
         do {
-            let fileContents = try String(contentsOfFile: filePath, encoding: .utf8)
+            let fileContents = try String(contentsOf: fileURL, encoding: .utf8)
             let words = fileContents
                 .split(separator: "\n")
                 .map { String($0).uppercased() }
