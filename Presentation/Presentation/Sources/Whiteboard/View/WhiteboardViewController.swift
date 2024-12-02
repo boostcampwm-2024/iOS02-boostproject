@@ -342,12 +342,16 @@ public final class WhiteboardViewController: UIViewController {
 
     @objc private func keyBoardWillAppear(_ sender: Notification) {
         guard
-            let keyBoardFrame = sender.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue
+            let keyBoardFrame = sender.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue,
+            let selectedObjectView
         else { return }
 
         let keyboardHeight = keyBoardFrame.cgRectValue.height
+        let selectedObjectViewFrame = selectedObjectView.convert(selectedObjectView.bounds, to: view)
 
-        canvasView.transform = CGAffineTransform(translationX: 0, y: -keyboardHeight)
+        if selectedObjectViewFrame.midY > view.bounds.midY {
+            canvasView.transform = CGAffineTransform(translationX: 0, y: -keyboardHeight)
+        }
     }
 
     @objc private func keyBoardWillDisappear(_ sender: Notification) {
