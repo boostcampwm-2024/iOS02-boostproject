@@ -10,7 +10,6 @@ import UIKit
 
 protocol WhiteboardToolBarDelegate: AnyObject {
     func whiteboardToolBar(_ sender: WhiteboardToolBar, selectedTool: WhiteboardTool)
-    func whiteboardToolBarDidTapDeleteButton(_ sender: WhiteboardToolBar)
 }
 
 final class WhiteboardToolBar: UIView {
@@ -21,7 +20,9 @@ final class WhiteboardToolBar: UIView {
 
     private enum WhiteboardToolBarLayoutConstant {
         static let toolbarSpacing: CGFloat = 30
-        static let deleteButtonSize: CGFloat = 40
+        static let deletionImageSize: CGFloat = 40
+        static let deletionDisabledImage = "trash.circle"
+        static let deletionEnabledImage = "trash.circle.fill"
     }
 
     private let toolStackView = UIStackView()
@@ -31,22 +32,18 @@ final class WhiteboardToolBar: UIView {
     private let game = UIButton()
     private let chat = UIButton()
 
-    private let deleteButtonImage: UIImageView = {
+    private let deletionImage: UIImageView = {
         let imageView = UIImageView()
-        imageView.image = UIImage(systemName: "trash.circle")
+        imageView.image = UIImage(systemName: WhiteboardToolBarLayoutConstant.deletionDisabledImage)
         imageView.tintColor = .wordleRed
         imageView.isHidden = true
         return imageView
     }()
 
-    private let deleteButton: UIButton = {
-        let button = UIButton()
-        button.backgroundColor = .clear
-        button.isHidden = true
-        return button
-    }()
-
     private var tools: [WhiteboardTool: UIButton] = [:]
+    var deleteZone: CGRect {
+        return convert(deletionImage.frame, to: superview)
+    }
     weak var delegate: WhiteboardToolBarDelegate?
 
     override init(frame: CGRect) {
@@ -76,13 +73,19 @@ final class WhiteboardToolBar: UIView {
         switch mode {
         case .normal:
             toolStackView.isHidden = false
-            deleteButton.isHidden = true
-            deleteButtonImage.isHidden = true
+            deletionImage.isHidden = true
         case .delete:
             toolStackView.isHidden = true
-            deleteButton.isHidden = false
-            deleteButtonImage.isHidden = false
+            deletionImage.isHidden = false
         }
+    }
+
+    func configureDeleteImage(isDeleteZoneEnable: Bool) {
+        let deleteImage = isDeleteZoneEnable ?
+        UIImage(systemName: WhiteboardToolBarLayoutConstant.deletionEnabledImage) :
+        UIImage(systemName: WhiteboardToolBarLayoutConstant.deletionDisabledImage)
+
+        deletionImage.image = deleteImage
     }
 
     private func configureAttribute() {
@@ -95,18 +98,12 @@ final class WhiteboardToolBar: UIView {
             .addToSuperview(self)
             .edges(equalTo: self)
 
-        deleteButtonImage
+        deletionImage
             .addToSuperview(self)
             .center(in: self)
             .size(
-                width: WhiteboardToolBarLayoutConstant.deleteButtonSize,
-                height: WhiteboardToolBarLayoutConstant.deleteButtonSize)
-        deleteButton
-            .addToSuperview(self)
-            .center(in: self)
-            .size(
-                width: WhiteboardToolBarLayoutConstant.deleteButtonSize,
-                height: WhiteboardToolBarLayoutConstant.deleteButtonSize)
+                width: WhiteboardToolBarLayoutConstant.deletionImageSize,
+                height: WhiteboardToolBarLayoutConstant.deletionImageSize)
     }
 
     private func configureButtons() {
@@ -123,13 +120,6 @@ final class WhiteboardToolBar: UIView {
                 },
                 for: .touchUpInside )
         }
-
-        deleteButton.addAction(
-            UIAction { [weak self] _ in
-                guard let self else { return }
-                self.delegate?.whiteboardToolBarDidTapDeleteButton(self)
-            },
-            for: .touchUpInside)
     }
 }
 

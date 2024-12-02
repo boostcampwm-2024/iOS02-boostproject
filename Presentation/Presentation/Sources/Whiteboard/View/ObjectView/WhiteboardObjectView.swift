@@ -12,7 +12,6 @@ public protocol WhiteboardObjectViewDelegate: AnyObject {
         _ sender: WhiteboardObjectView,
         scale: CGFloat,
         angle: CGFloat)
-    func whiteboardObjectViewDidEndMoving(_ sender: WhiteboardObjectView, newCenter: CGPoint)
 }
 
 public class WhiteboardObjectView: UIView {
@@ -89,9 +88,6 @@ public class WhiteboardObjectView: UIView {
     private func configureAttribute() {
         let controlPanGesture = UIPanGestureRecognizer(target: self, action: #selector(handleControlPanning))
         controlView.addGestureRecognizer(controlPanGesture)
-
-        let moveGesture = UIPanGestureRecognizer(target: self, action: #selector(handleMoveObjectView))
-        addGestureRecognizer(moveGesture)
     }
 
     func configureLayout() {
@@ -253,26 +249,6 @@ public class WhiteboardObjectView: UIView {
             .identity
             .scaledBy(x: scale, y: scale)
             .rotated(by: angle)
-    }
-
-    @objc private func handleMoveObjectView(gesture: UIPanGestureRecognizer) {
-
-        let translation = gesture.translation(in: superview)
-        let newCenter = CGPoint(
-            x: center.x + translation.x,
-            y: center.y + translation.y
-        )
-
-        switch gesture.state {
-        case .possible, .began:
-            break
-        case .changed:
-            center = newCenter
-        default:
-            delegate?.whiteboardObjectViewDidEndMoving(self, newCenter: newCenter)
-        }
-
-        gesture.setTranslation(.zero, in: superview)
     }
 }
 

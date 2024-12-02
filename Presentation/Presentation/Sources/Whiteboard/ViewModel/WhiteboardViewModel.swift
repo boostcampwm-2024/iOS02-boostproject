@@ -22,12 +22,14 @@ public final class WhiteboardViewModel: ViewModel {
         case finishUsingTool
         case addTextObject(point: CGPoint, viewSize: CGSize)
         case editTextObject(text: String)
+        case finishEditingTextObject
         case addGameObject(point: CGPoint)
         case selectObject(objectID: UUID)
         case deselectObject
         case changeObjectScaleAndAngle(scale: CGFloat, angle: CGFloat)
+        case checkIsDeletion(point: CGPoint, deletionZone: CGRect)
+        case dragObject(point: CGPoint)
         case changeObjectPosition(point: CGPoint)
-        case deleteObject
     }
 
     struct Output {
@@ -37,6 +39,8 @@ public final class WhiteboardViewModel: ViewModel {
         let removedWhiteboardObjectPublisher: AnyPublisher<WhiteboardObject, Never>
         let objectViewSelectedPublisher: AnyPublisher<UUID?, Never>
         let imagePublisher: AnyPublisher<(id: UUID, imageData: Data), Never>
+        let objectPositionPublisher: AnyPublisher<CGPoint, Never>
+        let isDeletionZoneEnable: AnyPublisher<Bool, Never>
         var chatMessages: [ChatMessage]
     }
 
@@ -51,6 +55,9 @@ public final class WhiteboardViewModel: ViewModel {
     private let manageWhiteboardObjectUseCase: ManageWhiteboardObjectUseCaseInterface
     private let selectedObjectSubject: CurrentValueSubject<UUID?, Never>
     private let imageSubject: PassthroughSubject<(id: UUID, imageData: Data), Never>
+    private let objectPositionSubject: PassthroughSubject<CGPoint, Never>
+    private let isDeletionZoneEnable: CurrentValueSubject<Bool, Never>
+    private var editingText: String?
     private var cancellables: Set<AnyCancellable>
 
     public init(
@@ -73,6 +80,8 @@ public final class WhiteboardViewModel: ViewModel {
         self.manageWhiteboardObjectUseCase = manageWhiteboardObjectUseCase
         selectedObjectSubject = CurrentValueSubject(nil)
         imageSubject = PassthroughSubject<(id: UUID, imageData: Data), Never>()
+        objectPositionSubject = PassthroughSubject<CGPoint, Never>()
+        isDeletionZoneEnable = CurrentValueSubject<Bool, Never>(false)
         cancellables = []
 
         output = Output(
@@ -86,7 +95,13 @@ public final class WhiteboardViewModel: ViewModel {
                 .removedObjectPublisher,
             objectViewSelectedPublisher: selectedObjectSubject
                 .eraseToAnyPublisher(),
-            imagePublisher: imageSubject.eraseToAnyPublisher(),
+            imagePublisher: imageSubject
+                .eraseToAnyPublisher(),
+            objectPositionPublisher: objectPositionSubject
+                .eraseToAnyPublisher(),
+            isDeletionZoneEnable: isDeletionZoneEnable
+                .removeDuplicates()
+                .eraseToAnyPublisher(),
             chatMessages: []
         )
         receviedMessage()
@@ -115,6 +130,8 @@ public final class WhiteboardViewModel: ViewModel {
             addText(at: point, viewSize: viewSize)
         case .editTextObject(let text):
             editText(text: text)
+        case .finishEditingTextObject:
+            finishEditingText()
         case .selectObject(let objectID):
             selectObject(objectID: objectID)
         case .deselectObject:
@@ -123,10 +140,12 @@ public final class WhiteboardViewModel: ViewModel {
             changeObjectScale(scale: scale, angle: angle)
         case .changeObjectPosition(let position):
             changeObjectPosition(to: position)
-        case .deleteObject:
-            deleteObject()
         case .addGameObject(let point):
             addGame(at: point)
+        case .checkIsDeletion(let point, let deletionZone):
+            checkIsDeletionZoneEnable(with: point, deletionZone: deletionZone)
+        case .dragObject(let point):
+            dragObject(to: point)
         }
     }
 
@@ -191,10 +210,19 @@ public final class WhiteboardViewModel: ViewModel {
     }
 
     private func editText(text: String) {
-        guard let selectedObjectID = selectedObjectSubject.value else { return }
+        editingText = text
+    }
+
+    private func finishEditingText() {
+        guard
+            let selectedObjectID = selectedObjectSubject.value,
+            let editingText
+        else { return }
+
         Task {
-            await textObjectUseCase.editText(id: selectedObjectID, text: text)
+            await textObjectUseCase.editText(id: selectedObjectID, text: editingText)
         }
+        self.editingText = nil
     }
 
     private func addGame(at point: CGPoint) {
@@ -218,7 +246,13 @@ public final class WhiteboardViewModel: ViewModel {
     }
 
     private func deselectObject() {
+        guard let selectedObjectID = selectedObjectSubject.value else { return }
+
         Task {
+            if let editingText {
+                await textObjectUseCase.editText(id: selectedObjectID, text: editingText)
+            }
+
             let isSuccess = await manageWhiteboardObjectUseCase.deselect()
             if isSuccess { selectedObjectSubject.send(nil) }
         }
@@ -235,19 +269,30 @@ public final class WhiteboardViewModel: ViewModel {
     }
 
     private func changeObjectPosition(to point: CGPoint) {
+        defer { isDeletionZoneEnable.send(false) }
         guard let selectedObjectID = selectedObjectSubject.value else { return }
-        Task {
-            await manageWhiteboardObjectUseCase.changePosition(whiteboardObjectID: selectedObjectID, to: point)
+
+        if isDeletionZoneEnable.value {
+            Task {
+                let isSuccess = await manageWhiteboardObjectUseCase
+                    .removeObject(whiteboardObjectID: selectedObjectID, isReceivedObject: false)
+                if isSuccess { selectedObjectSubject.send(nil) }
+            }
+        } else {
+            Task {
+                await manageWhiteboardObjectUseCase.changePosition(whiteboardObjectID: selectedObjectID, to: point)
+            }
         }
     }
 
-    private func deleteObject() {
-        guard let selectedObjectID = selectedObjectSubject.value else { return }
-        Task {
-            let isSuccess = await manageWhiteboardObjectUseCase
-                .removeObject(whiteboardObjectID: selectedObjectID, isReceivedObject: false)
-            if isSuccess { selectedObjectSubject.send(nil) }
-        }
+    private func dragObject(to point: CGPoint) {
+        guard selectedObjectSubject.value != nil else { return }
+
+        objectPositionSubject.send(point)
+    }
+
+    private func checkIsDeletionZoneEnable(with point: CGPoint, deletionZone: CGRect) {
+        isDeletionZoneEnable.send(deletionZone.contains(point))
     }
 
     private func receviedMessage() {
