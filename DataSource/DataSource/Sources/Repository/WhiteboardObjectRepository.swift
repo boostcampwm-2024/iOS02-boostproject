@@ -24,7 +24,7 @@ public final class WhiteboardObjectRepository: WhiteboardObjectRepositoryInterfa
     }
 
     public func send(
-        whiteboardObject: Domain.WhiteboardObject,
+        whiteboardObject: WhiteboardObject,
         isDeleted: Bool,
         to profile: Profile
     ) async {

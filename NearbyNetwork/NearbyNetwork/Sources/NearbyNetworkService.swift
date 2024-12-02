@@ -117,7 +117,7 @@ extension NearbyNetworkService: NearbyNetworkInterface {
     }
 
     public func send(fileURL: URL, info: DataSource.DataInformationDTO) async {
-        let infoJsonData = try? JSONEncoder().encode(info)
+        let infoJsonData = try? encoder.encode(info)
 
         guard
             let infoJsonData,
@@ -145,14 +145,14 @@ extension NearbyNetworkService: NearbyNetworkInterface {
         info: DataSource.DataInformationDTO,
         to connection: NetworkConnection
     ) async {
-        let infoJsonData = try? JSONEncoder().encode(info)
+        let infoJsonData = try? encoder.encode(info)
 
         guard
             let infoJsonData,
             let infoJsonString = String(data: infoJsonData, encoding: .utf8),
             let peer = session
                 .connectedPeers
-                .first(where: { $0.displayName == connection.id.uuidString})
+                .first(where: { $0.displayName == connection.id.uuidString })
         else { return }
 
         do {
