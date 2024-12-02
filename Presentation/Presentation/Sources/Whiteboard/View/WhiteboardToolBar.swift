@@ -21,7 +21,7 @@ final class WhiteboardToolBar: UIView {
 
     private enum WhiteboardToolBarLayoutConstant {
         static let toolbarSpacing: CGFloat = 30
-        static let deleteButtonWidth: CGFloat = 50
+        static let deleteButtonSize: CGFloat = 40
     }
 
     private let toolStackView = UIStackView()
@@ -30,15 +30,22 @@ final class WhiteboardToolBar: UIView {
     private let photo = UIButton()
     private let game = UIButton()
     private let chat = UIButton()
+
+    private let deleteButtonImage: UIImageView = {
+        let imageView = UIImageView()
+        imageView.image = UIImage(systemName: "trash.circle")
+        imageView.tintColor = .wordleRed
+        imageView.isHidden = true
+        return imageView
+    }()
+
     private let deleteButton: UIButton = {
         let button = UIButton()
-        button.setImage(
-            UIImage(systemName: "trash.circle"),
-            for: .normal)
-        button.tintColor = .wordleRed
+        button.backgroundColor = .clear
         button.isHidden = true
         return button
     }()
+
     private var tools: [WhiteboardTool: UIButton] = [:]
     weak var delegate: WhiteboardToolBarDelegate?
 
@@ -70,9 +77,11 @@ final class WhiteboardToolBar: UIView {
         case .normal:
             toolStackView.isHidden = false
             deleteButton.isHidden = true
+            deleteButtonImage.isHidden = true
         case .delete:
             toolStackView.isHidden = true
             deleteButton.isHidden = false
+            deleteButtonImage.isHidden = false
         }
     }
 
@@ -86,14 +95,18 @@ final class WhiteboardToolBar: UIView {
             .addToSuperview(self)
             .edges(equalTo: self)
 
+        deleteButtonImage
+            .addToSuperview(self)
+            .center(in: self)
+            .size(
+                width: WhiteboardToolBarLayoutConstant.deleteButtonSize,
+                height: WhiteboardToolBarLayoutConstant.deleteButtonSize)
         deleteButton
             .addToSuperview(self)
+            .center(in: self)
             .size(
-                width: WhiteboardToolBarLayoutConstant.deleteButtonWidth,
-                height: 40,
-                priority: .defaultLow)
-            .verticalEdges(equalTo: self)
-            .centerX(equalTo: self.centerXAnchor)
+                width: WhiteboardToolBarLayoutConstant.deleteButtonSize,
+                height: WhiteboardToolBarLayoutConstant.deleteButtonSize)
     }
 
     private func configureButtons() {
