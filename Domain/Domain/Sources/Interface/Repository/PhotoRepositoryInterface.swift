@@ -13,6 +13,7 @@ public protocol PhotoRepositoryInterface {
     ///  id: 사진의 id
     ///  imageData: 사진 이미지 데이터
     /// - Returns: 저장한 위치 URL
+    @discardableResult
     func savePhoto(id: UUID, imageData: Data) -> URL?
 
     /// 저장된 사진을 가져옵니다

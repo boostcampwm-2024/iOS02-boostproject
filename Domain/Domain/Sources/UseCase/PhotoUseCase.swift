@@ -21,6 +21,8 @@ public final class PhotoUseCase: PhotoUseCaseInterface {
     ) -> PhotoObject? {
         let id = UUID()
 
+        photoRepository.savePhoto(id: id, imageData: imageData)
+
         var size = size
         let scaleFactor = size.width >= size.height ? 200 / size.width : 200 / size.height
         size.width *= scaleFactor
