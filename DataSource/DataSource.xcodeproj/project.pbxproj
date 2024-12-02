@@ -22,6 +22,8 @@
 		A81E7BFD2CF728E6007E8414 /* GameRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = A81E7BFC2CF728E6007E8414 /* GameRepository.swift */; };
 		A8525F1E2CE326DB0089DA5E /* PersistenceInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8525F1D2CE326DB0089DA5E /* PersistenceInterface.swift */; };
 		A852601E2CE339E70089DA5E /* ProfileRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = A852601D2CE339E70089DA5E /* ProfileRepository.swift */; };
+		A88007A42CFDEA3E00608F3D /* words.txt in Resources */ = {isa = PBXBuildFile; fileRef = A88007A22CFDEA3E00608F3D /* words.txt */; };
+		A88007A52CFDEA4A00608F3D /* words.txt in Sources */ = {isa = PBXBuildFile; fileRef = A88007A22CFDEA3E00608F3D /* words.txt */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -54,6 +56,7 @@
 		A81E7BFC2CF728E6007E8414 /* GameRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameRepository.swift; sourceTree = "<group>"; };
 		A8525F1D2CE326DB0089DA5E /* PersistenceInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceInterface.swift; sourceTree = "<group>"; };
 		A852601D2CE339E70089DA5E /* ProfileRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileRepository.swift; sourceTree = "<group>"; };
+		A88007A22CFDEA3E00608F3D /* words.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = words.txt; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -102,6 +105,7 @@
 		0080E8642CE19EC40095B958 /* DataSource */ = {
 			isa = PBXGroup;
 			children = (
+				A88007A32CFDEA3E00608F3D /* Resources */,
 				0080E8632CE19EC40095B958 /* Sources */,
 			);
 			path = DataSource;
@@ -143,6 +147,14 @@
 				A81E7BFC2CF728E6007E8414 /* GameRepository.swift */,
 			);
 			path = Repository;
+			sourceTree = "<group>";
+		};
+		A88007A32CFDEA3E00608F3D /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				A88007A22CFDEA3E00608F3D /* words.txt */,
+			);
+			path = Resources;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -219,6 +231,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A88007A42CFDEA3E00608F3D /* words.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -250,6 +263,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A88007A52CFDEA4A00608F3D /* words.txt in Sources */,
 				5B54DECC2CEEF70000674723 /* RequestedContext.swift in Sources */,
 				A8525F1E2CE326DB0089DA5E /* PersistenceInterface.swift in Sources */,
 				00549AD02CEDBAAD00DF8F6C /* AirplaINDataType.swift in Sources */,
