@@ -105,14 +105,15 @@ final class WordleViewModel: ObservableObject {
                 .compactMap { $0.alphabet }
                 .map { String($0) }
                 .joined()
-            guard !gameRepository.containsWord(word: inputWord) else {
-                canSubmitWordle = true
+
+            guard gameRepository.containsWord(word: inputWord) else {
+                canSubmitWordle = false
+                for index in 0..<wordleWordCount {
+                    wordle[triedWordleCount][index].state = .invalid
+                }
                 return
             }
-            for index in 0..<wordleWordCount {
-                wordle[triedWordleCount][index].state = .invalid
-            }
-            canSubmitWordle = false
+            canSubmitWordle = true
         }
     }
 

@@ -7,11 +7,13 @@
 
 import Domain
 import Foundation
+import OSLog
 
 public final class GameRepository: GameRepositoryInterface {
     private let persistenceService: PersistenceInterface
-    private let wordleAnswerKey = "AirplainWordle"
     private let wordleHistoryKey = "AirplainWordleHistory"
+    private var wordleSet: Set<String> = []
+    private let logger = Logger()
 
     public init(persistenceService: PersistenceInterface) {
         self.persistenceService = persistenceService
@@ -19,27 +21,37 @@ public final class GameRepository: GameRepositoryInterface {
 
     public func randomGameAnswer() -> String {
         guard
-            let wordleSet: [String] = persistenceService.load(forKey: wordleAnswerKey),
+            !wordleSet.isEmpty,
             let wordleAnswer = wordleSet.randomElement()
         else {
-            saveWordleAnswerSet(wordleAnswerSet: gameWords)
-            return gameWords.randomElement() ?? "KOREA"
+            saveWordleAnswerSet()
+            return wordleSet.randomElement() ?? "KOREA"
         }
 
         return wordleAnswer
     }
 
-    public func saveWordleAnswerSet(wordleAnswerSet: [String]) {
-        persistenceService.save(data: wordleAnswerSet, forKey: wordleAnswerKey)
+    public func saveWordleAnswerSet() {
+        let moduleBundle = Bundle(for: GameRepository.self)
+        guard let filePath = moduleBundle.path(forResource: "words.txt", ofType: nil) else {
+            logger.log(level: .error, "File 불러오기 실패: word.txt 파일을 찾을 수 없습니다.")
+            return
+        }
+
+        do {
+            let fileContents = try String(contentsOfFile: filePath, encoding: .utf8)
+            let words = fileContents
+                .split(separator: "\n")
+                .map { String($0).uppercased() }
+            wordleSet = Set(words)
+        } catch {
+            logger.log(level: .error, "File 읽기 실패: word.txt 파일을 읽을 수 없습니다.")
+            return
+        }
     }
 
     public func containsWord(word: String) -> Bool {
-        guard
-            let wordleSet: [String] = persistenceService.load(forKey: wordleAnswerKey),
-            wordleSet.contains(word)
-        else { return false }
-
-        return true
+        return wordleSet.contains(word)
     }
 
     public func loadWordleHistory(gameID: UUID) -> [String] {
@@ -55,48 +67,3 @@ public final class GameRepository: GameRepositoryInterface {
         persistenceService.save(data: gameHistory, forKey: wordleHistoryKey)
     }
 }
-
-fileprivate let gameWords: [String] = [
-    "APPLE", "BRAVE", "CHARM", "DRINK", "EAGER",
-    "FABLE", "GLOBE", "HABIT", "IDEAL", "JOKER",
-    "KNEEL", "LUNCH", "MAGIC", "NOBLE", "OCEAN",
-    "PEACE", "QUEST", "RAVEN", "SPIKE", "TRUST",
-    "URBAN", "VIVID", "WITTY", "XENON", "YOUTH",
-    "ZEBRA", "ANGEL", "BEACH", "CHESS", "DOUGH",
-    "EXILE", "FLOCK", "GRACE", "HOVER", "IVORY",
-    "JOINT", "KNEES", "LIGHT", "MOTTO", "NOVEL",
-    "OLIVE", "PLACE", "QUIET", "REACT", "SALTY",
-    "THICK", "UPPER", "VALVE", "WHITE", "YIELD",
-    "ZESTY", "ARISE", "BLEND", "CRANE", "DAISY",
-    "EQUIP", "FEAST", "GROVE", "HEART", "INPUT",
-    "JOLLY", "KITTY", "LUCKY", "MINER", "NIFTY",
-    "OASIS", "PIANO", "QUILT", "RELAX", "SHORE",
-    "TOAST", "UMBRA", "VIGOR", "WHEAT", "XYLEM",
-    "ABIDE", "BLAME", "CROWN", "DANCE", "EAGLE",
-    "FIBER", "GRAPE", "HONEY", "INDEX", "JUMPY",
-    "KNIFE", "LOYAL", "MANGO", "NEEDY", "OVERT",
-    "PLAZA", "QUAKE", "RUMOR", "STONE", "TABLE",
-    "UPSET", "VOCAL", "WHIRL", "AMBER", "BIRTH",
-    "CABLE", "DONUT", "ELBOW", "FENCE", "GLIDE",
-    "HINGE", "INNER", "JEWEL", "LUNAR", "MEDAL",
-    "NURSE", "PENNY", "QUEEN", "RAZOR", "SHELL",
-    "TIGER", "UNDER", "VAPOR", "WHALE", "ARENA",
-    "BACON", "CHARM", "DOUBT", "EJECT", "FLOOD",
-    "GHOST", "HATCH", "IRONY", "JOLLY", "KNOCK",
-    "LEMON", "MERRY", "NORTH", "ORBIT", "PRIDE",
-    "QUARK", "ADORE", "BLOOM", "CRISP", "DEALT",
-    "EVENT", "FLAME", "GRAIN", "HARPY", "INPUT",
-    "JAZZY", "KARMA", "LODGE", "MIRTH", "ONION",
-    "PETTY", "QUICK", "RANCH", "STARK", "TIMID",
-    "UNITY", "WHISK", "ZONAL", "ACORN", "BREAD",
-    "CLIFF", "DWELL", "EXACT", "FLOAT", "GLOVE",
-    "HAPPY", "IDEAL", "JUICE", "KNACK", "LEAFY",
-    "MOTEL", "NAVEL", "OUTER", "PAINT", "QUIRK",
-    "REACT", "SPLIT", "TWIST", "UNITE", "VALUE",
-    "WASTE", "XERIC", "ZONED", "ALIVE", "BRISK",
-    "CRUSH", "DRILL", "EVERY", "FLARE", "GUEST",
-    "HOTEL", "IVORY", "JOKER", "KNELT", "LATCH",
-    "METAL", "NORTH", "OUTDO", "PLUMB", "QUERY",
-    "RHYME", "SPEAR", "TREND", "VAULT", "KOREA",
-    "MONTH", "ROUTE", "READY", "MONEY", "PEARL"
-]
