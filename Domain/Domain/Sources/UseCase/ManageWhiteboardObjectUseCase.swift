@@ -19,7 +19,7 @@ public final class ManageWhiteboardObjectUseCase: ManageWhiteboardObjectUseCaseI
     private let removedWhiteboardSubject: PassthroughSubject<WhiteboardObject, Never>
     private let selectedObjectIDSubject: CurrentValueSubject<UUID?, Never>
     private let whiteboardRepository: WhiteboardRepositoryInterface
-    private let myProfile: Profile
+    private let profileRepository: ProfileRepositoryInterface
     private var whiteboardObjectRepository: WhiteboardObjectRepositoryInterface
     private var whiteboardObjectSet: WhiteboardObjectSetInterface
     private var cancellables: Set<AnyCancellable>
@@ -43,7 +43,7 @@ public final class ManageWhiteboardObjectUseCase: ManageWhiteboardObjectUseCaseI
         self.whiteboardObjectSet = whiteboardObjectSet
         self.whiteboardObjectRepository = whiteboardObjectRepository
         self.whiteboardRepository = whiteboardRepository
-        myProfile = profileRepository.loadProfile()
+        self.profileRepository = profileRepository
         cancellables = []
         self.whiteboardObjectRepository.delegate = self
 
@@ -88,6 +88,7 @@ public final class ManageWhiteboardObjectUseCase: ManageWhiteboardObjectUseCaseI
         removedWhiteboardSubject.send(object)
 
         if !isReceivedObject {
+            let myProfile = profileRepository.loadProfile()
             guard object.selectedBy == myProfile else { return false }
             await whiteboardObjectRepository.send(whiteboardObject: object, isDeleted: true)
         }
@@ -104,6 +105,7 @@ public final class ManageWhiteboardObjectUseCase: ManageWhiteboardObjectUseCaseI
             object.selectedBy == nil
         else { return false }
 
+        let myProfile = profileRepository.loadProfile()
         object.select(by: myProfile)
         await updateObject(whiteboardObject: object, isReceivedObject: false)
         selectedObjectIDSubject.send(whiteboardObjectID)
@@ -112,6 +114,7 @@ public final class ManageWhiteboardObjectUseCase: ManageWhiteboardObjectUseCaseI
 
     @discardableResult
     public func deselect() async -> Bool {
+        let myProfile = profileRepository.loadProfile()
         guard let selectedObjectID = selectedObjectIDSubject.value else { return false }
 
         guard
@@ -130,6 +133,7 @@ public final class ManageWhiteboardObjectUseCase: ManageWhiteboardObjectUseCaseI
         scale: CGFloat,
         angle: CGFloat
     ) async -> Bool {
+        let myProfile = profileRepository.loadProfile()
         guard
             let object = await whiteboardObjectSet.fetchObjectByID(id: whiteboardObjectID),
             object.selectedBy == myProfile
@@ -143,6 +147,7 @@ public final class ManageWhiteboardObjectUseCase: ManageWhiteboardObjectUseCaseI
 
     @discardableResult
     public func changePosition(whiteboardObjectID: UUID, to position: CGPoint) async -> Bool {
+        let myProfile = profileRepository.loadProfile()
         guard
             let object = await whiteboardObjectSet.fetchObjectByID(id: whiteboardObjectID),
             object.selectedBy == myProfile
