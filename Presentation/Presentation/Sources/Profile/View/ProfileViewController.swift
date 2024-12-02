@@ -121,6 +121,12 @@ final class ProfileViewController: UIViewController {
                 self.showSelectProfileIconView()
             }, for: .touchUpInside)
 
+        nicknameTextField.addAction(
+            UIAction { [weak self] _ in
+                guard let self else { return }
+                self.textFieldDidChange(self.nicknameTextField)
+            }, for: .editingChanged)
+
         nicknameTextField.delegate = self
     }
 
@@ -221,26 +227,45 @@ final class ProfileViewController: UIViewController {
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         view.endEditing(true)
     }
+
+    func textFieldDidChange(_ textField: UITextField) {
+        guard let currentText = textField.text else { return }
+        var updatedText = currentText
+
+        if updatedText.count > nicknameMaxCount {
+            updatedText = String(updatedText.prefix(nicknameMaxCount))
+            textField.text = updatedText
+        }
+        viewModel.action(input: .updateProfileNickname(nickname: updatedText))
+    }
 }
 
 // MARK: - UITextFieldDelegate
 extension ProfileViewController: UITextFieldDelegate {
-    public func textField(
+    func textField(
         _ textField: UITextField,
         shouldChangeCharactersIn range: NSRange,
         replacementString string: String
     ) -> Bool {
-        if range.location == 0 && string == " " {
+        let currentText = textField.text ?? ""
+        guard let stringRange = Range(range, in: currentText) else { return false }
+        let updatedText = currentText.replacingCharacters(in: stringRange, with: string)
+
+        let allowedCharacters = CharacterSet.alphanumerics.union(CharacterSet.whitespaces)
+        let characterSet = CharacterSet(charactersIn: string)
+        if !allowedCharacters.isSuperset(of: characterSet) {
             return false
         }
-        let currentText = textField.text ?? ""
-        let updatedText = (currentText as NSString).replacingCharacters(in: range, with: string)
 
-        if updatedText.count <= nicknameMaxCount {
-            viewModel.action(input: .updateProfileNickname(nickname: updatedText))
-            return true
+        let koreanCharacterSet = CharacterSet(charactersIn: "가"..."힣")
+        let containsKorean = updatedText.unicodeScalars.contains { koreanCharacterSet.contains($0) }
+
+        let maxLength = containsKorean ? nicknameMaxCount + 1 : nicknameMaxCount
+        if updatedText.count > maxLength {
+            return false
         }
-        return false
+
+        return true
     }
 
     public func textFieldShouldClear(_ textField: UITextField) -> Bool {
