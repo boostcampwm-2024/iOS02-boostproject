@@ -135,8 +135,9 @@ final class WordleViewModel: ObservableObject {
     }
 
     private func submitWordle() {
-        guard !isGameOver,
-              !wordle[triedWordleCount].contains(where: { $0.alphabet == nil })
+        guard
+            !isGameOver,
+            !wordle[triedWordleCount].contains(where: { $0.alphabet == nil })
         else { return }
         let submitWordle = wordle[triedWordleCount].compactMap { $0.alphabet }
         changeWordleState(submitWordle: submitWordle)
@@ -193,8 +194,9 @@ final class WordleViewModel: ObservableObject {
     private func saveWordleHistory() {
         var wordleHistory: [String] = []
         for word in wordle {
-            guard word.filter({ $0.alphabet != nil }).count == 5,
-                  !word.contains(where: { $0.state == .typing })
+            guard
+                word.filter({ $0.alphabet != nil }).count == 5,
+                !word.contains(where: { $0.state == .typing })
             else {
                 gameRepository.saveWordleHistory(gameID: gameObject.id, wordleHistory: wordleHistory)
                 return

@@ -12,7 +12,7 @@ public protocol NearbyNetworkInterface {
     var reciptDataPublisher: AnyPublisher<Data, Never> { get }
     var reciptURLPublisher: AnyPublisher<(url: URL, dataInfo: DataInformationDTO), Never> { get }
     var connectionDelegate: NearbyNetworkConnectionDelegate? { get set }
-    
+
     /// 주변 기기 검색을 중지합니다.
     func stopSearching()
 

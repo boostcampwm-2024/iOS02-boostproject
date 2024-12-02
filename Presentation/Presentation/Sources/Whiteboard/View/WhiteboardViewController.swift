@@ -52,7 +52,7 @@ public final class WhiteboardViewController: UIViewController {
         super.init(nibName: nil, bundle: nil)
         self.objectViewFactory.whiteboardObjectViewDelegate = self
         self.objectViewFactory.textViewDelegate = self
-        self.objectViewFactory.gameObjectDelegate = self
+        self.objectViewFactory.gameObjectViewDelegate = self
     }
 
     public required init?(coder: NSCoder) {
@@ -346,8 +346,8 @@ extension WhiteboardViewController: UITextViewDelegate {
     }
 }
 
-extension WhiteboardViewController: GameObjectDelegate {
-    public func gameObjectDelegateDidDoubleTap(_ sender: GameObjectView, gameObject: GameObject) {
+extension WhiteboardViewController: GameObjectViewDelegate {
+    public func gameObjectViewDidDoubleTap(_ sender: GameObjectView, gameObject: GameObject) {
         viewModel.action(input: .deselectObject)
         let gameRepository = GameRepository(persistenceService: PersistenceService())
         let wordelViewModel = WordleViewModel(gameRepository: gameRepository, gameObject: gameObject)
