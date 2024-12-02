@@ -13,6 +13,7 @@
 		0080E8CA2CE2FF750095B958 /* WhiteboardObjectViewFactoryable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0080E8C92CE2FF6E0095B958 /* WhiteboardObjectViewFactoryable.swift */; };
 		0080E8D12CE4A00F0095B958 /* WhiteboardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0080E8D02CE4A0060095B958 /* WhiteboardViewModel.swift */; };
 		0080E8D32CE4A0840095B958 /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0080E8D22CE4A0820095B958 /* ViewModel.swift */; };
+		00C2950B2CFDF14700BD6768 /* AirplainTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00C2950A2CFDF14700BD6768 /* AirplainTextField.swift */; };
 		00CCC2672CE60BCD005FA747 /* AirplainFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8525DC72CE201D50089DA5E /* AirplainFont.swift */; };
 		00D2DD982CE8CD300089F0BA /* DrawingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00D2DD972CE8CD300089F0BA /* DrawingView.swift */; };
 		00D2DD9A2CE8DCEA0089F0BA /* DrawingObjectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00D2DD992CE8DCEA0089F0BA /* DrawingObjectView.swift */; };
@@ -25,6 +26,13 @@
 		6F199EF32CE3203A005DC40F /* WhiteboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F199EF22CE3203A005DC40F /* WhiteboardViewController.swift */; };
 		6F1EB9A72CF83538000EECB7 /* HapticManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F1EB9A62CF83538000EECB7 /* HapticManager.swift */; };
 		6F21477D2CE4EFCF00B55E2C /* TextObjectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F21477C2CE4EFCF00B55E2C /* TextObjectView.swift */; };
+		6F25BE442CF5BC44005BCAA2 /* PeerMessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F25BE432CF5BC44005BCAA2 /* PeerMessageCell.swift */; };
+		6F25BE472CF5BF79005BCAA2 /* ChatMessageCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F25BE462CF5BF6F005BCAA2 /* ChatMessageCellModel.swift */; };
+		6FA7DBE92CF4B4E1007333C6 /* ChatTextFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FA7DBE82CF4B4E1007333C6 /* ChatTextFieldView.swift */; };
+		6FA7DBEC2CF56103007333C6 /* ChatViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FA7DBEB2CF56103007333C6 /* ChatViewModel.swift */; };
+		6FA7DBEE2CF56457007333C6 /* MessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FA7DBED2CF56457007333C6 /* MessageCell.swift */; };
+		6FA7DBF02CF5665B007333C6 /* MyMessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FA7DBEF2CF5665B007333C6 /* MyMessageCell.swift */; };
+		6FA7DBF22CF56A3F007333C6 /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FA7DBF12CF56A3F007333C6 /* ChatViewController.swift */; };
 		A81E7ABB2CF5C771007E8414 /* Wordle.swift in Sources */ = {isa = PBXBuildFile; fileRef = A81E7ABA2CF5C771007E8414 /* Wordle.swift */; };
 		A81E7ABD2CF5C7A7007E8414 /* WordleState.swift in Sources */ = {isa = PBXBuildFile; fileRef = A81E7ABC2CF5C7A7007E8414 /* WordleState.swift */; };
 		A81E7ABF2CF5C7FE007E8414 /* KeyboardState.swift in Sources */ = {isa = PBXBuildFile; fileRef = A81E7ABE2CF5C7FE007E8414 /* KeyboardState.swift */; };
@@ -35,13 +43,6 @@
 		A81E7BD62CF6E797007E8414 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A81E7BD52CF6E797007E8414 /* Images.xcassets */; };
 		A81E7BD82CF6E94F007E8414 /* WordleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A81E7BD72CF6E94F007E8414 /* WordleView.swift */; };
 		A81E7BDB2CF6E973007E8414 /* WordleViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A81E7BDA2CF6E973007E8414 /* WordleViewModel.swift */; };
-		6F25BE442CF5BC44005BCAA2 /* PeerMessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F25BE432CF5BC44005BCAA2 /* PeerMessageCell.swift */; };
-		6F25BE472CF5BF79005BCAA2 /* ChatMessageCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F25BE462CF5BF6F005BCAA2 /* ChatMessageCellModel.swift */; };
-		6FA7DBE92CF4B4E1007333C6 /* ChatTextFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FA7DBE82CF4B4E1007333C6 /* ChatTextFieldView.swift */; };
-		6FA7DBEC2CF56103007333C6 /* ChatViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FA7DBEB2CF56103007333C6 /* ChatViewModel.swift */; };
-		6FA7DBEE2CF56457007333C6 /* MessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FA7DBED2CF56457007333C6 /* MessageCell.swift */; };
-		6FA7DBF02CF5665B007333C6 /* MyMessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FA7DBEF2CF5665B007333C6 /* MyMessageCell.swift */; };
-		6FA7DBF22CF56A3F007333C6 /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FA7DBF12CF56A3F007333C6 /* ChatViewController.swift */; };
 		A81E7BF52CF710EC007E8414 /* GameObjectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A81E7BF42CF710EC007E8414 /* GameObjectView.swift */; };
 		A8525DC32CE200230089DA5E /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A8525DC22CE200230089DA5E /* Colors.xcassets */; };
 		A8525DCB2CE203D50089DA5E /* UIView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8525DCA2CE203D50089DA5E /* UIView+.swift */; };
@@ -78,6 +79,7 @@
 		0080E8C92CE2FF6E0095B958 /* WhiteboardObjectViewFactoryable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhiteboardObjectViewFactoryable.swift; sourceTree = "<group>"; };
 		0080E8D02CE4A0060095B958 /* WhiteboardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhiteboardViewModel.swift; sourceTree = "<group>"; };
 		0080E8D22CE4A0820095B958 /* ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModel.swift; sourceTree = "<group>"; };
+		00C2950A2CFDF14700BD6768 /* AirplainTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AirplainTextField.swift; sourceTree = "<group>"; };
 		00D2DD972CE8CD300089F0BA /* DrawingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawingView.swift; sourceTree = "<group>"; };
 		00D2DD992CE8DCEA0089F0BA /* DrawingObjectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawingObjectView.swift; sourceTree = "<group>"; };
 		5B2BC78A2CE4F66F00893B9E /* WhiteboardListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhiteboardListViewController.swift; sourceTree = "<group>"; };
@@ -89,6 +91,13 @@
 		6F199EF22CE3203A005DC40F /* WhiteboardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhiteboardViewController.swift; sourceTree = "<group>"; };
 		6F1EB9A62CF83538000EECB7 /* HapticManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticManager.swift; sourceTree = "<group>"; };
 		6F21477C2CE4EFCF00B55E2C /* TextObjectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextObjectView.swift; sourceTree = "<group>"; };
+		6F25BE432CF5BC44005BCAA2 /* PeerMessageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeerMessageCell.swift; sourceTree = "<group>"; };
+		6F25BE462CF5BF6F005BCAA2 /* ChatMessageCellModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessageCellModel.swift; sourceTree = "<group>"; };
+		6FA7DBE82CF4B4E1007333C6 /* ChatTextFieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatTextFieldView.swift; sourceTree = "<group>"; };
+		6FA7DBEB2CF56103007333C6 /* ChatViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewModel.swift; sourceTree = "<group>"; };
+		6FA7DBED2CF56457007333C6 /* MessageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageCell.swift; sourceTree = "<group>"; };
+		6FA7DBEF2CF5665B007333C6 /* MyMessageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyMessageCell.swift; sourceTree = "<group>"; };
+		6FA7DBF12CF56A3F007333C6 /* ChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
 		A81E7ABA2CF5C771007E8414 /* Wordle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Wordle.swift; sourceTree = "<group>"; };
 		A81E7ABC2CF5C7A7007E8414 /* WordleState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordleState.swift; sourceTree = "<group>"; };
 		A81E7ABE2CF5C7FE007E8414 /* KeyboardState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardState.swift; sourceTree = "<group>"; };
@@ -99,13 +108,6 @@
 		A81E7BD52CF6E797007E8414 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		A81E7BD72CF6E94F007E8414 /* WordleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordleView.swift; sourceTree = "<group>"; };
 		A81E7BDA2CF6E973007E8414 /* WordleViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordleViewModel.swift; sourceTree = "<group>"; };
-		6F25BE432CF5BC44005BCAA2 /* PeerMessageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeerMessageCell.swift; sourceTree = "<group>"; };
-		6F25BE462CF5BF6F005BCAA2 /* ChatMessageCellModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessageCellModel.swift; sourceTree = "<group>"; };
-		6FA7DBE82CF4B4E1007333C6 /* ChatTextFieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatTextFieldView.swift; sourceTree = "<group>"; };
-		6FA7DBEB2CF56103007333C6 /* ChatViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewModel.swift; sourceTree = "<group>"; };
-		6FA7DBED2CF56457007333C6 /* MessageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageCell.swift; sourceTree = "<group>"; };
-		6FA7DBEF2CF5665B007333C6 /* MyMessageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyMessageCell.swift; sourceTree = "<group>"; };
-		6FA7DBF12CF56A3F007333C6 /* ChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
 		A81E7BF42CF710EC007E8414 /* GameObjectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameObjectView.swift; sourceTree = "<group>"; };
 		A8525DC22CE200230089DA5E /* Colors.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Colors.xcassets; sourceTree = "<group>"; };
 		A8525DC72CE201D50089DA5E /* AirplainFont.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AirplainFont.swift; sourceTree = "<group>"; };
@@ -213,6 +215,14 @@
 			path = ViewModel;
 			sourceTree = "<group>";
 		};
+		00C295092CFDF13700BD6768 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				00C2950A2CFDF14700BD6768 /* AirplainTextField.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
 		5B2BC78B2CE4F66F00893B9E /* View */ = {
 			isa = PBXGroup;
 			children = (
@@ -273,6 +283,52 @@
 			path = Manager;
 			sourceTree = "<group>";
 		};
+		6F25BE452CF5BF63005BCAA2 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				6F25BE462CF5BF6F005BCAA2 /* ChatMessageCellModel.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		6FA7DBE52CF4682F007333C6 /* Chat */ = {
+			isa = PBXGroup;
+			children = (
+				6F25BE452CF5BF63005BCAA2 /* Model */,
+				6FA7DBE72CF4B4DA007333C6 /* View */,
+				6FA7DBE62CF4685A007333C6 /* ViewModel */,
+			);
+			path = Chat;
+			sourceTree = "<group>";
+		};
+		6FA7DBE62CF4685A007333C6 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				6FA7DBEB2CF56103007333C6 /* ChatViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		6FA7DBE72CF4B4DA007333C6 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				6FA7DBF12CF56A3F007333C6 /* ChatViewController.swift */,
+				6FA7DBE82CF4B4E1007333C6 /* ChatTextFieldView.swift */,
+				6FA7DBEA2CF560D5007333C6 /* Cell */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		6FA7DBEA2CF560D5007333C6 /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				6FA7DBED2CF56457007333C6 /* MessageCell.swift */,
+				6FA7DBEF2CF5665B007333C6 /* MyMessageCell.swift */,
+				6F25BE432CF5BC44005BCAA2 /* PeerMessageCell.swift */,
+			);
+			path = Cell;
+			sourceTree = "<group>";
+		};
 		A81E7AB42CF5C6D4007E8414 /* Wordle */ = {
 			isa = PBXGroup;
 			children = (
@@ -313,52 +369,6 @@
 			path = ViewModel;
 			sourceTree = "<group>";
 		};
-    6FA7DBE52CF4682F007333C6 /* Chat */ = {
-        isa = PBXGroup;
-        children = (
-            6F25BE452CF5BF63005BCAA2 /* Model */,
-            6FA7DBE72CF4B4DA007333C6 /* View */,
-            6FA7DBE62CF4685A007333C6 /* ViewModel */,
-        );
-        path = Chat;
-        sourceTree = "<group>";
-    };
-    6FA7DBE62CF4685A007333C6 /* ViewModel */ = {
-        isa = PBXGroup;
-        children = (
-            6FA7DBEB2CF56103007333C6 /* ChatViewModel.swift */,
-        );
-        path = ViewModel;
-        sourceTree = "<group>";
-    };
-		6FA7DBE72CF4B4DA007333C6 /* View */ = {
-			isa = PBXGroup;
-			children = (
-				6FA7DBF12CF56A3F007333C6 /* ChatViewController.swift */,
-				6FA7DBE82CF4B4E1007333C6 /* ChatTextFieldView.swift */,
-				6FA7DBEA2CF560D5007333C6 /* Cell */,
-			);
-			path = View;
-			sourceTree = "<group>";
-		};
-		6FA7DBEA2CF560D5007333C6 /* Cell */ = {
-			isa = PBXGroup;
-			children = (
-				6FA7DBED2CF56457007333C6 /* MessageCell.swift */,
-				6FA7DBEF2CF5665B007333C6 /* MyMessageCell.swift */,
-				6F25BE432CF5BC44005BCAA2 /* PeerMessageCell.swift */,
-			);
-			path = Cell;
-			sourceTree = "<group>";
-		};
-    6F25BE452CF5BF63005BCAA2 /* Model */ = {
-        isa = PBXGroup;
-        children = (
-            6F25BE462CF5BF6F005BCAA2 /* ChatMessageCellModel.swift */,
-        );
-        path = Model;
-        sourceTree = "<group>";
-    };
 		A8525DC12CE200110089DA5E /* Resources */ = {
 			isa = PBXGroup;
 			children = (
@@ -371,6 +381,7 @@
 		A8525DC52CE201C00089DA5E /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				00C295092CFDF13700BD6768 /* View */,
 				6F1EB9A52CF8352F000EECB7 /* Manager */,
 				A8525DC92CE202D30089DA5E /* Extension */,
 				A8525DC62CE201CB0089DA5E /* DesignSystem */,
@@ -568,6 +579,7 @@
 				0080E8D32CE4A0840095B958 /* ViewModel.swift in Sources */,
 				5B2BC78E2CE4F66F00893B9E /* WhiteboardListViewController.swift in Sources */,
 				5B2BC78F2CE4F66F00893B9E /* WhiteboardListViewModel.swift in Sources */,
+				00C2950B2CFDF14700BD6768 /* AirplainTextField.swift in Sources */,
 				0080E8CA2CE2FF750095B958 /* WhiteboardObjectViewFactoryable.swift in Sources */,
 				A81E7BD42CF6E76D007E8414 /* WordleGuideView.swift in Sources */,
 				00683D762CE4B828000D28E4 /* DrawingRenderer.swift in Sources */,

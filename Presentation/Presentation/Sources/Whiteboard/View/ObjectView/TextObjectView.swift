@@ -9,23 +9,23 @@ import Domain
 import UIKit
 
 final class TextObjectView: WhiteboardObjectView {
-    private let textView: UITextView = {
-        let textView = UITextView()
-        textView.textAlignment = .center
-        textView.textColor = .airplainBlack
-        textView.isScrollEnabled = false
-        textView.backgroundColor = .clear
-        textView.isUserInteractionEnabled = false
-        return textView
+    private let textField: AirplainTextField = {
+        let textField = AirplainTextField()
+        textField.textAlignment = .center
+        textField.textColor = .airplainBlack
+        textField.backgroundColor = .clear
+        textField.isUserInteractionEnabled = false
+
+        return textField
     }()
 
     init(
         textObject: TextObject,
-        textViewDelegate: UITextViewDelegate?
+        textFieldDelegate: AirplaINTextFieldDelegate?
     ) {
         super.init(whiteboardObject: textObject)
         configureLayout()
-        textView.delegate = textViewDelegate
+        textField.airplainTextFieldDelegate = textFieldDelegate
     }
 
     required init?(coder: NSCoder) {
@@ -34,7 +34,7 @@ final class TextObjectView: WhiteboardObjectView {
     }
 
     override func configureLayout() {
-        textView
+        textField
             .addToSuperview(self)
             .edges(equalTo: self)
         super.configureLayout()
@@ -44,12 +44,12 @@ final class TextObjectView: WhiteboardObjectView {
         super.update(with: object)
         guard let textObject = object as? TextObject else { return }
 
-        textView.text = textObject.text
+        textField.text = textObject.text
     }
 
     override func configureEditable(isEditable: Bool) {
         super.configureEditable(isEditable: isEditable)
-        textView.isUserInteractionEnabled = isEditable
-        textView.resignFirstResponder()
+        textField.isUserInteractionEnabled = isEditable
+        textField.resignFirstResponder()
     }
 }

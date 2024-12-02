@@ -54,7 +54,7 @@ public final class WhiteboardViewController: UIViewController {
         whiteboardObjectViews = [:]
         super.init(nibName: nil, bundle: nil)
         self.objectViewFactory.whiteboardObjectViewDelegate = self
-        self.objectViewFactory.textViewDelegate = self
+        self.objectViewFactory.textFieldDelegate = self
         self.objectViewFactory.gameObjectViewDelegate = self
         self.objectViewFactory.photoObjectViewDelegate = self
     }
@@ -425,27 +425,27 @@ extension WhiteboardViewController: WhiteboardObjectViewDelegate {
     }
 }
 
-extension WhiteboardViewController: UITextViewDelegate {
-    public func textView(
-        _ textView: UITextView,
-        shouldChangeTextIn range: NSRange,
-        replacementText text: String
+extension WhiteboardViewController: AirplaINTextFieldDelegate {
+    public func airplainTextFieldDidChange(_ textField: AirplainTextField) {
+        viewModel.action(input: .editTextObject(text: textField.text ?? ""))
+    }
+
+    public func textField(
+        _ textField: UITextField,
+        shouldChangeCharactersIn range: NSRange,
+        replacementString string: String
     ) -> Bool {
-        guard text != "\n" else {
-            textView.resignFirstResponder()
+        guard string != "\n" else {
+            textField.resignFirstResponder()
             viewModel.action(input: .finishEditingTextObject)
             return false
         }
 
         let maxLength = 20
-        guard let originText = textView.text else { return true }
-        let newlength = originText.count + text.count - range.length
+        guard let originText = textField.text else { return true }
+        let newlength = originText.count + string.count - range.length
 
         return newlength < maxLength
-    }
-
-    public func textViewDidChange(_ textView: UITextView) {
-        viewModel.action(input: .editTextObject(text: textView.text ?? ""))
     }
 }
 
