@@ -97,6 +97,7 @@ public final class WhiteboardListViewController: UIViewController {
 
     public override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        viewModel.action(input: .disconnectWhiteboard)
         viewModel.action(input: .startSearchingWhiteboards)
     }
 

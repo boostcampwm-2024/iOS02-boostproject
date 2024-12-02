@@ -18,6 +18,7 @@ public final class WhiteboardListViewModel: ViewModel {
         case joinWhiteboard(whiteboard: Whiteboard)
         case stopSearchingWhiteboard
         case startSearchingWhiteboards
+        case disconnectWhiteboard
     }
 
     struct Output {
@@ -44,6 +45,8 @@ public final class WhiteboardListViewModel: ViewModel {
             stopSearchingWhiteboard()
         case .startSearchingWhiteboards:
             refreshWhiteboardList()
+        case .disconnectWhiteboard:
+            disconnectWhiteboard()
         }
     }
 
@@ -67,5 +70,9 @@ public final class WhiteboardListViewModel: ViewModel {
 
     private func refreshWhiteboardList() {
         whiteboardUseCase.startSearchingWhiteboards()
+    }
+
+    private func disconnectWhiteboard() {
+        whiteboardUseCase.disconnectWhiteboard()
     }
 }

@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct WordleView: View {
+    @Environment(\.colorScheme) private var colorScheme: ColorScheme
     @Environment(\.dismiss) private var dismiss
     @StateObject var viewModel: WordleViewModel
     @State private var isShowingGuideView: Bool = false
@@ -44,10 +45,14 @@ struct WordleView: View {
                         WordleGuideView(isShowingGuideView: $isShowingGuideView)
                     }
                 }
+                .onAppear {
+                    viewModel.action(input: .loadWordleHistory)
+                }
             }
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
                     Button {
+                        viewModel.action(input: .saveWordleHistory)
                         dismiss()
                     } label: {
                         Image(systemName: "xmark")
@@ -78,8 +83,8 @@ struct WordleView: View {
                     width: WordleViewLayoutConstant.wordleAnswerWidth,
                     height: WordleViewLayoutConstant.wordleAnswerHeight)
 
-            Text(viewModel.gameObjcet.gameAnswer)
-                .foregroundStyle(.white)
+            Text(viewModel.gameObject.gameAnswer)
+                .foregroundStyle(colorScheme == .light ? .white : .black)
                 .font(Font(AirplainFont.Subtitle2))
         }
     }

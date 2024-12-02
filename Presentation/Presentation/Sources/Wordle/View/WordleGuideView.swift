@@ -22,14 +22,14 @@ struct WordleGuideView: View {
                     isShowingGuideView.toggle()
                 } label: {
                     Image(systemName: "xmark")
-                        .foregroundStyle(.black)
+                        .foregroundStyle(.airplainBlack)
                 }
                 .padding(horizontalMargin)
             }
             .padding(horizontalMargin)
             Spacer()
         }
-        .background(Color.airplainBlack.opacity(0.4))
+        .background(Color.airplainBlack.opacity(0.5))
         .ignoresSafeArea()
     }
 }

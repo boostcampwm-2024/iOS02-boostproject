@@ -29,6 +29,7 @@ public final class GameObjectView: WhiteboardObjectView {
         let label = UILabel()
         label.text = "🎮 Wordle"
         label.font = AirplainFont.Subtitle3
+        label.textColor = .black
         return label
     }()
 
@@ -57,11 +58,11 @@ public final class GameObjectView: WhiteboardObjectView {
     private let rankings = ["1st", "2nd", "3rd"]
     private var doubleTapGestureRecognizer: UITapGestureRecognizer?
     private var gameObject: GameObject?
-    weak var gameObjectDelegate: GameObjectDelegate?
+    weak var gameObjectViewDelegate: GameObjectViewDelegate?
 
-    init(gameObject: GameObject, gameObjectDelegate: GameObjectDelegate?) {
+    init(gameObject: GameObject, gameObjectViewDelegate: GameObjectViewDelegate?) {
         self.gameObject = gameObject
-        self.gameObjectDelegate = gameObjectDelegate
+        self.gameObjectViewDelegate = gameObjectViewDelegate
         super.init(whiteboardObject: gameObject)
         configureAttribute()
         configureLayout()
@@ -131,15 +132,8 @@ public final class GameObjectView: WhiteboardObjectView {
 
     @objc private func didDoubleTap() {
         guard let gameObject else { return }
-        gameObjectDelegate?.gameObjectDelegateDidDoubleTap(self, gameObject: gameObject)
+        gameObjectViewDelegate?.gameObjectViewDidDoubleTap(self, gameObject: gameObject)
     }
-}
-
-public protocol GameObjectDelegate: AnyObject {
-    /// 게임 오브젝트 뷰가 더블 탭 되었을 때 호출됩니다.
-    /// - Parameters:
-    ///   - gameObject: 생성된 게임 오브젝트
-    func gameObjectDelegateDidDoubleTap(_ sender: GameObjectView, gameObject: GameObject)
 }
 
 extension GameObjectView {
@@ -149,4 +143,11 @@ extension GameObjectView {
     ) -> Bool {
         return gestureRecognizer != doubleTapGestureRecognizer
     }
+}
+
+public protocol GameObjectViewDelegate: AnyObject {
+    /// 게임 오브젝트 뷰가 더블 탭 되었을 때 호출됩니다.
+    /// - Parameters:
+    ///   - gameObject: 생성된 게임 오브젝트
+    func gameObjectViewDidDoubleTap(_ sender: GameObjectView, gameObject: GameObject)
 }

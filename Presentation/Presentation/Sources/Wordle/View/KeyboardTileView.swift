@@ -36,7 +36,7 @@ struct KeyboardTileView: View {
     private var keyboardTextColor: Color {
         switch wordleKeyboard.keyboardState {
         case .unused, .enter, .erase:
-                .airplainBlack
+                .black
         default:
                 .white
         }
