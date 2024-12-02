@@ -13,8 +13,7 @@ public protocol GameRepositoryInterface {
     func randomGameAnswer() -> String
 
     /// 게임 정답 Set을 저장합니다.
-    /// - Parameter wordleAnswerSet: 게임 정답 Set
-    func saveWordleAnswerSet(wordleAnswerSet: [String])
+    func saveWordleAnswerSet()
 
     /// 입력한 단어가 게임 정답 Set에 포함되어 있는지 여부를 판단합니다.
     /// - Parameter word: 입력한 단어

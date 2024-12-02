@@ -69,6 +69,7 @@ public final class WhiteboardListViewController: UIViewController {
     private let drawObjectUseCase: DrawObjectUseCaseInterface
     private let textObjectUseCase: TextObjectUseCaseInterface
     private let chatUseCase: ChatUseCaseInterface
+    private let gameRepository: GameRepositoryInterface
     private let gameObjectUseCase: GameObjectUseCaseInterface
     private let manageWhiteboardToolUseCase: ManageWhiteboardToolUseCaseInterface
     private let manageWhiteboardObjectUseCase: ManageWhiteboardObjectUseCaseInterface
@@ -83,6 +84,7 @@ public final class WhiteboardListViewController: UIViewController {
         drawObjectUseCase: DrawObjectUseCaseInterface,
         textObjectUseCase: TextObjectUseCaseInterface,
         chatUseCase: ChatUseCaseInterface,
+        gameRepository: GameRepositoryInterface,
         gameObjectUseCase: GameObjectUseCaseInterface,
         manageWhiteboardToolUseCase: ManageWhiteboardToolUseCaseInterface,
         manageWhiteboardObjectUseCase: ManageWhiteboardObjectUseCaseInterface
@@ -96,6 +98,7 @@ public final class WhiteboardListViewController: UIViewController {
         self.drawObjectUseCase = drawObjectUseCase
         self.textObjectUseCase = textObjectUseCase
         self.chatUseCase = chatUseCase
+        self.gameRepository = gameRepository
         self.gameObjectUseCase = gameObjectUseCase
         self.manageWhiteboardToolUseCase = manageWhiteboardToolUseCase
         self.manageWhiteboardObjectUseCase = manageWhiteboardObjectUseCase
@@ -138,6 +141,7 @@ public final class WhiteboardListViewController: UIViewController {
                 let drawObjectUseCase = self?.drawObjectUseCase,
                 let textObjectUseCase = self?.textObjectUseCase,
                 let chatUseCase = self?.chatUseCase,
+                let gameRepository = self?.gameRepository,
                 let gameObjectUseCase = self?.gameObjectUseCase,
                 let manageWhiteboardToolUseCase = self?.manageWhiteboardToolUseCase,
                 let manageWhiteboardObjectUseCase = self?.manageWhiteboardObjectUseCase
@@ -156,7 +160,8 @@ public final class WhiteboardListViewController: UIViewController {
                 viewModel: whiteboardViewModel,
                 objectViewFactory: whiteboardObjectViewFactory,
                 profileRepository: profileRepository,
-                chatUseCase: chatUseCase)
+                chatUseCase: chatUseCase,
+                gameRepository: gameRepository)
             self?.navigationController?.isNavigationBarHidden = false
             self?.navigationController?.pushViewController(whiteboardViewController, animated: true)
         }
@@ -326,7 +331,8 @@ extension WhiteboardListViewController: UICollectionViewDelegate {
             viewModel: whiteboardViewModel,
             objectViewFactory: whiteboardObjectViewFactory,
             profileRepository: profileRepository,
-            chatUseCase: chatUseCase)
+            chatUseCase: chatUseCase,
+            gameRepository: gameRepository)
         self.navigationController?.isNavigationBarHidden = false
         self.navigationController?.pushViewController(whiteboardViewController, animated: true)
     }

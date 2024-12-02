@@ -36,17 +36,20 @@ public final class WhiteboardViewController: UIViewController {
     }
     private let profileRepository: ProfileRepositoryInterface
     private let chatUseCase: ChatUseCaseInterface
+    private let gameRepository: GameRepositoryInterface
 
     public init(
         viewModel: WhiteboardViewModel,
         objectViewFactory: WhiteboardObjectViewFactoryable,
         profileRepository: ProfileRepositoryInterface,
-        chatUseCase: ChatUseCaseInterface
+        chatUseCase: ChatUseCaseInterface,
+        gameRepository: GameRepositoryInterface
     ) {
         self.viewModel = viewModel
         self.objectViewFactory = objectViewFactory
         self.profileRepository = profileRepository
         self.chatUseCase = chatUseCase
+        self.gameRepository = gameRepository
         cancellables = []
         whiteboardObjectViews = [:]
         super.init(nibName: nil, bundle: nil)
@@ -363,7 +366,6 @@ extension WhiteboardViewController: UITextViewDelegate {
 extension WhiteboardViewController: GameObjectViewDelegate {
     public func gameObjectViewDidDoubleTap(_ sender: GameObjectView, gameObject: GameObject) {
         viewModel.action(input: .deselectObject)
-        let gameRepository = GameRepository(persistenceService: PersistenceService())
         let wordelViewModel = WordleViewModel(gameRepository: gameRepository, gameObject: gameObject)
         let wordleView = WordleView(viewModel: wordelViewModel)
         let hostingController = UIHostingController(rootView: NavigationStack { wordleView })
