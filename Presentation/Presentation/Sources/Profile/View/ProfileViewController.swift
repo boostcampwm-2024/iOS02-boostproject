@@ -232,8 +232,8 @@ final class ProfileViewController: UIViewController {
         guard let currentText = textField.text else { return }
         var updatedText = currentText
 
-        if updatedText.count > 15 {
-            updatedText = String(updatedText.prefix(15))
+        if updatedText.count > nicknameMaxCount {
+            updatedText = String(updatedText.prefix(nicknameMaxCount))
             textField.text = updatedText
         }
         viewModel.action(input: .updateProfileNickname(nickname: updatedText))
@@ -260,7 +260,7 @@ extension ProfileViewController: UITextFieldDelegate {
         let koreanCharacterSet = CharacterSet(charactersIn: "가"..."힣")
         let containsKorean = updatedText.unicodeScalars.contains { koreanCharacterSet.contains($0) }
 
-        let maxLength = containsKorean ? 16 : 15
+        let maxLength = containsKorean ? nicknameMaxCount + 1 : nicknameMaxCount
         if updatedText.count > maxLength {
             return false
         }
