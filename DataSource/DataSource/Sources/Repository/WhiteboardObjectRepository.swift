@@ -72,7 +72,10 @@ public final class WhiteboardObjectRepository: WhiteboardObjectRepositoryInterfa
         case _ as DrawingObject:
             type = .drawing
         case let photoObject as PhotoObject:
-            await sendJPEG(photoID: photoObject.id, isDeleted: isDeleted)
+            await sendJPEG(
+                photoID: photoObject.id,
+                isDeleted: isDeleted,
+                to: profile)
             type = .photo
         case _ as GameObject:
             type = .game
@@ -93,11 +96,27 @@ public final class WhiteboardObjectRepository: WhiteboardObjectRepositoryInterfa
             logger.log(level: .error, "url저장 실패: 데이터를 보내지 못했습니다.")
             return
         }
-        await nearbyNetwork.send(fileURL: url, info: objectInformation)
+
+        if let profile {
+            let connection = NetworkConnection(
+                id: profile.id,
+                name: profile.nickname,
+                info: [:])
+            await nearbyNetwork.send(
+                fileURL: url,
+                info: objectInformation,
+                to: connection)
+        } else {
+            await nearbyNetwork.send(fileURL: url, info: objectInformation)
+        }
     }
 
     // TODO: - 사진 데이터를 photo Object와 따로 보내야함! 추후 전송 방식 개선하기
-    private func sendJPEG(photoID: UUID, isDeleted: Bool) async {
+    private func sendJPEG(
+        photoID: UUID,
+        isDeleted: Bool,
+        to profile: Profile?
+    ) async {
         let dataInformation = DataInformationDTO(
             id: photoID,
             type: .imageData,
@@ -105,7 +124,18 @@ public final class WhiteboardObjectRepository: WhiteboardObjectRepositoryInterfa
 
         guard let photoURL = filePersistence.fetchURL(dataInfo: dataInformation) else { return }
 
-        await nearbyNetwork.send(fileURL: photoURL, info: dataInformation)
+        if let profile {
+            let connection = NetworkConnection(
+                id: profile.id,
+                name: profile.nickname,
+                info: [:])
+            await nearbyNetwork.send(
+                fileURL: photoURL,
+                info: dataInformation,
+                to: connection)
+        } else {
+            await nearbyNetwork.send(fileURL: photoURL, info: dataInformation)
+        }
     }
 
     private func bindNearbyNetwork() {

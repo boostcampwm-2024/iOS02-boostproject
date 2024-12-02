@@ -141,6 +141,26 @@ extension NearbyNetworkService: NearbyNetworkInterface {
             }
         }
     }
+
+    public func send(
+        fileURL: URL,
+        info: DataSource.DataInformationDTO,
+        to connection: NetworkConnection
+    ) async {
+        let infoJsonData = try? JSONEncoder().encode(info)
+
+        guard
+            let infoJsonData,
+            let infoJsonString = String(data: infoJsonData, encoding: .utf8),
+            let peer = connectedPeers.first(where: {$0.value == connection})?.key
+        else { return }
+
+        do {
+            try await session.sendResource(at: fileURL, withName: infoJsonString, toPeer: peer)
+        } catch {
+            self.logger.log(level: .error, "\(peer)에게 file 데이터 전송 실패")
+        }
+    }
 }
 
 // MARK: - MCSessionDelegate
