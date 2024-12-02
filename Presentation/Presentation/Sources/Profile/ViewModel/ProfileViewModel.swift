@@ -14,6 +14,7 @@ public final class ProfileViewModel: ViewModel {
         case updateProfileNickname(nickname: String)
         case updateProfileIcon(profileIcon: ProfileIcon)
         case saveProfile
+        case resetProfile
     }
 
     struct Output {
@@ -33,9 +34,14 @@ public final class ProfileViewModel: ViewModel {
 
     func action(input: Input) {
         switch input {
-        case .updateProfileNickname(let nickname): updateProfileNickname(nickname: nickname)
-        case .updateProfileIcon(let profileIcon): updateProfileIcon(profileIcon: profileIcon)
-        case .saveProfile: saveProfile()
+        case .updateProfileNickname(let nickname):
+            updateProfileNickname(nickname: nickname)
+        case .updateProfileIcon(let profileIcon):
+            updateProfileIcon(profileIcon: profileIcon)
+        case .saveProfile:
+            saveProfile()
+        case .resetProfile:
+            resetProfile()
         }
     }
 
@@ -51,5 +57,9 @@ public final class ProfileViewModel: ViewModel {
 
     private func saveProfile() {
         profileUseCase.saveProfile(profile: profileSubject.value)
+    }
+
+    private func resetProfile() {
+        profileSubject.value = profileUseCase.loadProfile()
     }
 }

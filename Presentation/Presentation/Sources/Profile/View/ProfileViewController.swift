@@ -196,7 +196,11 @@ final class ProfileViewController: UIViewController {
     private func updateProfileState(nickname: String) {
         nicknameCountLabel.text = "\(nickname.count)/\(nicknameMaxCount)"
         nicknameTextField.text = nickname
-        if !nickname.isEmpty {
+        let trimmedNickname = nickname.trimmingCharacters(in: .whitespacesAndNewlines)
+
+        if !nickname.isEmpty,
+           !trimmedNickname.isEmpty
+        {
             completeButton.isEnabled = true
             completeButton.tintColor = .airplainBlue
         } else {
@@ -216,10 +220,18 @@ final class ProfileViewController: UIViewController {
     }
 
     @objc private func dismissView() {
+        viewModel.action(input: .resetProfile)
         dismiss(animated: true)
     }
 
     @objc private func saveProfile() {
+        guard
+            let completedNickname = nicknameTextField
+                .text?
+                .trimmingCharacters(in: .whitespacesAndNewlines)
+        else { return }
+
+        viewModel.action(input: .updateProfileNickname(nickname: completedNickname))
         viewModel.action(input: .saveProfile)
         dismiss(animated: true)
     }
