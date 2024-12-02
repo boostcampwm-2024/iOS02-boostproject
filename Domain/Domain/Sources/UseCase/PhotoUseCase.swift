@@ -20,8 +20,6 @@ public final class PhotoUseCase: PhotoUseCaseInterface {
         size: CGSize
     ) -> PhotoObject? {
         let id = UUID()
-        let photoURL = photoRepository.savePhoto(id: id, imageData: imageData)
-        guard let photoURL else { return nil }
 
         var size = size
         let scaleFactor = size.width >= size.height ? 200 / size.width : 200 / size.height
@@ -31,8 +29,7 @@ public final class PhotoUseCase: PhotoUseCaseInterface {
         let photoObject = PhotoObject(
             id: id,
             centerPosition: centerPosition,
-            size: size,
-            photoURL: photoURL)
+            size: size)
 
         return photoObject
     }
