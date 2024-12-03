@@ -81,11 +81,11 @@ final class WhiteboardToolBar: UIView {
     }
 
     func configureDeleteImage(isDeleteZoneEnable: Bool) {
-        let deleteImage = isDeleteZoneEnable ?
-        UIImage(systemName: WhiteboardToolBarLayoutConstant.deletionEnabledImage) :
-        UIImage(systemName: WhiteboardToolBarLayoutConstant.deletionDisabledImage)
+        let imageName = isDeleteZoneEnable
+        ? WhiteboardToolBarLayoutConstant.deletionEnabledImage
+        : WhiteboardToolBarLayoutConstant.deletionDisabledImage
 
-        deletionImage.image = deleteImage
+        deletionImage.image = UIImage(systemName: imageName)
     }
 
     private func configureAttribute() {

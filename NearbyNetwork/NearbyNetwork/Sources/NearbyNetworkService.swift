@@ -211,7 +211,7 @@ extension NearbyNetworkService: MCSessionDelegate {
         didReceive data: Data,
         fromPeer peerID: MCPeerID
     ) {
-        guard let connection = connectedPeers[peerID] else {
+        guard connectedPeers[peerID] != nil else {
             logger.log(level: .error, "\(peerID.displayName)와 연결되어 있지 않음")
             return
         }

@@ -158,8 +158,7 @@ public final class WhiteboardViewModel: ViewModel {
     }
 
     private func finishUsingTool() {
-        let currentTool = manageWhiteboardToolUseCase.currentTool()
-        guard let currentTool else { return }
+        guard manageWhiteboardToolUseCase.currentTool() != nil else { return }
 
         manageWhiteboardToolUseCase.finishUsingTool()
     }

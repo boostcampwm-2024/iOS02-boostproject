@@ -63,11 +63,6 @@ public final class WhiteboardViewController: UIViewController {
         fatalError("WhiteboardViewController 초기화 오류")
     }
 
-    deinit {
-        viewModel.action(input: .removeAll)
-        configureTearDownObserver()
-    }
-
     public override func viewDidLoad() {
         super.viewDidLoad()
         configureLayout()
@@ -85,6 +80,8 @@ public final class WhiteboardViewController: UIViewController {
     public override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         navigationController?.isNavigationBarHidden = true
+        viewModel.action(input: .removeAll)
+        configureTearDownObserver()
     }
 
     private func configureAttribute() {
