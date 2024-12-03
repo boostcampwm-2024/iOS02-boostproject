@@ -12,12 +12,14 @@ import Foundation
 public final class WhiteboardRepository: WhiteboardRepositoryInterface {
     public weak var delegate: WhiteboardRepositoryDelegate?
     public let recentPeerPublisher: AnyPublisher<Profile, Never>
+    public let connectionResultPublisher: AnyPublisher<Bool, Never>
     private var nearbyNetwork: NearbyNetworkInterface
     private var connections: [UUID: NetworkConnection]
     private var participantsInfo: [String: String]
     private let decoder = JSONDecoder()
     private var myProfile: Profile
     private var recentPeerSubject = PassthroughSubject<Profile, Never>()
+    private var connectionResultSubject = PassthroughSubject<Bool, Never>()
 
     public init(nearbyNetworkInterface: NearbyNetworkInterface, myProfile: Profile) {
         self.nearbyNetwork = nearbyNetworkInterface
@@ -25,6 +27,7 @@ public final class WhiteboardRepository: WhiteboardRepositoryInterface {
         self.connections = [:]
         self.myProfile = myProfile
         self.recentPeerPublisher = recentPeerSubject.eraseToAnyPublisher()
+        self.connectionResultPublisher = connectionResultSubject.eraseToAnyPublisher()
         self.nearbyNetwork.connectionDelegate = self
     }
 
@@ -139,6 +142,7 @@ extension WhiteboardRepository: NearbyNetworkConnectionDelegate {
         with context: Data?,
         isHost: Bool
     ) {
+        connectionResultSubject.send(true)
         do {
             guard
                 isHost,
