@@ -353,6 +353,7 @@ public final class WhiteboardListViewController: UIViewController {
                     self?.moveToWhiteboard()
                 } else {
                     self?.showFailAlert()
+                    self?.viewModel.action(input: .disconnectWhiteboard)
                 }
             }
             .store(in: &cancellables)
