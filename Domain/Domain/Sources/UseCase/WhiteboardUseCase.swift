@@ -13,7 +13,7 @@ public final class WhiteboardUseCase: WhiteboardUseCaseInterface {
     private var profileRepository: ProfileRepositoryInterface
     private let whiteboardListSubject: CurrentValueSubject<[Whiteboard], Never>
     public let whiteboardListPublisher: AnyPublisher<[Whiteboard], Never>
-    public let whiteboardConnectionSubject: PassthroughSubject<Bool, Never>
+    private let whiteboardConnectionSubject: PassthroughSubject<Bool, Never>
     public let whiteboardConnectionPublisher: AnyPublisher<Bool, Never>
     private var cancellables: Set<AnyCancellable>
 
