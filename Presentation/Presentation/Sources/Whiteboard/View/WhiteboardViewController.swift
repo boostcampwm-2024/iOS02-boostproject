@@ -64,6 +64,7 @@ public final class WhiteboardViewController: UIViewController {
     }
 
     deinit {
+        viewModel.action(input: .removeAll)
         configureTearDownObserver()
     }
 
@@ -274,6 +275,7 @@ public final class WhiteboardViewController: UIViewController {
         let objectViewPanGeture: UIPanGestureRecognizer
         objectViewPanGeture = UIPanGestureRecognizer(target: self, action: #selector(handleMoveObjectView))
         objectView.addGestureRecognizer(objectViewPanGeture)
+        objectViewPanGeture.isEnabled = false
 
         canvasView.addSubview(objectView)
     }

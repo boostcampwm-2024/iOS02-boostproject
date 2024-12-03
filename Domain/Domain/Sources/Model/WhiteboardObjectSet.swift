@@ -26,6 +26,10 @@ public actor WhiteboardObjectSet: WhiteboardObjectSetInterface {
         whiteboardObjects.remove(object)
     }
 
+    public func removeAll() async {
+        whiteboardObjects.removeAll()
+    }
+
     public func update(object: WhiteboardObject) {
         remove(object: object)
         insert(object: object)

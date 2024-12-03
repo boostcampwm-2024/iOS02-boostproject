@@ -30,6 +30,7 @@ public final class WhiteboardViewModel: ViewModel {
         case checkIsDeletion(point: CGPoint, deletionZone: CGRect)
         case dragObject(point: CGPoint)
         case changeObjectPosition(point: CGPoint)
+        case removeAll
     }
 
     struct Output {
@@ -146,6 +147,8 @@ public final class WhiteboardViewModel: ViewModel {
             checkIsDeletionZoneEnable(with: point, deletionZone: deletionZone)
         case .dragObject(let point):
             dragObject(to: point)
+        case .removeAll:
+            removeAllWhiteboardObjects()
         }
     }
 
@@ -301,5 +304,9 @@ public final class WhiteboardViewModel: ViewModel {
                 self?.output.chatMessages.append(chatMessage)
             }
             .store(in: &cancellables)
+    }
+
+    private func removeAllWhiteboardObjects() {
+        manageWhiteboardObjectUseCase.removeAllWhiteboardObjects()
     }
 }

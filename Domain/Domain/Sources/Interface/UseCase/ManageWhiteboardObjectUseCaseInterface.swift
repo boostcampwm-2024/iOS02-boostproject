@@ -75,4 +75,7 @@ public protocol ManageWhiteboardObjectUseCaseInterface {
         whiteboardObjectID: UUID,
         scale: CGFloat,
         angle: CGFloat) async -> Bool
+
+    /// 화이트보드 오브젝트들을 모두 삭제합니다.
+    func removeAllWhiteboardObjects()
 }
