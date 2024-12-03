@@ -19,7 +19,4 @@
    <FileRef
       location = "group:Persistence/Persistence.xcodeproj">
    </FileRef>
-   <FileRef
-      location = "group:AirplaINFoundation/AirplaINFoundation.xcodeproj">
-   </FileRef>
 </Workspace>

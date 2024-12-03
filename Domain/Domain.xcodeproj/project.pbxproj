@@ -30,8 +30,6 @@
 		00D2DD932CE88EC70089F0BA /* ManageWhiteboardToolUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00D2DD922CE88EC70089F0BA /* ManageWhiteboardToolUseCaseTests.swift */; };
 		00D2DD952CE88EDA0089F0BA /* ManageWhiteboardObjectsUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00D2DD942CE88EDA0089F0BA /* ManageWhiteboardObjectsUseCaseTests.swift */; };
 		5B6542482CE44631000168AD /* WhiteboardUseCaseInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B6542472CE44631000168AD /* WhiteboardUseCaseInterface.swift */; };
-		5B7C6EB02CDB6C040024704A /* AirplaINFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B7C6EAF2CDB6C040024704A /* AirplaINFoundation.framework */; };
-		5B7C6EB12CDB6C040024704A /* AirplaINFoundation.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 5B7C6EAF2CDB6C040024704A /* AirplaINFoundation.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		5BDFD9342CE1F7DB00DA4F5B /* Whiteboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BDFD9332CE1F7DB00DA4F5B /* Whiteboard.swift */; };
 		5BDFD9372CE2E6BC00DA4F5B /* WhiteboardRepositoryInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BDFD9362CE2E6BC00DA4F5B /* WhiteboardRepositoryInterface.swift */; };
 		5BDFD93A2CE2EE3100DA4F5B /* WhiteboardUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BDFD9392CE2EE3100DA4F5B /* WhiteboardUseCase.swift */; };
@@ -64,20 +62,6 @@
 			remoteInfo = Domain;
 		};
 /* End PBXContainerItemProxy section */
-
-/* Begin PBXCopyFilesBuildPhase section */
-		5B7C6EB22CDB6C040024704A /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				5B7C6EB12CDB6C040024704A /* AirplaINFoundation.framework in Embed Frameworks */,
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		00036B812CF56414007D1244 /* PhotoRepositoryInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoRepositoryInterface.swift; sourceTree = "<group>"; };
@@ -141,7 +125,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5B7C6EB02CDB6C040024704A /* AirplaINFoundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -337,7 +320,6 @@
 				5B7C6E222CDB6A010024704A /* Sources */,
 				5B7C6E232CDB6A010024704A /* Frameworks */,
 				5B7C6E242CDB6A010024704A /* Resources */,
-				5B7C6EB22CDB6C040024704A /* Embed Frameworks */,
 				00677BE82CDB7D420054EF30 /* ShellScript */,
 			);
 			buildRules = (
