@@ -329,8 +329,7 @@ public final class WhiteboardListViewController: UIViewController {
         let alertController = UIAlertController(
             title: "연결에 실패했습니다",
             message: "화이트보드에 연결할 수 없습니다. 다시 시도해주세요.",
-            preferredStyle: .alert
-        )
+            preferredStyle: .alert)
         let okAction = UIAlertAction(title: "확인", style: .default, handler: nil)
         alertController.addAction(okAction)
         self.present(alertController, animated: true, completion: nil)
