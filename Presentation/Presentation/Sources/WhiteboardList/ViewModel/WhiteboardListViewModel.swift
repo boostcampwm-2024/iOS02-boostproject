@@ -23,16 +23,22 @@ public final class WhiteboardListViewModel: ViewModel {
 
     struct Output {
         let whiteboardListPublisher: AnyPublisher<[Whiteboard], Never>
+        let connectionStatusPublisher: AnyPublisher<Bool, Never>
     }
 
     let output: Output
     private let whiteboardSubject: PassthroughSubject<Whiteboard, Never>
+    private let connectionStatusSubject: PassthroughSubject<Bool, Never>
 
     public init(whiteboardUseCase: WhiteboardUseCaseInterface) {
         self.whiteboardUseCase = whiteboardUseCase
         whiteboardSubject = PassthroughSubject<Whiteboard, Never>()
+        connectionStatusSubject = PassthroughSubject<Bool, Never>()
         self.output = Output(
-            whiteboardListPublisher: whiteboardUseCase.whiteboardListPublisher)
+            whiteboardListPublisher: whiteboardUseCase.whiteboardListPublisher,
+            connectionStatusPublisher: connectionStatusSubject.eraseToAnyPublisher()
+        )
+        bindWhiteboardConnectionResult()
     }
 
     func action(input: Input) {
@@ -75,4 +81,13 @@ public final class WhiteboardListViewModel: ViewModel {
     private func disconnectWhiteboard() {
         whiteboardUseCase.disconnectWhiteboard()
     }
+
+    private func bindWhiteboardConnectionResult() {
+        whiteboardUseCase.whiteboardConnectionPublisher
+            .sink { [weak self] isConnected in
+                self?.connectionStatusSubject.send(isConnected)
+            }
+            .store(in: &cancellables)
+    }
+
 }

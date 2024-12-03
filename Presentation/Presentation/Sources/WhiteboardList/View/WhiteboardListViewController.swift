@@ -55,6 +55,12 @@ public final class WhiteboardListViewController: UIViewController {
         return label
     }()
 
+    private var loadingIndicator: UIActivityIndicatorView = {
+        let indicator = UIActivityIndicatorView(style: .large)
+        indicator.hidesWhenStopped = true
+        return indicator
+    }()
+
     private let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
     private let refreshControl = UIRefreshControl()
     private var dataSource: UICollectionViewDiffableDataSource<Int, Whiteboard>?
@@ -217,6 +223,10 @@ public final class WhiteboardListViewController: UIViewController {
         emptyListLabel
             .addToSuperview(view)
             .center(in: view)
+
+        loadingIndicator
+            .addToSuperview(view)
+            .center(in: view)
     }
 
     private func configureCollectionView() {
@@ -295,29 +305,7 @@ public final class WhiteboardListViewController: UIViewController {
         dataSource.apply(snapshot, animatingDifferences: true)
     }
 
-    private func bind() {
-        viewModel.output.whiteboardListPublisher
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] whiteboards in
-                self?.emptyListLabel.isHidden = !whiteboards.isEmpty
-                self?.applySnapshot(whiteboards: whiteboards)
-            }
-            .store(in: &cancellables)
-    }
-
-    private func refreshWhiteboardList() {
-        viewModel.action(input: .startSearchingWhiteboards)
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
-            self?.refreshControl.endRefreshing()
-        }
-    }
-}
-
-// MARK: - UICollectionViewDelegate
-extension WhiteboardListViewController: UICollectionViewDelegate {
-    public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        guard let selectedWhiteboard = dataSource?.itemIdentifier(for: indexPath) else { return }
-        viewModel.action(input: .joinWhiteboard(whiteboard: selectedWhiteboard))
+    private func move() {
         let whiteboardViewModel = WhiteboardViewModel(
             whiteboardUseCase: whiteboardUseCase,
             photoUseCase: photoUseCase,
@@ -335,5 +323,64 @@ extension WhiteboardListViewController: UICollectionViewDelegate {
             gameRepository: gameRepository)
         self.navigationController?.isNavigationBarHidden = false
         self.navigationController?.pushViewController(whiteboardViewController, animated: true)
+    }
+
+    private func showFailAlert() {
+        let alertController = UIAlertController(
+            title: "연결에 실패했습니다",
+            message: "화이트보드에 연결할 수 없습니다. 다시 시도해주세요.",
+            preferredStyle: .alert
+        )
+        let okAction = UIAlertAction(title: "확인", style: .default, handler: nil)
+        alertController.addAction(okAction)
+        self.present(alertController, animated: true, completion: nil)
+    }
+
+    private func bind() {
+        viewModel.output.whiteboardListPublisher
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] whiteboards in
+                self?.emptyListLabel.isHidden = !whiteboards.isEmpty
+                self?.applySnapshot(whiteboards: whiteboards)
+            }
+            .store(in: &cancellables)
+
+        viewModel.output.connectionStatusPublisher
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] isConnected in
+                self?.stopLoading()
+                if isConnected {
+                    self?.move()
+                } else {
+                    self?.showFailAlert()
+                }
+            }
+            .store(in: &cancellables)
+    }
+
+    private func refreshWhiteboardList() {
+        viewModel.action(input: .startSearchingWhiteboards)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
+            self?.refreshControl.endRefreshing()
+        }
+    }
+
+    private func startLoading() {
+        loadingIndicator.startAnimating()
+        view.isUserInteractionEnabled = false
+    }
+
+    private func stopLoading() {
+        loadingIndicator.stopAnimating()
+        view.isUserInteractionEnabled = true
+    }
+}
+
+// MARK: - UICollectionViewDelegate
+extension WhiteboardListViewController: UICollectionViewDelegate {
+    public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        guard let selectedWhiteboard = dataSource?.itemIdentifier(for: indexPath) else { return }
+        viewModel.action(input: .joinWhiteboard(whiteboard: selectedWhiteboard))
+        startLoading()
     }
 }
