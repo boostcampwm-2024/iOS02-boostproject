@@ -453,12 +453,16 @@ final class MockWhiteObjectRepository: WhiteboardObjectRepositoryInterface {
 }
 
 final class MockWhiteboardRepository: WhiteboardRepositoryInterface {
+    
     var delegate: (any WhiteboardRepositoryDelegate)?
     var recentPeerPublisher: AnyPublisher<Domain.Profile, Never>
+    var connectionResultPublisher: AnyPublisher<Bool, Never>
     private var recentPeerSubject = PassthroughSubject<Domain.Profile, Never>()
+    private var connectionResultSubjuect = PassthroughSubject<Bool, Never>()
 
     init() {
         recentPeerPublisher = recentPeerSubject.eraseToAnyPublisher()
+        connectionResultPublisher = connectionResultSubjuect.eraseToAnyPublisher()
     }
 
     func startPublishing(myProfile: Profile) {}

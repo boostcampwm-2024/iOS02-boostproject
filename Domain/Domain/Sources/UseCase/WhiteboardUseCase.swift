@@ -13,6 +13,9 @@ public final class WhiteboardUseCase: WhiteboardUseCaseInterface {
     private var profileRepository: ProfileRepositoryInterface
     private let whiteboardListSubject: CurrentValueSubject<[Whiteboard], Never>
     public let whiteboardListPublisher: AnyPublisher<[Whiteboard], Never>
+    private let whiteboardConnectionSubject: PassthroughSubject<Bool, Never>
+    public let whiteboardConnectionPublisher: AnyPublisher<Bool, Never>
+    private var cancellables: Set<AnyCancellable>
 
     public init(
         whiteboardRepository: WhiteboardRepositoryInterface,
@@ -22,6 +25,9 @@ public final class WhiteboardUseCase: WhiteboardUseCaseInterface {
         self.profileRepository = profileRepository
         whiteboardListSubject = CurrentValueSubject<[Whiteboard], Never>([])
         whiteboardListPublisher = whiteboardListSubject.eraseToAnyPublisher()
+        whiteboardConnectionSubject = PassthroughSubject<Bool, Never>()
+        whiteboardConnectionPublisher = whiteboardConnectionSubject.eraseToAnyPublisher()
+        cancellables = []
         self.whiteboardRepository.delegate = self
     }
 
@@ -48,11 +54,27 @@ public final class WhiteboardUseCase: WhiteboardUseCaseInterface {
 
     public func joinWhiteboard(whiteboard: Whiteboard) throws {
         let profile = profileRepository.loadProfile()
+        bindConnectionResult()
         try whiteboardRepository.joinWhiteboard(whiteboard: whiteboard, myProfile: profile)
     }
 
     public func startSearchingWhiteboards() {
         whiteboardRepository.startSearching()
+    }
+
+    private func bindConnectionResult() {
+        whiteboardRepository.connectionResultPublisher
+            .timeout(.seconds(3), scheduler: DispatchQueue.main)
+            .first()
+            .replaceEmpty(with: false)
+            .sink { [weak self] isConnected in
+                if isConnected {
+                    self?.whiteboardConnectionSubject.send(true)
+                } else {
+                    self?.whiteboardConnectionSubject.send(false)
+                }
+            }
+            .store(in: &cancellables)
     }
 }
 

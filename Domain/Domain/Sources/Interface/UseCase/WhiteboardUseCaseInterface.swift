@@ -9,6 +9,7 @@ import Combine
 
 public protocol WhiteboardUseCaseInterface {
     var whiteboardListPublisher: AnyPublisher<[Whiteboard], Never> { get }
+    var whiteboardConnectionPublisher: AnyPublisher<Bool, Never> { get }
 
     /// 화이트보드를 생성합니다.
     func createWhiteboard() -> Whiteboard
