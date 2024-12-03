@@ -305,7 +305,7 @@ public final class WhiteboardListViewController: UIViewController {
         dataSource.apply(snapshot, animatingDifferences: true)
     }
 
-    private func move() {
+    private func moveToWhiteboard() {
         let whiteboardViewModel = WhiteboardViewModel(
             whiteboardUseCase: whiteboardUseCase,
             photoUseCase: photoUseCase,
@@ -350,7 +350,7 @@ public final class WhiteboardListViewController: UIViewController {
             .sink { [weak self] isConnected in
                 self?.stopLoading()
                 if isConnected {
-                    self?.move()
+                    self?.moveToWhiteboard()
                 } else {
                     self?.showFailAlert()
                 }
