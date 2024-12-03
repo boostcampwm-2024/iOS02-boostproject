@@ -22,6 +22,9 @@ public protocol WhiteboardObjectSetInterface {
     /// - Parameter object: 삭제할 오브젝트
     func remove(object: WhiteboardObject) async
 
+    /// 모든 화이트보드 오브젝트들을 삭제합니다.
+    func removeAll() async
+
     /// 집합에 있는 오브젝트를 업데이트 합니다.
     /// - Parameter object: 업데이트할 오브젝트
     func update(object: WhiteboardObject) async

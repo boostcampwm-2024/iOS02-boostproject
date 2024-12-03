@@ -22,7 +22,7 @@ public final class TextObjectUseCase: TextObjectUseCaseInterface {
             id: UUID(),
             centerPosition: point,
             size: textFieldDefaultSize,
-            text: "Hello, AirplaIN!")
+            text: "")
     }
 
     public func editText(id: UUID, text: String) async {

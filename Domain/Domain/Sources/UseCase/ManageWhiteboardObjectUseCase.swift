@@ -180,6 +180,12 @@ public final class ManageWhiteboardObjectUseCase: ManageWhiteboardObjectUseCaseI
             }
         }
     }
+
+    public func removeAllWhiteboardObjects() {
+        Task {
+            await whiteboardObjectSet.removeAll()
+        }
+    }
 }
 
 extension ManageWhiteboardObjectUseCase: WhiteboardObjectRepositoryDelegate {

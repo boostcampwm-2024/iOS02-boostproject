@@ -54,7 +54,7 @@ public final class WhiteboardViewController: UIViewController {
         whiteboardObjectViews = [:]
         super.init(nibName: nil, bundle: nil)
         self.objectViewFactory.whiteboardObjectViewDelegate = self
-        self.objectViewFactory.textViewDelegate = self
+        self.objectViewFactory.textFieldDelegate = self
         self.objectViewFactory.gameObjectViewDelegate = self
         self.objectViewFactory.photoObjectViewDelegate = self
     }
@@ -68,6 +68,7 @@ public final class WhiteboardViewController: UIViewController {
         configureLayout()
         configureAttribute()
         configureScrollView()
+        configureSetUpObserver()
         bind()
     }
 
@@ -79,6 +80,8 @@ public final class WhiteboardViewController: UIViewController {
     public override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         navigationController?.isNavigationBarHidden = true
+        viewModel.action(input: .removeAll)
+        configureTearDownObserver()
     }
 
     private func configureAttribute() {
@@ -203,6 +206,26 @@ public final class WhiteboardViewController: UIViewController {
                 photoObjectView.configureImage(imageData: imageData)
             }
             .store(in: &cancellables)
+
+        viewModel.output.objectPositionPublisher
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] newPoint in
+                guard let selectedObjectView = self?.selectedObjectView else { return }
+
+                selectedObjectView.center = newPoint
+            }
+            .store(in: &cancellables)
+
+        viewModel.output.isDeletionZoneEnable
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] isDeleteZoneEnable in
+                if isDeleteZoneEnable {
+                    HapticManager.hapticImpact(style: .heavy)
+                }
+
+                self?.toolbar.configureDeleteImage(isDeleteZoneEnable: isDeleteZoneEnable)
+            }
+            .store(in: &cancellables)
     }
 
     private func configureDrawingView(isDrawing: Bool) {
@@ -221,7 +244,36 @@ public final class WhiteboardViewController: UIViewController {
         scrollView.addGestureRecognizer(scrollViewTapGestureRecognizer)
     }
 
+    private func configureSetUpObserver() {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(keyBoardWillAppear),
+            name: UIResponder.keyboardWillShowNotification,
+            object: nil)
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(keyBoardWillDisappear),
+            name: UIResponder.keyboardWillHideNotification,
+            object: nil)
+    }
+
+    private func configureTearDownObserver() {
+        NotificationCenter.default.removeObserver(
+            self,
+            name: UIResponder.keyboardWillShowNotification,
+            object: nil)
+        NotificationCenter.default.removeObserver(
+            self,
+            name: UIResponder.keyboardWillHideNotification,
+            object: nil)
+    }
+
     private func addObjectView(objectView: WhiteboardObjectView) {
+        let objectViewPanGeture: UIPanGestureRecognizer
+        objectViewPanGeture = UIPanGestureRecognizer(target: self, action: #selector(handleMoveObjectView))
+        objectView.addGestureRecognizer(objectViewPanGeture)
+        objectViewPanGeture.isEnabled = false
+
         canvasView.addSubview(objectView)
     }
 
@@ -253,6 +305,31 @@ public final class WhiteboardViewController: UIViewController {
         }
     }
 
+    @objc private func handleMoveObjectView(gesture: UIPanGestureRecognizer) {
+        guard let selectedObjectView else { return }
+
+        let location = gesture.location(in: view)
+        let translation = gesture.translation(in: view)
+        let newCenter = CGPoint(
+            x: selectedObjectView.center.x + translation.x,
+            y: selectedObjectView.center.y + translation.y
+        )
+
+        switch gesture.state {
+        case .possible, .began:
+            break
+        case .changed:
+            viewModel.action(input: .checkIsDeletion(point: location, deletionZone: toolbar.deleteZone))
+            viewModel.action(input: .dragObject(point: newCenter))
+        default:
+            HapticManager.hapticImpact(style: .medium)
+            viewModel.action(input: .checkIsDeletion(point: location, deletionZone: toolbar.deleteZone))
+            viewModel.action(input: .changeObjectPosition(point: newCenter))
+        }
+
+        gesture.setTranslation(.zero, in: view)
+    }
+
     private func presentChatViewController() {
         let chatViewModel = ChatViewModel(
             chatUseCase: chatUseCase,
@@ -261,10 +338,28 @@ public final class WhiteboardViewController: UIViewController {
         let chatViewController = ChatViewController(viewModel: chatViewModel)
         self.present(chatViewController, animated: true)
     }
+
+    @objc private func keyBoardWillAppear(_ sender: Notification) {
+        guard
+            let keyBoardFrame = sender.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue,
+            let selectedObjectView
+        else { return }
+
+        let keyboardHeight = keyBoardFrame.cgRectValue.height
+        let selectedObjectViewFrame = selectedObjectView.convert(selectedObjectView.bounds, to: view)
+
+        if selectedObjectViewFrame.midY > view.bounds.midY {
+            canvasView.transform = CGAffineTransform(translationX: 0, y: -keyboardHeight)
+        }
+    }
+
+    @objc private func keyBoardWillDisappear(_ sender: Notification) {
+        canvasView.transform = .identity
+    }
 }
 
 // MARK: - WhiteboardToolBarDelegate
-extension WhiteboardViewController: WhiteboardToolBarDelegate {
+extension WhiteboardViewController: WhiteboardToolBarDelegate {    
     func whiteboardToolBar(_ sender: WhiteboardToolBar, selectedTool: WhiteboardTool) {
         guard selectedTool != .chat else {
             self.presentChatViewController()
@@ -279,10 +374,6 @@ extension WhiteboardViewController: WhiteboardToolBarDelegate {
             viewModel.action(input: .addGameObject(point: visibleCenterPoint))
             viewModel.action(input: .finishUsingTool)
         }
-    }
-
-    func whiteboardToolBarDidTapDeleteButton(_ sender: WhiteboardToolBar) {
-        viewModel.action(input: .deleteObject)
     }
 }
 
@@ -332,34 +423,32 @@ extension WhiteboardViewController: WhiteboardObjectViewDelegate {
         scale: CGFloat,
         angle: CGFloat
     ) {
+        HapticManager.hapticImpact(style: .medium)
         viewModel.action(input: .changeObjectScaleAndAngle(scale: scale, angle: angle))
-    }
-
-    public func whiteboardObjectViewDidEndMoving(_ sender: WhiteboardObjectView, newCenter: CGPoint) {
-        viewModel.action(input: .changeObjectPosition(point: newCenter))
     }
 }
 
-extension WhiteboardViewController: UITextViewDelegate {
-    public func textView(
-        _ textView: UITextView,
-        shouldChangeTextIn range: NSRange,
-        replacementText text: String
+extension WhiteboardViewController: AirplaINTextFieldDelegate {
+    public func airplainTextFieldDidChange(_ textField: AirplainTextField) {
+        viewModel.action(input: .editTextObject(text: textField.text ?? ""))
+    }
+
+    public func textField(
+        _ textField: UITextField,
+        shouldChangeCharactersIn range: NSRange,
+        replacementString string: String
     ) -> Bool {
-        guard text != "\n" else {
-            textView.resignFirstResponder()
-            viewModel.action(input: .editTextObject(text: textView.text ?? ""))
+        guard string != "\n" else {
+            textField.resignFirstResponder()
+            viewModel.action(input: .finishEditingTextObject)
             return false
         }
 
         let maxLength = 20
-        guard let originText = textView.text else { return true }
-        let newlength = originText.count + text.count - range.length
-        return newlength < maxLength
-    }
+        guard let originText = textField.text else { return true }
+        let newlength = originText.count + string.count - range.length
 
-    public func textViewDidEndEditing(_ textView: UITextView) {
-        viewModel.action(input: .editTextObject(text: textView.text ?? ""))
+        return newlength < maxLength
     }
 }
 

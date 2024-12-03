@@ -142,8 +142,7 @@ extension WhiteboardRepository: NearbyNetworkConnectionDelegate {
         do {
             guard
                 isHost,
-                let context = context,
-                let prevInfo = self.participantsInfo["participants"]
+                let context = context
             else { return }
 
             let decodedContext = try JSONDecoder().decode(RequestedContext.self, from: context)
