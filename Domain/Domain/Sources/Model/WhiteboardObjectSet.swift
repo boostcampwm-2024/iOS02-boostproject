@@ -37,6 +37,8 @@ public actor WhiteboardObjectSet: WhiteboardObjectSetInterface {
     }
 
     public func fetchAll() async -> [WhiteboardObject] {
-        return Array(whiteboardObjects.sorted { $0.updatedAt < $1.updatedAt })
+        return whiteboardObjects
+            .sorted { $0.updatedAt < $1.updatedAt }
+            .map { $0.deepCopy() }
     }
 }
