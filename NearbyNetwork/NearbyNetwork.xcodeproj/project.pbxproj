@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		002DEC952D22A99F00ED7EE3 /* RefactoredNearbyNetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 002DEC942D22A99F00ED7EE3 /* RefactoredNearbyNetworkService.swift */; };
 		00549AD62CEDDDB700DF8F6C /* MCSessionState+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00549AD52CEDDDB100DF8F6C /* MCSessionState+.swift */; };
 		00549AD82CEDDDCF00DF8F6C /* MCSession+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00549AD72CEDDDCF00DF8F6C /* MCSession+.swift */; };
 		0080E86A2CE19EC40095B958 /* NearbyNetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0080E8672CE19EC40095B958 /* NearbyNetworkService.swift */; };
@@ -29,6 +30,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		002DEC942D22A99F00ED7EE3 /* RefactoredNearbyNetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefactoredNearbyNetworkService.swift; sourceTree = "<group>"; };
 		00549AD52CEDDDB100DF8F6C /* MCSessionState+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MCSessionState+.swift"; sourceTree = "<group>"; };
 		00549AD72CEDDDCF00DF8F6C /* MCSession+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MCSession+.swift"; sourceTree = "<group>"; };
 		0080E8672CE19EC40095B958 /* NearbyNetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearbyNetworkService.swift; sourceTree = "<group>"; };
@@ -70,6 +72,7 @@
 			children = (
 				00549AD32CEDDDA300DF8F6C /* Common */,
 				0080E8672CE19EC40095B958 /* NearbyNetworkService.swift */,
+				002DEC942D22A99F00ED7EE3 /* RefactoredNearbyNetworkService.swift */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -214,6 +217,7 @@
 			files = (
 				00549AD62CEDDDB700DF8F6C /* MCSessionState+.swift in Sources */,
 				00549AD82CEDDDCF00DF8F6C /* MCSession+.swift in Sources */,
+				002DEC952D22A99F00ED7EE3 /* RefactoredNearbyNetworkService.swift in Sources */,
 				0080E86A2CE19EC40095B958 /* NearbyNetworkService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
