@@ -21,7 +21,14 @@ public protocol NearbyNetworkInterface {
 
     /// 주변에 내 기기를 정보와 함께 알립니다.
     /// - Parameter data: 담을 정보
+    @available(*, deprecated, message: "이 메서드는 network framework로 리팩터링 하면서 사용되지 않을 예정입니다.")
     func startPublishing(with info: [String: String])
+
+    /// 주변에 내 기기를 정보와 함께 알립니다.
+    /// - Parameters:
+    ///   - hostName: 호스트의 이름
+    ///   - connectedPeerInfo: 연결된 기기들의 정보
+    func startPublishing(with hostName: String, connectedPeerInfo: [String])
 
     /// 주변에 내 기기 알리는 것을 중지합니다.
     func stopPublishing()
@@ -41,6 +48,7 @@ public protocol NearbyNetworkInterface {
     /// - Parameters:
     ///   - fileURL: 파일의 URL
     ///   - info: 파일에 대한 정보
+    @available(*, deprecated, message: "이 메서드는 network framework로 리팩터링 하면서 사용되지 않을 예정입니다.")
     func send(fileURL: URL, info: DataInformationDTO) async
 
     /// 특정 기기에게 파일을 전송합니다.
@@ -48,6 +56,7 @@ public protocol NearbyNetworkInterface {
     ///   - fileURL: 파일의 URL
     ///   - info: 파일에 대한 정보
     ///   - connection: 전송할 기기 연결 정보
+    @available(*, deprecated, message: "이 메서드는 network framework로 리팩터링 하면서 사용되지 않을 예정입니다.")
     func send(
         fileURL: URL,
         info: DataSource.DataInformationDTO,
