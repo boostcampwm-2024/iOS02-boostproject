@@ -69,7 +69,7 @@ extension RefactoredNearbyNetworkService: NearbyNetworkInterface {
     }
 
     func stopPublishing() {
-
+        nwListener.cancel()
     }
 
     func disconnectAll() {
