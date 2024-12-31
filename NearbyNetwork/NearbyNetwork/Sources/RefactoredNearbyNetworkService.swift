@@ -9,23 +9,27 @@ import Combine
 import DataSource
 import Foundation
 import Network
+import OSLog
 
 // TODO: - 추후 기능 동작 확인 후 NearbyNetworkService 대체
 final class RefactoredNearbyNetworkService {
     var connectionDelegate: NearbyNetworkConnectionDelegate? = nil
+    private let serviceName: String
+    private let serviceType: String
     private let peerID: UUID
-    private let nwListener: NWListener
-    private let networkQueue: DispatchQueue
+    private let nearbyNetworkListener: NearbyNetworkListener
+    private let nearbyNetworkBrowser: NearbyNetworkBrowser
+    private let logger: Logger
 
-    public init(serviceName: String) throws {
+    public init(serviceName: String, serviceType: String) throws {
         peerID = UUID()
-
-        do {
-            nwListener = try NWListener(using: .tcp)
-            networkQueue = DispatchQueue.global()
-        } catch {
-            throw NSError() // 에러는 추후 정의
-        }
+        logger = Logger()
+        nearbyNetworkListener = NearbyNetworkListener(
+            serviceName: serviceName,
+            serviceType: serviceType)
+        nearbyNetworkBrowser = NearbyNetworkBrowser(serviceType: serviceType)
+        self.serviceName = serviceName
+        self.serviceType = serviceType
     }
 }
 
@@ -33,7 +37,7 @@ extension RefactoredNearbyNetworkService: NearbyNetworkInterface {
     var reciptDataPublisher: AnyPublisher<Data, Never> {
         return Just<Data>(Data()).eraseToAnyPublisher()
     }
-    
+
     var reciptURLPublisher: AnyPublisher<(url: URL, dataInfo: DataInformationDTO), Never> {
         // TODO: - will be deprecated
         guard let url = URL(string: "https://naver.com") else { fatalError() }
@@ -45,12 +49,12 @@ extension RefactoredNearbyNetworkService: NearbyNetworkInterface {
             .eraseToAnyPublisher()
     }
 
-    func stopSearching() {
-
+    func startSearching() {
+        nearbyNetworkBrowser.startSearching()
     }
 
-    func startSearching() {
-
+    func stopSearching() {
+        nearbyNetworkBrowser.stopSearching()
     }
 
     func startPublishing(with info: [String: String]) {
@@ -58,18 +62,13 @@ extension RefactoredNearbyNetworkService: NearbyNetworkInterface {
     }
 
     func startPublishing(with hostName: String, connectedPeerInfo: [String]) {
-        let networkConnection = RefactoredNetworkConnection(
-            id: peerID,
-            name: hostName,
+        nearbyNetworkListener.startPublishing(
+            hostName: hostName,
             connectedPeerInfo: connectedPeerInfo)
-        let serviceData = try? JSONEncoder().encode(networkConnection)
-
-        nwListener.service? = NWListener.Service(type: "_airplain._tcp", txtRecord: serviceData)
-        nwListener.start(queue: networkQueue)
     }
 
     func stopPublishing() {
-        nwListener.cancel()
+        nearbyNetworkListener.stopPublishing()
     }
 
     func disconnectAll() {
