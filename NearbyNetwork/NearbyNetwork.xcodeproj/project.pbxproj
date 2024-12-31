@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		002DEC952D22A99F00ED7EE3 /* RefactoredNearbyNetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 002DEC942D22A99F00ED7EE3 /* RefactoredNearbyNetworkService.swift */; };
+		002DEC9D2D23C33C00ED7EE3 /* NearbyNetworkTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 002DEC9C2D23C33C00ED7EE3 /* NearbyNetworkTests.swift */; };
+		002DEC9E2D23C33C00ED7EE3 /* NearbyNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B7C6E652CDB6A560024704A /* NearbyNetwork.framework */; platformFilter = ios; };
 		00549AD62CEDDDB700DF8F6C /* MCSessionState+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00549AD52CEDDDB100DF8F6C /* MCSessionState+.swift */; };
 		00549AD82CEDDDCF00DF8F6C /* MCSession+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00549AD72CEDDDCF00DF8F6C /* MCSession+.swift */; };
 		0080E86A2CE19EC40095B958 /* NearbyNetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0080E8672CE19EC40095B958 /* NearbyNetworkService.swift */; };
@@ -17,6 +19,16 @@
 		A83D2AB22D23BE88007EC41F /* NearbyNetworkBrowser.swift in Sources */ = {isa = PBXBuildFile; fileRef = A83D2AB12D23BE88007EC41F /* NearbyNetworkBrowser.swift */; };
 		A83D2AB42D23C09F007EC41F /* NearbyNetworkKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = A83D2AB32D23C09F007EC41F /* NearbyNetworkKey.swift */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		002DEC9F2D23C33C00ED7EE3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 5B7C6E5C2CDB6A560024704A /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 5B7C6E642CDB6A560024704A;
+			remoteInfo = NearbyNetwork;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
 		5B7C6EC12CDB6C6E0024704A /* Embed Frameworks */ = {
@@ -34,6 +46,8 @@
 
 /* Begin PBXFileReference section */
 		002DEC942D22A99F00ED7EE3 /* RefactoredNearbyNetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefactoredNearbyNetworkService.swift; sourceTree = "<group>"; };
+		002DEC9A2D23C33C00ED7EE3 /* NearbyNetworkTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NearbyNetworkTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		002DEC9C2D23C33C00ED7EE3 /* NearbyNetworkTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearbyNetworkTests.swift; sourceTree = "<group>"; };
 		00549AD52CEDDDB100DF8F6C /* MCSessionState+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MCSessionState+.swift"; sourceTree = "<group>"; };
 		00549AD72CEDDDCF00DF8F6C /* MCSession+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MCSession+.swift"; sourceTree = "<group>"; };
 		0080E8672CE19EC40095B958 /* NearbyNetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearbyNetworkService.swift; sourceTree = "<group>"; };
@@ -45,6 +59,14 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		002DEC972D23C33C00ED7EE3 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				002DEC9E2D23C33C00ED7EE3 /* NearbyNetwork.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		5B7C6E622CDB6A560024704A /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -56,6 +78,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		002DEC9B2D23C33C00ED7EE3 /* NearbyNetworkTests */ = {
+			isa = PBXGroup;
+			children = (
+				002DEC9C2D23C33C00ED7EE3 /* NearbyNetworkTests.swift */,
+			);
+			path = NearbyNetworkTests;
+			sourceTree = "<group>";
+		};
 		00549AD32CEDDDA300DF8F6C /* Common */ = {
 			isa = PBXGroup;
 			children = (
@@ -98,6 +128,7 @@
 			isa = PBXGroup;
 			children = (
 				0080E8692CE19EC40095B958 /* NearbyNetwork */,
+				002DEC9B2D23C33C00ED7EE3 /* NearbyNetworkTests */,
 				5B7C6EBD2CDB6C6E0024704A /* Frameworks */,
 				5B7C6E662CDB6A560024704A /* Products */,
 			);
@@ -107,6 +138,7 @@
 			isa = PBXGroup;
 			children = (
 				5B7C6E652CDB6A560024704A /* NearbyNetwork.framework */,
+				002DEC9A2D23C33C00ED7EE3 /* NearbyNetworkTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -132,6 +164,24 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
+		002DEC992D23C33C00ED7EE3 /* NearbyNetworkTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 002DECA32D23C33C00ED7EE3 /* Build configuration list for PBXNativeTarget "NearbyNetworkTests" */;
+			buildPhases = (
+				002DEC962D23C33C00ED7EE3 /* Sources */,
+				002DEC972D23C33C00ED7EE3 /* Frameworks */,
+				002DEC982D23C33C00ED7EE3 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				002DECA02D23C33C00ED7EE3 /* PBXTargetDependency */,
+			);
+			name = NearbyNetworkTests;
+			productName = NearbyNetworkTests;
+			productReference = 002DEC9A2D23C33C00ED7EE3 /* NearbyNetworkTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		5B7C6E642CDB6A560024704A /* NearbyNetwork */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 5B7C6E6B2CDB6A560024704A /* Build configuration list for PBXNativeTarget "NearbyNetwork" */;
@@ -161,8 +211,12 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1540;
 				LastUpgradeCheck = 1600;
 				TargetAttributes = {
+					002DEC992D23C33C00ED7EE3 = {
+						CreatedOnToolsVersion = 15.4;
+					};
 					5B7C6E642CDB6A560024704A = {
 						CreatedOnToolsVersion = 16.0;
 						LastSwiftMigration = 1600;
@@ -184,11 +238,19 @@
 			projectRoot = "";
 			targets = (
 				5B7C6E642CDB6A560024704A /* NearbyNetwork */,
+				002DEC992D23C33C00ED7EE3 /* NearbyNetworkTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		002DEC982D23C33C00ED7EE3 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		5B7C6E632CDB6A560024704A /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -220,6 +282,14 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		002DEC962D23C33C00ED7EE3 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				002DEC9D2D23C33C00ED7EE3 /* NearbyNetworkTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		5B7C6E612CDB6A560024704A /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -236,7 +306,50 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		002DECA02D23C33C00ED7EE3 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			platformFilter = ios;
+			target = 5B7C6E642CDB6A560024704A /* NearbyNetwork */;
+			targetProxy = 002DEC9F2D23C33C00ED7EE3 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin XCBuildConfiguration section */
+		002DECA12D23C33C00ED7EE3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = VKW8W27KRV;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = kr.codesquad.boostcamp9.NearbyNetworkTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		002DECA22D23C33C00ED7EE3 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = VKW8W27KRV;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = kr.codesquad.boostcamp9.NearbyNetworkTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 		5B7C6E6C2CDB6A560024704A /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -446,6 +559,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		002DECA32D23C33C00ED7EE3 /* Build configuration list for PBXNativeTarget "NearbyNetworkTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				002DECA12D23C33C00ED7EE3 /* Debug */,
+				002DECA22D23C33C00ED7EE3 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		5B7C6E5F2CDB6A560024704A /* Build configuration list for PBXProject "NearbyNetwork" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

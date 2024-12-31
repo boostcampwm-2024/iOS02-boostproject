@@ -12,16 +12,17 @@ import Network
 import OSLog
 
 // TODO: - 추후 기능 동작 확인 후 NearbyNetworkService 대체
-final class RefactoredNearbyNetworkService {
-    var connectionDelegate: NearbyNetworkConnectionDelegate? = nil
+public final class RefactoredNearbyNetworkService {
+    public var connectionDelegate: NearbyNetworkConnectionDelegate? = nil
     private let serviceName: String
     private let serviceType: String
     private let peerID: UUID
     private let nearbyNetworkListener: NearbyNetworkListener
     private let nearbyNetworkBrowser: NearbyNetworkBrowser
     private let logger: Logger
+    public var foundPeerHandler: ((_ hostName: String, _ connectedPeerInfo: [String]) -> Void)?
 
-    public init(serviceName: String, serviceType: String) throws {
+    public init(serviceName: String, serviceType: String) {
         peerID = UUID()
         logger = Logger()
         nearbyNetworkListener = NearbyNetworkListener(
@@ -30,15 +31,17 @@ final class RefactoredNearbyNetworkService {
         nearbyNetworkBrowser = NearbyNetworkBrowser(serviceType: serviceType)
         self.serviceName = serviceName
         self.serviceType = serviceType
+        nearbyNetworkBrowser.delegate = self
     }
 }
 
+// MARK: - NearbyNetworkInterface 메서드 구현
 extension RefactoredNearbyNetworkService: NearbyNetworkInterface {
-    var reciptDataPublisher: AnyPublisher<Data, Never> {
+    public var reciptDataPublisher: AnyPublisher<Data, Never> {
         return Just<Data>(Data()).eraseToAnyPublisher()
     }
 
-    var reciptURLPublisher: AnyPublisher<(url: URL, dataInfo: DataInformationDTO), Never> {
+    public var reciptURLPublisher: AnyPublisher<(url: URL, dataInfo: DataInformationDTO), Never> {
         // TODO: - will be deprecated
         guard let url = URL(string: "https://naver.com") else { fatalError() }
         let dataInfo = DataInformationDTO(
@@ -49,45 +52,57 @@ extension RefactoredNearbyNetworkService: NearbyNetworkInterface {
             .eraseToAnyPublisher()
     }
 
-    func startSearching() {
+    public func startSearching() {
         nearbyNetworkBrowser.startSearching()
     }
 
-    func stopSearching() {
+    public func stopSearching() {
         nearbyNetworkBrowser.stopSearching()
     }
 
-    func startPublishing(with info: [String: String]) {
+    public func startPublishing(with info: [String: String]) {
         // TODO: - will be deprecated
     }
 
-    func startPublishing(with hostName: String, connectedPeerInfo: [String]) {
+    public func startPublishing(with hostName: String, connectedPeerInfo: [String]) {
         nearbyNetworkListener.startPublishing(
             hostName: hostName,
             connectedPeerInfo: connectedPeerInfo)
     }
 
-    func stopPublishing() {
+    public func stopPublishing() {
         nearbyNetworkListener.stopPublishing()
     }
 
-    func disconnectAll() {
+    public func disconnectAll() {
 
     }
 
-    func joinConnection(connection: NetworkConnection, context: RequestedContext) throws {
+    public func joinConnection(connection: NetworkConnection, context: RequestedContext) throws {
 
     }
 
-    func send(data: Data) {
+    public func send(data: Data) {
 
     }
 
-    func send(fileURL: URL, info: DataInformationDTO) async {
+    public func send(fileURL: URL, info: DataInformationDTO) async {
         // TODO: - will be deprecated
     }
 
-    func send(fileURL: URL, info: DataInformationDTO, to connection: NetworkConnection) async {
+    public func send(fileURL: URL, info: DataInformationDTO, to connection: NetworkConnection) async {
         // TODO: - will be deprecated
+    }
+}
+
+// MARK: - NearbyNetworkBrowserDelegate
+extension RefactoredNearbyNetworkService: NearbyNetworkBrowserDelegate {
+    public func nearbyNetworkBrowserDidFindPeer(
+        _ sender: NearbyNetworkBrowser,
+        hostName: String,
+        connectedPeerInfo: [String]
+    ) {
+        guard let foundPeerHandler else { return }
+        foundPeerHandler(hostName, connectedPeerInfo)
     }
 }

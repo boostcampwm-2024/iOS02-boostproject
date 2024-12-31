@@ -9,11 +9,19 @@ import Foundation
 import Network
 import OSLog
 
-final class NearbyNetworkBrowser {
+public protocol NearbyNetworkBrowserDelegate: AnyObject {
+    func nearbyNetworkBrowserDidFindPeer(
+        _ sender: NearbyNetworkBrowser,
+        hostName: String,
+        connectedPeerInfo: [String])
+}
+
+public final class NearbyNetworkBrowser {
     let nwBrowser: NWBrowser
     private let browserQueue: DispatchQueue
     private let serviceType: String
     private let logger: Logger
+    weak var delegate: NearbyNetworkBrowserDelegate?
 
     init(serviceType: String) {
         nwBrowser = NWBrowser(
@@ -33,8 +41,21 @@ final class NearbyNetworkBrowser {
         for result in results {
             switch result.metadata {
             case .bonjour(let foundedPeerData):
-                // TODO: - 추후 발견한 데이터 이용
-                print("")
+                let dictionary = foundedPeerData.dictionary
+                guard
+                    let hostName = dictionary[NearbyNetworkKey.host.rawValue],
+                    let connectedPeerInfo = dictionary[NearbyNetworkKey.connectedPeerInfo.rawValue]
+                else {
+                    logger.log(level: .error, "connection의 데이터 값이 유효하지 않습니다.")
+                    return
+                }
+
+                delegate?.nearbyNetworkBrowserDidFindPeer(
+                        self,
+                        hostName: hostName,
+                        connectedPeerInfo: connectedPeerInfo
+                            .split(separator: ",")
+                            .map { String($0) })
             default:
                 logger.log(level: .error, "알 수 없는 피어가 발견되었습니다.")
             }
