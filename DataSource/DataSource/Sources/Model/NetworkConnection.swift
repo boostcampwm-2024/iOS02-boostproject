@@ -28,3 +28,25 @@ extension NetworkConnection: Equatable {
         return lhs.id == rhs.id
     }
 }
+
+public struct RefactoredNetworkConnection: Codable {
+    public let id: UUID
+    public let name: String
+    public let connectedPeerInfo: [String]
+
+    public init(
+        id: UUID,
+        name: String,
+        connectedPeerInfo: [String]
+    ) {
+        self.id = id
+        self.name = name
+        self.connectedPeerInfo = connectedPeerInfo
+    }
+}
+
+extension RefactoredNetworkConnection: Equatable {
+    public static func == (lhs: RefactoredNetworkConnection, rhs: RefactoredNetworkConnection) -> Bool {
+        return lhs.id == rhs.id
+    }
+}

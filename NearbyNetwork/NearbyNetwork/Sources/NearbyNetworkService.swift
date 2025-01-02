@@ -76,6 +76,10 @@ extension NearbyNetworkService: NearbyNetworkInterface {
         serviceAdvertiser.startAdvertisingPeer()
     }
 
+    public func startPublishing(with hostName: String, connectedPeerInfo: [String]) {
+        // TODO: - 사용하지 않는 함수
+    }
+
     public func stopPublishing() {
         serviceAdvertiser.stopAdvertisingPeer()
     }
