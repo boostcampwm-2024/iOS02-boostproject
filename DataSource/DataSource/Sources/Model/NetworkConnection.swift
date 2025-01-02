@@ -45,8 +45,14 @@ public struct RefactoredNetworkConnection: Codable {
     }
 }
 
-extension RefactoredNetworkConnection: Equatable {
+extension RefactoredNetworkConnection: Hashable {
     public static func == (lhs: RefactoredNetworkConnection, rhs: RefactoredNetworkConnection) -> Bool {
         return lhs.id == rhs.id
+    }
+}
+
+extension RefactoredNetworkConnection: CustomStringConvertible {
+    public var description: String {
+        return "ID: \(id), Name: \(name)"
     }
 }

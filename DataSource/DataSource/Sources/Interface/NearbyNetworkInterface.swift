@@ -38,7 +38,17 @@ public protocol NearbyNetworkInterface {
 
     /// 주변 기기와 연결을 시도합니다.
     /// - Parameter connection: 연결할 기기
+    @available(*, deprecated, message: "이 메서드는 network framework로 리팩터링 하면서 사용되지 않을 예정입니다.")
     func joinConnection(connection: NetworkConnection, context: RequestedContext) throws
+
+    /// 주변 기기와 연결을 시도합니다.
+    /// - Parameters:
+    ///   - connection: 연결할 기기
+    ///   - myConnectionInfo: 내 정보
+    /// - Returns: 연결 요청 성공 여부
+    func joinConnection(
+        connection: RefactoredNetworkConnection,
+        myConnectionInfo: RequestedContext) -> Result<Bool, Never>
 
     /// 연결된 기기들에게 데이터를 송신합니다.
     /// - Parameter data: 송신할 데이터

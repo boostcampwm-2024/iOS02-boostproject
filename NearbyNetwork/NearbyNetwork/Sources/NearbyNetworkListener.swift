@@ -12,13 +12,19 @@ import OSLog
 final class NearbyNetworkListener {
     private var nwListener: NWListener?
     private let listenerQueue: DispatchQueue
+    private let peerID: UUID
     private let serviceName: String
     private let serviceType: String
     private let logger: Logger
 
-    init(serviceName: String, serviceType: String) {
+    init(
+        peerID: UUID,
+        serviceName: String,
+        serviceType: String
+    ) {
         nwListener = try? NWListener(using: .tcp)
         listenerQueue = DispatchQueue.global()
+        self.peerID = peerID
         self.serviceName = serviceName
         self.serviceType = serviceType
         self.logger = Logger()
@@ -33,6 +39,7 @@ final class NearbyNetworkListener {
 
     func startPublishing(hostName: String, connectedPeerInfo: [String]) {
         let connectionData = [
+            NearbyNetworkKey.peerID.rawValue: peerID.uuidString,
             NearbyNetworkKey.host.rawValue: hostName,
             NearbyNetworkKey.connectedPeerInfo.rawValue: connectedPeerInfo.joined(separator: ",")]
         let txtRecord = NWTXTRecord(connectionData)

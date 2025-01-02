@@ -19,16 +19,21 @@ public final class RefactoredNearbyNetworkService {
     private let peerID: UUID
     private let nearbyNetworkListener: NearbyNetworkListener
     private let nearbyNetworkBrowser: NearbyNetworkBrowser
+    private var nearbyNetworkConnections: [RefactoredNetworkConnection: NWConnection]
+    private let nearbyNetworkServiceQueue: DispatchQueue
     private let logger: Logger
-    public var foundPeerHandler: ((_ hostName: String, _ connectedPeerInfo: [String]) -> Void)?
+    public var foundPeerHandler: ((_ networkConnection: RefactoredNetworkConnection) -> Void)?
 
     public init(serviceName: String, serviceType: String) {
         peerID = UUID()
+        nearbyNetworkServiceQueue = DispatchQueue.global()
         logger = Logger()
         nearbyNetworkListener = NearbyNetworkListener(
+            peerID: peerID,
             serviceName: serviceName,
             serviceType: serviceType)
         nearbyNetworkBrowser = NearbyNetworkBrowser(serviceType: serviceType)
+        nearbyNetworkConnections = [:]
         self.serviceName = serviceName
         self.serviceType = serviceType
         nearbyNetworkBrowser.delegate = self
@@ -79,7 +84,29 @@ extension RefactoredNearbyNetworkService: NearbyNetworkInterface {
     }
 
     public func joinConnection(connection: NetworkConnection, context: RequestedContext) throws {
+    }
 
+    public func joinConnection(
+        connection: RefactoredNetworkConnection,
+        myConnectionInfo: RequestedContext) -> Result<Bool, Never> {
+            guard let endpoint = nearbyNetworkBrowser.fetchFoundConnection(networkConnection: connection)
+            else { return .success(false) }
+
+            let nwConnection = NWConnection(to: endpoint, using: .tcp)
+            nwConnection.stateUpdateHandler = { [weak self] state in
+                switch state {
+                case .ready:
+                    self?.logger.log(level: .debug, "\(connection)와 연결되었습니다.")
+                    self?.nearbyNetworkConnections[connection] = nwConnection
+                case .failed, .cancelled:
+                    self?.logger.log(level: .debug, "\(connection)와 연결이 끊어졌습니다.")
+                    self?.nearbyNetworkConnections[connection] = nil
+                default:
+                    self?.logger.log(level: .debug, "\(connection)와 연결 설정 중입니다.")
+                }
+            }
+            nwConnection.start(queue: nearbyNetworkServiceQueue)
+            return .success(true)
     }
 
     public func send(data: Data) {
@@ -99,10 +126,9 @@ extension RefactoredNearbyNetworkService: NearbyNetworkInterface {
 extension RefactoredNearbyNetworkService: NearbyNetworkBrowserDelegate {
     public func nearbyNetworkBrowserDidFindPeer(
         _ sender: NearbyNetworkBrowser,
-        hostName: String,
-        connectedPeerInfo: [String]
+        foundPeer: RefactoredNetworkConnection
     ) {
         guard let foundPeerHandler else { return }
-        foundPeerHandler(hostName, connectedPeerInfo)
+        foundPeerHandler(foundPeer)
     }
 }
