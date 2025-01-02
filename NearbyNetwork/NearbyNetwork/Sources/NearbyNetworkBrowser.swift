@@ -17,7 +17,7 @@ public protocol NearbyNetworkBrowserDelegate: AnyObject {
 }
 
 public final class NearbyNetworkBrowser {
-    let nwBrowser: NWBrowser
+    private let nwBrowser: NWBrowser
     private let browserQueue: DispatchQueue
     private let serviceType: String
     private let logger: Logger

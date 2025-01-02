@@ -10,7 +10,7 @@ import Network
 import OSLog
 
 final class NearbyNetworkListener {
-    var nwListener: NWListener?
+    private var nwListener: NWListener?
     private let listenerQueue: DispatchQueue
     private let serviceName: String
     private let serviceType: String

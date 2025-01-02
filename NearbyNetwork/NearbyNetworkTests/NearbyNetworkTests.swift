@@ -11,11 +11,22 @@ import XCTest
 
 final class NearbyNetworkTests: XCTestCase {
     var nearbyNetworkService: RefactoredNearbyNetworkService?
+    var mockBrowser: NWBrowser?
+    var mockListener: NWListener?
+    let serviceName = "airplain"
+    let serviceType = "_airplain._tcp"
 
     override func setUpWithError() throws {
         nearbyNetworkService = RefactoredNearbyNetworkService(
-            serviceName: "airplain",
-            serviceType: "_airplain._tcp")
+            serviceName: serviceName,
+            serviceType: serviceType)
+
+        mockBrowser = NWBrowser(
+            for: .bonjourWithTXTRecord(type: serviceType, domain: nil),
+            using: .tcp)
+
+        mockListener = try? NWListener(using: .tcp)
+        mockListener?.newConnectionHandler = { _ in }
     }
 
     override func tearDownWithError() throws {
@@ -26,14 +37,14 @@ final class NearbyNetworkTests: XCTestCase {
         // 준비
         let expectedHostName = "host"
         let expectedConnectedPeerInfo = ["1", "2", "3"]
-        let serviceType = "_airplain._tcp"
         let browserQueue = DispatchQueue.global()
-        let browser = NWBrowser(
-            for: .bonjourWithTXTRecord(type: serviceType, domain: nil),
-            using: .tcp)
         let browsingExpectation = XCTestExpectation(description: "검색 성공 여부")
         var browsedHostName: String?
         var browsedPeerInfo: String?
+        guard let mockBrowser else {
+            XCTFail("mockBrowser가 초기화되지 않았습니다.")
+            return
+        }
 
         // 실행
         XCTAssertNotNil(nearbyNetworkService)
@@ -41,8 +52,8 @@ final class NearbyNetworkTests: XCTestCase {
             with: expectedHostName,
             connectedPeerInfo: expectedConnectedPeerInfo)
 
-        browser.start(queue: browserQueue)
-        browser.browseResultsChangedHandler = { results, _ in
+        mockBrowser.start(queue: browserQueue)
+        mockBrowser.browseResultsChangedHandler = { results, _ in
             for result in results {
                 switch result.metadata {
                 case .bonjour(let foundedPeerData):
@@ -78,7 +89,8 @@ final class NearbyNetworkTests: XCTestCase {
             NearbyNetworkKey.host.rawValue: expectedHostName,
             NearbyNetworkKey.connectedPeerInfo.rawValue: expectedConnectedPeerInfo.joined(separator: ",")
         ])
-        guard let advertiser = try? NWListener(using: .tcp) else {
+
+        guard let mockListener else {
             XCTFail("advertiser 생성 실패")
             return
         }
@@ -92,14 +104,13 @@ final class NearbyNetworkTests: XCTestCase {
             advertisingExpectation.fulfill()
         }
         nearbyNetworkService?.foundPeerHandler = foundPeerHandler
-        advertiser.newConnectionHandler = { _ in }
-        advertiser.service = NWListener.Service(
-            name: "airplain",
-            type: "_airplain._tcp",
+        mockListener.service = NWListener.Service(
+            name: serviceName,
+            type: serviceType,
             txtRecord: txtRecord)
 
         // 실행
-        advertiser.start(queue: advertiserQueue)
+        mockListener.start(queue: advertiserQueue)
         nearbyNetworkService?.startSearching()
         wait(for: [advertisingExpectation], timeout: 3)
 
