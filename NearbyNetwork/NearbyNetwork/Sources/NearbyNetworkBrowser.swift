@@ -13,7 +13,7 @@ import OSLog
 public protocol NearbyNetworkBrowserDelegate: AnyObject {
     func nearbyNetworkBrowserDidFindPeer(
         _ sender: NearbyNetworkBrowser,
-        foundPeer: RefactoredNetworkConnection)
+        foundPeers: [RefactoredNetworkConnection])
 }
 
 public final class NearbyNetworkBrowser {
@@ -21,7 +21,14 @@ public final class NearbyNetworkBrowser {
     private let browserQueue: DispatchQueue
     private let serviceType: String
     private let logger: Logger
-    private var foundPeers: [RefactoredNetworkConnection: NWEndpoint]
+    private var foundPeers: [RefactoredNetworkConnection: NWEndpoint] {
+        didSet {
+            let foundPeers = foundPeers
+                .keys
+                .sorted(by: { $0.name < $1.name })
+            delegate?.nearbyNetworkBrowserDidFindPeer(self, foundPeers: Array(foundPeers))
+        }
+    }
     weak var delegate: NearbyNetworkBrowserDelegate?
 
     init(serviceType: String) {
@@ -79,10 +86,7 @@ public final class NearbyNetworkBrowser {
                 connectedPeerInfo: connectedPeerInfo
                     .split(separator: ",")
                     .map { String($0) })
-
-            delegate?.nearbyNetworkBrowserDidFindPeer(self, foundPeer: foundPeer)
             return foundPeer
-
         default:
             logger.log(level: .error, "알 수 없는 피어가 발견되었습니다.")
             return nil
