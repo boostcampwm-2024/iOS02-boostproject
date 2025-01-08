@@ -31,11 +31,12 @@ actor WhiteboardObjectRegisters: WhiteboardObjectRegistersInterface {
     }
 
     func update(register: LWWRegister) async {
-        guard let targetRegister = registers.first(where: { $0 == register }) else {
+        if registers.contains(register) {
+            registers.remove(register)
+            await insert(register: register.merge(register: register))
+        } else {
             await insert(register: register)
-            return
         }
-        targetRegister.merge(register: register)
     }
 
     func fetchObjectByID(id: UUID) async -> LWWRegister? {

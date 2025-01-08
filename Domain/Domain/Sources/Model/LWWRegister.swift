@@ -7,32 +7,21 @@
 
 import Foundation
 
-public class LWWRegister {
-    private(set) var whiteboardObject: WhiteboardObject
-    private var timestamp: Timestamp
-    private var serialQueue: DispatchQueue
+public struct LWWRegister {
+    public let whiteboardObject: WhiteboardObject
+    private let timestamp: Timestamp
 
-    init(whiteboardObject: WhiteboardObject, timestamp: Timestamp) {
+    public init(whiteboardObject: WhiteboardObject, timestamp: Timestamp) {
         self.whiteboardObject = whiteboardObject
         self.timestamp = timestamp
-        serialQueue = DispatchQueue(label: "serial")
     }
 
-    func merge(register: LWWRegister) {
-        serialQueue.async {
-            if self.timestamp < register.timestamp {
-                self.whiteboardObject = register.whiteboardObject
-                self.timestamp = register.timestamp
-            }
-        }
+    public func merge(register: LWWRegister) -> LWWRegister {
+        timestamp < register.timestamp ? register: self
     }
 }
 
 extension LWWRegister: Hashable {
-    public static func == (lhs: LWWRegister, rhs: LWWRegister) -> Bool {
-        lhs.whiteboardObject == rhs.whiteboardObject
-    }
-
     public func hash(into hasher: inout Hasher) {
         hasher.combine(whiteboardObject)
     }

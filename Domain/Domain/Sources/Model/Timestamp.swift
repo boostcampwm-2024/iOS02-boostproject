@@ -7,11 +7,16 @@
 
 import Foundation
 
-struct Timestamp: Comparable {
+public struct Timestamp: Comparable {
     let updatedAt: Date
     let updatedBy: UUID
 
-    static func < (lhs: Timestamp, rhs: Timestamp) -> Bool {
+    public init(updatedAt: Date, updatedBy: UUID) {
+        self.updatedAt = updatedAt
+        self.updatedBy = updatedBy
+    }
+
+    public static func < (lhs: Timestamp, rhs: Timestamp) -> Bool {
         if lhs.updatedAt == rhs.updatedAt { return lhs.updatedBy < rhs.updatedBy }
         return lhs.updatedAt < rhs.updatedAt
     }
