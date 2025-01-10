@@ -50,16 +50,17 @@ public protocol NearbyNetworkInterface {
         connection: RefactoredNetworkConnection,
         myConnectionInfo: RequestedContext) -> Result<Bool, Never>
 
-    /// 연결된 기기들에게 데이터를 송신합니다.
-    /// - Parameter data: 송신할 데이터
-    func send(data: Data)
-
     /// 연결된 기기들에게 파일을 송신합니다.
     /// - Parameters:
     ///   - fileURL: 파일의 URL
     ///   - info: 파일에 대한 정보
     @available(*, deprecated, message: "이 메서드는 network framework로 리팩터링 하면서 사용되지 않을 예정입니다.")
     func send(fileURL: URL, info: DataInformationDTO) async
+
+    /// 연결된 기기들에게 데이터를 송신합니다.
+    /// - Parameter data: 송신할 데이터
+    /// - Returns: 전송 성공 여부
+    func send(data: DataInformationDTO) async -> Bool
 
     /// 특정 기기에게 파일을 전송합니다.
     /// - Parameters:
@@ -71,6 +72,13 @@ public protocol NearbyNetworkInterface {
         fileURL: URL,
         info: DataInformationDTO,
         to connection: NetworkConnection) async
+
+    /// 특정 기기에게 데이터를 전송합니다.
+    /// - Parameters:
+    ///   - data: 송신할 데이터
+    ///   - connection: 전송할 기기 연결 정보
+    /// - Returns: 전송 성공 여부
+    func send(data: DataInformationDTO, to connection: RefactoredNetworkConnection) async -> Bool
 }
 
 public protocol NearbyNetworkConnectionDelegate: AnyObject {
