@@ -126,7 +126,7 @@ extension NearbyNetworkService: NearbyNetworkInterface {
         }
     }
 
-    public func send(fileURL: URL, info: DataSource.DataInformationDTO) async {
+    public func send(fileURL: URL, info: DataInformationDTO) async {
         let infoJsonData = try? encoder.encode(info)
 
         guard
@@ -150,6 +150,10 @@ extension NearbyNetworkService: NearbyNetworkInterface {
         }
     }
 
+    public func send(data: DataInformationDTO) async -> Bool {
+        return true
+    }
+
     public func send(
         fileURL: URL,
         info: DataSource.DataInformationDTO,
@@ -171,6 +175,10 @@ extension NearbyNetworkService: NearbyNetworkInterface {
         } catch {
             self.logger.log(level: .error, "\(peer)에게 file 데이터 전송 실패")
         }
+    }
+
+    public func send(data: DataInformationDTO, to connection: RefactoredNetworkConnection) async -> Bool {
+        return true
     }
 }
 

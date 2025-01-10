@@ -15,6 +15,8 @@ import OSLog
 public final class RefactoredNearbyNetworkService {
     public var connectionDelegate: NearbyNetworkConnectionDelegate? = nil
     public var foundPeerHandler: ((_ networkConnections: [RefactoredNetworkConnection]) -> Void)?
+    public let refactoredReciptDataPublisher: AnyPublisher<DataInformationDTO, Never>
+    private let refactoredReciptDataSubject: PassthroughSubject<DataInformationDTO, Never>
     private let serviceName: String
     private let serviceType: String
     private let peerID: UUID
@@ -42,6 +44,8 @@ public final class RefactoredNearbyNetworkService {
         nearbyNetworkConnections = [:]
         jsonEncoder = JSONEncoder()
         jsonDecoder = JSONDecoder()
+        refactoredReciptDataSubject = PassthroughSubject<DataInformationDTO, Never>()
+        refactoredReciptDataPublisher = refactoredReciptDataSubject.eraseToAnyPublisher()
         self.serviceName = serviceName
         self.serviceType = serviceType
         nearbyNetworkBrowser.delegate = self
@@ -99,7 +103,42 @@ public final class RefactoredNearbyNetworkService {
     }
 
     private func handleReceivedData(data: Data?, connection: NWConnection) {
-        self.logger.log(level: .error, "\(connection.debugDescription): 데이터 수신")
+        guard
+            let data,
+            let dataDTO = try? jsonDecoder.decode(DataInformationDTO.self, from: data)
+        else { return }
+
+        refactoredReciptDataSubject.send(dataDTO)
+        self.logger.log(level: .debug, "\(connection.debugDescription): 데이터 수신")
+    }
+
+    private func send(data: DataInformationDTO, connection: NWConnection) async -> Bool {
+        typealias Continuation = CheckedContinuation<Bool, Never>
+        var tryCount = 0
+
+        let encodedData = try? jsonEncoder.encode(data)
+        let message = NWProtocolFramer.Message(nearbyNetworkMessageType: .data)
+        let context = NWConnection.ContentContext(identifier: "Data", metadata: [message])
+
+        while tryCount < 3 {
+            let result = await withCheckedContinuation { (continuation: Continuation) in
+                connection.send(
+                    content: encodedData,
+                    contentContext: context,
+                    completion: .contentProcessed({ error in
+                        if let error {
+                            continuation.resume(returning: false)
+                        } else {
+                            continuation.resume(returning: true)
+                        }
+                    }))
+            }
+
+            if result { return true }
+            tryCount += 1
+        }
+
+        return false
     }
 }
 
@@ -192,15 +231,35 @@ extension RefactoredNearbyNetworkService: NearbyNetworkInterface {
     }
 
     public func send(data: Data) {
-
+        // TODO: - will be deprecated
     }
 
     public func send(fileURL: URL, info: DataInformationDTO) async {
         // TODO: - will be deprecated
     }
 
+    public func send(data: DataInformationDTO) async -> Bool {
+        let result: Bool = await withTaskGroup(of: Bool.self, returning: Bool.self) { taskGroup in
+            for connection in nearbyNetworkConnections.values {
+                taskGroup.addTask {
+                    return await self.send(data: data, connection: connection)
+                }
+            }
+            for await childResult in taskGroup {
+                if !childResult { return false }
+            }
+            return true
+        }
+        return result
+    }
+
     public func send(fileURL: URL, info: DataInformationDTO, to connection: NetworkConnection) async {
         // TODO: - will be deprecated
+    }
+
+    public func send(data: DataInformationDTO, to connection: RefactoredNetworkConnection) async -> Bool {
+        guard let connection = nearbyNetworkConnections[connection] else { return false }
+        return await send(data: data, connection: connection)
     }
 }
 

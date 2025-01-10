@@ -14,7 +14,6 @@ enum NearbyNetworkMessageType: UInt32 {
     case data = 2
 }
 
-// Create a class that implements a framing protocol.
 class NearbyNetworkProtocol: NWProtocolFramerImplementation {
     static let definition = NWProtocolFramer.Definition(implementation: NearbyNetworkProtocol.self)
     static var label: String { return "NearbyNetworkProtocol" }
@@ -26,7 +25,6 @@ class NearbyNetworkProtocol: NWProtocolFramerImplementation {
     func stop(framer: NWProtocolFramer.Instance) -> Bool { return true }
     func cleanup(framer: NWProtocolFramer.Instance) { }
 
-    // Whenever the application sends a message, add your protocol header and forward the bytes.
     func handleOutput(
         framer: NWProtocolFramer.Instance,
         message: NWProtocolFramer.Message,
@@ -42,18 +40,20 @@ class NearbyNetworkProtocol: NWProtocolFramerImplementation {
         // framer에 헤더를 넣어줍니다.
         framer.writeOutput(data: header.encodedData)
 
-        // Ask the connection to insert the content of the app message after your header.
+        // 헤더 뒤 메시지를 넣어줍니다.
         try? framer.writeOutputNoCopy(length: messageLength)
     }
 
-    // Whenever new bytes are available to read, try to parse out your message format.
     func handleInput(framer: NWProtocolFramer.Instance) -> Int {
         while true {
-            // Try to read out a single header.
+            // 헤더 읽기
             var tempHeader: NearbyNetworkProtocolHeader? = nil
             let headerSize = NearbyNetworkProtocolHeader.encodedSize
 
-            let parsed = framer.parseInput(minimumIncompleteLength: headerSize, maximumLength: headerSize) { (buffer, _) -> Int in
+            let parsed = framer.parseInput(
+                minimumIncompleteLength: headerSize,
+                maximumLength: headerSize
+            ) { (buffer, _) -> Int in
                 guard
                     let buffer = buffer,
                     buffer.count >= headerSize
@@ -69,7 +69,7 @@ class NearbyNetworkProtocol: NWProtocolFramerImplementation {
                 let header = tempHeader
             else { return headerSize }
 
-            // Create an object to deliver the message.
+            // 수신된 메시지 만들기
             var messageType = NearbyNetworkMessageType.invalid
             if let parsedMessageType = NearbyNetworkMessageType(rawValue: header.type) {
                 messageType = parsedMessageType
@@ -77,7 +77,6 @@ class NearbyNetworkProtocol: NWProtocolFramerImplementation {
 
             let message = NWProtocolFramer.Message(nearbyNetworkMessageType: messageType)
 
-            // Deliver the body of the message, along with the message object.
             if !framer.deliverInputNoCopy(length: Int(header.length), message: message, isComplete: true) {
                 return 0
             }
@@ -85,7 +84,7 @@ class NearbyNetworkProtocol: NWProtocolFramerImplementation {
     }
 }
 
-// Extend framer messages to handle storing your command types in the message metadata.
+// Message metadata를 쉽게 관리하기 위해 기능 확장
 extension NWProtocolFramer.Message {
     convenience init(nearbyNetworkMessageType: NearbyNetworkMessageType) {
         self.init(definition: NearbyNetworkProtocol.definition)

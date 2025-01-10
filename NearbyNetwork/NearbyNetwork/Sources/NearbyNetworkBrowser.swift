@@ -34,7 +34,8 @@ public final class NearbyNetworkBrowser {
     init(serviceType: String) {
         let option = NWProtocolFramer.Options(definition: NearbyNetworkProtocol.definition)
         let parameter = NWParameters.tcp
-        parameter.defaultProtocolStack
+        parameter
+            .defaultProtocolStack
             .applicationProtocols
             .insert(option, at: 0)
         nwBrowser = NWBrowser(
