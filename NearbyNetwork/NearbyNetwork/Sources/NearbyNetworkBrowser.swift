@@ -5,6 +5,7 @@
 //  Created by 최정인 on 12/31/24.
 //
 
+import DataSource
 import Foundation
 import Network
 import OSLog
@@ -12,8 +13,7 @@ import OSLog
 public protocol NearbyNetworkBrowserDelegate: AnyObject {
     func nearbyNetworkBrowserDidFindPeer(
         _ sender: NearbyNetworkBrowser,
-        hostName: String,
-        connectedPeerInfo: [String])
+        foundPeers: [RefactoredNetworkConnection])
 }
 
 public final class NearbyNetworkBrowser {
@@ -21,15 +21,29 @@ public final class NearbyNetworkBrowser {
     private let browserQueue: DispatchQueue
     private let serviceType: String
     private let logger: Logger
+    private var foundPeers: [RefactoredNetworkConnection: NWEndpoint] {
+        didSet {
+            let foundPeers = foundPeers
+                .keys
+                .sorted(by: { $0.name < $1.name })
+            delegate?.nearbyNetworkBrowserDidFindPeer(self, foundPeers: Array(foundPeers))
+        }
+    }
     weak var delegate: NearbyNetworkBrowserDelegate?
 
     init(serviceType: String) {
+        let option = NWProtocolFramer.Options(definition: NearbyNetworkProtocol.definition)
+        let parameter = NWParameters.tcp
+        parameter.defaultProtocolStack
+            .applicationProtocols
+            .insert(option, at: 0)
         nwBrowser = NWBrowser(
             for: .bonjourWithTXTRecord(type: serviceType, domain: nil),
-            using: .tcp)
+            using: parameter)
         self.browserQueue = DispatchQueue.global()
         self.serviceType = serviceType
         self.logger = Logger()
+        self.foundPeers = [:]
         configure()
     }
 
@@ -38,28 +52,49 @@ public final class NearbyNetworkBrowser {
     }
 
     private func browserHandler(results: Set<NWBrowser.Result>, changes: Set<NWBrowser.Result.Change>) {
-        for result in results {
-            switch result.metadata {
-            case .bonjour(let foundedPeerData):
-                let dictionary = foundedPeerData.dictionary
-                guard
-                    let hostName = dictionary[NearbyNetworkKey.host.rawValue],
-                    let connectedPeerInfo = dictionary[NearbyNetworkKey.connectedPeerInfo.rawValue]
-                else {
-                    logger.log(level: .error, "connection의 데이터 값이 유효하지 않습니다.")
-                    return
-                }
-
-                delegate?.nearbyNetworkBrowserDidFindPeer(
-                        self,
-                        hostName: hostName,
-                        connectedPeerInfo: connectedPeerInfo
-                            .split(separator: ",")
-                            .map { String($0) })
+        for change in changes {
+            switch change {
+            case .added(let result):
+                guard let foundPeer = convertMetadata(metadata: result.metadata) else { return }
+                foundPeers[foundPeer] = result.endpoint
+            case .removed(let result):
+                guard let foundPeer = convertMetadata(metadata: result.metadata) else { return }
+                foundPeers[foundPeer] = nil
             default:
-                logger.log(level: .error, "알 수 없는 피어가 발견되었습니다.")
+                break
             }
         }
+    }
+
+    private func convertMetadata(metadata: NWBrowser.Result.Metadata) -> RefactoredNetworkConnection? {
+        switch metadata {
+        case .bonjour(let foundedPeerData):
+            let dictionary = foundedPeerData.dictionary
+            guard
+                let peerIDString = dictionary[NearbyNetworkKey.peerID.rawValue],
+                let peerID = UUID(uuidString: peerIDString),
+                let hostName = dictionary[NearbyNetworkKey.host.rawValue],
+                let connectedPeerInfo = dictionary[NearbyNetworkKey.connectedPeerInfo.rawValue]
+            else {
+                logger.log(level: .error, "connection의 데이터 값이 유효하지 않습니다.")
+                return nil
+            }
+
+            let foundPeer = RefactoredNetworkConnection(
+                id: peerID,
+                name: hostName,
+                connectedPeerInfo: connectedPeerInfo
+                    .split(separator: ",")
+                    .map { String($0) })
+            return foundPeer
+        default:
+            logger.log(level: .error, "알 수 없는 피어가 발견되었습니다.")
+            return nil
+        }
+    }
+
+    func fetchFoundConnection(networkConnection: RefactoredNetworkConnection) -> NWEndpoint? {
+        return foundPeers[networkConnection]
     }
 
     func startSearching() {

@@ -453,7 +453,6 @@ final class MockWhiteObjectRepository: WhiteboardObjectRepositoryInterface {
 }
 
 final class MockWhiteboardRepository: WhiteboardRepositoryInterface {
-    
     var delegate: (any WhiteboardRepositoryDelegate)?
     var recentPeerPublisher: AnyPublisher<Domain.Profile, Never>
     var connectionResultPublisher: AnyPublisher<Bool, Never>

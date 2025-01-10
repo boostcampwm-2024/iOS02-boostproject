@@ -33,12 +33,22 @@ public protocol NearbyNetworkInterface {
     /// 주변에 내 기기 알리는 것을 중지합니다.
     func stopPublishing()
 
-    /// 연결된 모든 피어와 연결을 끊습니다. 
+    /// 연결된 모든 피어와 연결을 끊습니다.
     func disconnectAll()
 
     /// 주변 기기와 연결을 시도합니다.
     /// - Parameter connection: 연결할 기기
+    @available(*, deprecated, message: "이 메서드는 network framework로 리팩터링 하면서 사용되지 않을 예정입니다.")
     func joinConnection(connection: NetworkConnection, context: RequestedContext) throws
+
+    /// 주변 기기와 연결을 시도합니다.
+    /// - Parameters:
+    ///   - connection: 연결할 기기
+    ///   - myConnectionInfo: 내 정보
+    /// - Returns: 연결 요청 성공 여부
+    func joinConnection(
+        connection: RefactoredNetworkConnection,
+        myConnectionInfo: RequestedContext) -> Result<Bool, Never>
 
     /// 연결된 기기들에게 데이터를 송신합니다.
     /// - Parameter data: 송신할 데이터
@@ -59,7 +69,7 @@ public protocol NearbyNetworkInterface {
     @available(*, deprecated, message: "이 메서드는 network framework로 리팩터링 하면서 사용되지 않을 예정입니다.")
     func send(
         fileURL: URL,
-        info: DataSource.DataInformationDTO,
+        info: DataInformationDTO,
         to connection: NetworkConnection) async
 }
 
@@ -86,27 +96,40 @@ public protocol NearbyNetworkConnectionDelegate: AnyObject {
     /// - Parameters:
     ///   - connection: 연결된 기기
     ///   - info: 기존 Session 정보
+    @available(*, deprecated, message: "이 메서드는 network framework로 리팩터링 하면서 사용되지 않을 예정입니다.")
     func nearbyNetwork(
         _ sender: NearbyNetworkInterface,
         didConnect connection: NetworkConnection,
         with info: [String: String])
 
-    /// 주변 기기와 연결에 성공했을 때 실행됩니다. 
+    /// 주변 기기와 연결에 성공하였을 때 실행됩니다.
     /// - Parameters:
+    ///   - connection: 연결된 기기
     ///   - context: 참여자가 보낸 정보
     ///   - isHost: 호스트 여부
+    @available(*, deprecated, message: "이 메서드는 network framework로 리팩터링 하면서 사용되지 않을 예정입니다.")
     func nearbyNetwork(
         _ sender: NearbyNetworkInterface,
         didConnect connection: NetworkConnection,
         with context: Data?,
         isHost: Bool)
 
+    /// 주변 기기와 연결에 성공했을 때 실행됩니다.
+    /// - Parameters:
+    ///   - didConnect: 연결된 peer
+    func nearbyNetwork(_ sender: NearbyNetworkInterface, didConnect connection: RefactoredNetworkConnection)
+
     /// 연결됐던 기기와 연결이 끊어졌을 때 실행됩니다.
     /// - Parameters:
     ///   - connection: 연결이 끊긴 기기
-    ///   - isHost: 호스트 여부
+    @available(*, deprecated, message: "이 메서드는 network framework로 리팩터링 하면서 사용되지 않을 예정입니다.")
     func nearbyNetwork(
         _ sender: NearbyNetworkInterface,
         didDisconnect connection: NetworkConnection,
         isHost: Bool)
+
+    /// 연결됐던 기기와 연결이 끊어졌을 때 실행됩니다.
+    /// - Parameters:
+    ///   - connection: 연결이 끊긴 기기
+    func nearbyNetwork(_ sender: NearbyNetworkInterface, didDisconnect connection: RefactoredNetworkConnection)
 }

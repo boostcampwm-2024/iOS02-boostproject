@@ -54,7 +54,10 @@ public final class WhiteboardRepository: WhiteboardRepositoryInterface {
             name: whiteboard.name,
             info: participantsInfo)
 
-        let context = RequestedContext(nickname: myProfile.nickname, participant: myProfile.profileIcon.emoji)
+        let context = RequestedContext(
+            peerID: myProfile.id,
+            nickname: myProfile.nickname,
+            participant: myProfile.profileIcon.emoji)
 
         try nearbyNetwork.joinConnection(connection: connection, context: context)
     }
@@ -172,6 +175,13 @@ extension WhiteboardRepository: NearbyNetworkConnectionDelegate {
 
     public func nearbyNetwork(
         _ sender: any NearbyNetworkInterface,
+        didConnect connection: RefactoredNetworkConnection
+    ) {
+        // TODO: - 연결 되었을 때 화이트보드에 프로필 정보 넘기기
+    }
+
+    public func nearbyNetwork(
+        _ sender: any NearbyNetworkInterface,
         didDisconnect connection: NetworkConnection,
         isHost: Bool
     ) {
@@ -180,5 +190,12 @@ extension WhiteboardRepository: NearbyNetworkConnectionDelegate {
         connections[connection.id] = nil
         updatePublishingInfo(myProfile: myProfile)
         nearbyNetwork.startPublishing(with: self.participantsInfo)
+    }
+
+    public func nearbyNetwork(
+        _ sender: any NearbyNetworkInterface,
+        didDisconnect connection: RefactoredNetworkConnection
+    ) {
+        // TODO: - 연결 끊겼을 때 화이트보드에 프로필 정보 넘기기
     }
 }

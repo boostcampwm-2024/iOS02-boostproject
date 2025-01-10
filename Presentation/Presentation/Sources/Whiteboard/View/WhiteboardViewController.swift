@@ -359,7 +359,7 @@ public final class WhiteboardViewController: UIViewController {
 }
 
 // MARK: - WhiteboardToolBarDelegate
-extension WhiteboardViewController: WhiteboardToolBarDelegate {    
+extension WhiteboardViewController: WhiteboardToolBarDelegate {
     func whiteboardToolBar(_ sender: WhiteboardToolBar, selectedTool: WhiteboardTool) {
         guard selectedTool != .chat else {
             self.presentChatViewController()
