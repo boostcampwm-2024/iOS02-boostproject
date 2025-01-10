@@ -233,10 +233,10 @@
 		0080E9572CE4D8760095B958 /* DomainTests */ = {
 			isa = PBXGroup;
 			children = (
+				6F68E7862CEC593300945394 /* TextObjectUseCaseTests.swift */,
 				0080E9562CE4D8760095B958 /* DrawObjectUseCaseTests.swift */,
 				00D2DD922CE88EC70089F0BA /* ManageWhiteboardToolUseCaseTests.swift */,
 				00D2DD942CE88EDA0089F0BA /* ManageWhiteboardObjectsUseCaseTests.swift */,
-				6F68E7862CEC593300945394 /* TextObjectUseCaseTests.swift */,
 				007BCEDB2CEB852C009E6935 /* AddPhotoUseCaseTests.swift */,
 				6F3BCDD12CF45510005F6642 /* ChatUseCaseTests.swift */,
 			);

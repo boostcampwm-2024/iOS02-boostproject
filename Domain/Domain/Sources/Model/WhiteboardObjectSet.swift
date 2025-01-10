@@ -36,10 +36,13 @@ public actor WhiteboardObjectSet: WhiteboardObjectSetInterface {
     }
 
     public func fetchObjectByID(id: UUID) -> WhiteboardObject? {
-        return whiteboardObjects.first { $0.id == id }
+        guard let object = whiteboardObjects.first(where: { $0.id == id }) else { return nil }
+        return object.deepCopy()
     }
 
     public func fetchAll() async -> [WhiteboardObject] {
-        return Array(whiteboardObjects.sorted { $0.updatedAt < $1.updatedAt })
+        return whiteboardObjects
+            .sorted { $0.updatedAt < $1.updatedAt }
+            .map { $0.deepCopy() }
     }
 }
