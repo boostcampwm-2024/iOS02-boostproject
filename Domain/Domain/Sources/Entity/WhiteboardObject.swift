@@ -6,7 +6,7 @@
 //
 import Foundation
 
-public class WhiteboardObject: Equatable, Codable {
+public class WhiteboardObject: Codable {
     public let id: UUID
     public private(set) var centerPosition: CGPoint
     public private(set) var size: CGSize
@@ -32,8 +32,14 @@ public class WhiteboardObject: Equatable, Codable {
         updatedAt = Date()
     }
 
-    public static func == (lhs: WhiteboardObject, rhs: WhiteboardObject) -> Bool {
-        return lhs.id == rhs.id
+    func deepCopy() -> WhiteboardObject {
+        return WhiteboardObject(
+            id: id,
+            centerPosition: centerPosition,
+            size: size,
+            scale: scale,
+            angle: angle,
+            selectedBy: selectedBy)
     }
 
     func select(by profile: Profile) {
@@ -48,20 +54,27 @@ public class WhiteboardObject: Equatable, Codable {
 
     func changeScale(to scale: CGFloat) {
         self.scale = scale
+        updatedAt = Date()
     }
 
     func changePosition(position: CGPoint) {
         self.centerPosition = position
+        updatedAt = Date()
     }
 
     func changeAngle(to angle: CGFloat) {
         self.angle = angle
+        updatedAt = Date()
     }
 }
 
 extension WhiteboardObject: Hashable {
     public func hash(into hasher: inout Hasher) {
         hasher.combine(id)
+    }
+
+    public static func == (lhs: WhiteboardObject, rhs: WhiteboardObject) -> Bool {
+        return lhs.id == rhs.id
     }
 }
 

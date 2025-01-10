@@ -109,6 +109,12 @@ extension NearbyNetworkService: NearbyNetworkInterface {
         }
     }
 
+    public func joinConnection(
+        connection: RefactoredNetworkConnection,
+        myConnectionInfo: RequestedContext) -> Result<Bool, Never> {
+            return .success(false)
+    }
+
     public func send(data: Data) {
         do {
             try session.send(

@@ -44,6 +44,17 @@ public class TextObject: WhiteboardObject {
         try super.encode(to: encoder)
     }
 
+    override func deepCopy() -> WhiteboardObject {
+        return TextObject(
+            id: id,
+            centerPosition: centerPosition,
+            size: size,
+            scale: scale,
+            angle: angle,
+            text: text,
+            selectedBy: selectedBy)
+    }
+
     func update(text: String) {
         self.text = text
     }

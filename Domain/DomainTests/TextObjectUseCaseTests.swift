@@ -22,28 +22,25 @@ final class TextObjectUseCaseTests: XCTestCase {
 
     // addText테스트
     // 정상적인 입력
-    func testIdealAddText() {
+    func testAddText() {
         // 준비
-        let testScrollViewOffset = CGPoint(x: 100, y: 100)
-        let testViewSize = CGSize(width: 300, height: 300)
         let expectedPosition = CGPoint(x: 100, y: 100)
         // 실행
-        let createdTextObject = useCase.addText(centerPoint: testScrollViewOffset, size: testViewSize)
+        let createdTextObject = useCase.addText(centerPoint: expectedPosition)
 
         // 검증
         XCTAssertEqual(createdTextObject.centerPosition, expectedPosition)
     }
 
     // addText테스트
-    // 비정상적인 입력(0)
-    func testStrangeZeroAddText() {
+    // 입력(0)
+    func testAddTextWithZeroPosition() {
         // 준비
-        let testScrollViewOffset = CGPoint(x: 0, y: 0)
-        let testViewSize = CGSize(width: 0, height: 0)
+        let textCenterPosition = CGPoint(x: 0, y: 0)
         let expectedPosition = CGPoint(x: 0, y: 0)
 
         // 실행
-        let createdTextObject = useCase.addText(centerPoint: testScrollViewOffset, size: testViewSize)
+        let createdTextObject = useCase.addText(centerPoint: textCenterPosition)
 
         // 검증
         XCTAssertEqual(createdTextObject.centerPosition, expectedPosition)
@@ -51,17 +48,15 @@ final class TextObjectUseCaseTests: XCTestCase {
 
     // addText테스트
     // 비정상적인 입력(마이너스)
-    func testStrangeMinusAddText() {
+    func testAddTextWithMinusPosition() {
         // 준비
-        let testScrollViewOffset = CGPoint(x: 0, y: 0)
-        let testViewSize = CGSize(width: -300, height: -300)
+        let textCenterPosition = CGPoint(x: -100, y: -100)
         let expectedPosition = CGPoint(x: 0, y: 0)
 
         // 실행
-        let createdTextObject = useCase.addText(centerPoint: testScrollViewOffset, size: testViewSize)
+        let createdTextObject = useCase.addText(centerPoint: textCenterPosition)
 
         // 검증
         XCTAssertEqual(createdTextObject.centerPosition, expectedPosition)
     }
-
 }

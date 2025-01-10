@@ -128,7 +128,7 @@ public final class WhiteboardViewModel: ViewModel {
         case .finishUsingTool:
             finishUsingTool()
         case .addTextObject(let point, let viewSize):
-            addText(at: point, viewSize: viewSize)
+            addText(at: point)
         case .editTextObject(let text):
             editText(text: text)
         case .finishEditingTextObject:
@@ -206,8 +206,8 @@ public final class WhiteboardViewModel: ViewModel {
         addWhiteboardObject(object: drawingObject)
     }
 
-    private func addText(at point: CGPoint, viewSize: CGSize) {
-        let textObject = textObjectUseCase.addText(centerPoint: point, size: viewSize)
+    private func addText(at point: CGPoint) {
+        let textObject = textObjectUseCase.addText(centerPoint: point)
         addWhiteboardObject(object: textObject)
     }
 

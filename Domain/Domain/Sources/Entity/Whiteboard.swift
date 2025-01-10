@@ -11,19 +11,14 @@ public struct Whiteboard: Hashable {
     public let name: String
     public let participantIcons: [ProfileIcon]
 
-    // TODO: - 수정
-    public var objects: [WhiteboardObject]
-
     public init(
         id: UUID,
         name: String,
-        participantIcons: [ProfileIcon],
-        objects: [WhiteboardObject] = []
+        participantIcons: [ProfileIcon]
     ) {
         self.id = id
         self.name = name
         self.participantIcons = participantIcons
-        self.objects = objects
     }
 
     public func hash(into hasher: inout Hasher) {

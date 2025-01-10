@@ -6,6 +6,7 @@
 //
 
 public enum NearbyNetworkKey: String {
+    case peerID
     case host
     case connectedPeerInfo
 }

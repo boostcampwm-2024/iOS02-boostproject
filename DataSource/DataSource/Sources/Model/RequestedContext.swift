@@ -8,10 +8,16 @@
 import Foundation
 
 public struct RequestedContext: Codable {
-    let nickname: String
-    let participant: String
+    public let peerID: UUID
+    public let nickname: String
+    public let participant: String
 
-    public init(nickname: String, participant: String) {
+    public init(
+        peerID: UUID,
+        nickname: String,
+        participant: String
+    ) {
+        self.peerID = peerID
         self.nickname = nickname
         self.participant = participant
     }
