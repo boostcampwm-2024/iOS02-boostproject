@@ -239,14 +239,16 @@ extension RefactoredNearbyNetworkService: NearbyNetworkInterface {
     }
 
     public func send(data: DataInformationDTO) async -> Bool {
-        let result: Bool = await withTaskGroup(of: Void.self, returning: Bool.self) { taskGroup in
-            var childResult = true
+        let result: Bool = await withTaskGroup(of: Bool.self, returning: Bool.self) { taskGroup in
             for connection in nearbyNetworkConnections.values {
                 taskGroup.addTask {
-                    childResult = await self.send(data: data, connection: connection)
+                    return await self.send(data: data, connection: connection)
                 }
             }
-            return childResult
+            for await childResult in taskGroup {
+                if !childResult { return false }
+            }
+            return true
         }
         return result
     }
