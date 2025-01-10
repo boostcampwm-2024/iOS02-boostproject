@@ -39,11 +39,16 @@ actor WhiteboardObjectRegisters: WhiteboardObjectRegistersInterface {
         }
     }
 
-    func fetchObjectByID(id: UUID) async -> LWWRegister? {
-        registers.first(where: { $0.whiteboardObject.id == id })
+    func fetchObjectByID(id: UUID) async -> WhiteboardObject? {
+        return registers
+            .first(where: { $0.whiteboardObject.id == id })?
+            .whiteboardObject
+            .deepCopy()
     }
 
     func fetchAll() async -> [LWWRegister] {
-        Array(registers.sorted { $0 < $1 })
+        registers
+            .sorted { $0 < $1 }
+            .map { $0 }
     }
 }

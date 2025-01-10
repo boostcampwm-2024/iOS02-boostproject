@@ -30,8 +30,8 @@ public protocol WhiteboardObjectRegistersInterface {
 
     /// ID로 집합에있는 레지스터를 가져옵니다.
     /// - Parameter id: 가져올 레지스터의 오브젝트 ID
-    /// - Returns: 레지스터
-    func fetchObjectByID(id: UUID) async -> LWWRegister?
+    /// - Returns: 화이트보드 오브젝트
+    func fetchObjectByID(id: UUID) async -> WhiteboardObject?
 
     /// 모든 화이트보드 오브젝트 레지스터들을 가져옵니다.
     /// - Returns: 화이트보드 레지스터 배열
