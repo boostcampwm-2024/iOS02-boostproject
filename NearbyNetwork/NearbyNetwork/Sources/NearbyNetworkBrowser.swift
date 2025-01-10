@@ -31,16 +31,10 @@ public final class NearbyNetworkBrowser {
     }
     weak var delegate: NearbyNetworkBrowserDelegate?
 
-    init(serviceType: String) {
-        let option = NWProtocolFramer.Options(definition: NearbyNetworkProtocol.definition)
-        let parameter = NWParameters.tcp
-        parameter
-            .defaultProtocolStack
-            .applicationProtocols
-            .insert(option, at: 0)
+    init(serviceType: String, networkParameter: NWParameters) {
         nwBrowser = NWBrowser(
             for: .bonjourWithTXTRecord(type: serviceType, domain: nil),
-            using: parameter)
+            using: networkParameter)
         self.browserQueue = DispatchQueue.global()
         self.serviceType = serviceType
         self.logger = Logger()
