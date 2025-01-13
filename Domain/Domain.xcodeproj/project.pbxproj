@@ -40,8 +40,13 @@
 		6F3BCDD02CF3322C005F6642 /* ChatUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F3BCDCF2CF3322C005F6642 /* ChatUseCase.swift */; };
 		6F3BCDD22CF45510005F6642 /* ChatUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F3BCDD12CF45510005F6642 /* ChatUseCaseTests.swift */; };
 		6F47898F2CEB8D8F0016B7AB /* TextObjectUseCaseInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F47898E2CEB8D8F0016B7AB /* TextObjectUseCaseInterface.swift */; };
+		6F5FC1562D2BF5100049A44F /* LWWRegister.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F5FC1552D2BF5100049A44F /* LWWRegister.swift */; };
+		6F5FC1582D2BF51E0049A44F /* Timestamp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F5FC1572D2BF51E0049A44F /* Timestamp.swift */; };
+		6F5FC15A2D2C1BFF0049A44F /* WhiteboardObjectRegisters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F5FC1592D2C1BFF0049A44F /* WhiteboardObjectRegisters.swift */; };
+		6F5FC15C2D2C1CF80049A44F /* WhiteboardObjectRegistersInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F5FC15B2D2C1CF80049A44F /* WhiteboardObjectRegistersInterface.swift */; };
 		6F68E7852CEC200000945394 /* TextObjectUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F68E7842CEC200000945394 /* TextObjectUseCase.swift */; };
 		6F68E7872CEC593300945394 /* TextObjectUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F68E7862CEC593300945394 /* TextObjectUseCaseTests.swift */; };
+		6F6A89A72D2E9367008CF899 /* LWWRegisterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F6A89A62D2E9367008CF899 /* LWWRegisterTests.swift */; };
 		A81E7BF32CF70C17007E8414 /* GameObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = A81E7BF22CF70C17007E8414 /* GameObject.swift */; };
 		A81E7BF92CF72503007E8414 /* GameObjectUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = A81E7BF82CF72503007E8414 /* GameObjectUseCase.swift */; };
 		A81E7BFB2CF725C2007E8414 /* GameObjectUseCaseInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = A81E7BFA2CF725C2007E8414 /* GameObjectUseCaseInterface.swift */; };
@@ -99,8 +104,13 @@
 		6F3BCDCF2CF3322C005F6642 /* ChatUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatUseCase.swift; sourceTree = "<group>"; };
 		6F3BCDD12CF45510005F6642 /* ChatUseCaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatUseCaseTests.swift; sourceTree = "<group>"; };
 		6F47898E2CEB8D8F0016B7AB /* TextObjectUseCaseInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextObjectUseCaseInterface.swift; sourceTree = "<group>"; };
+		6F5FC1552D2BF5100049A44F /* LWWRegister.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LWWRegister.swift; sourceTree = "<group>"; };
+		6F5FC1572D2BF51E0049A44F /* Timestamp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Timestamp.swift; sourceTree = "<group>"; };
+		6F5FC1592D2C1BFF0049A44F /* WhiteboardObjectRegisters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhiteboardObjectRegisters.swift; sourceTree = "<group>"; };
+		6F5FC15B2D2C1CF80049A44F /* WhiteboardObjectRegistersInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhiteboardObjectRegistersInterface.swift; sourceTree = "<group>"; };
 		6F68E7842CEC200000945394 /* TextObjectUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextObjectUseCase.swift; sourceTree = "<group>"; };
 		6F68E7862CEC593300945394 /* TextObjectUseCaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextObjectUseCaseTests.swift; sourceTree = "<group>"; };
+		6F6A89A62D2E9367008CF899 /* LWWRegisterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LWWRegisterTests.swift; sourceTree = "<group>"; };
 		A81E7BF22CF70C17007E8414 /* GameObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameObject.swift; sourceTree = "<group>"; };
 		A81E7BF82CF72503007E8414 /* GameObjectUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameObjectUseCase.swift; sourceTree = "<group>"; };
 		A81E7BFA2CF725C2007E8414 /* GameObjectUseCaseInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameObjectUseCaseInterface.swift; sourceTree = "<group>"; };
@@ -197,6 +207,7 @@
 				0080E9192CE4B0880095B958 /* UseCase */,
 				0080E8CC2CE446270095B958 /* Repository */,
 				00036B852CF58D7C007D1244 /* WhiteboardObjectSetInterface.swift */,
+				6F5FC15B2D2C1CF80049A44F /* WhiteboardObjectRegistersInterface.swift */,
 			);
 			path = Interface;
 			sourceTree = "<group>";
@@ -239,6 +250,7 @@
 				00D2DD942CE88EDA0089F0BA /* ManageWhiteboardObjectsUseCaseTests.swift */,
 				007BCEDB2CEB852C009E6935 /* AddPhotoUseCaseTests.swift */,
 				6F3BCDD12CF45510005F6642 /* ChatUseCaseTests.swift */,
+				6F6A89A62D2E9367008CF899 /* LWWRegisterTests.swift */,
 			);
 			path = DomainTests;
 			sourceTree = "<group>";
@@ -246,6 +258,9 @@
 		00D2DD962CE8A4DB0089F0BA /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				6F5FC1572D2BF51E0049A44F /* Timestamp.swift */,
+				6F5FC1552D2BF5100049A44F /* LWWRegister.swift */,
+				6F5FC1592D2C1BFF0049A44F /* WhiteboardObjectRegisters.swift */,
 				00D2DD8E2CE88C640089F0BA /* WhiteboardTool.swift */,
 				005BCC502CF01D29001B3623 /* WhiteboardObjectSet.swift */,
 			);
@@ -418,6 +433,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				007BCEDC2CEB852C009E6935 /* AddPhotoUseCaseTests.swift in Sources */,
+				6F6A89A72D2E9367008CF899 /* LWWRegisterTests.swift in Sources */,
 				6F3BCDD22CF45510005F6642 /* ChatUseCaseTests.swift in Sources */,
 				00D2DD952CE88EDA0089F0BA /* ManageWhiteboardObjectsUseCaseTests.swift in Sources */,
 				0080E9582CE4D8760095B958 /* DrawObjectUseCaseTests.swift in Sources */,
@@ -434,9 +450,11 @@
 				A8E97C052CE5E3AB00B28063 /* ProfileUseCaseInterface.swift in Sources */,
 				004B217D2CEB2B2300A5BEB8 /* DomainError.swift in Sources */,
 				6F3BCDC82CF31CB4005F6642 /* ChatMessage.swift in Sources */,
+				6F5FC15C2D2C1CF80049A44F /* WhiteboardObjectRegistersInterface.swift in Sources */,
 				005BCC512CF01D29001B3623 /* WhiteboardObjectSet.swift in Sources */,
 				A8E97BDB2CE5A6D500B28063 /* ProfileRepositoryInterface.swift in Sources */,
 				A8E97BD92CE5A6B800B28063 /* ProfileIcon.swift in Sources */,
+				6F5FC1562D2BF5100049A44F /* LWWRegister.swift in Sources */,
 				00036B862CF58D7C007D1244 /* WhiteboardObjectSetInterface.swift in Sources */,
 				A81E7BF32CF70C17007E8414 /* GameObject.swift in Sources */,
 				A8E97BD82CE5A6B800B28063 /* Profile.swift in Sources */,
@@ -447,6 +465,7 @@
 				6F3BCDD02CF3322C005F6642 /* ChatUseCase.swift in Sources */,
 				5BDFD9342CE1F7DB00DA4F5B /* Whiteboard.swift in Sources */,
 				A81E7BFB2CF725C2007E8414 /* GameObjectUseCaseInterface.swift in Sources */,
+				6F5FC1582D2BF51E0049A44F /* Timestamp.swift in Sources */,
 				5BDFD9372CE2E6BC00DA4F5B /* WhiteboardRepositoryInterface.swift in Sources */,
 				5B6542482CE44631000168AD /* WhiteboardUseCaseInterface.swift in Sources */,
 				00D2DD842CE8864B0089F0BA /* ManageWhiteboardObjectUseCaseInterface.swift in Sources */,
@@ -454,6 +473,7 @@
 				A81E7C012CF72A4C007E8414 /* GameRepositoryInterface.swift in Sources */,
 				6F47898F2CEB8D8F0016B7AB /* TextObjectUseCaseInterface.swift in Sources */,
 				00D2DD882CE88BD80089F0BA /* ManageWhiteboardToolUseCaseInterface.swift in Sources */,
+				6F5FC15A2D2C1BFF0049A44F /* WhiteboardObjectRegisters.swift in Sources */,
 				003D5A2B2CEB1FF0005F3D09 /* PhotoObject.swift in Sources */,
 				6F3BCDCA2CF31DBA005F6642 /* ChatRepositoryInterface.swift in Sources */,
 				0080E8CE2CE4463B0095B958 /* WhiteboardObjectRepositoryInterface.swift in Sources */,
