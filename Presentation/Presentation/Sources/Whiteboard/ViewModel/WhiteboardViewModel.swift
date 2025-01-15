@@ -53,7 +53,7 @@ public final class WhiteboardViewModel: ViewModel {
     private let chatUseCase: ChatUseCaseInterface
     private let gameObjectUseCase: GameObjectUseCaseInterface
     private let manageWhiteboardToolUseCase: ManageWhiteboardToolUseCaseInterface
-    private let manageWhiteboardObjectUseCase: ManageWhiteboardObjectUseCaseInterface
+    private let manageWhiteboardObjectUseCase: WhiteboardUseCaseInterface
     private let selectedObjectSubject: CurrentValueSubject<UUID?, Never>
     private let imageSubject: PassthroughSubject<(id: UUID, imageData: Data), Never>
     private let objectPositionSubject: PassthroughSubject<CGPoint, Never>
@@ -69,7 +69,7 @@ public final class WhiteboardViewModel: ViewModel {
         chatUseCase: ChatUseCaseInterface,
         gameObjectUseCase: GameObjectUseCaseInterface,
         manageWhiteboardToolUseCase: ManageWhiteboardToolUseCaseInterface,
-        manageWhiteboardObjectUseCase: ManageWhiteboardObjectUseCaseInterface
+        manageWhiteboardObjectUseCase: WhiteboardUseCaseInterface
     ) {
         self.whiteboardUseCase = whiteboardUseCase
         self.photoUseCase = photoUseCase

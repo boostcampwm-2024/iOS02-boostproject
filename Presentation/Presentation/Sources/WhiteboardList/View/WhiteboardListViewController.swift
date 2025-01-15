@@ -78,7 +78,7 @@ public final class WhiteboardListViewController: UIViewController {
     private let gameRepository: GameRepositoryInterface
     private let gameObjectUseCase: GameObjectUseCaseInterface
     private let manageWhiteboardToolUseCase: ManageWhiteboardToolUseCaseInterface
-    private let manageWhiteboardObjectUseCase: ManageWhiteboardObjectUseCaseInterface
+    private let manageWhiteboardObjectUseCase: WhiteboardUseCaseInterface
 
     public init(
         viewModel: WhiteboardListViewModel,
@@ -93,7 +93,7 @@ public final class WhiteboardListViewController: UIViewController {
         gameRepository: GameRepositoryInterface,
         gameObjectUseCase: GameObjectUseCaseInterface,
         manageWhiteboardToolUseCase: ManageWhiteboardToolUseCaseInterface,
-        manageWhiteboardObjectUseCase: ManageWhiteboardObjectUseCaseInterface
+        manageWhiteboardObjectUseCase: WhiteboardUseCaseInterface
     ) {
         self.viewModel = viewModel
         self.whiteboardObjectViewFactory = whiteboardObjectViewFactory

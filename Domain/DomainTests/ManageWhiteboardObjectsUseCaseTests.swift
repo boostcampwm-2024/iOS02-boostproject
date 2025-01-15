@@ -10,7 +10,7 @@ import Domain
 import XCTest
 
 final class ManageWhiteboardObjectsUseCaseTests: XCTestCase {
-    private var useCase: ManageWhiteboardObjectUseCaseInterface!
+    private var useCase: WhiteboardUseCaseInterface!
     private var cancellables: Set<AnyCancellable>!
     private var myProfile: Profile!
 
@@ -18,7 +18,7 @@ final class ManageWhiteboardObjectsUseCaseTests: XCTestCase {
         let profileRepository = MockProfileRepository()
         myProfile = profileRepository.loadProfile()
 
-        useCase = ManageWhiteboardObjectUseCase(
+        useCase = WhiteboardUseCase(
             profileRepository: profileRepository,
             whiteboardObjectRepository: MockWhiteObjectRepository(),
             whiteboardRepository: MockWhiteboardRepository(),

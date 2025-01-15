@@ -44,7 +44,7 @@ public final class WhiteboardRepository: WhiteboardRepositoryInterface {
     }
 
     public func send(whiteboardObjects: [WhiteboardObject], to profile: Profile) async -> Bool {
-        let connection = RefactoredNetworkConnection(
+        let connection = NetworkConnection(
             id: profile.id,
             name: profile.nickname,
             connectedPeerInfo: [profile.profileIcon.emoji])
@@ -143,7 +143,7 @@ public final class WhiteboardRepository: WhiteboardRepositoryInterface {
 extension WhiteboardRepository: NearbyNetworkConnectionDelegate {
     public func nearbyNetwork(
         _ sender: NearbyNetworkInterface,
-        didConnect connection: RefactoredNetworkConnection
+        didConnect connection: NetworkConnection
     ) {
         guard let icon = connection
             .connectedPeerInfo
@@ -160,7 +160,7 @@ extension WhiteboardRepository: NearbyNetworkConnectionDelegate {
     
     public func nearbyNetwork(
         _ sender: NearbyNetworkInterface,
-        didDisconnect connection: RefactoredNetworkConnection
+        didDisconnect connection: NetworkConnection
     ) {
         guard let icon = connection
             .connectedPeerInfo
