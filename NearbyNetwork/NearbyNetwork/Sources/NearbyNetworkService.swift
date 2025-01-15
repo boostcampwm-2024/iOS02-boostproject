@@ -1,331 +1,312 @@
 //
-//  NearbyNetwork.swift
+//  NearbyNetworkService.swift
 //  NearbyNetwork
 //
-//  Created by 최정인 on 11/7/24.
+//  Created by 이동현 on 12/30/24.
 //
 
 import Combine
 import DataSource
 import Foundation
-import MultipeerConnectivity
+import Network
 import OSLog
 
-public final class NearbyNetworkService: NSObject {
-    public weak var connectionDelegate: NearbyNetworkConnectionDelegate?
-    public let reciptDataPublisher: AnyPublisher<Data, Never>
-    public let reciptURLPublisher: AnyPublisher<(url: URL, dataInfo: AirplaINDataDTO), Never>
-    private let reciptDataSubject = PassthroughSubject<Data, Never>()
-    private let reciptURLSubject = PassthroughSubject<(url: URL, dataInfo: AirplaINDataDTO), Never>()
-    private let peerID: MCPeerID
-    private let session: MCSession
-    private var serviceAdvertiser: MCNearbyServiceAdvertiser
-    private let serviceBrowser: MCNearbyServiceBrowser
-    private var connectedPeers: [MCPeerID: NetworkConnection] = [:]
-    private var foundPeers: [MCPeerID: NetworkConnection] = [:]
+// TODO: - 추후 기능 동작 확인 후 NearbyNetworkService 대체
+public final class NearbyNetworkService {
+    public var connectionDelegate: NearbyNetworkConnectionDelegate?
+    public var searchingDelegate: NearbyNetworkSearchingDelegate?
+    public var foundPeerHandler: ((_ networkConnections: [NetworkConnection]) -> Void)?
+    public let reciptDataPublisher: AnyPublisher<AirplaINDataDTO, Never>
+    private let reciptDataSubject: PassthroughSubject<AirplaINDataDTO, Never>
+    private let serviceName: String
+    private let serviceType: String
+    private let peerID: UUID
+    private let nearbyNetworkParameter: NWParameters
+    private let nearbyNetworkListener: NearbyNetworkListener
+    private let nearbyNetworkBrowser: NearbyNetworkBrowser
+    private let nearbyNetworkServiceQueue: DispatchQueue
+    private let logger: Logger
+    private var nearbyNetworkConnections: [NetworkConnection: NWConnection]
+    private let jsonEncoder: JSONEncoder
+    private let jsonDecoder: JSONDecoder
 
-    private let logger = Logger()
-    private var isHost = false
-    private var requestInfo: [MCPeerID: Data] = [:]
-    private let encoder = JSONEncoder()
-    private let serialQueue = DispatchQueue(label: "NNS.serialQueue")
+    public init(
+        myPeerID: UUID,
+        serviceName: String,
+        serviceType: String
+    ) {
+        peerID = myPeerID
+        nearbyNetworkServiceQueue = DispatchQueue.global()
+        logger = Logger()
 
-    public init(serviceName: String) {
-        peerID = MCPeerID(displayName: UUID().uuidString)
-        session = MCSession(peer: peerID)
-        serviceAdvertiser =  MCNearbyServiceAdvertiser(
-            peer: peerID,
-            discoveryInfo: nil,
-            serviceType: serviceName)
-        serviceBrowser = MCNearbyServiceBrowser(peer: peerID, serviceType: serviceName)
+        let option = NWProtocolFramer.Options(definition: NearbyNetworkProtocol.definition)
+        let tcpOption = NWProtocolTCP.Options()
+        tcpOption.enableKeepalive = true
+        tcpOption.keepaliveIdle = 5
+        tcpOption.keepaliveCount = 2
+        tcpOption.keepaliveInterval = 3
+        tcpOption.connectionTimeout = 5
+        tcpOption.connectionDropTime = 5
+        tcpOption.persistTimeout = 5
+        nearbyNetworkParameter = NWParameters(tls: nil, tcp: tcpOption)
 
+        nearbyNetworkParameter.defaultProtocolStack
+            .applicationProtocols
+            .insert(option, at: 0)
+        nearbyNetworkParameter.includePeerToPeer = true
+
+        nearbyNetworkListener = NearbyNetworkListener(
+            peerID: peerID,
+            serviceName: serviceName,
+            serviceType: serviceType,
+            networkParameter: nearbyNetworkParameter)
+        nearbyNetworkBrowser = NearbyNetworkBrowser(
+            serviceType: serviceType,
+            networkParameter: nearbyNetworkParameter)
+        nearbyNetworkConnections = [:]
+        jsonEncoder = JSONEncoder()
+        jsonDecoder = JSONDecoder()
+        reciptDataSubject = PassthroughSubject<AirplaINDataDTO, Never>()
         reciptDataPublisher = reciptDataSubject.eraseToAnyPublisher()
-        reciptURLPublisher = reciptURLSubject.eraseToAnyPublisher()
-
-        super.init()
-
-        session.delegate = self
-        serviceAdvertiser.delegate = self
-        serviceBrowser.delegate = self
-    }
-}
-
-// MARK: - NearbyNetworkInterface
-extension NearbyNetworkService: NearbyNetworkInterface {
-    public func stopSearching() {
-        serviceBrowser.stopBrowsingForPeers()
+        self.serviceName = serviceName
+        self.serviceType = serviceType
+        nearbyNetworkBrowser.delegate = self
+        nearbyNetworkListener.delegate = self
     }
 
-    public func startSearching() {
-        serialQueue.sync {
-            serviceBrowser.stopBrowsingForPeers()
-            foundPeers.removeAll()
-            connectionDelegate?.nearbyNetwork(self, didFind: [])
-            serviceBrowser.startBrowsingForPeers()
+    private func configureConnection(connection: NWConnection) {
+        connection.receiveMessage { [weak self] content, contentContext, _, error in
+            guard let self else { return }
+
+            let protocolMetadata = contentContext?.protocolMetadata(definition: NearbyNetworkProtocol.definition)
+            guard
+                let message = protocolMetadata as? NWProtocolFramer.Message
+            else {
+                self.logger.log(level: .error, "\(connection.debugDescription): 헤더 정보를 확인할 수 없습니다")
+                return
+            }
+
+            let messageType = message.nearbyNetworkMessageType
+            switch messageType {
+            case .invalid:
+                self.logger.log(level: .error, "\(connection.debugDescription): 유효하지 않은 헤더입니다.")
+            case .peerInfo:
+                handleNewPeer(peerData: content, connection: connection)
+            case .data:
+                // TODO: - 데이터 수신 처리
+                handleReceivedData(data: content, connection: connection)
+            }
+
+            // error가 아니라면, 계속해서 데이터 수신
+            if error == nil {
+                configureConnection(connection: connection)
+            } else {
+                // connection을 다시 establish 해야 함!
+            }
         }
     }
 
-    public func startPublishing(with info: [String: String]) {
-        isHost = true
-        serviceAdvertiser.stopAdvertisingPeer()
-        serviceAdvertiser =  MCNearbyServiceAdvertiser(
-            peer: peerID,
-            discoveryInfo: info,
-            serviceType: serviceAdvertiser.serviceType)
-        serviceAdvertiser.delegate = self
-        serviceAdvertiser.startAdvertisingPeer()
+    private func handleNewPeer(peerData: Data?, connection: NWConnection) {
+        guard
+            let peerData,
+            let connectionInfo = try? jsonDecoder.decode(RequestedContext.self, from: peerData)
+        else {
+            self.logger.log(level: .error, "\(connection.debugDescription): RequestedContext로 디코딩에 실패했습니다.")
+            return
+        }
+
+        let networkConnection = NetworkConnection(
+            id: connectionInfo.peerID,
+            name: connectionInfo.nickname,
+            connectedPeerInfo: [connectionInfo.participant])
+        self.nearbyNetworkConnections[networkConnection] = connection
+        self.connectionDelegate?.nearbyNetwork(self, didConnect: networkConnection)
+        self.logger.log(level: .debug, "\(networkConnection): 데이터 수신")
+    }
+
+    private func handleReceivedData(data: Data?, connection: NWConnection) {
+        guard
+            let data,
+            let dataDTO = try? jsonDecoder.decode(AirplaINDataDTO.self, from: data)
+        else { return }
+
+        reciptDataSubject.send(dataDTO)
+        self.logger.log(level: .debug, "\(connection.debugDescription): 데이터 수신")
+    }
+
+    private func send(data: AirplaINDataDTO, connection: NWConnection) async -> Bool {
+        typealias Continuation = CheckedContinuation<Bool, Never>
+        var tryCount = 0
+
+        let encodedData = try? jsonEncoder.encode(data)
+        let message = NWProtocolFramer.Message(nearbyNetworkMessageType: .data)
+        let context = NWConnection.ContentContext(identifier: "Data", metadata: [message])
+
+        while tryCount < 3 {
+            let result = await withCheckedContinuation { (continuation: Continuation) in
+                connection.send(
+                    content: encodedData,
+                    contentContext: context,
+                    completion: .contentProcessed({ error in
+                        if let error {
+                            continuation.resume(returning: false)
+                        } else {
+                            continuation.resume(returning: true)
+                        }
+                    }))
+            }
+
+            if result { return true }
+            tryCount += 1
+        }
+
+        return false
+    }
+}
+
+// MARK: - NearbyNetworkInterface 메서드 구현
+extension NearbyNetworkService: NearbyNetworkInterface {
+    public func startSearching() {
+        nearbyNetworkBrowser.startSearching()
+    }
+
+    public func stopSearching() {
+        nearbyNetworkBrowser.stopSearching()
     }
 
     public func startPublishing(with hostName: String, connectedPeerInfo: [String]) {
-        // TODO: - 사용하지 않는 함수
+        nearbyNetworkListener.startPublishing(
+            hostName: hostName,
+            connectedPeerInfo: connectedPeerInfo)
     }
 
     public func stopPublishing() {
-        serviceAdvertiser.stopAdvertisingPeer()
+        nearbyNetworkListener.stopPublishing()
     }
 
     public func disconnectAll() {
-        session.disconnect()
+        for connection in nearbyNetworkConnections.values {
+            connection.cancel()
+        }
+        nearbyNetworkConnections.removeAll()
     }
 
     public func joinConnection(connection: NetworkConnection, context: RequestedContext) throws {
-        isHost = false
-
-        let peerID = foundPeers
-            .first { $0.value.id == connection.id }?
-            .key
-        // TODO: Error 수정
-        guard let peerID else { throw NSError() }
-
-        do {
-            let encodedContext = try encoder.encode(context)
-            serviceBrowser.invitePeer(
-                peerID,
-                to: session,
-                withContext: encodedContext,
-                timeout: 30)
-        } catch {
-
-        }
     }
 
     public func joinConnection(
-        connection: RefactoredNetworkConnection,
-        myConnectionInfo: RequestedContext) -> Result<Bool, Never> {
-            return .success(false)
-    }
+        connection: NetworkConnection,
+        myConnectionInfo: RequestedContext
+    ) async -> Bool {
+        guard let endpoint = nearbyNetworkBrowser.fetchFoundConnection(networkConnection: connection)
+        else { return false }
 
-    public func send(data: Data) {
-        do {
-            try session.send(
-                data,
-                toPeers: session.connectedPeers,
-                with: .reliable)
-        } catch {
-            logger.log(level: .error, "데이터 전송 실패")
-        }
-    }
+        let option = NWProtocolFramer.Options(definition: NearbyNetworkProtocol.definition)
+        let parameter = NWParameters.tcp
+        parameter.defaultProtocolStack
+            .applicationProtocols
+            .insert(option, at: 0)
 
-    public func send(fileURL: URL, info: AirplaINDataDTO) async {
-        let infoJsonData = try? encoder.encode(info)
+        let nwConnection = NWConnection(to: endpoint, using: parameter)
 
-        guard
-            let infoJsonData,
-            let infoJsonString = String(data: infoJsonData, encoding: .utf8)
-        else { return }
-
-        await withTaskGroup(of: Void.self) { taskGroup in
-            session.connectedPeers.forEach { peer in
-                taskGroup.addTask {
-                    do {
-                        try await self.session.sendResource(
-                            at: fileURL,
-                            withName: infoJsonString,
-                            toPeer: peer)
-                    } catch {
-                        self.logger.log(level: .error, "\(peer)에게 file 데이터 전송 실패")
-                    }
-                }
+        typealias Continuation = CheckedContinuation<Bool, Never>
+        let stateHandler: (@Sendable (NWConnection.State) -> Void) = { [weak self] state in
+            guard let self else { return }
+            switch state {
+            case .ready:
+                self.logger.log(level: .debug, "\(connection)와 연결되었습니다.")
+                let encodedMyConnectionInfo = try? jsonEncoder.encode(myConnectionInfo)
+                let message = NWProtocolFramer.Message(nearbyNetworkMessageType: .peerInfo)
+                let context = NWConnection.ContentContext(identifier: "ConnectedPeerInfo", metadata: [message])
+                // TODO: - 연결 실패 시 delegate로 실패 했음 알려주기
+                nwConnection.send(
+                    content: encodedMyConnectionInfo,
+                    contentContext: context,
+                    completion: .idempotent)
+                self.connectionDelegate?.nearbyNetwork(self, didConnect: connection)
+                self.nearbyNetworkConnections[connection] = nwConnection
+            case .failed, .cancelled:
+                self.logger.log(level: .debug, "\(connection)와 연결이 끊어졌습니다.")
+                self.connectionDelegate?.nearbyNetwork(self, didDisconnect: connection)
+                self.nearbyNetworkConnections[connection] = nil
+            default:
+                self.logger.log(level: .debug, "\(connection)와 연결 설정 중입니다.")
             }
         }
+
+        let result = await withCheckedContinuation { (continuation: Continuation) in
+            nwConnection.stateUpdateHandler = { state in
+                switch state {
+                case .ready:
+                    nwConnection.stateUpdateHandler = stateHandler
+                    continuation.resume(returning: true)
+                case .failed, .cancelled:
+                    nwConnection.stateUpdateHandler = stateHandler
+                    continuation.resume(returning: false)
+                default:
+                    break
+                }
+            }
+            nwConnection.start(queue: nearbyNetworkServiceQueue)
+        }
+        return result
     }
 
     public func send(data: AirplaINDataDTO) async -> Bool {
-        return true
-    }
-
-    public func send(
-        fileURL: URL,
-        info: DataSource.AirplaINDataDTO,
-        to connection: NetworkConnection
-    ) async {
-        let infoJsonData = try? encoder.encode(info)
-
-        guard
-            let infoJsonData,
-            let infoJsonString = String(data: infoJsonData, encoding: .utf8),
-            let peer = session
-                .connectedPeers
-                .first(where: { $0.displayName == connection.id.uuidString })
-        else { return }
-
-        do {
-            try await session.sendResource(at: fileURL, withName: infoJsonString, toPeer: peer)
-            self.logger.log(level: .error, "\(peer)에게 file 데이터 전송 성공")
-        } catch {
-            self.logger.log(level: .error, "\(peer)에게 file 데이터 전송 실패")
-        }
-    }
-
-    public func send(data: AirplaINDataDTO, to connection: RefactoredNetworkConnection) async -> Bool {
-        return true
-    }
-}
-
-// MARK: - MCSessionDelegate
-extension NearbyNetworkService: MCSessionDelegate {
-    public func session(
-        _ session: MCSession,
-        peer peerID: MCPeerID,
-        didChange state: MCSessionState
-    ) {
-        logger.log(level: .debug, "\(peerID.displayName) \(state.description)")
-
-        serialQueue.sync { [weak self] in
-            guard let self = self else { return }
-
-            switch state {
-            case .notConnected:
-                guard let disconnectedPeer = connectedPeers[peerID] else { return }
-                connectionDelegate?.nearbyNetwork(
-                        self,
-                        didDisconnect: disconnectedPeer,
-                        isHost: isHost)
-                connectedPeers[peerID] = nil
-            case .connected:
-                let connectedPeerInfo = foundPeers[peerID]?.info
-                guard let uuid = UUID(uuidString: peerID.displayName) else { return }
-
-                connectedPeers[peerID] = NetworkConnection(
-                    id: uuid,
-                    name: peerID.displayName,
-                    info: connectedPeerInfo)
-
-                guard let connection = connectedPeers[peerID] else { return }
-
-                connectionDelegate?.nearbyNetwork(
-                        self,
-                        didConnect: connection,
-                        with: requestInfo[peerID],
-                        isHost: self.isHost)
-            default:
-                break
+        let result: Bool = await withTaskGroup(of: Bool.self, returning: Bool.self) { taskGroup in
+            for connection in nearbyNetworkConnections.values {
+                taskGroup.addTask {
+                    return await self.send(data: data, connection: connection)
+                }
             }
+            for await childResult in taskGroup {
+                if !childResult { return false }
+            }
+            return true
         }
+        return result
     }
 
-    public func session(
-        _ session: MCSession,
-        didReceive data: Data,
-        fromPeer peerID: MCPeerID
+    public func send(data: AirplaINDataDTO, to connection: NetworkConnection) async -> Bool {
+        guard let connection = nearbyNetworkConnections[connection] else { return false }
+        return await send(data: data, connection: connection)
+    }
+}
+
+// MARK: - NearbyNetworkBrowserDelegate
+extension NearbyNetworkService: NearbyNetworkBrowserDelegate {
+    public func nearbyNetworkBrowserDidFindPeer(
+        _ sender: NearbyNetworkBrowser,
+        foundPeers: [NetworkConnection]
     ) {
-        guard connectedPeers[peerID] != nil else {
-            logger.log(level: .error, "\(peerID.displayName)와 연결되어 있지 않음")
-            return
-        }
-        reciptDataSubject.send(data)
+        guard let foundPeerHandler else { return }
+        foundPeerHandler(foundPeers)
+    }
+}
+
+extension NearbyNetworkService: NearbyNetworkListenerDelegate {
+    public func nearbyNetworkListener(_ sender: NearbyNetworkListener, didConnect connection: NWConnection) {
+        configureConnection(connection: connection)
     }
 
-    public func session(
-        _ session: MCSession,
-        didReceive stream: InputStream,
-        withName streamName: String,
-        fromPeer peerID: MCPeerID
-    ) {
-        logger.log(level: .error, "\(peerID.displayName)에게 스트림 데이터를 받음")
-    }
-
-    public func session(
-        _ session: MCSession,
-        didStartReceivingResourceWithName resourceName: String,
-        fromPeer peerID: MCPeerID,
-        with progress: Progress
-    ) {
-        logger.log(level: .error, "\(peerID.displayName)로부터 데이터 수신을 시작함")
-    }
-
-    public func session(
-        _ session: MCSession,
-        didFinishReceivingResourceWithName resourceName: String,
-        fromPeer peerID: MCPeerID,
-        at localURL: URL?,
-        withError error: (any Error)?
-    ) {
+    public func nearbyNetworkListener(_ sender: NearbyNetworkListener, didDisconnect connection: NWConnection) {
         guard
-            let localURL,
-            let jsonData = resourceName.data(using: .utf8),
-            let dto = try? JSONDecoder().decode(AirplaINDataDTO.self, from: jsonData)
+            let networkConnection = nearbyNetworkConnections
+                .first(where: {$0.value === connection})?
+                .key
         else { return }
 
-        reciptURLSubject.send((url: localURL, dataInfo: dto))
-    }
-}
-
-// MARK: - MCNearbyServiceAdvertiserDelegate
-extension NearbyNetworkService: MCNearbyServiceAdvertiserDelegate {
-    public func advertiser(
-        _ advertiser: MCNearbyServiceAdvertiser,
-        didReceiveInvitationFromPeer peerID: MCPeerID,
-        withContext context: Data?,
-        invitationHandler: @escaping (Bool, MCSession?) -> Void
-    ) {
-        requestInfo[peerID] = context
-        connectionDelegate?.nearbyNetwork(self, didReceive: { [weak self] isAccepted in
-            invitationHandler(isAccepted, self?.session)
-        })
-
+        nearbyNetworkConnections[networkConnection] = nil
+        connectionDelegate?.nearbyNetwork(self, didDisconnect: networkConnection)
     }
 
-    public func advertiser(
-        _ advertiser: MCNearbyServiceAdvertiser,
-        didNotStartAdvertisingPeer error: any Error
-    ) {
-        logger.log(level: .error, "Advertising 실패 \(error.localizedDescription)")
-        connectionDelegate?.nearbyNetworkCannotConnect(self)
-    }
-}
+    public func nearbyNetworkListenerCannotConnect(_ sender: NearbyNetworkListener, connection: NWConnection) {
+        guard
+            let networkConnection = nearbyNetworkConnections
+                .first(where: {$0.value === connection})?
+                .key
+        else { return }
 
-// MARK: - MCNearbyServiceBrowserDelegate
-extension NearbyNetworkService: MCNearbyServiceBrowserDelegate {
-    public func browser(
-        _ browser: MCNearbyServiceBrowser,
-        foundPeer peerID: MCPeerID,
-        withDiscoveryInfo info: [String: String]?
-    ) {
-        serialQueue.sync { [weak self] in
-            guard let self else { return }
-            guard let uuid = UUID(uuidString: peerID.displayName) else { return }
-
-            let connection = NetworkConnection(
-                id: uuid,
-                name: peerID.displayName,
-                info: info)
-
-            foundPeers[peerID] = connection
-            connectionDelegate?.nearbyNetwork(self, didFind: foundPeers
-                .values
-                .map { $0 }
-                .sorted(by: { $0.name < $1.name }))
-        }
-    }
-
-    public func browser(_ browser: MCNearbyServiceBrowser, lostPeer peerID: MCPeerID) {
-        serialQueue.sync { [weak self] in
-            guard let self else { return }
-            guard let lostPeer = foundPeers[peerID] else { return }
-
-            foundPeers[peerID] = nil
-            connectionDelegate?.nearbyNetwork(self, didLost: lostPeer)
-        }
+        nearbyNetworkConnections[networkConnection] = nil
     }
 }

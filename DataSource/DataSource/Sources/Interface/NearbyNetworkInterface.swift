@@ -9,8 +9,8 @@ import Combine
 import Foundation
 
 public protocol NearbyNetworkInterface {
-    var reciptDataPublisher: AnyPublisher<Data, Never> { get }
-    var reciptURLPublisher: AnyPublisher<(url: URL, dataInfo: DataInformationDTO), Never> { get }
+    var reciptDataPublisher: AnyPublisher<AirplaINDataDTO, Never> { get }
+    var searchingDelegate: NearbyNetworkSearchingDelegate? { get set }
     var connectionDelegate: NearbyNetworkConnectionDelegate? { get set }
 
     /// 주변 기기 검색을 중지합니다.
@@ -18,11 +18,6 @@ public protocol NearbyNetworkInterface {
 
     /// 주변 기기를 검색합니다.
     func startSearching()
-
-    /// 주변에 내 기기를 정보와 함께 알립니다.
-    /// - Parameter data: 담을 정보
-    @available(*, deprecated, message: "이 메서드는 network framework로 리팩터링 하면서 사용되지 않을 예정입니다.")
-    func startPublishing(with info: [String: String])
 
     /// 주변에 내 기기를 정보와 함께 알립니다.
     /// - Parameters:
@@ -37,107 +32,47 @@ public protocol NearbyNetworkInterface {
     func disconnectAll()
 
     /// 주변 기기와 연결을 시도합니다.
-    /// - Parameter connection: 연결할 기기
-    @available(*, deprecated, message: "이 메서드는 network framework로 리팩터링 하면서 사용되지 않을 예정입니다.")
-    func joinConnection(connection: NetworkConnection, context: RequestedContext) throws
-
-    /// 주변 기기와 연결을 시도합니다.
     /// - Parameters:
     ///   - connection: 연결할 기기
     ///   - myConnectionInfo: 내 정보
     /// - Returns: 연결 요청 성공 여부
     func joinConnection(
-        connection: RefactoredNetworkConnection,
-        myConnectionInfo: RequestedContext) -> Result<Bool, Never>
-
-    /// 연결된 기기들에게 파일을 송신합니다.
-    /// - Parameters:
-    ///   - fileURL: 파일의 URL
-    ///   - info: 파일에 대한 정보
-    @available(*, deprecated, message: "이 메서드는 network framework로 리팩터링 하면서 사용되지 않을 예정입니다.")
-    func send(fileURL: URL, info: DataInformationDTO) async
+        connection: NetworkConnection,
+        myConnectionInfo: RequestedContext) async -> Bool
 
     /// 연결된 기기들에게 데이터를 송신합니다.
     /// - Parameter data: 송신할 데이터
     /// - Returns: 전송 성공 여부
-    func send(data: DataInformationDTO) async -> Bool
-
-    /// 특정 기기에게 파일을 전송합니다.
-    /// - Parameters:
-    ///   - fileURL: 파일의 URL
-    ///   - info: 파일에 대한 정보
-    ///   - connection: 전송할 기기 연결 정보
-    @available(*, deprecated, message: "이 메서드는 network framework로 리팩터링 하면서 사용되지 않을 예정입니다.")
-    func send(
-        fileURL: URL,
-        info: DataInformationDTO,
-        to connection: NetworkConnection) async
+    func send(data: AirplaINDataDTO) async -> Bool
 
     /// 특정 기기에게 데이터를 전송합니다.
     /// - Parameters:
     ///   - data: 송신할 데이터
     ///   - connection: 전송할 기기 연결 정보
     /// - Returns: 전송 성공 여부
-    func send(data: DataInformationDTO, to connection: RefactoredNetworkConnection) async -> Bool
+    func send(data: AirplaINDataDTO, to connection: NetworkConnection) async -> Bool
 }
 
-public protocol NearbyNetworkConnectionDelegate: AnyObject {
-    /// 주변 기기에게 연결 요청을 받았을 때 실행됩니다.
-    /// - Parameters:
-    ///   - connectionHandler: 연결 요청 처리 Handler
-    func nearbyNetwork(_ sender: NearbyNetworkInterface, didReceive connectionHandler: @escaping (Bool) -> Void)
-
+public protocol NearbyNetworkSearchingDelegate: AnyObject {
     /// 주변 기기가 검색됐을 때 실행됩니다.
     /// - Parameters:
-    ///   - connections: 검색된 기기들
-    func nearbyNetwork(_ sender: NearbyNetworkInterface, didFind connections: [NetworkConnection])
+    ///   - connections: 검색된 기기
+    func nearbyNetwork(_ sender: NearbyNetworkInterface, didFind connection: NetworkConnection)
 
     /// 검색된 기기가 사라졌을 때 실행됩니다.
     /// - Parameters:
     ///   - connection: 사라진 기기
     func nearbyNetwork(_ sender: NearbyNetworkInterface, didLost connection: NetworkConnection)
+}
 
-    /// 주변 기기와의 연결에 실패했을 때 실행됩니다.
-    func nearbyNetworkCannotConnect(_ sender: NearbyNetworkInterface)
-
-    /// 주변 기기와 연결에 성공하였을 때 실행됩니다.
-    /// - Parameters:
-    ///   - connection: 연결된 기기
-    ///   - info: 기존 Session 정보
-    @available(*, deprecated, message: "이 메서드는 network framework로 리팩터링 하면서 사용되지 않을 예정입니다.")
-    func nearbyNetwork(
-        _ sender: NearbyNetworkInterface,
-        didConnect connection: NetworkConnection,
-        with info: [String: String])
-
-    /// 주변 기기와 연결에 성공하였을 때 실행됩니다.
-    /// - Parameters:
-    ///   - connection: 연결된 기기
-    ///   - context: 참여자가 보낸 정보
-    ///   - isHost: 호스트 여부
-    @available(*, deprecated, message: "이 메서드는 network framework로 리팩터링 하면서 사용되지 않을 예정입니다.")
-    func nearbyNetwork(
-        _ sender: NearbyNetworkInterface,
-        didConnect connection: NetworkConnection,
-        with context: Data?,
-        isHost: Bool)
-
+public protocol NearbyNetworkConnectionDelegate: AnyObject {
     /// 주변 기기와 연결에 성공했을 때 실행됩니다.
     /// - Parameters:
     ///   - didConnect: 연결된 peer
-    func nearbyNetwork(_ sender: NearbyNetworkInterface, didConnect connection: RefactoredNetworkConnection)
+    func nearbyNetwork(_ sender: NearbyNetworkInterface, didConnect connection: NetworkConnection)
 
     /// 연결됐던 기기와 연결이 끊어졌을 때 실행됩니다.
     /// - Parameters:
     ///   - connection: 연결이 끊긴 기기
-    @available(*, deprecated, message: "이 메서드는 network framework로 리팩터링 하면서 사용되지 않을 예정입니다.")
-    func nearbyNetwork(
-        _ sender: NearbyNetworkInterface,
-        didDisconnect connection: NetworkConnection,
-        isHost: Bool)
-
-    /// 연결됐던 기기와 연결이 끊어졌을 때 실행됩니다.
-    /// - Parameters:
-    ///   - connection: 연결이 끊긴 기기
-    func nearbyNetwork(_ sender: NearbyNetworkInterface, didDisconnect connection: RefactoredNetworkConnection)
+    func nearbyNetwork(_ sender: NearbyNetworkInterface, didDisconnect connection: NetworkConnection)
 }

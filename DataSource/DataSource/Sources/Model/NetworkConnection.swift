@@ -7,29 +7,7 @@
 
 import Foundation
 
-public struct NetworkConnection {
-    public let id: UUID
-    public let name: String
-    public let info: [String: String]?
-
-    public init(
-        id: UUID,
-        name: String,
-        info: [String: String]?
-    ) {
-        self.id = id
-        self.name = name
-        self.info = info
-    }
-}
-
-extension NetworkConnection: Equatable {
-    public static func == (lhs: NetworkConnection, rhs: NetworkConnection) -> Bool {
-        return lhs.id == rhs.id
-    }
-}
-
-public struct RefactoredNetworkConnection: Codable {
+public struct NetworkConnection: Codable {
     public let id: UUID
     public let name: String
     public let connectedPeerInfo: [String]
@@ -45,13 +23,13 @@ public struct RefactoredNetworkConnection: Codable {
     }
 }
 
-extension RefactoredNetworkConnection: Hashable {
-    public static func == (lhs: RefactoredNetworkConnection, rhs: RefactoredNetworkConnection) -> Bool {
+extension NetworkConnection: Hashable {
+    public static func == (lhs: NetworkConnection, rhs: NetworkConnection) -> Bool {
         return lhs.id == rhs.id
     }
 }
 
-extension RefactoredNetworkConnection: CustomStringConvertible {
+extension NetworkConnection: CustomStringConvertible {
     public var description: String {
         return "ID: \(id), Name: \(name)"
     }
