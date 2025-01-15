@@ -14,9 +14,9 @@ import OSLog
 public final class NearbyNetworkService: NSObject {
     public weak var connectionDelegate: NearbyNetworkConnectionDelegate?
     public let reciptDataPublisher: AnyPublisher<Data, Never>
-    public let reciptURLPublisher: AnyPublisher<(url: URL, dataInfo: DataInformationDTO), Never>
+    public let reciptURLPublisher: AnyPublisher<(url: URL, dataInfo: AirplaINDataDTO), Never>
     private let reciptDataSubject = PassthroughSubject<Data, Never>()
-    private let reciptURLSubject = PassthroughSubject<(url: URL, dataInfo: DataInformationDTO), Never>()
+    private let reciptURLSubject = PassthroughSubject<(url: URL, dataInfo: AirplaINDataDTO), Never>()
     private let peerID: MCPeerID
     private let session: MCSession
     private var serviceAdvertiser: MCNearbyServiceAdvertiser
@@ -126,7 +126,7 @@ extension NearbyNetworkService: NearbyNetworkInterface {
         }
     }
 
-    public func send(fileURL: URL, info: DataInformationDTO) async {
+    public func send(fileURL: URL, info: AirplaINDataDTO) async {
         let infoJsonData = try? encoder.encode(info)
 
         guard
@@ -150,13 +150,13 @@ extension NearbyNetworkService: NearbyNetworkInterface {
         }
     }
 
-    public func send(data: DataInformationDTO) async -> Bool {
+    public func send(data: AirplaINDataDTO) async -> Bool {
         return true
     }
 
     public func send(
         fileURL: URL,
-        info: DataSource.DataInformationDTO,
+        info: DataSource.AirplaINDataDTO,
         to connection: NetworkConnection
     ) async {
         let infoJsonData = try? encoder.encode(info)
@@ -177,7 +177,7 @@ extension NearbyNetworkService: NearbyNetworkInterface {
         }
     }
 
-    public func send(data: DataInformationDTO, to connection: RefactoredNetworkConnection) async -> Bool {
+    public func send(data: AirplaINDataDTO, to connection: RefactoredNetworkConnection) async -> Bool {
         return true
     }
 }
@@ -264,7 +264,7 @@ extension NearbyNetworkService: MCSessionDelegate {
         guard
             let localURL,
             let jsonData = resourceName.data(using: .utf8),
-            let dto = try? JSONDecoder().decode(DataInformationDTO.self, from: jsonData)
+            let dto = try? JSONDecoder().decode(AirplaINDataDTO.self, from: jsonData)
         else { return }
 
         reciptURLSubject.send((url: localURL, dataInfo: dto))

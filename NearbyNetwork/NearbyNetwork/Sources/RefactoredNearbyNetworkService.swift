@@ -66,8 +66,8 @@ public final class RefactoredNearbyNetworkService {
         nearbyNetworkConnections = [:]
         jsonEncoder = JSONEncoder()
         jsonDecoder = JSONDecoder()
-        refactoredReciptDataSubject = PassthroughSubject<DataInformationDTO, Never>()
-        refactoredReciptDataPublisher = refactoredReciptDataSubject.eraseToAnyPublisher()
+        reciptDataSubject = PassthroughSubject<AirplaINDataDTO, Never>()
+        reciptDataPublisher = reciptDataSubject.eraseToAnyPublisher()
         self.serviceName = serviceName
         self.serviceType = serviceType
         nearbyNetworkBrowser.delegate = self
@@ -127,14 +127,14 @@ public final class RefactoredNearbyNetworkService {
     private func handleReceivedData(data: Data?, connection: NWConnection) {
         guard
             let data,
-            let dataDTO = try? jsonDecoder.decode(DataInformationDTO.self, from: data)
+            let dataDTO = try? jsonDecoder.decode(AirplaINDataDTO.self, from: data)
         else { return }
 
-        refactoredReciptDataSubject.send(dataDTO)
+        reciptDataSubject.send(dataDTO)
         self.logger.log(level: .debug, "\(connection.debugDescription): 데이터 수신")
     }
 
-    private func send(data: DataInformationDTO, connection: NWConnection) async -> Bool {
+    private func send(data: AirplaINDataDTO, connection: NWConnection) async -> Bool {
         typealias Continuation = CheckedContinuation<Bool, Never>
         var tryCount = 0
 
@@ -286,11 +286,7 @@ extension RefactoredNearbyNetworkService: NearbyNetworkInterface {
         return result
     }
 
-    public func send(fileURL: URL, info: DataInformationDTO, to connection: NetworkConnection) async {
-        // TODO: - will be deprecated
-    }
-
-    public func send(data: DataInformationDTO, to connection: RefactoredNetworkConnection) async -> Bool {
+    public func send(data: AirplaINDataDTO, to connection: RefactoredNetworkConnection) async -> Bool {
         guard let connection = nearbyNetworkConnections[connection] else { return false }
         return await send(data: data, connection: connection)
     }
