@@ -10,7 +10,7 @@ import Foundation
 
 public protocol WhiteboardListRepositoryInterface {
     var delegate: WhiteboardListRepositoryDelegate? { get set }
-
+    
     /// 주변에 내 기기를 참여자의 아이콘 정보와 함께 화이트보드를 알립니다.
     /// - Parameters:
     ///   - myProfile: 나의 프로필
@@ -43,7 +43,4 @@ public protocol WhiteboardListRepositoryDelegate: AnyObject {
     /// - Parameters:
     ///   - whiteboard: 사라진 화이트보드
     func whiteboardListRepository(_ sender: WhiteboardListRepositoryInterface, didLost whiteboard: Whiteboard)
-
-    /// 화이트보드 연결에 실패했을 때 실행됩니다.
-    func whiteboardListRepositoryCannotConnect(_ sender: WhiteboardListRepositoryInterface)
 }

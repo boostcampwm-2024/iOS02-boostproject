@@ -46,7 +46,7 @@ public final class WhiteboardViewModel: ViewModel {
     }
 
     private(set) var output: Output
-    private let whiteboardUseCase: WhiteboardUseCaseInterface
+    private let whiteboardUseCase: WhiteboardListUseCaseInterface
     private let photoUseCase: PhotoUseCaseInterface
     private let drawObjectUseCase: DrawObjectUseCaseInterface
     private let textObjectUseCase: TextObjectUseCaseInterface
@@ -62,7 +62,7 @@ public final class WhiteboardViewModel: ViewModel {
     private var cancellables: Set<AnyCancellable>
 
     public init(
-        whiteboardUseCase: WhiteboardUseCaseInterface,
+        whiteboardUseCase: WhiteboardListUseCaseInterface,
         photoUseCase: PhotoUseCaseInterface,
         drawObjectUseCase: DrawObjectUseCaseInterface,
         textObjectUseCase: TextObjectUseCaseInterface,

@@ -70,7 +70,7 @@ public final class WhiteboardListViewController: UIViewController {
     private let whiteboardObjectViewFactory: WhiteboardObjectViewFactoryable
     private let profileViewModel: ProfileViewModel
     private let profileRepository: ProfileRepositoryInterface
-    private let whiteboardUseCase: WhiteboardUseCaseInterface
+    private let whiteboardUseCase: WhiteboardListUseCaseInterface
     private let photoUseCase: PhotoUseCaseInterface
     private let drawObjectUseCase: DrawObjectUseCaseInterface
     private let textObjectUseCase: TextObjectUseCaseInterface
@@ -85,7 +85,7 @@ public final class WhiteboardListViewController: UIViewController {
         whiteboardObjectViewFactory: WhiteboardObjectViewFactoryable,
         profileViewModel: ProfileViewModel,
         profileRepository: ProfileRepositoryInterface,
-        whiteboardUseCase: WhiteboardUseCaseInterface,
+        whiteboardUseCase: WhiteboardListUseCaseInterface,
         photoUseCase: PhotoUseCaseInterface,
         drawObjectUseCase: DrawObjectUseCaseInterface,
         textObjectUseCase: TextObjectUseCaseInterface,

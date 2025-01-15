@@ -37,7 +37,7 @@ public final class WhiteboardListRepository: WhiteboardListRepositoryInterface {
     }
 
     public func joinWhiteboard(whiteboard: Whiteboard, myProfile: Profile) async -> Bool {
-        let connection = RefactoredNetworkConnection(
+        let connection = NetworkConnection(
             id: whiteboard.id,
             name: whiteboard.name,
             connectedPeerInfo: whiteboard.participantIcons.map { $0.emoji })
@@ -54,7 +54,7 @@ public final class WhiteboardListRepository: WhiteboardListRepositoryInterface {
         return result
     }
 
-    private func convertToWhiteboard(connection: RefactoredNetworkConnection) -> Whiteboard {
+    private func convertToWhiteboard(connection: NetworkConnection) -> Whiteboard {
         let participantIcons = connection
             .connectedPeerInfo
             .compactMap { ProfileIcon(rawValue: $0) }
@@ -69,12 +69,12 @@ public final class WhiteboardListRepository: WhiteboardListRepositoryInterface {
 }
 
 extension WhiteboardListRepository: NearbyNetworkSearchingDelegate {
-    public func nearbyNetwork(_ sender: NearbyNetworkInterface, didFind connection: RefactoredNetworkConnection) {
+    public func nearbyNetwork(_ sender: NearbyNetworkInterface, didFind connection: NetworkConnection) {
         let whiteboard = convertToWhiteboard(connection: connection)
         delegate?.whiteboardListRepository(self, didFind: whiteboard)
     }
 
-    public func nearbyNetwork(_ sender: NearbyNetworkInterface, didLost connection: RefactoredNetworkConnection) {
+    public func nearbyNetwork(_ sender: NearbyNetworkInterface, didLost connection: NetworkConnection) {
         let whiteboard = convertToWhiteboard(connection: connection)
         delegate?.whiteboardListRepository(self, didLost: whiteboard)
     }

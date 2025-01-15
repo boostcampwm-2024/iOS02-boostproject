@@ -39,11 +39,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             nearbyNetwork: nearbyNetworkService,
             filePersistence: filePersistenceService)
 
-        let whiteboardUseCase = WhiteboardUseCase(
+        let whiteboardUseCase = WhiteboardListUseCase(
             whiteboardRepository: whiteboardRepository,
             profileRepository: profileRepository)
         let profileUseCase = ProfileUseCase(repository: profileRepository)
-        let manageWhiteboardObjectUseCase = ManageWhiteboardObjectUseCase(
+        let manageWhiteboardObjectUseCase = WhiteboardUseCase(
             profileRepository: profileRepository,
             whiteboardObjectRepository: whiteboardObjectRepository,
             whiteboardRepository: whiteboardRepository,
