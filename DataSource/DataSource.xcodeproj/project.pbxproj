@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		00036B842CF5648A007D1244 /* PhotoRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00036B832CF5648A007D1244 /* PhotoRepository.swift */; };
 		00549AD02CEDBAAD00DF8F6C /* AirplaINDataType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00549ACF2CEDBA5E00DF8F6C /* AirplaINDataType.swift */; };
-		00549AD22CEDBB3E00DF8F6C /* DataInformationDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00549AD12CEDBB0E00DF8F6C /* DataInformationDTO.swift */; };
+		00549AD22CEDBB3E00DF8F6C /* AirplaINDataDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00549AD12CEDBB0E00DF8F6C /* AirplaINDataDTO.swift */; };
 		0080E8652CE19EC40095B958 /* NearbyNetworkInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0080E85F2CE19EC40095B958 /* NearbyNetworkInterface.swift */; };
 		0080E8662CE19EC40095B958 /* NetworkConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0080E8612CE19EC40095B958 /* NetworkConnection.swift */; };
 		5B54DECC2CEEF70000674723 /* RequestedContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B54DECB2CEEF70000674723 /* RequestedContext.swift */; };
@@ -18,7 +18,7 @@
 		5BDFD93D2CE2F56B00DA4F5B /* WhiteboardRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BDFD93C2CE2F56B00DA4F5B /* WhiteboardRepository.swift */; };
 		6F3BCDCC2CF31F5C005F6642 /* ChatRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F3BCDCB2CF31F5C005F6642 /* ChatRepository.swift */; };
 		6F4031422CEDDF0800948CCF /* FilePersistenceInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F4031412CEDDF0800948CCF /* FilePersistenceInterface.swift */; };
-		6FF51C792CEF07D2005DE9CD /* WhiteboardObjectRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FF51C782CEF07D2005DE9CD /* WhiteboardObjectRepository.swift */; };
+		A807DE6D2D30B91600262974 /* WhiteboardListRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = A807DE6C2D30B91600262974 /* WhiteboardListRepository.swift */; };
 		A81E7BFD2CF728E6007E8414 /* GameRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = A81E7BFC2CF728E6007E8414 /* GameRepository.swift */; };
 		A8525F1E2CE326DB0089DA5E /* PersistenceInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8525F1D2CE326DB0089DA5E /* PersistenceInterface.swift */; };
 		A852601E2CE339E70089DA5E /* ProfileRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = A852601D2CE339E70089DA5E /* ProfileRepository.swift */; };
@@ -43,7 +43,7 @@
 /* Begin PBXFileReference section */
 		00036B832CF5648A007D1244 /* PhotoRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoRepository.swift; sourceTree = "<group>"; };
 		00549ACF2CEDBA5E00DF8F6C /* AirplaINDataType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AirplaINDataType.swift; sourceTree = "<group>"; };
-		00549AD12CEDBB0E00DF8F6C /* DataInformationDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataInformationDTO.swift; sourceTree = "<group>"; };
+		00549AD12CEDBB0E00DF8F6C /* AirplaINDataDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AirplaINDataDTO.swift; sourceTree = "<group>"; };
 		0080E85F2CE19EC40095B958 /* NearbyNetworkInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearbyNetworkInterface.swift; sourceTree = "<group>"; };
 		0080E8612CE19EC40095B958 /* NetworkConnection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkConnection.swift; sourceTree = "<group>"; };
 		5B54DECB2CEEF70000674723 /* RequestedContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestedContext.swift; sourceTree = "<group>"; };
@@ -52,7 +52,7 @@
 		5BDFD93C2CE2F56B00DA4F5B /* WhiteboardRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhiteboardRepository.swift; sourceTree = "<group>"; };
 		6F3BCDCB2CF31F5C005F6642 /* ChatRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRepository.swift; sourceTree = "<group>"; };
 		6F4031412CEDDF0800948CCF /* FilePersistenceInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilePersistenceInterface.swift; sourceTree = "<group>"; };
-		6FF51C782CEF07D2005DE9CD /* WhiteboardObjectRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhiteboardObjectRepository.swift; sourceTree = "<group>"; };
+		A807DE6C2D30B91600262974 /* WhiteboardListRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhiteboardListRepository.swift; sourceTree = "<group>"; };
 		A81E7BFC2CF728E6007E8414 /* GameRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameRepository.swift; sourceTree = "<group>"; };
 		A8525F1D2CE326DB0089DA5E /* PersistenceInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceInterface.swift; sourceTree = "<group>"; };
 		A852601D2CE339E70089DA5E /* ProfileRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileRepository.swift; sourceTree = "<group>"; };
@@ -87,7 +87,7 @@
 				0080E8612CE19EC40095B958 /* NetworkConnection.swift */,
 				5B54DECB2CEEF70000674723 /* RequestedContext.swift */,
 				00549ACF2CEDBA5E00DF8F6C /* AirplaINDataType.swift */,
-				00549AD12CEDBB0E00DF8F6C /* DataInformationDTO.swift */,
+				00549AD12CEDBB0E00DF8F6C /* AirplaINDataDTO.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -140,8 +140,8 @@
 			isa = PBXGroup;
 			children = (
 				A852601D2CE339E70089DA5E /* ProfileRepository.swift */,
+				A807DE6C2D30B91600262974 /* WhiteboardListRepository.swift */,
 				5BDFD93C2CE2F56B00DA4F5B /* WhiteboardRepository.swift */,
-				6FF51C782CEF07D2005DE9CD /* WhiteboardObjectRepository.swift */,
 				00036B832CF5648A007D1244 /* PhotoRepository.swift */,
 				6F3BCDCB2CF31F5C005F6642 /* ChatRepository.swift */,
 				A81E7BFC2CF728E6007E8414 /* GameRepository.swift */,
@@ -273,8 +273,8 @@
 				00036B842CF5648A007D1244 /* PhotoRepository.swift in Sources */,
 				A81E7BFD2CF728E6007E8414 /* GameRepository.swift in Sources */,
 				A852601E2CE339E70089DA5E /* ProfileRepository.swift in Sources */,
-				6FF51C792CEF07D2005DE9CD /* WhiteboardObjectRepository.swift in Sources */,
-				00549AD22CEDBB3E00DF8F6C /* DataInformationDTO.swift in Sources */,
+				A807DE6D2D30B91600262974 /* WhiteboardListRepository.swift in Sources */,
+				00549AD22CEDBB3E00DF8F6C /* AirplaINDataDTO.swift in Sources */,
 				6F4031422CEDDF0800948CCF /* FilePersistenceInterface.swift in Sources */,
 				6F3BCDCC2CF31F5C005F6642 /* ChatRepository.swift in Sources */,
 			);
