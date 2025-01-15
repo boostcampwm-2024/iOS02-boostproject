@@ -13,10 +13,11 @@ import OSLog
 
 // TODO: - 추후 기능 동작 확인 후 NearbyNetworkService 대체
 public final class RefactoredNearbyNetworkService {
-    public var connectionDelegate: NearbyNetworkConnectionDelegate? = nil
+    public var connectionDelegate: NearbyNetworkConnectionDelegate?
+    public var searchingDelegate: NearbyNetworkSearchingDelegate?
     public var foundPeerHandler: ((_ networkConnections: [RefactoredNetworkConnection]) -> Void)?
-    public let refactoredReciptDataPublisher: AnyPublisher<DataInformationDTO, Never>
-    private let refactoredReciptDataSubject: PassthroughSubject<DataInformationDTO, Never>
+    public let reciptDataPublisher: AnyPublisher<AirplaINDataDTO, Never>
+    private let reciptDataSubject: PassthroughSubject<AirplaINDataDTO, Never>
     private let serviceName: String
     private let serviceType: String
     private let peerID: UUID
@@ -203,7 +204,10 @@ extension RefactoredNearbyNetworkService: NearbyNetworkInterface {
     }
 
     public func disconnectAll() {
-
+        for connection in nearbyNetworkConnections.values {
+            connection.cancel()
+        }
+        nearbyNetworkConnections.removeAll()
     }
 
     public func joinConnection(connection: NetworkConnection, context: RequestedContext) throws {
@@ -212,9 +216,9 @@ extension RefactoredNearbyNetworkService: NearbyNetworkInterface {
     public func joinConnection(
         connection: RefactoredNetworkConnection,
         myConnectionInfo: RequestedContext
-    ) -> Result<Bool, Never> {
+    ) async -> Bool {
         guard let endpoint = nearbyNetworkBrowser.fetchFoundConnection(networkConnection: connection)
-        else { return .success(false) }
+        else { return false }
 
         let option = NWProtocolFramer.Options(definition: NearbyNetworkProtocol.definition)
         let parameter = NWParameters.tcp
@@ -223,12 +227,13 @@ extension RefactoredNearbyNetworkService: NearbyNetworkInterface {
             .insert(option, at: 0)
 
         let nwConnection = NWConnection(to: endpoint, using: parameter)
-        nwConnection.stateUpdateHandler = { [weak self] state in
+
+        typealias Continuation = CheckedContinuation<Bool, Never>
+        let stateHandler: (@Sendable (NWConnection.State) -> Void) = { [weak self] state in
             guard let self else { return }
             switch state {
             case .ready:
                 self.logger.log(level: .debug, "\(connection)와 연결되었습니다.")
-
                 let encodedMyConnectionInfo = try? jsonEncoder.encode(myConnectionInfo)
                 let message = NWProtocolFramer.Message(nearbyNetworkMessageType: .peerInfo)
                 let context = NWConnection.ContentContext(identifier: "ConnectedPeerInfo", metadata: [message])
@@ -247,19 +252,26 @@ extension RefactoredNearbyNetworkService: NearbyNetworkInterface {
                 self.logger.log(level: .debug, "\(connection)와 연결 설정 중입니다.")
             }
         }
-        nwConnection.start(queue: nearbyNetworkServiceQueue)
-        return .success(true)
+
+        let result = await withCheckedContinuation { (continuation: Continuation) in
+            nwConnection.stateUpdateHandler = { state in
+                switch state {
+                case .ready:
+                    nwConnection.stateUpdateHandler = stateHandler
+                    continuation.resume(returning: true)
+                case .failed, .cancelled:
+                    nwConnection.stateUpdateHandler = stateHandler
+                    continuation.resume(returning: false)
+                default:
+                    break
+                }
+            }
+            nwConnection.start(queue: nearbyNetworkServiceQueue)
+        }
+        return result
     }
 
-    public func send(data: Data) {
-        // TODO: - will be deprecated
-    }
-
-    public func send(fileURL: URL, info: DataInformationDTO) async {
-        // TODO: - will be deprecated
-    }
-
-    public func send(data: DataInformationDTO) async -> Bool {
+    public func send(data: AirplaINDataDTO) async -> Bool {
         let result: Bool = await withTaskGroup(of: Bool.self, returning: Bool.self) { taskGroup in
             for connection in nearbyNetworkConnections.values {
                 taskGroup.addTask {
@@ -312,8 +324,6 @@ extension RefactoredNearbyNetworkService: NearbyNetworkListenerDelegate {
     }
 
     public func nearbyNetworkListenerCannotConnect(_ sender: NearbyNetworkListener, connection: NWConnection) {
-        connectionDelegate?.nearbyNetworkCannotConnect(self)
-
         guard
             let networkConnection = nearbyNetworkConnections
                 .first(where: {$0.value === connection})?
