@@ -10,35 +10,29 @@ import Domain
 import Foundation
 
 public final class WhiteboardListViewModel: ViewModel {
-    private let whiteboardUseCase: WhiteboardListUseCaseInterface
+    private let whiteboardListUseCase: WhiteboardListUseCaseInterface
     private var cancellables = Set<AnyCancellable>()
 
     enum Input {
         case createWhiteboard
         case joinWhiteboard(whiteboard: Whiteboard)
-        case stopSearchingWhiteboard
         case startSearchingWhiteboards
-        case disconnectWhiteboard
     }
 
     struct Output {
         let whiteboardListPublisher: AnyPublisher<[Whiteboard], Never>
-        let connectionStatusPublisher: AnyPublisher<Bool, Never>
+        let connectedWhiteboardPublisher: AnyPublisher<Whiteboard?, Never>
     }
 
     let output: Output
-    private let whiteboardSubject: PassthroughSubject<Whiteboard, Never>
-    private let connectionStatusSubject: PassthroughSubject<Bool, Never>
+    private let connectedWhiteboardSubject: PassthroughSubject<Whiteboard?, Never>
 
-    public init(whiteboardUseCase: WhiteboardListUseCaseInterface) {
-        self.whiteboardUseCase = whiteboardUseCase
-        whiteboardSubject = PassthroughSubject<Whiteboard, Never>()
-        connectionStatusSubject = PassthroughSubject<Bool, Never>()
+    public init(whiteboardListUseCase: WhiteboardListUseCaseInterface) {
+        self.whiteboardListUseCase = whiteboardListUseCase
+        connectedWhiteboardSubject = PassthroughSubject<Whiteboard?, Never>()
         self.output = Output(
-            whiteboardListPublisher: whiteboardUseCase.whiteboardListPublisher,
-            connectionStatusPublisher: connectionStatusSubject.eraseToAnyPublisher()
-        )
-        bindWhiteboardConnectionResult()
+            whiteboardListPublisher: whiteboardListUseCase.whiteboardListPublisher,
+            connectedWhiteboardPublisher: connectedWhiteboardSubject.eraseToAnyPublisher())
     }
 
     func action(input: Input) {
@@ -47,47 +41,24 @@ public final class WhiteboardListViewModel: ViewModel {
             createWhiteboard()
         case .joinWhiteboard(let whiteboard):
             joinWhiteboard(whiteboard: whiteboard)
-        case .stopSearchingWhiteboard:
-            stopSearchingWhiteboard()
         case .startSearchingWhiteboards:
             refreshWhiteboardList()
-        case .disconnectWhiteboard:
-            disconnectWhiteboard()
         }
     }
 
     private func createWhiteboard() {
-        let whiteboard = whiteboardUseCase.createWhiteboard()
-        whiteboardUseCase.startPublishingWhiteboard()
-        whiteboardSubject.send(whiteboard)
+        let whiteboard = whiteboardListUseCase.createWhiteboard()
+        connectedWhiteboardSubject.send(whiteboard)
     }
 
     private func joinWhiteboard(whiteboard: Whiteboard) {
-        do {
-            try whiteboardUseCase.joinWhiteboard(whiteboard: whiteboard)
-        } catch {
-            // TODO: Alert 창 띄우기
+        Task {
+            let whiteboard = await whiteboardListUseCase.joinWhiteboard(whiteboard: whiteboard)
+            connectedWhiteboardSubject.send(whiteboard)
         }
     }
 
-    private func stopSearchingWhiteboard() {
-        whiteboardUseCase.stopSearchingWhiteboard()
-    }
-
     private func refreshWhiteboardList() {
-        whiteboardUseCase.startSearchingWhiteboards()
+        whiteboardListUseCase.startSearchingWhiteboards()
     }
-
-    private func disconnectWhiteboard() {
-        whiteboardUseCase.disconnectWhiteboard()
-    }
-
-    private func bindWhiteboardConnectionResult() {
-        whiteboardUseCase.whiteboardConnectionPublisher
-            .sink { [weak self] isConnected in
-                self?.connectionStatusSubject.send(isConnected)
-            }
-            .store(in: &cancellables)
-    }
-
 }

@@ -70,44 +70,44 @@ public final class WhiteboardListViewController: UIViewController {
     private let whiteboardObjectViewFactory: WhiteboardObjectViewFactoryable
     private let profileViewModel: ProfileViewModel
     private let profileRepository: ProfileRepositoryInterface
-    private let whiteboardUseCase: WhiteboardListUseCaseInterface
+    private let whiteboardListUseCase: WhiteboardListUseCaseInterface
     private let photoUseCase: PhotoUseCaseInterface
     private let drawObjectUseCase: DrawObjectUseCaseInterface
     private let textObjectUseCase: TextObjectUseCaseInterface
     private let chatUseCase: ChatUseCaseInterface
     private let gameRepository: GameRepositoryInterface
     private let gameObjectUseCase: GameObjectUseCaseInterface
-    private let manageWhiteboardToolUseCase: ManageWhiteboardToolUseCaseInterface
-    private let manageWhiteboardObjectUseCase: WhiteboardUseCaseInterface
+    private let whiteboardToolUseCase: WhiteboardToolUseCaseInterface
+    private let whiteboardUseCase: WhiteboardUseCaseInterface
 
     public init(
         viewModel: WhiteboardListViewModel,
         whiteboardObjectViewFactory: WhiteboardObjectViewFactoryable,
         profileViewModel: ProfileViewModel,
         profileRepository: ProfileRepositoryInterface,
-        whiteboardUseCase: WhiteboardListUseCaseInterface,
+        whiteboardListUseCase: WhiteboardListUseCaseInterface,
         photoUseCase: PhotoUseCaseInterface,
         drawObjectUseCase: DrawObjectUseCaseInterface,
         textObjectUseCase: TextObjectUseCaseInterface,
         chatUseCase: ChatUseCaseInterface,
         gameRepository: GameRepositoryInterface,
         gameObjectUseCase: GameObjectUseCaseInterface,
-        manageWhiteboardToolUseCase: ManageWhiteboardToolUseCaseInterface,
-        manageWhiteboardObjectUseCase: WhiteboardUseCaseInterface
+        whiteboardToolUseCase: WhiteboardToolUseCaseInterface,
+        whiteboardUseCase: WhiteboardUseCaseInterface
     ) {
         self.viewModel = viewModel
         self.whiteboardObjectViewFactory = whiteboardObjectViewFactory
         self.profileViewModel = profileViewModel
         self.profileRepository = profileRepository
-        self.whiteboardUseCase = whiteboardUseCase
+        self.whiteboardListUseCase = whiteboardListUseCase
         self.photoUseCase = photoUseCase
         self.drawObjectUseCase = drawObjectUseCase
         self.textObjectUseCase = textObjectUseCase
         self.chatUseCase = chatUseCase
         self.gameRepository = gameRepository
         self.gameObjectUseCase = gameObjectUseCase
-        self.manageWhiteboardToolUseCase = manageWhiteboardToolUseCase
-        self.manageWhiteboardObjectUseCase = manageWhiteboardObjectUseCase
+        self.whiteboardToolUseCase = whiteboardToolUseCase
+        self.whiteboardUseCase = whiteboardUseCase
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -124,13 +124,7 @@ public final class WhiteboardListViewController: UIViewController {
 
     public override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        viewModel.action(input: .disconnectWhiteboard)
         viewModel.action(input: .startSearchingWhiteboards)
-    }
-
-    public override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
-        viewModel.action(input: .stopSearchingWhiteboard)
     }
 
     private func configureAttribute() {
@@ -138,38 +132,6 @@ public final class WhiteboardListViewController: UIViewController {
 
         let createWhiteboardAction = UIAction { [weak self] _ in
             self?.viewModel.action(input: .createWhiteboard)
-
-            guard
-                let whiteboardObjectViewFactory = self?.whiteboardObjectViewFactory,
-                let profileRepository = self?.profileRepository,
-                let whiteboardUseCase = self?.whiteboardUseCase,
-                let photoUseCase = self?.photoUseCase,
-                let drawObjectUseCase = self?.drawObjectUseCase,
-                let textObjectUseCase = self?.textObjectUseCase,
-                let chatUseCase = self?.chatUseCase,
-                let gameRepository = self?.gameRepository,
-                let gameObjectUseCase = self?.gameObjectUseCase,
-                let manageWhiteboardToolUseCase = self?.manageWhiteboardToolUseCase,
-                let manageWhiteboardObjectUseCase = self?.manageWhiteboardObjectUseCase
-            else { return }
-
-            let whiteboardViewModel = WhiteboardViewModel(
-                whiteboardUseCase: whiteboardUseCase,
-                photoUseCase: photoUseCase,
-                drawObjectUseCase: drawObjectUseCase,
-                textObjectUseCase: textObjectUseCase,
-                chatUseCase: chatUseCase,
-                gameObjectUseCase: gameObjectUseCase,
-                manageWhiteboardToolUseCase: manageWhiteboardToolUseCase,
-                manageWhiteboardObjectUseCase: manageWhiteboardObjectUseCase)
-            let whiteboardViewController = WhiteboardViewController(
-                viewModel: whiteboardViewModel,
-                objectViewFactory: whiteboardObjectViewFactory,
-                profileRepository: profileRepository,
-                chatUseCase: chatUseCase,
-                gameRepository: gameRepository)
-            self?.navigationController?.isNavigationBarHidden = false
-            self?.navigationController?.pushViewController(whiteboardViewController, animated: true)
         }
         createWhiteboardButton.addAction(createWhiteboardAction, for: .touchUpInside)
 
@@ -305,16 +267,16 @@ public final class WhiteboardListViewController: UIViewController {
         dataSource.apply(snapshot, animatingDifferences: true)
     }
 
-    private func moveToWhiteboard() {
+    private func moveToWhiteboard(whiteboard: Whiteboard) {
+        whiteboardUseCase.configure(with: whiteboard)
         let whiteboardViewModel = WhiteboardViewModel(
-            whiteboardUseCase: whiteboardUseCase,
             photoUseCase: photoUseCase,
             drawObjectUseCase: drawObjectUseCase,
             textObjectUseCase: textObjectUseCase,
             chatUseCase: chatUseCase,
             gameObjectUseCase: gameObjectUseCase,
-            manageWhiteboardToolUseCase: manageWhiteboardToolUseCase,
-            manageWhiteboardObjectUseCase: manageWhiteboardObjectUseCase)
+            whiteboardToolUseCase: whiteboardToolUseCase,
+            whiteboardUseCase: whiteboardUseCase)
         let whiteboardViewController = WhiteboardViewController(
             viewModel: whiteboardViewModel,
             objectViewFactory: whiteboardObjectViewFactory,
@@ -344,15 +306,14 @@ public final class WhiteboardListViewController: UIViewController {
             }
             .store(in: &cancellables)
 
-        viewModel.output.connectionStatusPublisher
+        viewModel.output.connectedWhiteboardPublisher
             .receive(on: DispatchQueue.main)
-            .sink { [weak self] isConnected in
+            .sink { [weak self] whiteboard in
                 self?.stopLoading()
-                if isConnected {
-                    self?.moveToWhiteboard()
+                if let whiteboard {
+                    self?.moveToWhiteboard(whiteboard: whiteboard)
                 } else {
                     self?.showFailAlert()
-                    self?.viewModel.action(input: .disconnectWhiteboard)
                 }
             }
             .store(in: &cancellables)

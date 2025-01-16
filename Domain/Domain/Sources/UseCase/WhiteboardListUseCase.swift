@@ -28,31 +28,34 @@ public final class WhiteboardListUseCase: WhiteboardListUseCaseInterface {
     }
 
     public func createWhiteboard() -> Whiteboard {
-        let profile = profileRepository.loadProfile()
-        return Whiteboard(
-            id: profile.id,
-            name: profile.nickname,
-            participantIcons: [profile.profileIcon])
-    }
-
-    public func startPublishingWhiteboard() {
-        stopSearchingWhiteboard()
-
         let myProfile = profileRepository.loadProfile()
-        whiteboardListRepository.startPublishing(myProfile: myProfile, paritipantIcons: [myProfile.profileIcon])
+        startPublishingWhiteboard()
+        return Whiteboard(
+            id: myProfile.id,
+            name: myProfile.nickname,
+            participantIcons: [myProfile.profileIcon])
     }
 
-    public func joinWhiteboard(whiteboard: Whiteboard) async -> Bool {
+    public func joinWhiteboard(whiteboard: Whiteboard) async -> Whiteboard? {
         stopSearchingWhiteboard()
         stopPublishingWhiteboard()
 
         let myProfile = profileRepository.loadProfile()
-        return await whiteboardListRepository.joinWhiteboard(whiteboard: whiteboard, myProfile: myProfile)
+        let result = await whiteboardListRepository.joinWhiteboard(whiteboard: whiteboard, myProfile: myProfile)
+        return result ? whiteboard : nil
     }
 
     public func startSearchingWhiteboards() {
         stopPublishingWhiteboard()
+        stopSearchingWhiteboard()
         whiteboardListRepository.startSearching()
+    }
+
+    private func startPublishingWhiteboard() {
+        stopSearchingWhiteboard()
+
+        let myProfile = profileRepository.loadProfile()
+        whiteboardListRepository.startPublishing(myProfile: myProfile, paritipantIcons: [myProfile.profileIcon])
     }
 
     private func stopPublishingWhiteboard() {
@@ -71,8 +74,11 @@ extension WhiteboardListUseCase: WhiteboardListRepositoryDelegate {
     ) {
         whiteboardListSubject.value.append(whiteboard)
     }
-    
-    public func whiteboardListRepository(_ sender: any WhiteboardListRepositoryInterface, didLost whiteboard: Whiteboard) {
+
+    public func whiteboardListRepository(
+        _ sender: any WhiteboardListRepositoryInterface,
+        didLost whiteboard: Whiteboard
+    ) {
         let updatedWhiteboards = whiteboardListSubject
             .value
             .filter { $0.id != whiteboard.id }
