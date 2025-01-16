@@ -38,14 +38,10 @@ public final class NearbyNetworkListener {
     init(
         peerID: UUID,
         serviceName: String,
-        serviceType: String
+        serviceType: String,
+        networkParameter: NWParameters
     ) {
-        let option = NWProtocolFramer.Options(definition: NearbyNetworkProtocol.definition)
-        let parameter = NWParameters.tcp
-        parameter.defaultProtocolStack
-            .applicationProtocols
-            .insert(option, at: 0)
-        nwListener = try? NWListener(using: parameter)
+        nwListener = try? NWListener(using: networkParameter)
         listenerQueue = DispatchQueue.global()
         self.peerID = peerID
         self.serviceName = serviceName

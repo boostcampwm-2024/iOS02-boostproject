@@ -20,6 +20,7 @@ public final class RefactoredNearbyNetworkService {
     private let serviceName: String
     private let serviceType: String
     private let peerID: UUID
+    private let nearbyNetworkParameter: NWParameters
     private let nearbyNetworkListener: NearbyNetworkListener
     private let nearbyNetworkBrowser: NearbyNetworkBrowser
     private let nearbyNetworkServiceQueue: DispatchQueue
@@ -36,11 +37,31 @@ public final class RefactoredNearbyNetworkService {
         peerID = myPeerID
         nearbyNetworkServiceQueue = DispatchQueue.global()
         logger = Logger()
+
+        let option = NWProtocolFramer.Options(definition: NearbyNetworkProtocol.definition)
+        let tcpOption = NWProtocolTCP.Options()
+        tcpOption.enableKeepalive = true
+        tcpOption.keepaliveIdle = 5
+        tcpOption.keepaliveCount = 2
+        tcpOption.keepaliveInterval = 3
+        tcpOption.connectionTimeout = 5
+        tcpOption.connectionDropTime = 5
+        tcpOption.persistTimeout = 5
+        nearbyNetworkParameter = NWParameters(tls: nil, tcp: tcpOption)
+
+        nearbyNetworkParameter.defaultProtocolStack
+            .applicationProtocols
+            .insert(option, at: 0)
+        nearbyNetworkParameter.includePeerToPeer = true
+
         nearbyNetworkListener = NearbyNetworkListener(
             peerID: peerID,
             serviceName: serviceName,
-            serviceType: serviceType)
-        nearbyNetworkBrowser = NearbyNetworkBrowser(serviceType: serviceType)
+            serviceType: serviceType,
+            networkParameter: nearbyNetworkParameter)
+        nearbyNetworkBrowser = NearbyNetworkBrowser(
+            serviceType: serviceType,
+            networkParameter: nearbyNetworkParameter)
         nearbyNetworkConnections = [:]
         jsonEncoder = JSONEncoder()
         jsonDecoder = JSONDecoder()
