@@ -11,16 +11,16 @@ import OSLog
 
 public final class ChatRepository: ChatRepositoryInterface {
     public weak var delegate: ChatRepositoryDelegate?
-    private var nearbyNetwork: NearbyNetworkInterface
+    private var nearbyNetworkService: NearbyNetworkInterface
     private let filePersistence: FilePersistenceInterface
     private var cancellables: Set<AnyCancellable>
     private let logger = Logger()
 
     public init(
-        nearbyNetwork: NearbyNetworkInterface,
+        nearbyNetworkService: NearbyNetworkInterface,
         filePersistence: FilePersistenceInterface
     ) {
-        self.nearbyNetwork = nearbyNetwork
+        self.nearbyNetworkService = nearbyNetworkService
         self.filePersistence = filePersistence
         cancellables = []
         bindNearbyNetwork()
@@ -43,12 +43,12 @@ public final class ChatRepository: ChatRepositoryInterface {
             return nil
         }
 
-        _ = await nearbyNetwork.send(data: chatMessageDTO)
+        _ = await nearbyNetworkService.send(data: chatMessageDTO)
         return chatMessage
     }
 
     private func bindNearbyNetwork() {
-        nearbyNetwork.reciptDataPublisher
+        nearbyNetworkService.reciptDataPublisher
             .sink { [weak self] dto in
                 guard dto.type == .chat else { return }
                 self?.handleChatData(dto: dto)

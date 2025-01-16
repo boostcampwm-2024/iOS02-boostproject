@@ -13,7 +13,7 @@ public final class WhiteboardListRepository: WhiteboardListRepositoryInterface {
     public weak var delegate: WhiteboardListRepositoryDelegate?
     private var nearbyNetworkService: NearbyNetworkInterface
 
-    init(nearbyNetworkService: NearbyNetworkInterface) {
+    public init(nearbyNetworkService: NearbyNetworkInterface) {
         self.nearbyNetworkService = nearbyNetworkService
         self.nearbyNetworkService.searchingDelegate = self
     }
