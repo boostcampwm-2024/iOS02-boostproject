@@ -164,7 +164,7 @@ public final class WhiteboardUseCase: WhiteboardUseCaseInterface {
         }
     }
 
-    //추후 고도화한다면, 전송 실패한 오브젝트만 따로 재전송하는 등의 작업이 가능할 듯
+    // 추후 고도화한다면, 전송 실패한 오브젝트만 따로 재전송하는 등의 작업이 가능할 듯
     private func sendAllWhiteboardObjects(to profile: Profile) {
         Task {
             let objects = await self.whiteboardObjectSet.fetchAll()
@@ -194,7 +194,7 @@ extension WhiteboardUseCase: WhiteboardRepositoryDelegate {
         self.whiteboard = whiteboard
         whiteboardRepository.republish(whiteboard: whiteboard)
     }
-    
+
     public func whiteboardRepository(
         _ sender: any WhiteboardRepositoryInterface,
         lostPeer: Profile
@@ -216,7 +216,7 @@ extension WhiteboardUseCase: WhiteboardRepositoryDelegate {
         self.whiteboard = whiteboard
         whiteboardRepository.republish(whiteboard: whiteboard)
     }
-    
+
     public func whiteboardRepository(
         _ sender: any WhiteboardRepositoryInterface,
         didReceive object: WhiteboardObject
@@ -240,7 +240,7 @@ extension WhiteboardUseCase: WhiteboardRepositoryDelegate {
             await removeObject(whiteboardObjectID: object.id, isReceivedObject: true)
         }
     }
-    
+
     public func whiteboardRepository(
         _ sender: any WhiteboardRepositoryInterface,
         didReceive photoID: UUID,
