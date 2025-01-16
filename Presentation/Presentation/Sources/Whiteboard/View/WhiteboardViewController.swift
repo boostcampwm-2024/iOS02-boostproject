@@ -80,7 +80,6 @@ public final class WhiteboardViewController: UIViewController {
     public override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         navigationController?.isNavigationBarHidden = true
-        viewModel.action(input: .removeAll)
         configureTearDownObserver()
     }
 
@@ -368,7 +367,7 @@ extension WhiteboardViewController: WhiteboardToolBarDelegate {
         viewModel.action(input: .selectTool(tool: selectedTool))
 
         if selectedTool == .text {
-            viewModel.action(input: .addTextObject(point: visibleCenterPoint, viewSize: view.frame.size))
+            viewModel.action(input: .addTextObject(point: visibleCenterPoint))
             viewModel.action(input: .finishUsingTool)
         } else if selectedTool == .game {
             viewModel.action(input: .addGameObject(point: visibleCenterPoint))
