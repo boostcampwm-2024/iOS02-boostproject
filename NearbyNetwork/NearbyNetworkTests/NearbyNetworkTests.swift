@@ -5,19 +5,21 @@
 //  Created by 이동현 on 12/31/24.
 //
 
+import DataSource
 import NearbyNetwork
 import Network
 import XCTest
 
 final class NearbyNetworkTests: XCTestCase {
-    var nearbyNetworkService: RefactoredNearbyNetworkService?
+    var nearbyNetworkService: NearbyNetworkService?
     var mockBrowser: NWBrowser?
     var mockListener: NWListener?
     let serviceName = "airplain"
     let serviceType = "_airplain._tcp"
 
     override func setUpWithError() throws {
-        nearbyNetworkService = RefactoredNearbyNetworkService(
+        nearbyNetworkService = NearbyNetworkService(
+            myPeerID: UUID(),
             serviceName: serviceName,
             serviceType: serviceType)
 
@@ -98,9 +100,9 @@ final class NearbyNetworkTests: XCTestCase {
         let advertisingExpectation = XCTestExpectation(description: "광고 성공 여부")
         var advertisingHostName: String?
         var advertisingPeerInfo: [String]?
-        let foundPeerHandler: (String, [String]) -> Void = { hostName, connectedPeerInfo in
-            advertisingHostName = hostName
-            advertisingPeerInfo = connectedPeerInfo
+        let foundPeerHandler: ([NetworkConnection]) -> Void = { connection in
+            advertisingHostName = connection.first!.name
+            advertisingPeerInfo = connection.first!.connectedPeerInfo
             advertisingExpectation.fulfill()
         }
         nearbyNetworkService?.foundPeerHandler = foundPeerHandler

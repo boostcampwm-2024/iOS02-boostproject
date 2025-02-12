@@ -13,7 +13,7 @@ import OSLog
 public protocol NearbyNetworkBrowserDelegate: AnyObject {
     func nearbyNetworkBrowserDidFindPeer(
         _ sender: NearbyNetworkBrowser,
-        foundPeers: [RefactoredNetworkConnection])
+        foundPeers: [NetworkConnection])
 }
 
 public final class NearbyNetworkBrowser {
@@ -21,7 +21,7 @@ public final class NearbyNetworkBrowser {
     private let browserQueue: DispatchQueue
     private let serviceType: String
     private let logger: Logger
-    private var foundPeers: [RefactoredNetworkConnection: NWEndpoint] {
+    private var foundPeers: [NetworkConnection: NWEndpoint] {
         didSet {
             let foundPeers = foundPeers
                 .keys
@@ -61,7 +61,7 @@ public final class NearbyNetworkBrowser {
         }
     }
 
-    private func convertMetadata(metadata: NWBrowser.Result.Metadata) -> RefactoredNetworkConnection? {
+    private func convertMetadata(metadata: NWBrowser.Result.Metadata) -> NetworkConnection? {
         switch metadata {
         case .bonjour(let foundedPeerData):
             let dictionary = foundedPeerData.dictionary
@@ -75,7 +75,7 @@ public final class NearbyNetworkBrowser {
                 return nil
             }
 
-            let foundPeer = RefactoredNetworkConnection(
+            let foundPeer = NetworkConnection(
                 id: peerID,
                 name: hostName,
                 connectedPeerInfo: connectedPeerInfo
@@ -88,7 +88,7 @@ public final class NearbyNetworkBrowser {
         }
     }
 
-    func fetchFoundConnection(networkConnection: RefactoredNetworkConnection) -> NWEndpoint? {
+    func fetchFoundConnection(networkConnection: NetworkConnection) -> NWEndpoint? {
         return foundPeers[networkConnection]
     }
 

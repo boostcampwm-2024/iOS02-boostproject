@@ -7,7 +7,7 @@
 
 import Combine
 
-public protocol ManageWhiteboardToolUseCaseInterface {
+public protocol WhiteboardToolUseCaseInterface {
     /// 화이트보드 도구 선택/선택 해제 시 이벤트를 방출합니다.
     var currentToolPublisher: AnyPublisher<WhiteboardTool?, Never> { get }
 

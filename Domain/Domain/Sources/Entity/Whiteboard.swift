@@ -9,7 +9,7 @@ import Foundation
 public struct Whiteboard: Hashable {
     public let id: UUID
     public let name: String
-    public let participantIcons: [ProfileIcon]
+    public var participantIcons: [ProfileIcon]
 
     public init(
         id: UUID,

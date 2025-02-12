@@ -23,32 +23,34 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let windowScene = (scene as? UIWindowScene) else { return }
 
         // TODO: - 임시 의존성 주입
-        let nearbyNetworkService = NearbyNetworkService(serviceName: "airplain")
+
+        let profileRepository = ProfileRepository(persistenceService: PersistenceService())
+        let myProfile = profileRepository.loadProfile()
+        let nearbyNetworkService = NearbyNetworkService(
+            myPeerID: myProfile.id,
+            serviceName: "airplain",
+            serviceType: "_airplain._tcp")
         let filePersistenceService = FilePersistence()
         let whiteboardObjectSet = WhiteboardObjectSet()
 
-        let profileRepository = ProfileRepository(persistenceService: PersistenceService())
+        let whiteboardListRepository = WhiteboardListRepository(nearbyNetworkService: nearbyNetworkService)
         let whiteboardRepository = WhiteboardRepository(
-            nearbyNetworkInterface: nearbyNetworkService,
-            myProfile: profileRepository.loadProfile())
-        let whiteboardObjectRepository = WhiteboardObjectRepository(
-            nearbyNetwork: nearbyNetworkService,
+            nearbyNetworkService: nearbyNetworkService,
             filePersistence: filePersistenceService)
         let photoRepository = PhotoRepository(filePersistence: filePersistenceService)
         let chatRepository = ChatRepository(
-            nearbyNetwork: nearbyNetworkService,
+            nearbyNetworkService: nearbyNetworkService,
             filePersistence: filePersistenceService)
 
-        let whiteboardUseCase = WhiteboardUseCase(
-            whiteboardRepository: whiteboardRepository,
+        let whiteboardListUseCase = WhiteboardListUseCase(
+            whiteboardListRepository: whiteboardListRepository,
             profileRepository: profileRepository)
         let profileUseCase = ProfileUseCase(repository: profileRepository)
-        let manageWhiteboardObjectUseCase = ManageWhiteboardObjectUseCase(
+        let whiteboardUseCase = WhiteboardUseCase(
             profileRepository: profileRepository,
-            whiteboardObjectRepository: whiteboardObjectRepository,
             whiteboardRepository: whiteboardRepository,
             whiteboardObjectSet: whiteboardObjectSet)
-        let manageWhiteboardToolUseCase = ManageWhiteboardToolUseCase()
+        let whiteboardToolUseCase = WhiteboardToolUseCase()
         let textObjectUseCase = TextObjectUseCase(
             whiteboardObjectSet: whiteboardObjectSet,
             textFieldDefaultSize: CGSize(width: 200, height: 50))
@@ -60,7 +62,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
         let whiteboardObjectViewFactory = WhiteboardObjectViewFactory()
 
-        let whiteboardListViewModel = WhiteboardListViewModel(whiteboardUseCase: whiteboardUseCase)
+        let whiteboardListViewModel = WhiteboardListViewModel(whiteboardListUseCase: whiteboardListUseCase)
         let profileViewModel = ProfileViewModel(profileUseCase: profileUseCase)
 
         let whiteboardListViewController = WhiteboardListViewController(
@@ -68,15 +70,15 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             whiteboardObjectViewFactory: whiteboardObjectViewFactory,
             profileViewModel: profileViewModel,
             profileRepository: profileRepository,
-            whiteboardUseCase: whiteboardUseCase,
+            whiteboardListUseCase: whiteboardListUseCase,
             photoUseCase: photoUseCase,
             drawObjectUseCase: drawObjectUseCase,
             textObjectUseCase: textObjectUseCase,
             chatUseCase: chatUseCase,
             gameRepository: gameRepository,
             gameObjectUseCase: gameObjectUseCase,
-            manageWhiteboardToolUseCase: manageWhiteboardToolUseCase,
-            manageWhiteboardObjectUseCase: manageWhiteboardObjectUseCase)
+            whiteboardToolUseCase: whiteboardToolUseCase,
+            whiteboardUseCase: whiteboardUseCase)
 
         let window = UIWindow(windowScene: windowScene)
         let navigationController = UINavigationController(rootViewController: whiteboardListViewController)

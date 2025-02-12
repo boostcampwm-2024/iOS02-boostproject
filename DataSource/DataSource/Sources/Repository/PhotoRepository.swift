@@ -16,23 +16,25 @@ public final class PhotoRepository: PhotoRepositoryInterface {
     }
 
     public func savePhoto(id: UUID, imageData: Data) -> URL? {
-        let dataInformation = DataInformationDTO(
+        let imageDTO = AirplaINDataDTO(
             id: id,
+            data: imageData,
             type: .imageData,
             isDeleted: false)
 
-        let imageURL = filePersistence.save(dataInfo: dataInformation, data: imageData)
+        let imageURL = filePersistence.save(dto: imageDTO)
         return imageURL
     }
 
     public func fetchPhoto(id: UUID) -> Data? {
-        let dataInformation = DataInformationDTO(
+        let imageDTO = AirplaINDataDTO(
             id: id,
+            data: Data(),
             type: .imageData,
             isDeleted: false)
 
         guard
-            let imageURL = filePersistence.fetchURL(dataInfo: dataInformation),
+            let imageURL = filePersistence.fetchURL(dto: imageDTO),
             let imageData = filePersistence.load(path: imageURL)
         else { return nil }
 

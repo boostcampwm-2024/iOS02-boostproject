@@ -7,12 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		002DEC952D22A99F00ED7EE3 /* RefactoredNearbyNetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 002DEC942D22A99F00ED7EE3 /* RefactoredNearbyNetworkService.swift */; };
+		002DEC952D22A99F00ED7EE3 /* NearbyNetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 002DEC942D22A99F00ED7EE3 /* NearbyNetworkService.swift */; };
 		002DEC9D2D23C33C00ED7EE3 /* NearbyNetworkTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 002DEC9C2D23C33C00ED7EE3 /* NearbyNetworkTests.swift */; };
 		002DEC9E2D23C33C00ED7EE3 /* NearbyNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B7C6E652CDB6A560024704A /* NearbyNetwork.framework */; platformFilter = ios; };
 		00549AD62CEDDDB700DF8F6C /* MCSessionState+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00549AD52CEDDDB100DF8F6C /* MCSessionState+.swift */; };
 		00549AD82CEDDDCF00DF8F6C /* MCSession+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00549AD72CEDDDCF00DF8F6C /* MCSession+.swift */; };
-		0080E86A2CE19EC40095B958 /* NearbyNetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0080E8672CE19EC40095B958 /* NearbyNetworkService.swift */; };
 		00CA7A102D2E08DA00116F9E /* NearbyNetworkProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00CA7A0F2D2E08DA00116F9E /* NearbyNetworkProtocol.swift */; };
 		5B7C6EBF2CDB6C6E0024704A /* DataSource.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B7C6EBE2CDB6C6E0024704A /* DataSource.framework */; };
 		5B7C6EC02CDB6C6E0024704A /* DataSource.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 5B7C6EBE2CDB6C6E0024704A /* DataSource.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -46,12 +45,11 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		002DEC942D22A99F00ED7EE3 /* RefactoredNearbyNetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefactoredNearbyNetworkService.swift; sourceTree = "<group>"; };
+		002DEC942D22A99F00ED7EE3 /* NearbyNetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearbyNetworkService.swift; sourceTree = "<group>"; };
 		002DEC9A2D23C33C00ED7EE3 /* NearbyNetworkTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NearbyNetworkTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		002DEC9C2D23C33C00ED7EE3 /* NearbyNetworkTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearbyNetworkTests.swift; sourceTree = "<group>"; };
 		00549AD52CEDDDB100DF8F6C /* MCSessionState+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MCSessionState+.swift"; sourceTree = "<group>"; };
 		00549AD72CEDDDCF00DF8F6C /* MCSession+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MCSession+.swift"; sourceTree = "<group>"; };
-		0080E8672CE19EC40095B958 /* NearbyNetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearbyNetworkService.swift; sourceTree = "<group>"; };
 		00CA7A0F2D2E08DA00116F9E /* NearbyNetworkProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearbyNetworkProtocol.swift; sourceTree = "<group>"; };
 		5B7C6E652CDB6A560024704A /* NearbyNetwork.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = NearbyNetwork.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5B7C6EBE2CDB6C6E0024704A /* DataSource.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = DataSource.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -110,8 +108,7 @@
 			children = (
 				00549AD32CEDDDA300DF8F6C /* Common */,
 				00CA7A0F2D2E08DA00116F9E /* NearbyNetworkProtocol.swift */,
-				0080E8672CE19EC40095B958 /* NearbyNetworkService.swift */,
-				002DEC942D22A99F00ED7EE3 /* RefactoredNearbyNetworkService.swift */,
+				002DEC942D22A99F00ED7EE3 /* NearbyNetworkService.swift */,
 				A83D2AAF2D23BAFC007EC41F /* NearbyNetworkListener.swift */,
 				A83D2AB32D23C09F007EC41F /* NearbyNetworkKey.swift */,
 				A83D2AB12D23BE88007EC41F /* NearbyNetworkBrowser.swift */,
@@ -302,8 +299,7 @@
 				A83D2AB02D23BAFC007EC41F /* NearbyNetworkListener.swift in Sources */,
 				00CA7A102D2E08DA00116F9E /* NearbyNetworkProtocol.swift in Sources */,
 				00549AD82CEDDDCF00DF8F6C /* MCSession+.swift in Sources */,
-				002DEC952D22A99F00ED7EE3 /* RefactoredNearbyNetworkService.swift in Sources */,
-				0080E86A2CE19EC40095B958 /* NearbyNetworkService.swift in Sources */,
+				002DEC952D22A99F00ED7EE3 /* NearbyNetworkService.swift in Sources */,
 				A83D2AB42D23C09F007EC41F /* NearbyNetworkKey.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

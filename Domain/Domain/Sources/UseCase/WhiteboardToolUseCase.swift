@@ -7,7 +7,7 @@
 
 import Combine
 
-public final class ManageWhiteboardToolUseCase: ManageWhiteboardToolUseCaseInterface {
+public final class WhiteboardToolUseCase: WhiteboardToolUseCaseInterface {
     public var currentToolPublisher: AnyPublisher<WhiteboardTool?, Never>
     private let currentToolSubject: CurrentValueSubject<WhiteboardTool?, Never>
 

@@ -10,11 +10,11 @@ import Domain
 import XCTest
 
 final class ManageWhiteboardToolUseCaseTests: XCTestCase {
-    private var useCase: ManageWhiteboardToolUseCaseInterface!
+    private var useCase: WhiteboardToolUseCaseInterface!
     private var cancellables: Set<AnyCancellable>!
 
     override func setUpWithError() throws {
-        useCase = ManageWhiteboardToolUseCase()
+        useCase = WhiteboardToolUseCase()
         cancellables = []
     }
 

@@ -11,16 +11,16 @@ import OSLog
 
 public final class ChatRepository: ChatRepositoryInterface {
     public weak var delegate: ChatRepositoryDelegate?
-    private var nearbyNetwork: NearbyNetworkInterface
+    private var nearbyNetworkService: NearbyNetworkInterface
     private let filePersistence: FilePersistenceInterface
     private var cancellables: Set<AnyCancellable>
     private let logger = Logger()
 
     public init(
-        nearbyNetwork: NearbyNetworkInterface,
+        nearbyNetworkService: NearbyNetworkInterface,
         filePersistence: FilePersistenceInterface
     ) {
-        self.nearbyNetwork = nearbyNetwork
+        self.nearbyNetworkService = nearbyNetworkService
         self.filePersistence = filePersistence
         cancellables = []
         bindNearbyNetwork()
@@ -28,40 +28,37 @@ public final class ChatRepository: ChatRepositoryInterface {
 
     public func send(message: String, profile: Profile) async -> ChatMessage? {
         let chatMessage = ChatMessage(message: message, sender: profile)
-        let chatMessageData = try? JSONEncoder().encode(chatMessage)
-        let chatMessageInformation = DataInformationDTO(
+        guard let chatMessageData = try? JSONEncoder().encode(chatMessage) else { return nil }
+
+        let chatMessageDTO = AirplaINDataDTO(
             id: profile.id,
+            data: chatMessageData,
             type: .chat,
             isDeleted: false)
+
         guard
-            let url = filePersistence.save(dataInfo: chatMessageInformation, data: chatMessageData)
+            let url = filePersistence.save(dto: chatMessageDTO)
         else {
             logger.log(level: .error, "url저장 실패: 데이터를 보내지 못했습니다.")
             return nil
         }
-        await nearbyNetwork.send(fileURL: url, info: chatMessageInformation)
 
+        _ = await nearbyNetworkService.send(data: chatMessageDTO)
         return chatMessage
     }
 
     private func bindNearbyNetwork() {
-        nearbyNetwork.reciptURLPublisher
-            .sink { [weak self] url, dataInfo in
-                switch dataInfo.type {
-                case .chat:
-                    self?.handleChatData(url: url, dataInfo: dataInfo)
-                default:
-                    break
-                }
+        nearbyNetworkService.reciptDataPublisher
+            .sink { [weak self] dto in
+                guard dto.type == .chat else { return }
+                self?.handleChatData(dto: dto)
             }
             .store(in: &cancellables)
     }
 
-    private func handleChatData(url: URL, dataInfo: DataInformationDTO) {
-        guard let receivedData = filePersistence.load(path: url) else { return }
-        filePersistence.save(
-            dataInfo: dataInfo,
-            data: receivedData)
+    private func handleChatData(dto: AirplaINDataDTO) {
+        let receivedData = dto.data
+
         guard
             let chatMessage = try? JSONDecoder().decode(
                 ChatMessage.self,
